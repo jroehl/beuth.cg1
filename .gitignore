@@ -4,3 +4,11 @@
 .project
 org.eclipse.jdt.core.prefs
 org.eclipse.wst.common.project.facet.core.xml
+master_git.iml
+.idea/.name
+.idea/compiler.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/workspace.xml
+.idea/copyright/profiles_settings.xml
