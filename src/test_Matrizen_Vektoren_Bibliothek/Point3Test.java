@@ -16,9 +16,9 @@ import Matrizen_Vektoren_Bibliothek.Vector3;
  * @author <Authors name>
  * @since
  * 
- *        <pre>
+ * 		<pre>
  * Okt 20, 2015
- * </pre>
+ *        </pre>
  * 
  * @version 1.0
  */
@@ -135,8 +135,7 @@ public class Point3Test extends TestCase {
 		Mat3x3 m1 = new Mat3x3(1, 0, 0, 0, 1, 0, 0, 0, 1);
 		Point3 p1 = new Point3(3, 2, 1);
 
-		System.out.println(m1.mul(p1).x + " " + m1.mul(p1).y + " "
-				+ m1.mul(p1).z);
+		System.out.println(m1.mul(p1).x + " " + m1.mul(p1).y + " " + m1.mul(p1).z);
 
 		assertTrue(new Point3(3, 2, 1).equals(m1.mul(p1)));
 	}

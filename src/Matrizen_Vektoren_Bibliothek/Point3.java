@@ -16,8 +16,7 @@ public class Point3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________
-	 * Subtraktion eines Punktes
+	 * ________________________________________________________________________________ Subtraktion eines Punktes
 	 */
 
 	public Vector3 sub(Point3 p) throws IllegalArgumentException {
@@ -30,8 +29,7 @@ public class Point3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________
-	 * Subtraktion eines Vektors
+	 * ________________________________________________________________________________ Subtraktion eines Vektors
 	 */
 
 	public Point3 sub(Vector3 v) throws IllegalArgumentException {
@@ -45,8 +43,7 @@ public class Point3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________
-	 * Addition eines Vektors
+	 * ________________________________________________________________________________ Addition eines Vektors
 	 */
 
 	public Point3 add(Vector3 v) throws IllegalArgumentException {
@@ -60,8 +57,7 @@ public class Point3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________
-	 * überschriebene equals-Methode
+	 * ________________________________________________________________________________ überschriebene equals-Methode
 	 */
 
 	@Override
@@ -82,8 +78,7 @@ public class Point3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________
-	 * überschriebene hashCode-Methode
+	 * ________________________________________________________________________________ überschriebene hashCode-Methode
 	 */
 
 	@Override
@@ -100,8 +95,7 @@ public class Point3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________
-	 * überschriebene toString-Methode
+	 * ________________________________________________________________________________ überschriebene toString-Methode
 	 */
 
 	@Override

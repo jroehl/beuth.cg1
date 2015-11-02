@@ -14,12 +14,11 @@ public class Vector3 {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		this.magnitude = (Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)
-				+ Math.pow(z, 2)));
+		this.magnitude = (Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2)));
 	}
+
 	/**
-	 * ________________________________________________________________________________
-	 * Addition eines Vektors
+	 * ________________________________________________________________________________ Addition eines Vektors
 	 */
 
 	public Vector3 add(Vector3 v) throws IllegalArgumentException {
@@ -30,8 +29,7 @@ public class Vector3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________
-	 * Addition einer Normalen
+	 * ________________________________________________________________________________ Addition einer Normalen
 	 */
 	public Vector3 add(Normal3 n) throws IllegalArgumentException {
 		if (n == null) {
@@ -41,8 +39,7 @@ public class Vector3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________
-	 * ASubtraktion einer Normalen
+	 * ________________________________________________________________________________ ASubtraktion einer Normalen
 	 */
 
 	public Vector3 sub(Normal3 n) throws IllegalArgumentException {
@@ -56,8 +53,7 @@ public class Vector3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________
-	 * Multiplikation mit double-Wert
+	 * ________________________________________________________________________________ Multiplikation mit double-Wert
 	 */
 
 	public Vector3 mul(double c) throws IllegalArgumentException {
@@ -67,8 +63,7 @@ public class Vector3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________
-	 * SkalarProdukt eines Vektors
+	 * ________________________________________________________________________________ SkalarProdukt eines Vektors
 	 */
 
 	public double dot(Vector3 v) throws IllegalArgumentException {
@@ -82,8 +77,7 @@ public class Vector3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________
-	 * SkalarProdukt einer Normalen
+	 * ________________________________________________________________________________ SkalarProdukt einer Normalen
 	 */
 
 	public double dot(Normal3 n) throws IllegalArgumentException {
@@ -97,20 +91,18 @@ public class Vector3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________
-	 * Vektor normalisieren
+	 * ________________________________________________________________________________ Vektor normalisieren
 	 */
 
 	public Vector3 normalized() {
 
-		return new Vector3(this.x / this.magnitude, this.y / this.magnitude,
-				this.z / this.magnitude);
+		return new Vector3(this.x / this.magnitude, this.y / this.magnitude, this.z / this.magnitude);
 
 	}
 
 	/**
-	 * ________________________________________________________________________________
-	 * Den übergebenen Vektor als Normale (aber nicht normalisiert) wiedergeben
+	 * ________________________________________________________________________________ Den übergebenen Vektor als
+	 * Normale (aber nicht normalisiert) wiedergeben
 	 */
 
 	public Normal3 asNormal() {
@@ -122,8 +114,8 @@ public class Vector3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________
-	 * Reflektion eines vektors an einer Normalen
+	 * ________________________________________________________________________________ Reflektion eines vektors an
+	 * einer Normalen
 	 */
 
 	public Vector3 reflectedOn(Normal3 n) throws IllegalArgumentException {
@@ -137,8 +129,7 @@ public class Vector3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________
-	 * Kreuzprodukt (Vektor X Vektor)
+	 * ________________________________________________________________________________ Kreuzprodukt (Vektor X Vektor)
 	 */
 
 	public Vector3 x(Vector3 v) throws IllegalArgumentException {
@@ -147,14 +138,12 @@ public class Vector3 {
 			throw new IllegalArgumentException();
 		}
 
-		return new Vector3(this.y * v.z - this.z * v.y, this.z * v.x - this.x
-				* v.z, this.x * v.y - this.y * v.x);
+		return new Vector3(this.y * v.z - this.z * v.y, this.z * v.x - this.x * v.z, this.x * v.y - this.y * v.x);
 
 	}
 
 	/**
-	 * ________________________________________________________________________________
-	 * überschriebene equals-Methode
+	 * ________________________________________________________________________________ überschriebene equals-Methode
 	 */
 
 	@Override
@@ -177,8 +166,7 @@ public class Vector3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________
-	 * überschriebene hashCode-Methode
+	 * ________________________________________________________________________________ überschriebene hashCode-Methode
 	 */
 
 	@Override
@@ -197,12 +185,10 @@ public class Vector3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________
-	 * überschriebene toString-Methode
+	 * ________________________________________________________________________________ überschriebene toString-Methode
 	 */
 
 	public String toString() {
-		return "Vector3{" + "x=" + x + ", y=" + y + ", z=" + z + ", magnitude="
-				+ magnitude + '}';
+		return "Vector3{" + "x=" + x + ", y=" + y + ", z=" + z + ", magnitude=" + magnitude + '}';
 	}
 }

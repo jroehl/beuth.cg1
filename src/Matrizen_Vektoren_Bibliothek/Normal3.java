@@ -16,8 +16,7 @@ public class Normal3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________
-	 * Multiplikation mit double-Wert
+	 * ________________________________________________________________________________ Multiplikation mit double-Wert
 	 */
 
 	public Normal3 mul(double n) {
@@ -25,8 +24,7 @@ public class Normal3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________
-	 * Addition einer Normalen
+	 * ________________________________________________________________________________ Addition einer Normalen
 	 */
 
 	public Normal3 add(Normal3 n) throws IllegalArgumentException {
@@ -37,8 +35,7 @@ public class Normal3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________
-	 * Addition eines Vektors
+	 * ________________________________________________________________________________ Addition eines Vektors
 	 */
 
 	public double dot(Vector3 n) throws IllegalArgumentException {
@@ -49,8 +46,7 @@ public class Normal3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________
-	 * überschriebene toString-Methode
+	 * ________________________________________________________________________________ überschriebene toString-Methode
 	 */
 
 	@Override
@@ -59,8 +55,7 @@ public class Normal3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________
-	 * überschriebene equals-Methode
+	 * ________________________________________________________________________________ überschriebene equals-Methode
 	 */
 
 	@Override
@@ -81,8 +76,7 @@ public class Normal3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________
-	 * überschriebene hashCode-Methode
+	 * ________________________________________________________________________________ überschriebene hashCode-Methode
 	 */
 
 	@Override

@@ -17,9 +17,7 @@ public class ImageOpener_FX extends Application {
 
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Resource File");
-		fileChooser.getExtensionFilters().addAll(
-				new FileChooser.ExtensionFilter("Image Files", "*.png",
-						"*.jpg", "*.gif"));
+		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
 
 		File selectedFile = fileChooser.showOpenDialog(openDialog);
 		String path = selectedFile.getAbsolutePath();

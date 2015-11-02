@@ -3,6 +3,8 @@ package application;
 import java.io.File;
 import java.io.IOException;
 
+import javax.imageio.ImageIO;
+
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Group;
@@ -17,8 +19,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
-import javax.imageio.ImageIO;
 
 public class PNGCreater_FX extends Application {
 
@@ -38,8 +38,7 @@ public class PNGCreater_FX extends Application {
 
 		MenuBar menuBar = new MenuBar();
 		menuBar.getMenus().add(fileMenu);
-		menuBar.prefWidthProperty()
-				.bind(primaryStage.widthProperty().divide(2));
+		menuBar.prefWidthProperty().bind(primaryStage.widthProperty().divide(2));
 		MenuItem save = new MenuItem("Save");
 		fileMenu.getItems().add(save);
 
@@ -67,8 +66,7 @@ public class PNGCreater_FX extends Application {
 			File file = fileChooser.showSaveDialog(primaryStage);
 			if (file != null) {
 				try {
-					ImageIO.write(SwingFXUtils.fromFXImage(wrImg, null), "png",
-							file);
+					ImageIO.write(SwingFXUtils.fromFXImage(wrImg, null), "png", file);
 				} catch (IOException ex) {
 					System.out.println(ex.getMessage());
 				}
@@ -76,8 +74,8 @@ public class PNGCreater_FX extends Application {
 		});
 
 		/**
-		 * Über einen AddListener an der HeightProperty und der WidthProperty
-		 * der primaryStage wird das neu Zeichnen des Bildes aufgerufen
+		 * Über einen AddListener an der HeightProperty und der WidthProperty der primaryStage wird das neu Zeichnen des
+		 * Bildes aufgerufen
 		 */
 
 		primaryStage.heightProperty().addListener((ChangeEvent) -> {
@@ -111,13 +109,11 @@ public class PNGCreater_FX extends Application {
 			}
 		}
 		long end = System.nanoTime();
-		renderingTime
-				.setText((" Rendering Time: " + (end - start) / 1000000000.0F));
+		renderingTime.setText((" Rendering Time: " + (end - start) / 1000000000.0F));
 	}
 
 	/**
-	 * Liefert den Farbwert zurück um eine Diagonale Linie in einem schwarzen
-	 * Bild zu malen.
+	 * Liefert den Farbwert zurück um eine Diagonale Linie in einem schwarzen Bild zu malen.
 	 * 
 	 * @param x
 	 *            , X Coordinate eines Pixels im Bild

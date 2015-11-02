@@ -16,9 +16,9 @@ import Matrizen_Vektoren_Bibliothek.Vector3;
  * @author <Authors name>
  * @since
  * 
- *        <pre>
+ * 		<pre>
  * Okt 20, 2015
- * </pre>
+ *        </pre>
  * 
  * @version 1.0
  */
@@ -115,8 +115,7 @@ public class Vector3Test extends TestCase {
 
 	/**
 	 * 
-	 * Method: normalized() Wir runden die errechnete magnitude von 0.99999999
-	 * auf den nächsten Int-Wert
+	 * Method: normalized() Wir runden die errechnete magnitude von 0.99999999 auf den nächsten Int-Wert
 	 */
 	@Test
 	public void testNormalized() throws Exception {
@@ -206,9 +205,7 @@ public class Vector3Test extends TestCase {
 	@Test
 	public void testToString() throws Exception {
 
-		assertEquals(
-				"Vector3{x=1.0, y=1.0, z=1.0, magnitude=1.7320508075688772}",
-				new Vector3(1, 1, 1).toString());
+		assertEquals("Vector3{x=1.0, y=1.0, z=1.0, magnitude=1.7320508075688772}", new Vector3(1, 1, 1).toString());
 
 	}
 }
