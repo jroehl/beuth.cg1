@@ -61,6 +61,9 @@ public class PNGCreater_FX extends Application {
 		save.setOnAction(e -> {
 			FileChooser fileChooser = new FileChooser();
 			fileChooser.setTitle("Save Image");
+			FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.JPG");
+			FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.PNG");
+			fileChooser.getExtensionFilters().addAll(extFilterJPG, extFilterPNG);
 			File file = fileChooser.showSaveDialog(primaryStage);
 			if (file != null) {
 				try {
