@@ -1,20 +1,23 @@
 package Matrizen_Vektoren_Bibliothek;
 
 /**
- * Created by jroehl on 13.10.15.
+ * 
+ * 3x3-Matrix
+ * 
+ * @author Waschmaschine
  */
 public class Mat3x3 {
 
-	public double m11;
-	public double m12;
-	public double m13;
-	public double m21;
-	public double m22;
-	public double m23;
-	public double m31;
-	public double m32;
-	public double m33;
-	public double determinant;
+	final public double m11;
+	final public double m12;
+	final public double m13;
+	final public double m21;
+	final public double m22;
+	final public double m23;
+	final public double m31;
+	final public double m32;
+	final public double m33;
+	final public double determinant;
 
 	public Mat3x3(double m11, double m12, double m13, double m21, double m22, double m23, double m31, double m32, double m33) {
 		this.m11 = m11;
@@ -32,9 +35,12 @@ public class Mat3x3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________ Matrix-Matrix-Multiplikation
+	 * Matrix-Matrix-Multiplikation
+	 *
+	 * @param m
+	 * @return
+	 * @throws IllegalArgumentException
 	 */
-
 	public Mat3x3 mul(Mat3x3 m) throws IllegalArgumentException {
 
 		if (m == null) {
@@ -46,13 +52,15 @@ public class Mat3x3 {
 				this.m21 * m.m12 + this.m22 * m.m22 + this.m23 * m.m32, this.m21 * m.m13 + this.m23 * m.m32 + this.m23 * m.m33,
 				this.m31 * m.m11 + this.m32 * m.m21 + this.m33 * m.m13, this.m31 * m.m12 + this.m32 * m.m22 + this.m33 * m.m32,
 				this.m31 * m.m13 + this.m32 * m.m23 + this.m33 * m.m33);
-
 	}
 
 	/**
-	 * ________________________________________________________________________________ Matrix-Vektor-Multiplikation
+	 * Matrix-Vektor-Multiplikation
+	 * 
+	 * @param v
+	 * @return
+	 * @throws IllegalArgumentException
 	 */
-
 	public Vector3 mul(Vector3 v) throws IllegalArgumentException {
 
 		if (v == null) {
@@ -61,13 +69,15 @@ public class Mat3x3 {
 
 		return new Vector3((this.m11 * v.x + this.m12 * v.y + this.m13 * v.z), (this.m21 * v.x + this.m22 * v.y + this.m23 * v.z),
 				(this.m31 * v.x + this.m32 * v.y + this.m33 * v.z));
-
 	}
 
 	/**
-	 * ________________________________________________________________________________ Matrix-Punkt-Multiplikation
+	 * Matrix-Punkt-Multiplikation
+	 * 
+	 * @param p
+	 * @return
+	 * @throws IllegalArgumentException
 	 */
-
 	public Point3 mul(Point3 p) throws IllegalArgumentException {
 
 		if (p == null) {
@@ -79,7 +89,11 @@ public class Mat3x3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________ Spalte 1 austauschen
+	 * Spalte 1 austauschen
+	 * 
+	 * @param m
+	 * @return
+	 * @throws IllegalArgumentException
 	 */
 	public Mat3x3 changeCol1(Vector3 m) throws IllegalArgumentException {
 
@@ -92,9 +106,12 @@ public class Mat3x3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________ Spalte 2 austauschen
+	 * Spalte 2 austauschen
+	 * 
+	 * @param m
+	 * @return
+	 * @throws IllegalArgumentException
 	 */
-
 	public Mat3x3 changeCol2(Vector3 m) throws IllegalArgumentException {
 
 		if (m == null) {
@@ -105,9 +122,12 @@ public class Mat3x3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________ Spalte 3 austauschen
+	 * Spalte 3 austauschen
+	 * 
+	 * @param m
+	 * @return
+	 * @throws IllegalArgumentException
 	 */
-
 	public Mat3x3 changeCol3(Vector3 m) throws IllegalArgumentException {
 
 		if (m == null) {
@@ -119,9 +139,9 @@ public class Mat3x3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________ überschriebene equals-Methode
+	 * Ueberschriebene equals-Methode
+	 * 
 	 */
-
 	@Override
 	public boolean equals(Object o) {
 		if (this == o)
@@ -154,9 +174,8 @@ public class Mat3x3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________ überschriebene hashCode-Methode
+	 * Ueberschriebene hashCode-Methode
 	 */
-
 	@Override
 	public int hashCode() {
 		int result;
@@ -185,9 +204,8 @@ public class Mat3x3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________ überschriebene toString-Methode
+	 * Ueberschriebene toString-Methode
 	 */
-
 	@Override
 	public String toString() {
 		return "Mat3x3{" + "m11=" + m11 + ", m12=" + m12 + ", m13=" + m13 + ", m21=" + m21 + ", m22=" + m22 + ", m23=" + m23 + ", m31="
