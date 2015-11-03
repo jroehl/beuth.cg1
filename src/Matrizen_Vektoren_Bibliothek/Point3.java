@@ -1,7 +1,9 @@
 package Matrizen_Vektoren_Bibliothek;
 
 /**
- * Created by jroehl on 13.10.15.
+ * Punkt
+ * 
+ * @author Waschmaschine
  */
 public class Point3 {
 
@@ -9,6 +11,13 @@ public class Point3 {
 	public final double y;
 	public final double z;
 
+	/**
+	 * Konstruktor.
+	 * 
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
 	public Point3(double x, double y, double z) {
 		this.x = x;
 		this.y = y;
@@ -16,9 +25,12 @@ public class Point3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________ Subtraktion eines Punktes
+	 * Subtraktion eines Punktes
+	 * 
+	 * @param p
+	 * @return
+	 * @throws IllegalArgumentException
 	 */
-
 	public Vector3 sub(Point3 p) throws IllegalArgumentException {
 
 		if (p == null) {
@@ -29,9 +41,12 @@ public class Point3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________ Subtraktion eines Vektors
+	 * Subtraktion eines Vektors
+	 * 
+	 * @param v
+	 * @return
+	 * @throws IllegalArgumentException
 	 */
-
 	public Point3 sub(Vector3 v) throws IllegalArgumentException {
 
 		if (v == null) {
@@ -43,9 +58,12 @@ public class Point3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________ Addition eines Vektors
+	 * Addition eines Vektors
+	 * 
+	 * @param v
+	 * @return
+	 * @throws IllegalArgumentException
 	 */
-
 	public Point3 add(Vector3 v) throws IllegalArgumentException {
 
 		if (v == null) {
@@ -57,9 +75,8 @@ public class Point3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________ überschriebene equals-Methode
+	 * überschriebene equals-Methode
 	 */
-
 	@Override
 	public boolean equals(Object o) {
 		if (this == o)
@@ -78,9 +95,8 @@ public class Point3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________ überschriebene hashCode-Methode
+	 * überschriebene hashCode-Methode
 	 */
-
 	@Override
 	public int hashCode() {
 		int result;
@@ -95,9 +111,8 @@ public class Point3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________ überschriebene toString-Methode
+	 * überschriebene toString-Methode
 	 */
-
 	@Override
 	public String toString() {
 		return "Point3{" + "x=" + x + ", y=" + y + ", z=" + z + '}';
