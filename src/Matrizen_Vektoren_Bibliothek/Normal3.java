@@ -1,14 +1,23 @@
 package Matrizen_Vektoren_Bibliothek;
 
 /**
- * Created by jroehl on 13.10.15.
+ * Normalen-Vektor
+ * 
+ * @author Waschmaschine
  */
 public class Normal3 {
 
-	public final double x;
-	public final double y;
-	public final double z;
+	final public double x;
+	final public double y;
+	final public double z;
 
+	/**
+	 * Konstruktor
+	 * 
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
 	public Normal3(double x, double y, double z) {
 		this.x = x;
 		this.y = y;
@@ -16,17 +25,22 @@ public class Normal3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________ Multiplikation mit double-Wert
+	 * Multiplikation mit double-Wert
+	 * 
+	 * @param n
+	 * @return
 	 */
-
 	public Normal3 mul(double n) {
 		return new Normal3(this.x * n, this.y * n, this.z * n);
 	}
 
 	/**
-	 * ________________________________________________________________________________ Addition einer Normalen
+	 * Addition einer Normalen
+	 * 
+	 * @param n
+	 * @return
+	 * @throws IllegalArgumentException
 	 */
-
 	public Normal3 add(Normal3 n) throws IllegalArgumentException {
 		if (n == null) {
 			throw new IllegalArgumentException();
@@ -35,9 +49,12 @@ public class Normal3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________ Addition eines Vektors
+	 * Addition eines Vektors
+	 * 
+	 * @param n
+	 * @return
+	 * @throws IllegalArgumentException
 	 */
-
 	public double dot(Vector3 n) throws IllegalArgumentException {
 		if (n == null) {
 			throw new IllegalArgumentException();
@@ -46,18 +63,16 @@ public class Normal3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________ überschriebene toString-Methode
+	 * Ueberschriebene toString-Methode
 	 */
-
 	@Override
 	public String toString() {
 		return "Normal3{" + "x=" + x + ", y=" + y + ", z=" + z + '}';
 	}
 
 	/**
-	 * ________________________________________________________________________________ überschriebene equals-Methode
+	 * Ueberschriebene equals-Methode
 	 */
-
 	@Override
 	public boolean equals(Object o) {
 		if (this == o)
@@ -76,9 +91,8 @@ public class Normal3 {
 	}
 
 	/**
-	 * ________________________________________________________________________________ überschriebene hashCode-Methode
+	 * Ueberschriebene hashCode-Methode
 	 */
-
 	@Override
 	public int hashCode() {
 		int result;
