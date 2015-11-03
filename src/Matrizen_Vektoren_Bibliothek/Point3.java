@@ -7,18 +7,32 @@ package Matrizen_Vektoren_Bibliothek;
  */
 public class Point3 {
 
+	/**
+	 * x-Wert des Punktes
+	 */
 	public final double x;
+
+	/**
+	 * y-Wert des Punktes
+	 */
 	public final double y;
+
+	/**
+	 * z-Wert des Punktes
+	 */
 	public final double z;
 
 	/**
 	 * Konstruktor.
 	 * 
 	 * @param x
+	 * 		setzt den double x-Wert
 	 * @param y
+	 * 		setzt den double y-Wert
 	 * @param z
+	 * 		setzt den double z-Wert
 	 */
-	public Point3(double x, double y, double z) {
+	public Point3(final double x,final double y,final double z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -28,10 +42,12 @@ public class Point3 {
 	 * Subtraktion eines Punktes
 	 * 
 	 * @param p
+	 * 		Punkt der von dem Punkt subtrahiert wird
 	 * @return
+	 * 		neues Vector3 Objekt (Vektor)
 	 * @throws IllegalArgumentException
 	 */
-	public Vector3 sub(Point3 p) throws IllegalArgumentException {
+	public Vector3 sub(final Point3 p) throws IllegalArgumentException {
 
 		if (p == null) {
 			throw new IllegalArgumentException();
@@ -44,10 +60,12 @@ public class Point3 {
 	 * Subtraktion eines Vektors
 	 * 
 	 * @param v
+	 * 		Vektor der von dem Punkt subtrahiert wird
 	 * @return
+	 * 		neues Point3 Objekt (Punkt)
 	 * @throws IllegalArgumentException
 	 */
-	public Point3 sub(Vector3 v) throws IllegalArgumentException {
+	public Point3 sub(final Vector3 v) throws IllegalArgumentException {
 
 		if (v == null) {
 			throw new IllegalArgumentException();
@@ -61,10 +79,12 @@ public class Point3 {
 	 * Addition eines Vektors
 	 * 
 	 * @param v
+	 * 		Vektor der zu dem Punkt addiert wird
 	 * @return
+	 * 		neues Point3 Objekt (Punkt)
 	 * @throws IllegalArgumentException
 	 */
-	public Point3 add(Vector3 v) throws IllegalArgumentException {
+	public Point3 add(final Vector3 v) throws IllegalArgumentException {
 
 		if (v == null) {
 			throw new IllegalArgumentException();
@@ -75,10 +95,16 @@ public class Point3 {
 	}
 
 	/**
-	 * überschriebene equals-Methode
+	 * Ueberschriebene equals-Methode
+	 *
+	 * @param o
+	 * 		Objekt das mit dem Punkt verglichen wird
+	 * @return
+	 * 		true | false
+	 *
 	 */
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(final Object o) {
 		if (this == o)
 			return true;
 		if (o == null || getClass() != o.getClass())
@@ -95,7 +121,10 @@ public class Point3 {
 	}
 
 	/**
-	 * überschriebene hashCode-Methode
+	 * Ueberschriebene hashCode-Methode
+	 *
+	 * @return
+	 * 		int hashcode
 	 */
 	@Override
 	public int hashCode() {
@@ -111,7 +140,10 @@ public class Point3 {
 	}
 
 	/**
-	 * überschriebene toString-Methode
+	 * Ueberschriebene toString-Methode
+	 *
+	 * @return
+	 * 		String Point3 Werte
 	 */
 	@Override
 	public String toString() {

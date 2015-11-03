@@ -1,47 +1,63 @@
 package Matrizen_Vektoren_Bibliothek;
 
 /**
- * Normalen-Vektor
+ * Repräsentiert einen Normalen-Vektor
  * 
  * @author Waschmaschine
  */
 public class Normal3 {
 
+	/**
+	 * X-Wert eines normalen Vektors
+	 */
 	final public double x;
+
+	/**
+	 * Y-Wert eines normalen Vektors.
+	 */
 	final public double y;
+
+	/**
+	 * Z-Wert eines normalen Vektors.
+	 */
 	final public double z;
 
 	/**
-	 * Konstruktor
+	 * Konstruktor der Klasse
 	 * 
 	 * @param x
+	 *            setzt den X-Wert des Normalen-Vektors
 	 * @param y
+	 *            setzt den Y-Wert des Normalen-Vektors
 	 * @param z
+	 *            setzt den Z-Wert des Normalen-Vektors
 	 */
-	public Normal3(double x, double y, double z) {
+	public Normal3(final double x, final double y, final double z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
 	}
 
 	/**
-	 * Multiplikation mit double-Wert
+	 * Multiplikation mit einem double-Wert
 	 * 
 	 * @param n
-	 * @return
+	 *            Wert welcher mit dem Vektor multipliziert werden soll.
+	 * @return Neues Normal3-Objekt
 	 */
-	public Normal3 mul(double n) {
+	public Normal3 mul(final double n) {
 		return new Normal3(this.x * n, this.y * n, this.z * n);
 	}
 
 	/**
-	 * Addition einer Normalen
+	 * Addition mit einem Normalen-Vektor.
 	 * 
 	 * @param n
-	 * @return
+	 *            Vektor welcher für die Addition verwendet werden soll
+	 * @return Neues Normal3-Objekt
 	 * @throws IllegalArgumentException
 	 */
-	public Normal3 add(Normal3 n) throws IllegalArgumentException {
+	public Normal3 add(final Normal3 n) throws IllegalArgumentException {
 		if (n == null) {
 			throw new IllegalArgumentException();
 		}
@@ -49,13 +65,14 @@ public class Normal3 {
 	}
 
 	/**
-	 * Addition eines Vektors
+	 * SkalarProdukt mit Normalen-Vektor
 	 * 
 	 * @param n
-	 * @return
+	 *            Skalar
+	 * @return Skalarprodukt
 	 * @throws IllegalArgumentException
 	 */
-	public double dot(Vector3 n) throws IllegalArgumentException {
+	public double dot(final Vector3 n) throws IllegalArgumentException {
 		if (n == null) {
 			throw new IllegalArgumentException();
 		}
@@ -74,7 +91,7 @@ public class Normal3 {
 	 * Ueberschriebene equals-Methode
 	 */
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(final Object o) {
 		if (this == o)
 			return true;
 		if (o == null || getClass() != o.getClass())
