@@ -16,7 +16,12 @@ public class PerspectiveCamera extends Camera {
 
 	@Override
 	public Ray rayFor(int w, int h, int x, int y) {
-		return null;
-	}
 
+		final Vector3 v1 = super.w.mul((h / 2) / Math.tan(angle)).mul(-1);
+		final Vector3 v2 = super.u.mul(x - ((w - 1) / 2));
+		final Vector3 v3 = super.v.mul(y - ((h - 1) / 2));
+		final Vector3 r = v3.add(v2).add(v1);
+		final Vector3 d = r.mul(1 / r.magnitude);
+		return new Ray(super.e, d);
+	}
 }
