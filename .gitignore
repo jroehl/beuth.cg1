@@ -12,3 +12,5 @@ master_git.iml
 .idea/vcs.xml
 .idea/workspace.xml
 .idea/copyright/profiles_settings.xml
+master_git.ipr
+master_git.iws
