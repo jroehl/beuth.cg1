@@ -24,7 +24,7 @@ public class Ray {
 
 	/**
 	 * Der Strahl hat die Methode at. Diese nimmt als Parameter ein 𝑡 entgegen
-	 * und gibt den entsprechenden Punkt.
+	 * und gibt den entsprechenden Punkt. (p=o+td)
 	 *
 	 * @param t
 	 *            repräsentiert den Parameter t, über welchen ein Punkt auf
