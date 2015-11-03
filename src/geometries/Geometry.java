@@ -5,10 +5,10 @@ import color.Color;
 
 public abstract class Geometry {
 
-	public final Color c;
+	public final Color color;
 
-	public Geometry(Color c) {
-		this.c = c;
+	public Geometry(Color color) {
+		this.color = color;
 	}
 
 	public Hit hit(Ray r) {

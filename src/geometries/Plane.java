@@ -11,7 +11,7 @@ public class Plane extends Geometry {
 	public final Normal3 n;
 
 	public Plane(Color color, Point3 a, Normal3 n) {
-		super(c);
+		super(color);
 		this.a = a;
 		this.n = n;
 
