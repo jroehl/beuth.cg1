@@ -8,22 +8,22 @@ package Matrizen_Vektoren_Bibliothek;
 public class Vector3 {
 
 	/**
-	 * x-Wert
+	 * x-Wert des Vektors
 	 */
 	public final double x;
 
 	/**
-	 * y-Wert
+	 * y-Wert des Vektors
 	 */
 	public final double y;
 
 	/**
-	 * z-Wert
+	 * z-Wert des Vektors
 	 */
 	public final double z;
 
 	/**
-	 * magnitude des Vektors
+	 * magnitude (Betrag) des Vektors
 	 */
 	public final double magnitude;
 
@@ -31,10 +31,13 @@ public class Vector3 {
 	 * Konstruktor
 	 * 
 	 * @param x
+	 * 		setzt den double x-Wert
 	 * @param y
+	 * 		setzt den double y-Wert
 	 * @param z
+	 * 		setzt den double z-Wert
 	 */
-	public Vector3(double x, double y, double z) {
+	public Vector3(final double x,final double y,final double z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -45,10 +48,12 @@ public class Vector3 {
 	 * Addition eines Vektors
 	 * 
 	 * @param v
+	 * 		Vektor der zu dem Vektor addiert wird
 	 * @return
+	 * 		neues Vector3 Objekt (Vektor)
 	 * @throws IllegalArgumentException
 	 */
-	public Vector3 add(Vector3 v) throws IllegalArgumentException {
+	public Vector3 add(final Vector3 v) throws IllegalArgumentException {
 		if (v == null) {
 			throw new IllegalArgumentException();
 		}
@@ -59,10 +64,12 @@ public class Vector3 {
 	 * Addition einer Normalen
 	 * 
 	 * @param n
+	 * 		Normale die zu dem Vektor addiert wird
 	 * @return
+	 * 		neues Vector3 Objekt (Vektor)
 	 * @throws IllegalArgumentException
 	 */
-	public Vector3 add(Normal3 n) throws IllegalArgumentException {
+	public Vector3 add(final Normal3 n) throws IllegalArgumentException {
 		if (n == null) {
 			throw new IllegalArgumentException();
 		}
@@ -73,10 +80,12 @@ public class Vector3 {
 	 * Subtraktion einer Normalen
 	 * 
 	 * @param n
+	 * 		Normale die von dem Vektor subtrahiert wird
 	 * @return
+	 * 		neues Vector3 Objekt (Vektor)
 	 * @throws IllegalArgumentException
 	 */
-	public Vector3 sub(Normal3 n) throws IllegalArgumentException {
+	public Vector3 sub(final Normal3 n) throws IllegalArgumentException {
 
 		if (n == null) {
 			throw new IllegalArgumentException();
@@ -90,10 +99,12 @@ public class Vector3 {
 	 * Multiplikation mit double-Wert
 	 * 
 	 * @param c
+	 * 		Double-Wert der mit dem Vektor multipliziert wird
 	 * @return
+	 * 		neues Vector3 Objekt (Vektor)
 	 * @throws IllegalArgumentException
 	 */
-	public Vector3 mul(double c) throws IllegalArgumentException {
+	public Vector3 mul(final double c) throws IllegalArgumentException {
 
 		return new Vector3(this.x * c, this.y * c, this.z * c);
 
@@ -103,10 +114,12 @@ public class Vector3 {
 	 * SkalarProdukt eines Vektors
 	 * 
 	 * @param v
+	 * 		Vektor der mit dem Vektor das Skalarprodukt bildet
 	 * @return
+	 * 		Double Wert (Skalarprodukt)
 	 * @throws IllegalArgumentException
 	 */
-	public double dot(Vector3 v) throws IllegalArgumentException {
+	public double dot(final Vector3 v) throws IllegalArgumentException {
 
 		if (v == null) {
 			throw new IllegalArgumentException();
@@ -120,10 +133,12 @@ public class Vector3 {
 	 * SkalarProdukt einer Normalen
 	 * 
 	 * @param n
+	 * 		Normale die mit dem Vektor das Skalarprodukt bildet
 	 * @return
+	 * 		Double Wert (Skalarprodukt)
 	 * @throws IllegalArgumentException
 	 */
-	public double dot(Normal3 n) throws IllegalArgumentException {
+	public double dot(final Normal3 n) throws IllegalArgumentException {
 
 		if (n == null) {
 			throw new IllegalArgumentException();
@@ -137,6 +152,7 @@ public class Vector3 {
 	 * Vektor normalisieren
 	 * 
 	 * @return
+	 * 		neues Vector3 Objekt (normalisierter Vektor)
 	 */
 	public Vector3 normalized() {
 
@@ -145,9 +161,10 @@ public class Vector3 {
 	}
 
 	/**
-	 * Den übergebenen Vektor als Normale (aber nicht normalisiert) wiedergeben
+	 * Vektor als Normale (aber nicht normalisiert) wiedergeben
 	 * 
 	 * @return
+	 * 		neues Normal3 Objekt (Vektor als Normale)
 	 */
 	public Normal3 asNormal() {
 
@@ -158,13 +175,15 @@ public class Vector3 {
 	}
 
 	/**
-	 * Reflektion eines vektors an einer Normalen
+	 * Reflektion eines Vektors an einer Normalen
 	 * 
 	 * @param n
+	 * 		Normale die an dem Vektor reflektiert wird
 	 * @return
+	 * 		neues Vector3 Objekt (reflektierter Vektor an Normale)
 	 * @throws IllegalArgumentException
 	 */
-	public Vector3 reflectedOn(Normal3 n) throws IllegalArgumentException {
+	public Vector3 reflectedOn(final Normal3 n) throws IllegalArgumentException {
 
 		if (n == null) {
 			throw new IllegalArgumentException();
@@ -178,10 +197,12 @@ public class Vector3 {
 	 * Kreuzprodukt (Vektor X Vektor)
 	 * 
 	 * @param v
+	 * 		Vektor der mit dem Vektor das Kreuzprodukt bildet
 	 * @return
+	 * 		neues Vector3 Objekt (Vektor Kreuzprodukt mit Vektor)
 	 * @throws IllegalArgumentException
 	 */
-	public Vector3 x(Vector3 v) throws IllegalArgumentException {
+	public Vector3 x(final Vector3 v) throws IllegalArgumentException {
 
 		if (v == null) {
 			throw new IllegalArgumentException();
@@ -192,10 +213,16 @@ public class Vector3 {
 	}
 
 	/**
-	 * überschriebene equals-Methode
+	 * Ueberschriebene equals-Methode
+	 *
+	 * @param o
+	 * 		Objekt das mit dem Punkt verglichen wird
+	 * @return
+	 * 		true | false
+	 *
 	 */
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(final Object o) {
 		if (this == o)
 			return true;
 		if (o == null || getClass() != o.getClass())
@@ -214,7 +241,10 @@ public class Vector3 {
 	}
 
 	/**
-	 * überschriebene hashCode-Methode
+	 * Ueberschriebene hashCode-Methode
+	 *
+	 * @return
+	 * 		int hashcode
 	 */
 	@Override
 	public int hashCode() {
@@ -232,7 +262,10 @@ public class Vector3 {
 	}
 
 	/**
-	 * überschriebene toString-Methode
+	 * Ueberschriebene toString-Methode
+	 *
+	 * @return
+	 * 		String Vector3 Werte
 	 */
 	public String toString() {
 		return "Vector3{" + "x=" + x + ", y=" + y + ", z=" + z + ", magnitude=" + magnitude + '}';

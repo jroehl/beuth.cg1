@@ -9,47 +9,47 @@ package Matrizen_Vektoren_Bibliothek;
 public class Mat3x3 {
 
 	/**
-	 * Feld 1 - 1
+	 * Feld 1 - 1 einer 3x3 Matrix
 	 */
 	final public double m11;
 
 	/**
-	 * Feld 1 - 2
+	 * Feld 1 - 2 einer 3x3 Matrix
 	 */
 	final public double m12;
 
 	/**
-	 * Feld 1 - 3
+	 * Feld 1 - 3 einer 3x3 Matrix
 	 */
 	final public double m13;
 
 	/**
-	 * Feld 2 - 1
+	 * Feld 2 - 1 einer 3x3 Matrix
 	 */
 	final public double m21;
 
 	/**
-	 * Feld 2 - 2
+	 * Feld 2 - 2 einer 3x3 Matrix
 	 */
 	final public double m22;
 
 	/**
-	 * Feld 2 - 3
+	 * Feld 2 - 3 einer 3x3 Matrix
 	 */
 	final public double m23;
 
 	/**
-	 * Feld 3 - 1
+	 * Feld 3 - 1 einer 3x3 Matrix
 	 */
 	final public double m31;
 
 	/**
-	 * Feld 3 - 2
+	 * Feld 3 - 2 einer 3x3 Matrix
 	 */
 	final public double m32;
 
 	/**
-	 * Feld 3 - 3
+	 * Feld 3 - 3 einer 3x3 Matrix
 	 */
 	final public double m33;
 
@@ -62,16 +62,25 @@ public class Mat3x3 {
 	 * Konstruktor der Klasse.
 	 * 
 	 * @param m11
+	 * 		setzt den double Wert des Feld 1 - 1
 	 * @param m12
+	 * 		setzt den double Wert des Feld 1 - 2
 	 * @param m13
+	 * 		setzt den double Wert des Feld 1 - 3
 	 * @param m21
+	 * 		setzt den double Wert des Feld 2 - 1
 	 * @param m22
+	 * 		setzt den double Wert des Feld 2 - 2
 	 * @param m23
+	 * 		setzt den double Wert des Feld 2 - 3
 	 * @param m31
+	 * 		setzt den double Wert des Feld 3 - 1
 	 * @param m32
+	 * 		setzt den double Wert des Feld 3 - 2
 	 * @param m33
+	 * 		setzt den double Wert des Feld 3 - 3
 	 */
-	public Mat3x3(double m11, double m12, double m13, double m21, double m22, double m23, double m31, double m32, double m33) {
+	public Mat3x3(final double m11,final double m12,final double m13,final double m21,final double m22,final double m23,final double m31,final double m32,final double m33) {
 		this.m11 = m11;
 		this.m12 = m12;
 		this.m13 = m13;
@@ -90,10 +99,12 @@ public class Mat3x3 {
 	 * Matrix-Matrix-Multiplikation
 	 *
 	 * @param m
+	 * 		Matrix die mit der Matrix multipliziert wird
 	 * @return
+	 * 		neues Mat3x3 Objekt (Matrix)
 	 * @throws IllegalArgumentException
 	 */
-	public Mat3x3 mul(Mat3x3 m) throws IllegalArgumentException {
+	public Mat3x3 mul(final Mat3x3 m) throws IllegalArgumentException {
 
 		if (m == null) {
 			throw new IllegalArgumentException();
@@ -110,10 +121,12 @@ public class Mat3x3 {
 	 * Matrix-Vektor-Multiplikation
 	 * 
 	 * @param v
+	 * 		Vektor der mit der Matrix multipliziert wird
 	 * @return
+	 * 		neues Vector3 Objekt (Vektor)
 	 * @throws IllegalArgumentException
 	 */
-	public Vector3 mul(Vector3 v) throws IllegalArgumentException {
+	public Vector3 mul(final Vector3 v) throws IllegalArgumentException {
 
 		if (v == null) {
 			throw new IllegalArgumentException();
@@ -127,10 +140,12 @@ public class Mat3x3 {
 	 * Matrix-Punkt-Multiplikation
 	 * 
 	 * @param p
+	 * 		Punkt der mit der Matrix multipliziert wird
 	 * @return
+	 * 		neues Point 3 Objekt (Punkt)
 	 * @throws IllegalArgumentException
 	 */
-	public Point3 mul(Point3 p) throws IllegalArgumentException {
+	public Point3 mul(final Point3 p) throws IllegalArgumentException {
 
 		if (p == null) {
 			throw new IllegalArgumentException();
@@ -144,10 +159,12 @@ public class Mat3x3 {
 	 * Spalte 1 austauschen
 	 * 
 	 * @param m
+	 * 		Vektor der in die erste Spalte der Matrix eingesetzt wird
 	 * @return
+	 * 		neues Mat3x3 Objekt (Matrix)
 	 * @throws IllegalArgumentException
 	 */
-	public Mat3x3 changeCol1(Vector3 m) throws IllegalArgumentException {
+	public Mat3x3 changeCol1(final Vector3 m) throws IllegalArgumentException {
 
 		if (m == null) {
 			throw new IllegalArgumentException();
@@ -161,10 +178,12 @@ public class Mat3x3 {
 	 * Spalte 2 austauschen
 	 * 
 	 * @param m
+	 * 		Vektor der in die zweite Spalte der Matrix eingesetzt wird
 	 * @return
+	 * 		neues Mat3x3 Objekt (Matrix)
 	 * @throws IllegalArgumentException
 	 */
-	public Mat3x3 changeCol2(Vector3 m) throws IllegalArgumentException {
+	public Mat3x3 changeCol2(final Vector3 m) throws IllegalArgumentException {
 
 		if (m == null) {
 			throw new IllegalArgumentException();
@@ -177,10 +196,12 @@ public class Mat3x3 {
 	 * Spalte 3 austauschen
 	 * 
 	 * @param m
+	 * 		Vektor der in die dritte Spalte der Matrix eingesetzt wird
 	 * @return
+	 * 		neues Mat3x3 Objekt (Matrix)
 	 * @throws IllegalArgumentException
 	 */
-	public Mat3x3 changeCol3(Vector3 m) throws IllegalArgumentException {
+	public Mat3x3 changeCol3(final Vector3 m) throws IllegalArgumentException {
 
 		if (m == null) {
 			throw new IllegalArgumentException();
@@ -192,10 +213,15 @@ public class Mat3x3 {
 
 	/**
 	 * Ueberschriebene equals-Methode
-	 * 
+	 *
+	 * @param o
+	 * 		Objekt das mit der Matrix verglichen wird
+	 * @return
+	 * 		true | false
+	 *
 	 */
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(final Object o) {
 		if (this == o)
 			return true;
 		if (o == null || getClass() != o.getClass())
@@ -227,6 +253,9 @@ public class Mat3x3 {
 
 	/**
 	 * Ueberschriebene hashCode-Methode
+	 *
+	 * @return
+	 * 		int hashcode
 	 */
 	@Override
 	public int hashCode() {
@@ -257,6 +286,9 @@ public class Mat3x3 {
 
 	/**
 	 * Ueberschriebene toString-Methode
+	 *
+	 * @return
+	 * 		String Mat3x3 Werte
 	 */
 	@Override
 	public String toString() {
