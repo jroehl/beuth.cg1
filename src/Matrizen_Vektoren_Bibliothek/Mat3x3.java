@@ -8,17 +8,69 @@ package Matrizen_Vektoren_Bibliothek;
  */
 public class Mat3x3 {
 
+	/**
+	 * Feld 1 - 1
+	 */
 	final public double m11;
+
+	/**
+	 * Feld 1 - 2
+	 */
 	final public double m12;
+
+	/**
+	 * Feld 1 - 3
+	 */
 	final public double m13;
+
+	/**
+	 * Feld 2 - 1
+	 */
 	final public double m21;
+
+	/**
+	 * Feld 2 - 2
+	 */
 	final public double m22;
+
+	/**
+	 * Feld 2 - 3
+	 */
 	final public double m23;
+
+	/**
+	 * Feld 3 - 1
+	 */
 	final public double m31;
+
+	/**
+	 * Feld 3 - 2
+	 */
 	final public double m32;
+
+	/**
+	 * Feld 3 - 3
+	 */
 	final public double m33;
+
+	/**
+	 * Determinante der Matrix
+	 */
 	final public double determinant;
 
+	/**
+	 * Konstruktor der Klasse.
+	 * 
+	 * @param m11
+	 * @param m12
+	 * @param m13
+	 * @param m21
+	 * @param m22
+	 * @param m23
+	 * @param m31
+	 * @param m32
+	 * @param m33
+	 */
 	public Mat3x3(double m11, double m12, double m13, double m21, double m22, double m23, double m31, double m32, double m33) {
 		this.m11 = m11;
 		this.m12 = m12;

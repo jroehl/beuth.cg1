@@ -7,8 +7,19 @@ package Matrizen_Vektoren_Bibliothek;
  */
 public class Point3 {
 
+	/**
+	 * x-Wert
+	 */
 	public final double x;
+
+	/**
+	 * y-Wert
+	 */
 	public final double y;
+
+	/**
+	 * z-Wert
+	 */
 	public final double z;
 
 	/**

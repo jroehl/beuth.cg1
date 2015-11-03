@@ -7,8 +7,19 @@ package Matrizen_Vektoren_Bibliothek;
  */
 public class Normal3 {
 
+	/**
+	 * x-Wert
+	 */
 	final public double x;
+
+	/**
+	 * y-Wert
+	 */
 	final public double y;
+
+	/**
+	 * z-Wert
+	 */
 	final public double z;
 
 	/**
