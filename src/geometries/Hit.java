@@ -8,7 +8,7 @@ public class Hit {
 	public final Ray ray;
 	public final Geometry geo;
 
-	public Hit(double t, Ray ray, Geometry geo) {
+	public Hit(final double t,final Ray ray,final Geometry geo) {
 
 		this.t = t;
 		this.ray = ray;
