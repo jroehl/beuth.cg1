@@ -46,7 +46,7 @@ public class Sphere extends Geometry {
 				t = t1;
 			}
 			if(t > 0){
-				return new Hit(t, ray, color);
+				return new Hit(t, ray, this);
 			}
 
 		}

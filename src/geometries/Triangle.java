@@ -36,7 +36,7 @@ public class Triangle extends Geometry {
 		if (beta < 0 || gamma < 0 || (beta + gamma) > 1 || t < 0) {
 			return null;
 		} else {
-			return new Hit(t, ray, color);
+			return new Hit(t, ray, this);
 		}
 
 	}

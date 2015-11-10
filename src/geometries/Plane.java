@@ -28,7 +28,7 @@ public class Plane extends Geometry {
 			if (t < 0) {
 				return null;
 			}
-			return new Hit(t, ray, super.color);
+			return new Hit(t, ray, this);
 		}
 		return null;
 	}
