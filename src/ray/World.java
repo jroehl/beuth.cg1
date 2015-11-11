@@ -69,4 +69,49 @@ public class World {
 	public void add(Geometry obj) {
 		objs.add(obj);
 	}
+
+	/**
+	 * Ueberschreibung der toString()-Methode.
+	 */
+	@Override
+	public String toString() {
+		return "World [backgroundColor=" + backgroundColor + ", objs=" + objs + "]";
+	}
+
+	/**
+	 * Ueberschreibung der hashCode()-Methode.
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((backgroundColor == null) ? 0 : backgroundColor.hashCode());
+		result = prime * result + ((objs == null) ? 0 : objs.hashCode());
+		return result;
+	}
+
+	/**
+	 * Ueberschreibung der equals()-Methode.
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		World other = (World) obj;
+		if (backgroundColor == null) {
+			if (other.backgroundColor != null)
+				return false;
+		} else if (!backgroundColor.equals(other.backgroundColor))
+			return false;
+		if (objs == null) {
+			if (other.objs != null)
+				return false;
+		} else if (!objs.equals(other.objs))
+			return false;
+		return true;
+	}
 }
