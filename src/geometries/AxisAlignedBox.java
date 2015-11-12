@@ -23,8 +23,8 @@ public class AxisAlignedBox extends Geometry {
     public Hit hit(Ray ray) {
 
         final Hit[] xHits = new Hit[]{new Plane(color, new Point3(lbf.x, lbf.y, lbf.z), new Normal3(run.x, run.y, run.z)).hit(ray)};
-//        final Hit[] yHits = new Hit[]{Plane.hit(ray), bottom.hit(r)};
-//        final Hit[] zHits = new Hit[]{front.hit(r), far.hit(r)};
+        final Hit[] yHits = new Hit[]{new Plane(color, new Point3(lbf.x, lbf.y, lbf.z), new Normal3(run.x, run.y, run.z)).hit(ray)};
+        final Hit[] zHits = new Hit[]{new Plane(color, new Point3(lbf.x, lbf.y, lbf.z), new Normal3(run.x, run.y, run.z)).hit(ray)};
 
         final HashSet<Hit> hits = new HashSet<Hit>();
 

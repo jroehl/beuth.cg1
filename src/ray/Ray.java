@@ -5,21 +5,21 @@ import Matrizen_Vektoren_Bibliothek.Vector3;
 
 public class Ray {
 
-	public final Point3 o; // Ursprung
-	public final Vector3 d;// Richtung
+	public final Point3 origin; // Ursprung
+	public final Vector3 direction;// Richtung
 
 	/**
 	 * Der Konstruktor dieser Klasse nimmt als Parameter den Ursprung und die
 	 * Richtung des Strahls entgegen.
 	 *
-	 * @param o
+	 * @param origin
 	 *            repräsentiert den übergebenen Ursprung des Strahls
-	 * @param d
+	 * @param direction
 	 *            repräsentiert die übergebene Richtung des Strahls
 	 */
-	public Ray(Point3 o, Vector3 d) {
-		this.o = o;
-		this.d = d;
+	public Ray(Point3 origin, Vector3 direction) {
+		this.origin = origin;
+		this.direction = direction;
 	}
 
 	/**
@@ -32,7 +32,7 @@ public class Ray {
 	 * @return
 	 */
 	public Point3 at(double t) {
-		return o.add(d.mul(t));
+		return origin.add(direction.mul(t));
 
     }
 
@@ -42,13 +42,13 @@ public class Ray {
 	 *
 	 * t = (p-o)/d
 	 *
-	 * @param p
+	 * @param point
 	 *            repräsentiert den übergebenen Punkt p
 	 * @return double t - den Faktor, mit welchem der Vektor multipliziert
 	 *         wurde, um einen bestimmten Punkt zu markieren
 	 */
-	public double tOf(Point3 p) {
-		return p.sub(o).magnitude / d.magnitude;
+	public double tOf(Point3 point) {
+		return point.sub(origin).magnitude / direction.magnitude;
 
     }
 
@@ -61,8 +61,8 @@ public class Ray {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((d == null) ? 0 : d.hashCode());
-		result = prime * result + ((o == null) ? 0 : o.hashCode());
+		result = prime * result + ((direction == null) ? 0 : direction.hashCode());
+		result = prime * result + ((origin == null) ? 0 : origin.hashCode());
 		return result;
 	}
 
@@ -80,15 +80,15 @@ public class Ray {
 		if (getClass() != obj.getClass())
 			return false;
 		final Ray other = (Ray) obj;
-		if (d == null) {
-			if (other.d != null)
+		if (direction == null) {
+			if (other.direction != null)
 				return false;
-		} else if (!d.equals(other.d))
+		} else if (!direction.equals(other.direction))
 			return false;
-		if (o == null) {
-			if (other.o != null)
+		if (origin == null) {
+			if (other.origin != null)
 				return false;
-		} else if (!o.equals(other.o))
+		} else if (!origin.equals(other.origin))
 			return false;
 		return true;
 	}
@@ -100,7 +100,7 @@ public class Ray {
 	 */
 	@Override
 	public String toString() {
-		return "Ray [o=" + o + ", d=" + d + "]";
+		return "Ray [origin=" + origin + ", direction=" + direction + "]";
 	}
 
 }
