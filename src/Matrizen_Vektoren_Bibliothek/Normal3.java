@@ -24,7 +24,7 @@ public class Normal3 {
 
 	/**
 	 * Konstruktor der Klasse
-	 * 
+	 *
 	 * @param x
 	 *            setzt den X-Wert des Normalen-Vektors
 	 * @param y
@@ -38,9 +38,13 @@ public class Normal3 {
 		this.z = z;
 	}
 
+	public Normal3 invert(Normal3 n) {
+		return new Normal3(n.x,-n.y,n.z);
+	}
+
 	/**
 	 * Multiplikation mit einem double-Wert
-	 * 
+	 *
 	 * @param n
 	 *            Wert welcher mit dem Vektor multipliziert werden soll.
 	 * @return Neues Normal3-Objekt
@@ -51,7 +55,7 @@ public class Normal3 {
 
 	/**
 	 * Addition mit einem Normalen-Vektor.
-	 * 
+	 *
 	 * @param n
 	 *            Vektor welcher für die Addition verwendet werden soll
 	 * @return Neues Normal3-Objekt
@@ -66,7 +70,7 @@ public class Normal3 {
 
 	/**
 	 * SkalarProdukt mit Normalen-Vektor
-	 * 
+	 *
 	 * @param n
 	 *            Skalar
 	 * @return Skalarprodukt

@@ -6,12 +6,13 @@ import ray.Ray;
 import Matrizen_Vektoren_Bibliothek.Point3;
 import color.Color;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class AxisAlignedBox extends Geometry {
 
-    public final Point3 lbf;
-    public final Point3 run;
+    private final Point3 lbf;
+    private final Point3 run;
 
     public AxisAlignedBox(Color color, Point3 lbf, Point3 run) {
         super(color);
@@ -22,63 +23,68 @@ public class AxisAlignedBox extends Geometry {
     @Override
     public Hit hit(Ray ray) {
 
-        final Hit[] xHits = new Hit[]{new Plane(color, new Point3(lbf.x, lbf.y, lbf.z), new Normal3(run.x, run.y, run.z)).hit(ray)};
-        final Hit[] yHits = new Hit[]{new Plane(color, new Point3(lbf.x, lbf.y, lbf.z), new Normal3(run.x, run.y, run.z)).hit(ray)};
-        final Hit[] zHits = new Hit[]{new Plane(color, new Point3(lbf.x, lbf.y, lbf.z), new Normal3(run.x, run.y, run.z)).hit(ray)};
+        Plane b1 = new Plane(color, lbf, new Normal3(-1, 0, 0));
+        Plane b2 = new Plane(color, lbf, new Normal3(0, -1, 0));
+        Plane b3 = new Plane(color, lbf, new Normal3(0, 0, -1));
 
-        final HashSet<Hit> hits = new HashSet<Hit>();
+        Plane f1 = new Plane(color, run, new Normal3(1, 0, 0));
+        Plane f2 = new Plane(color, run, new Normal3(0, 1, 0));
+        Plane f3 = new Plane(color, run, new Normal3(0, 0, 1));
 
-        for (
-                int i = 0;
-                i < 2; i++)
+        ArrayList<Plane> planes = new ArrayList<Plane>();
 
-        {
-            if (xHits[i] != null) {
-                final Point3 p = ray.at(xHits[i].t);
-                if (p.y >= lbf.y && p.y <= run.y && p.z >= lbf.z && p.z <= run.z) hits.add(xHits[i]);
+
+        if (ray.origin.sub(lbf).dot(b1.n) > 0) {
+            planes.add(b1);
+        }
+        ;
+
+        if (ray.origin.sub(lbf).dot(b2.n) > 0) {
+            planes.add(b2);
+        }
+        ;
+
+        if (ray.origin.sub(lbf).dot(b3.n) > 0) {
+            planes.add(b3);
+        }
+        ;
+
+        if (ray.origin.sub(run).dot(f1.n) > 0) {
+            planes.add(f1);
+        }
+        ;
+
+        if (ray.origin.sub(run).dot(f2.n) > 0) {
+            planes.add(f2);
+        }
+        ;
+
+        if (ray.origin.sub(run).dot(f3.n) > 0) {
+            planes.add(f3);
+        }
+        ;
+
+        ArrayList<Double> factor = new ArrayList<Double>();
+
+        double tf = -1;
+
+        for (Plane plane : planes) {
+//          denonimator / nenner
+            double d = ray.direction.dot(plane.n);
+
+            if (d != 0) {
+                double t = plane.a.sub(ray.origin).dot(plane.n) / d;
+
+                if (t > tf) {
+                    tf = t;
+                }
             }
         }
 
-        for (
-                int i = 0;
-                i < 2; i++)
-
-        {
-            if (yHits[i] != null) {
-                final Point3 p = ray.at(yHits[i].t);
-                if (p.x >= lbf.x && p.x <= run.x && p.z >= lbf.z && p.z <= run.z) hits.add(yHits[i]);
-            }
+        if (tf <= 0) {
+            return null;
         }
 
-        for (
-                int i = 0;
-                i < 2; i++)
-
-        {
-            if (zHits[i] != null) {
-                final Point3 p = ray.at(zHits[i].t);
-                if (p.x >= lbf.x && p.x <= run.x && p.y >= lbf.y && p.y <= run.y) hits.add(zHits[i]);
-            }
-        }
-
-
-        double t = Double.MAX_VALUE;
-
-        Hit returnHit = null;
-
-        for (
-                Hit hit
-                : hits)
-
-        {
-            if (hit == null) continue;
-            if (hit.t < t && t > 0 && hit.t > 0) {
-                t = hit.t;
-                returnHit = hit;
-            }
-        }
-
-        return returnHit;
-
+        return new Hit(tf, ray, this);
     }
 }

@@ -34,7 +34,7 @@ public class World {
 	}
 
 	/**
-	 * Testet den Uëbergebene Strahl gegen alle Objekte der Szene. Und liefert den Schnittpunkt mit dem kleinsten
+	 * Testet den Uebergebene Strahl gegen alle Objekte der Szene. Und liefert den Schnittpunkt mit dem kleinsten
 	 * positiven 𝑡.
 	 * 
 	 * @param ray
@@ -42,14 +42,17 @@ public class World {
 	 * @return Den Schnittpunkt mit dem kleinsten positiven 𝑡.
 	 */
 	public Color hit(Ray ray) {
+
 		Hit hit = null;
+		double t = Double.MAX_VALUE;
 
 		for (Geometry obj : objs) {
 			Hit objHit = obj.hit(ray);
 
 			if (objHit != null) {
-				if (objHit.t < hit.t) {
+				if (objHit.t < t) {
 					hit = obj.hit(ray);
+					t = objHit.t;
 				}
 			}
 		}

@@ -12,8 +12,8 @@ public class Plane extends Geometry {
 
 	public Plane(Color color, Point3 a, Normal3 n) {
 		super(color);
-		this.a = a;
-		this.n = n;
+		this.a = a.invert(a);
+		this.n = n.invert(n);
 
 	}
 

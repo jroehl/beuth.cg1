@@ -1,7 +1,15 @@
 package application;
 
+import Matrizen_Vektoren_Bibliothek.Normal3;
+import Matrizen_Vektoren_Bibliothek.Point3;
+import Matrizen_Vektoren_Bibliothek.Vector3;
 import camera.Camera;
 import camera.PerspectiveCamera;
+import color.Color;
+import geometries.AxisAlignedBox;
+import geometries.Plane;
+import geometries.Sphere;
+import geometries.Triangle;
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Group;
@@ -12,10 +20,11 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import ray.Ray;
+import ray.World;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -29,13 +38,15 @@ public class Raytracer extends Application {
 	ImageView imgView;
 
 	Camera camera;
+	World world;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
 		primaryStage.setTitle("PNG Creator");
-		primaryStage.setHeight(640);
-		primaryStage.setWidth(480);
+
+		primaryStage.setWidth(640);
+		primaryStage.setHeight(480);
 
 		Menu fileMenu = new Menu("File");
 
@@ -48,7 +59,7 @@ public class Raytracer extends Application {
 		HBox hBox = new HBox();
 
 		renderingTime = new Text();
-		renderingTime.setFill(Color.WHITE);
+		renderingTime.setFill(javafx.scene.paint.Color.WHITE);
 
 		Group group = new Group();
 		ImageView imgView = new ImageView();
@@ -57,10 +68,75 @@ public class Raytracer extends Application {
 
 		primaryStage.setScene(new Scene(group));
 
-		drawImage(primaryStage.getWidth(), primaryStage.getHeight());
+		//		Plane wird erzeugt
+
+		Color color1 = new Color(0,1,0);
+		Point3 ap = new Point3(0,-1,0);
+		Normal3 np = new Normal3(0,1,0);
+
+		Plane plane = new Plane(color1, ap, np);
+
+		//		Sphere wird erzeugt
+
+		Color color2 = new Color(1,0,0);
+		Point3 cs = new Point3(0,0,-3);
+		double rs = 0.5;
+
+		Sphere sphere = new Sphere(color2, cs, rs);
+
+		//		Box wird erzeugt
+
+		Color color3 = new Color(0,0,1);
+		Point3 lbf = new Point3(-0.5,0,-0.5);
+		Point3 run = new Point3(0.5,1,0.5);
+
+		AxisAlignedBox box = new AxisAlignedBox(color3, lbf, run);
+
+		//		Box wird erzeugt
+
+		Color color4 = new Color(1,0,1);
+		Point3 at = new Point3(-0.5,0.5,-3);
+		Point3 bt = new Point3(0.5,0.5,-3);
+		Point3 ct = new Point3(0.5,-0.5,-3);
+
+		Triangle triangle = new Triangle(color4, at, bt, ct);
+
+
+		//		Welt wird erzeugt
+
+		Color backgroundColor = new Color(0,0,0);
+
+		world = new World(backgroundColor);
+		world.add(box);
+//		world.add(plane);
+//		world.add(sphere);
+
+
+		//		Kamera wird erzeugt
+
+//		Point3 e = new Point3(0,0,0);
+//		Vector3 g = new Vector3(0,0,-1);
+//		Vector3 t = new Vector3(0,1,0);
+//		double angle = Math.PI / 4;
+//
+//		camera = new PerspectiveCamera(e,g,t,angle);
+
+
+		//	2. Kamera
+
+		Point3 e = new Point3(3,3,3);
+		Vector3 g = new Vector3(-3,-3,-3);
+		Vector3 t = new Vector3(0,1,0);
+		double angle = Math.PI / 4;
+
+		camera = new PerspectiveCamera(e,g,t,angle);
+
+
+
+		drawImage(primaryStage.getWidth(), primaryStage.getHeight(), camera);
 		imgView.setImage(wrImg);
 
-		save.setOnAction(e -> {
+		save.setOnAction(event -> {
 			FileChooser fileChooser = new FileChooser();
 			fileChooser.setTitle("Save Image");
 			FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.JPG");
@@ -82,12 +158,12 @@ public class Raytracer extends Application {
 		 */
 
 		primaryStage.heightProperty().addListener((ChangeEvent) -> {
-			drawImage(primaryStage.getWidth(), primaryStage.getHeight());
+			drawImage(primaryStage.getWidth(), primaryStage.getHeight(), camera);
 			imgView.setImage(wrImg);
 		});
 
 		primaryStage.widthProperty().addListener((ChangeEvent) -> {
-			drawImage(primaryStage.getWidth(), primaryStage.getHeight());
+			drawImage(primaryStage.getWidth(), primaryStage.getHeight(), camera);
 			imgView.setImage(wrImg);
 		});
 
@@ -103,14 +179,20 @@ public class Raytracer extends Application {
 	 *            Höhe des Bilds
 	 */
 
-	private void drawImage(double width, double height) {
-		camera = new PerspectiveCamera();
+	private void drawImage(double width, double height, Camera camera) {
 
 		wrImg = new WritableImage((int) width, (int) height);
+
 		long start = System.nanoTime();
+
+		Ray ray;
+
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				wrImg.getPixelWriter().setColor(x, y, getColor(x, y));
+				ray = camera.rayFor((int) width, (int) height, x, y);
+				Color c = world.hit(ray);
+				javafx.scene.paint.Color javaColor = new javafx.scene.paint.Color(c.r, c.g, c.b, 1);
+				wrImg.getPixelWriter().setColor(x, y, javaColor);
 			}
 		}
 		long end = System.nanoTime();
@@ -127,12 +209,22 @@ public class Raytracer extends Application {
 	 * @return Farbe wie das Pixel eingefärbt werden soll
 	 */
 
-	private Color getColor(int x, int y) {
-		if (x == y | (x - 1) == y | (x + 1) == y) {
-			return Color.RED;
-		}
-		return Color.BLACK;
-	}
+//	private Color getColor(Ray ray) {
+//
+//		if (ray == null) {
+//			throw new IllegalArgumentException("The ray cannot be null!");
+//		}
+//
+//		final Hit hit = world.hit(ray);
+//
+//		if (hit != null) {
+//
+//			return color;
+//
+//		} else {
+//			return world.backgroundColor;
+//		}
+//	}
 
 	/**
 	 * Start-Methode für FX

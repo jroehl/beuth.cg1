@@ -38,6 +38,10 @@ public class Point3 {
 		this.z = z;
 	}
 
+	public Point3 invert(Point3 p) {
+		return new Point3(p.x,-p.y,p.z);
+	}
+
 	/**
 	 * Subtraktion eines Punktes
 	 * 

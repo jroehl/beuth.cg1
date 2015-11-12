@@ -44,6 +44,10 @@ public class Vector3 {
 		this.magnitude = (Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2)));
 	}
 
+	public Vector3 invert(Vector3 v) {
+		return new Vector3(v.x,-v.y,v.z);
+	}
+
 	/**
 	 * Addition eines Vektors
 	 * 
