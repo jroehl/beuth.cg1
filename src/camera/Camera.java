@@ -12,7 +12,7 @@ public abstract class Camera {
 	public final Vector3 v;
 	public final Vector3 w;
 
-	public Camera(Point3 e, Vector3 g, Vector3 t) {
+	public Camera(final Point3 e, final Vector3 g, final Vector3 t) {
 		this.e = e;
 		this.g = g;
 		this.t = t;
@@ -20,7 +20,7 @@ public abstract class Camera {
 		this.u = ((t.x(w)).mul((t.x(w)).magnitude));
 		this.v = w.x(u);
 	}
-	public Ray rayFor(int w, int h, int x, int y) {
+	public Ray rayFor(final int w, final int h, final int x, final int y) {
 		return null;
 	}
 
