@@ -110,8 +110,8 @@ public class Raytracer extends Application {
 		final Color backgroundColor = new Color(0, 0, 0);
 
 		world = new World(backgroundColor);
-		world.add(box);
-		// world.add(plane);
+		// world.add(box);
+		world.add(plane);
 		// world.add(sphere);
 		// world.add(triangle);
 
@@ -130,7 +130,7 @@ public class Raytracer extends Application {
 		// final Vector3 g = new Vector3(-3, -3, -3);
 		// final Vector3 t = new Vector3(0, 1, 0);
 		// final double angle = Math.PI / 4;
-
+		//
 		// camera = new PerspectiveCamera(e, g, t, angle);
 
 		drawImage(primaryStage.getWidth(), primaryStage.getHeight(), camera);
@@ -197,7 +197,8 @@ public class Raytracer extends Application {
 
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				ray = camera.rayFor((int) width, (int) height, x, y);
+				ray = camera.rayFor((int) width, (int) height, x, (int) height
+						- 1 - y);
 				final Color c = world.hit(ray);
 				final javafx.scene.paint.Color javaColor = new javafx.scene.paint.Color(
 						c.r, c.g, c.b, 1);

@@ -2,7 +2,7 @@ package Matrizen_Vektoren_Bibliothek;
 
 /**
  * Repräsentiert einen Normalen-Vektor
- * 
+ *
  * @author Waschmaschine
  */
 public class Normal3 {
@@ -36,10 +36,6 @@ public class Normal3 {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-	}
-
-	public Normal3 invert(Normal3 n) {
-		return new Normal3(n.x,-n.y,n.z);
 	}
 
 	/**
@@ -101,7 +97,7 @@ public class Normal3 {
 		if (o == null || getClass() != o.getClass())
 			return false;
 
-		Normal3 normal3 = (Normal3) o;
+		final Normal3 normal3 = (Normal3) o;
 
 		if (Double.compare(normal3.x, x) != 0)
 			return false;

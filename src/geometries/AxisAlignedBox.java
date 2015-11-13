@@ -14,8 +14,8 @@ public class AxisAlignedBox extends Geometry {
 
 	public AxisAlignedBox(Color color, Point3 lbf, Point3 run) {
 		super(color);
-		this.lbf = lbf.invert(lbf);
-		this.run = run.invert(run);
+		this.lbf = lbf;
+		this.run = run;
 	}
 
 	@Override

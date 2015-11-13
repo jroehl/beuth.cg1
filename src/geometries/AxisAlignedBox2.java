@@ -14,8 +14,8 @@ public class AxisAlignedBox2 extends Geometry {
 
 	public AxisAlignedBox2(Color color, Point3 lbf, Point3 run) {
 		super(color);
-		this.lbf = lbf.invert(lbf);
-		this.run = run.invert(run);
+		this.lbf = lbf;
+		this.run = run;
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class AxisAlignedBox2 extends Geometry {
 			planes.add(f2);
 		}
 
-		if (ray.origin.sub(f2.a).dot(f3.n) > 0) {
+		if (ray.origin.sub(f3.a).dot(f3.n) > 0) {
 			planes.add(f3);
 		}
 
@@ -62,20 +62,20 @@ public class AxisAlignedBox2 extends Geometry {
 			// denonimator / nenner
 			final double d = ray.direction.dot(plane.n);
 
-			if (d != 0) {
-				final double t = plane.a.sub(ray.origin).dot(plane.n) / d;
-				System.out.println(t);
-				if (tf < t) {
-					tf = t;
-				}
+			// if (d != 0) {
+			final double t = plane.a.sub(ray.origin).dot(plane.n) / d;
+
+			if (tf < t) {
+				tf = t;
 			}
 		}
-
+		// }
+		System.out.println(tf);
 		if (tf <= 0) {
 			return null;
 		}
 
-		return checkSize(new Hit(tf, ray, this));
+		return new Hit(tf, ray, this);
 	}
 
 	private Hit checkSize(final Hit hit) {

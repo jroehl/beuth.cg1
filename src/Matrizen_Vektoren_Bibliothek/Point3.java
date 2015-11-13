@@ -2,7 +2,7 @@ package Matrizen_Vektoren_Bibliothek;
 
 /**
  * Punkt
- * 
+ *
  * @author Waschmaschine
  */
 public class Point3 {
@@ -24,31 +24,26 @@ public class Point3 {
 
 	/**
 	 * Konstruktor.
-	 * 
+	 *
 	 * @param x
-	 * 		setzt den double x-Wert
+	 *            setzt den double x-Wert
 	 * @param y
-	 * 		setzt den double y-Wert
+	 *            setzt den double y-Wert
 	 * @param z
-	 * 		setzt den double z-Wert
+	 *            setzt den double z-Wert
 	 */
-	public Point3(final double x,final double y,final double z) {
+	public Point3(final double x, final double y, final double z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
 	}
 
-	public Point3 invert(Point3 p) {
-		return new Point3(p.x,-p.y,p.z);
-	}
-
 	/**
 	 * Subtraktion eines Punktes
-	 * 
+	 *
 	 * @param p
-	 * 		Punkt der von dem Punkt subtrahiert wird
-	 * @return
-	 * 		neues Vector3 Objekt (Vektor)
+	 *            Punkt der von dem Punkt subtrahiert wird
+	 * @return neues Vector3 Objekt (Vektor)
 	 * @throws IllegalArgumentException
 	 */
 	public Vector3 sub(final Point3 p) throws IllegalArgumentException {
@@ -62,11 +57,10 @@ public class Point3 {
 
 	/**
 	 * Subtraktion eines Vektors
-	 * 
+	 *
 	 * @param v
-	 * 		Vektor der von dem Punkt subtrahiert wird
-	 * @return
-	 * 		neues Point3 Objekt (Punkt)
+	 *            Vektor der von dem Punkt subtrahiert wird
+	 * @return neues Point3 Objekt (Punkt)
 	 * @throws IllegalArgumentException
 	 */
 	public Point3 sub(final Vector3 v) throws IllegalArgumentException {
@@ -81,11 +75,10 @@ public class Point3 {
 
 	/**
 	 * Addition eines Vektors
-	 * 
+	 *
 	 * @param v
-	 * 		Vektor der zu dem Punkt addiert wird
-	 * @return
-	 * 		neues Point3 Objekt (Punkt)
+	 *            Vektor der zu dem Punkt addiert wird
+	 * @return neues Point3 Objekt (Punkt)
 	 * @throws IllegalArgumentException
 	 */
 	public Point3 add(final Vector3 v) throws IllegalArgumentException {
@@ -102,9 +95,8 @@ public class Point3 {
 	 * Ueberschriebene equals-Methode
 	 *
 	 * @param o
-	 * 		Objekt das mit dem Punkt verglichen wird
-	 * @return
-	 * 		true | false
+	 *            Objekt das mit dem Punkt verglichen wird
+	 * @return true | false
 	 *
 	 */
 	@Override
@@ -114,7 +106,7 @@ public class Point3 {
 		if (o == null || getClass() != o.getClass())
 			return false;
 
-		Point3 point3 = (Point3) o;
+		final Point3 point3 = (Point3) o;
 
 		if (Double.compare(point3.x, x) != 0)
 			return false;
@@ -127,8 +119,7 @@ public class Point3 {
 	/**
 	 * Ueberschriebene hashCode-Methode
 	 *
-	 * @return
-	 * 		int hashcode
+	 * @return int hashcode
 	 */
 	@Override
 	public int hashCode() {
@@ -146,8 +137,7 @@ public class Point3 {
 	/**
 	 * Ueberschriebene toString-Methode
 	 *
-	 * @return
-	 * 		String Point3 Werte
+	 * @return String Point3 Werte
 	 */
 	@Override
 	public String toString() {
