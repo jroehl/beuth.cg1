@@ -56,27 +56,49 @@ public class AxisAlignedBox2 extends Geometry {
 
 		// final ArrayList<Double> factor = new ArrayList<Double>();
 
-		double tf = -1;
+		Hit farestHit = null;
 
 		for (final Plane plane : planes) {
 			// denonimator / nenner
 			final double d = ray.direction.dot(plane.n);
 
-			// if (d != 0) {
-			final double t = plane.a.sub(ray.origin).dot(plane.n) / d;
+			if (d != 0) {
+				final double t = plane.a.sub(ray.origin).dot(plane.n) / d;
 
-			if (tf < t) {
-				tf = t;
+				if (farestHit == null || farestHit.t < t) {
+					// if (t > tf) {
+					// tf = t;
+					// }
+
+					farestHit = new Hit(t, ray, this);
+				}
 			}
 		}
-		// }
-		System.out.println(tf);
-		if (tf <= 0) {
-			return null;
-		}
 
-		return new Hit(tf, ray, this);
+		return farestHit;
+
 	}
+	// double tf = -1;
+	//
+	// for (final Plane plane : planes) {
+	// // denonimator / nenner
+	// final double d = ray.direction.dot(plane.n);
+	//
+	// // if (d != 0) {
+	// final double t = plane.a.sub(ray.origin).dot(plane.n) / d;
+	//
+	// if (tf < t) {
+	// tf = t;
+	// }
+	// }
+	// // }
+	// System.out.println(tf);
+	// if (tf <= 0) {
+	// return null;
+	// }
+	//
+	// return new Hit(tf, ray, this);
+	// }
 
 	private Hit checkSize(final Hit hit) {
 		if (hit != null) {

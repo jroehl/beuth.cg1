@@ -110,28 +110,28 @@ public class Raytracer extends Application {
 		final Color backgroundColor = new Color(0, 0, 0);
 
 		world = new World(backgroundColor);
-		// world.add(box);
-		world.add(plane);
+		world.add(box);
+		// world.add(plane);
 		// world.add(sphere);
 		// world.add(triangle);
 
 		// Kamera wird erzeugt
 
-		final Point3 e = new Point3(0, 0, 0);
-		final Vector3 g = new Vector3(0, 0, -1);
-		final Vector3 t = new Vector3(0, 1, 0);
-		final double angle = Math.PI / 4;
-
-		camera = new PerspectiveCamera(e, g, t, angle);
-
-		// 2. Kamera
-
-		// final Point3 e = new Point3(3, 3, 3);
-		// final Vector3 g = new Vector3(-3, -3, -3);
+		// final Point3 e = new Point3(0, 0, 0);
+		// final Vector3 g = new Vector3(0, 0, -1);
 		// final Vector3 t = new Vector3(0, 1, 0);
 		// final double angle = Math.PI / 4;
 		//
 		// camera = new PerspectiveCamera(e, g, t, angle);
+
+		// 2. Kamera
+
+		final Point3 e = new Point3(3, 3, 3);
+		final Vector3 g = new Vector3(-3, -3, -3);
+		final Vector3 t = new Vector3(0, 1, 0);
+		final double angle = Math.PI / 4;
+
+		camera = new PerspectiveCamera(e, g, t, angle);
 
 		drawImage(primaryStage.getWidth(), primaryStage.getHeight(), camera);
 		imgView.setImage(wrImg);

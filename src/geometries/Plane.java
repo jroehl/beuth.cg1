@@ -26,12 +26,10 @@ public class Plane extends Geometry {
 		if (nenner != 0) {
 			final double t = n.dot(a.sub(ray.origin)) / nenner; // ich glaube
 																// hier war ein
-																// fehler
-
-			if (t < 0) {
-				return null;
+																// fehle
+			if (t > 0) {
+				return new Hit(t, ray, this);
 			}
-			return new Hit(t, ray, this);
 		}
 		return null;
 	}
