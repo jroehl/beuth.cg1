@@ -99,9 +99,9 @@ public class Raytracer extends Application {
 		// Trinagle erzeugen
 
 		final Color color4 = new Color(1, 0, 1);
-		final Point3 at = new Point3(-0.5, 0.5, -3);
-		final Point3 bt = new Point3(0.5, 0.5, -3);
-		final Point3 ct = new Point3(0.5, -0.5, -3);
+		final Point3 at = new Point3(-0.5, -0.5, -3);
+		final Point3 bt = new Point3(0.5, -0.5, -3);
+		final Point3 ct = new Point3(0.5, 0.5, -3);
 
 		final Triangle triangle = new Triangle(color4, at, bt, ct);
 
