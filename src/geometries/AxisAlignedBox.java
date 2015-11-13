@@ -56,7 +56,7 @@ public class AxisAlignedBox extends Geometry {
 		}
 
 		final ArrayList<Double> factor = new ArrayList<Double>();
-
+		System.out.println(planes.size());
 		double tf = -1;
 
 		for (final Plane plane : planes) {

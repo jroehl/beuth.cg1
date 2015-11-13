@@ -1,16 +1,19 @@
 package ray;
 
-import java.util.ArrayList;
-
-import color.Color;
 import geometries.Geometry;
 import geometries.Hit;
 
+import java.util.ArrayList;
+
+import color.Color;
+
 /**
- * Die Klasse World beinhaltet eine Menge mit den Objekten zu dazustellenden Szene. Sie hat ebenfalls eine Methode hit,
- * wobei der übergebene Strahl gegen alle Objekte der Szene getestet wird. Es wird der Schnittpunkt mit dem kleinsten
- * positiven 𝑡 zurückgegeben. Die Klasse World hat ein Attribut namens backgroundColor vom Typ Color, welche verwendet
- * wird, wenn ein Strahl keine Geometrie trifft.
+ * Die Klasse World beinhaltet eine Menge mit den Objekten zu dazustellenden
+ * Szene. Sie hat ebenfalls eine Methode hit, wobei der übergebene Strahl gegen
+ * alle Objekte der Szene getestet wird. Es wird der Schnittpunkt mit dem
+ * kleinsten positiven 𝑡 zurückgegeben. Die Klasse World hat ein Attribut
+ * namens backgroundColor vom Typ Color, welche verwendet wird, wenn ein Strahl
+ * keine Geometrie trifft.
  */
 public class World {
 
@@ -26,7 +29,7 @@ public class World {
 
 	/**
 	 * Konstruktor
-	 * 
+	 *
 	 * @param backgroundColor
 	 */
 	public World(Color backgroundColor) {
@@ -34,9 +37,9 @@ public class World {
 	}
 
 	/**
-	 * Testet den Uebergebene Strahl gegen alle Objekte der Szene. Und liefert den Schnittpunkt mit dem kleinsten
-	 * positiven 𝑡.
-	 * 
+	 * Testet den Uebergebene Strahl gegen alle Objekte der Szene. Und liefert
+	 * den Schnittpunkt mit dem kleinsten positiven 𝑡.
+	 *
 	 * @param ray
 	 *            Strahl welcher auf Objekte Geschickt wird.
 	 * @return Den Schnittpunkt mit dem kleinsten positiven 𝑡.
@@ -44,15 +47,15 @@ public class World {
 	public Color hit(Ray ray) {
 
 		Hit hit = null;
-		double t = Double.MAX_VALUE;
+		// double t = Double.MAX_VALUE; //????????
 
-		for (Geometry obj : objs) {
-			Hit objHit = obj.hit(ray);
+		for (final Geometry obj : objs) {
+			final Hit objHit = obj.hit(ray);
 
 			if (objHit != null) {
-				if (objHit.t < t) {
-					hit = obj.hit(ray);
-					t = objHit.t;
+				if (hit == null || objHit.t < hit.t) {
+					hit = objHit;
+
 				}
 			}
 		}
@@ -65,7 +68,7 @@ public class World {
 
 	/**
 	 * Fügt ein neues Geometrisches-Objekt in die Liste der Objekte hinzu.
-	 * 
+	 *
 	 * @param obj
 	 *            Geometrisches-Objekt welches hinzugefügt werden soll.
 	 */
@@ -78,7 +81,8 @@ public class World {
 	 */
 	@Override
 	public String toString() {
-		return "World [backgroundColor=" + backgroundColor + ", objs=" + objs + "]";
+		return "World [backgroundColor=" + backgroundColor + ", objs=" + objs
+				+ "]";
 	}
 
 	/**
@@ -88,7 +92,8 @@ public class World {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((backgroundColor == null) ? 0 : backgroundColor.hashCode());
+		result = prime * result
+				+ ((backgroundColor == null) ? 0 : backgroundColor.hashCode());
 		result = prime * result + ((objs == null) ? 0 : objs.hashCode());
 		return result;
 	}
@@ -104,7 +109,7 @@ public class World {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		World other = (World) obj;
+		final World other = (World) obj;
 		if (backgroundColor == null) {
 			if (other.backgroundColor != null)
 				return false;

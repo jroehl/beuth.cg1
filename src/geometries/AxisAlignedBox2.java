@@ -66,9 +66,6 @@ public class AxisAlignedBox2 extends Geometry {
 				final double t = plane.a.sub(ray.origin).dot(plane.n) / d;
 
 				if (farestHit == null || farestHit.t < t) {
-					// if (t > tf) {
-					// tf = t;
-					// }
 
 					farestHit = new Hit(t, ray, this);
 				}
