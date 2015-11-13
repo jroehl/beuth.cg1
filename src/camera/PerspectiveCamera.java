@@ -17,7 +17,7 @@ public class PerspectiveCamera extends Camera {
 	@Override
 	public Ray rayFor(int w, int h, int x, int y) {
 
-		final Vector3 v1 = super.w.mul((h / 2) / Math.tan(angle / 2)).mul(-1);
+		final Vector3 v1 = super.w.mul(-1).mul((h / 2) / Math.tan(angle / 2));
 		final Vector3 v2 = super.u.mul(x - ((w - 1) / 2));
 		final Vector3 v3 = super.v.mul(y - ((h - 1) / 2));
 		final Vector3 r = v3.add(v2).add(v1);
@@ -26,7 +26,7 @@ public class PerspectiveCamera extends Camera {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -41,7 +41,7 @@ public class PerspectiveCamera extends Camera {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -61,7 +61,7 @@ public class PerspectiveCamera extends Camera {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#toString()
 	 */
 	@Override

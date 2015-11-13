@@ -20,11 +20,14 @@ public class Plane extends Geometry {
 	@Override
 	public Hit hit(Ray ray) {
 
-//		denonimator / nenner
-		double d = ray.direction.dot(n);
+		// denonimator / nenner
+		final double nenner = ray.direction.dot(n);
 
-		if(d != 0) {
-			double t = a.sub(ray.origin).dot(n) / d;
+		if (nenner != 0) {
+			final double t = n.dot(a.sub(ray.origin)) / nenner; // ich glaube
+																// hier war ein
+																// fehler
+
 			if (t < 0) {
 				return null;
 			}
@@ -35,12 +38,15 @@ public class Plane extends Geometry {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 
-		Plane plane = (Plane) o;
+		final Plane plane = (Plane) o;
 
-		if (a != null ? !a.equals(plane.a) : plane.a != null) return false;
+		if (a != null ? !a.equals(plane.a) : plane.a != null)
+			return false;
 		return !(n != null ? !n.equals(plane.n) : plane.n != null);
 
 	}
@@ -54,9 +60,6 @@ public class Plane extends Geometry {
 
 	@Override
 	public String toString() {
-		return "Plane{" +
-				"a=" + a +
-				", n=" + n +
-				'}';
+		return "Plane{" + "a=" + a + ", n=" + n + '}';
 	}
 }
