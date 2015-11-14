@@ -64,6 +64,19 @@ public class World {
 			return hit.geo.color;
 		}
 		return backgroundColor;
+
+//		Hit min = null;
+//
+//		for (Geometry g : objs){
+//
+//			final Hit hit = g.hit(ray);
+//
+//			if(hit != null && (min == null || hit.t < min.t)){
+//				min = hit;
+//			}
+//		}
+//
+//		return (min != null) ? min.geo.color : backgroundColor;
 	}
 
 	/**

@@ -27,10 +27,6 @@ public class OrthographicCamera extends Camera {
 
 	/**
 	 *
-	 * @param e
-	 * @param g
-	 * @param t
-	 * @param s
 	 */
 	@Override
 	public Ray rayFor(final int w, final int h, final int x, final int y) {

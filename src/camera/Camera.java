@@ -13,10 +13,13 @@ public abstract class Camera {
 	public final Vector3 w;
 
 	public Camera(final Point3 e, final Vector3 g, final Vector3 t) {
+
 		this.e = e;
 		this.g = g;
 		this.t = t;
-		this.w = (g.mul(1 / g.magnitude));
+
+		this.w = g.normalized().mul(-1);
+//		this.w = (g.mul(1 / g.magnitude));
 		this.u = ((t.x(w)).mul((t.x(w)).magnitude));
 		this.v = w.x(u);
 	}
