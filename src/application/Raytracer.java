@@ -201,13 +201,17 @@ public class Raytracer extends Application {
 	 */
 	public void createCamera() {
 
-		// 1. Kamera wird erzeugt
+		// 1. Kamera - PerspectiveCamera mit geradem Blick
 
 		final Point3 e = new Point3(0, 0, 0);
 		final Vector3 g = new Vector3(0, 0, -1);
 		final Vector3 t = new Vector3(0, 1, 0);
 		final double angle = Math.PI / 4;
-		// 2. Kamera
+
+		camera = new OrthographicCamera(e, g, t, 3);
+		// camera = new PerspectiveCamera(e, g, t, angle);
+
+		// 2. Kamera für die AxisAlignedBox
 
 		// final Point3 e = new Point3(3, 3, 3);
 		// final Vector3 g = new Vector3(-3, -3, -3);
@@ -216,7 +220,6 @@ public class Raytracer extends Application {
 		//
 		// camera = new PerspectiveCamera(e, g, t, angle);
 
-		camera = new OrthographicCamera(e, g, t, 3);
 	}
 
 	/**

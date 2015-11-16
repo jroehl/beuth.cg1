@@ -50,7 +50,6 @@ public class OrthographicCamera extends Camera {
 	@Override
 	public Ray rayFor(final int w, final int h, final int x, final int y) {
 		final double a = (double) w / h;
-		System.out.println(a);
 		final double doub1 = (double) ((x - (w - 1) / 2)) / (w - 1);
 		final double doub2 = (double) ((y - (h - 1) / 2)) / (h - 1);
 		final Point3 o = e.add((u.mul(doub1).mul(a).mul(s)).add(v.mul(doub2)
@@ -71,7 +70,7 @@ public class OrthographicCamera extends Camera {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -86,7 +85,7 @@ public class OrthographicCamera extends Camera {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
