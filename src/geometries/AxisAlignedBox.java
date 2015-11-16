@@ -1,25 +1,67 @@
 package geometries;
 
-import java.util.ArrayList;
-
 import ray.Ray;
 import Matrizen_Vektoren_Bibliothek.Normal3;
 import Matrizen_Vektoren_Bibliothek.Point3;
 import color.Color;
 
+/**
+ * AxisAlignedBox
+ *
+ * @author Waschmaschine
+ *         <p>
+ *         Die von Geometry abgeleitete Klasse AxisAlignedBox implementiert
+ *         die Methode hit entsprechend der Formeln und Algorithmen zur Schnittberechnung.
+ */
 public class AxisAlignedBox extends Geometry {
 
+    /**
+     * LeftBottomFar - linker unterer entfernter Punkt
+     */
     private final Point3 lbf;
+    /**
+     * RightUpperNarrow - rechter oberer näherer Punkt
+     */
     private final Point3 run;
 
-    public AxisAlignedBox(Color color, Point3 lbf, Point3 run) {
+    /**
+     * Konstruktor: AxisAlignedBox
+     *
+     * @param color RGB Color der Geometrie
+     * @param lbf   linker unterer entfernter Punkt
+     * @param run   rechter oberer näherer Punkt
+     *
+     * @throws IllegalArgumentException
+     */
+    public AxisAlignedBox(Color color, Point3 lbf, Point3 run) throws IllegalArgumentException {
         super(color);
+
+        if (lbf == null) {
+            throw new IllegalArgumentException("The lbf cannot be null!");
+        }
+        if (run == null) {
+            throw new IllegalArgumentException("The run cannot be null!");
+        }
+
         this.lbf = lbf;
         this.run = run;
     }
 
+    /**
+     * Method: hit(ray)
+     *
+     * @param ray Ray Objekt
+     * @return Hit / null
+     * Bei einem Treffer wird das generierte Hit Objekt zurückgegeben und null vice versa
+     *
+     * @throws IllegalArgumentException
+     */
     @Override
-    public Hit hit(Ray ray) {
+    public Hit hit(Ray ray) throws IllegalArgumentException {
+
+        if (ray == null) {
+            throw new IllegalArgumentException("The Ray cannot be null!");
+        }
 
         final Plane b1 = new Plane(color, lbf, new Normal3(-1, 0, 0));
         final Plane b2 = new Plane(color, lbf, new Normal3(0, -1, 0));
@@ -50,7 +92,7 @@ public class AxisAlignedBox extends Geometry {
         }
 
 
-        Hit hit = new Hit(tf, ray, this);
+        final Hit hit = new Hit(tf, ray, this);
         final Point3 p = hit.ray.at(hit.t);
         final double eps = 0.00001;
 
@@ -65,6 +107,11 @@ public class AxisAlignedBox extends Geometry {
 
     }
 
+    /**
+     * Ueberschriebene toString-Methode
+     *
+     * @return String AxisAlignedBox Werte
+     */
     @Override
     public String toString() {
         return "AxisAlignedBox{" +
@@ -73,6 +120,12 @@ public class AxisAlignedBox extends Geometry {
                 '}';
     }
 
+    /**
+     * Ueberschriebene equals-Methode
+     *
+     * @param o Objekt das mit der Matrix verglichen wird
+     * @return true | false
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -86,6 +139,11 @@ public class AxisAlignedBox extends Geometry {
 
     }
 
+    /**
+     * Ueberschriebene hashCode-Methode
+     *
+     * @return int hashcode
+     */
     @Override
     public int hashCode() {
         int result = super.hashCode();

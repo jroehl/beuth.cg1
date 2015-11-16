@@ -9,7 +9,7 @@ import color.Color;
 
 /**
  * Die Klasse World beinhaltet eine Menge mit den Objekten zu dazustellenden
- * Szene. Sie hat ebenfalls eine Methode hit, wobei der übergebene Strahl gegen
+ * Szene. Sie hat ebenfalls eine Methode hit, wobei der uebergebene Strahl gegen
  * alle Objekte der Szene getestet wird. Es wird der Schnittpunkt mit dem
  * kleinsten positiven 𝑡 zurückgegeben. Die Klasse World hat ein Attribut
  * namens backgroundColor vom Typ Color, welche verwendet wird, wenn ein Strahl
@@ -17,122 +17,123 @@ import color.Color;
  */
 public class World {
 
-	/**
-	 * Wird verwendet wenn ein Strahl keine Geometrie trifft
-	 */
-	Color backgroundColor;
+    /**
+     * Wird verwendet wenn ein Strahl keine Geometrie trifft
+     */
+    Color backgroundColor;
 
-	/**
-	 * Liste zum Speichern der Geometrischen Elemente.
-	 */
-	ArrayList<Geometry> objs = new ArrayList<Geometry>();
+    /**
+     * Liste zum Speichern der Geometrischen Elemente.
+     */
+    ArrayList<Geometry> objs = new ArrayList<Geometry>();
 
-	/**
-	 * Konstruktor
-	 *
-	 * @param backgroundColor
-	 */
-	public World(Color backgroundColor) {
-		this.backgroundColor = backgroundColor;
-	}
+    /**
+     * Konstruktor
+     *
+     * @param backgroundColor
+     * @throws IllegalArgumentException
+     */
+    public World(Color backgroundColor) throws IllegalArgumentException {
 
-	/**
-	 * Testet den Uebergebene Strahl gegen alle Objekte der Szene. Und liefert
-	 * den Schnittpunkt mit dem kleinsten positiven 𝑡.
-	 *
-	 * @param ray
-	 *            Strahl welcher auf Objekte Geschickt wird.
-	 * @return Den Schnittpunkt mit dem kleinsten positiven 𝑡.
-	 */
-	public Color hit(Ray ray) {
+        if (backgroundColor == null) {
+            throw new IllegalArgumentException("The backgroundColor cannot be null!");
+        }
 
-		Hit hit = null;
-		// double t = Double.MAX_VALUE; //????????
+        this.backgroundColor = backgroundColor;
+    }
 
-		for (final Geometry obj : objs) {
-			final Hit objHit = obj.hit(ray);
+    /**
+     * Testet den Uebergebene Strahl gegen alle Objekte der Szene. Und liefert
+     * den Schnittpunkt mit dem kleinsten positiven 𝑡.
+     *
+     * @param ray Strahl welcher auf Objekte Geschickt wird.
+     * @return Schnittpunkt mit dem kleinsten positiven t
+     * @throws IllegalArgumentException
+     */
+    public Color hit(Ray ray) throws IllegalArgumentException {
 
-			if (objHit != null) {
-				if (hit == null || objHit.t < hit.t) {
-					hit = objHit;
+        if (ray == null) {
+            throw new IllegalArgumentException("The Ray cannot be null!");
+        }
 
-				}
-			}
-		}
+        Hit hit = null;
 
-		if (hit != null) {
-			return hit.geo.color;
-		}
-		return backgroundColor;
+        for (final Geometry obj : objs) {
+            final Hit objHit = obj.hit(ray);
 
-//		Hit min = null;
-//
-//		for (Geometry g : objs){
-//
-//			final Hit hit = g.hit(ray);
-//
-//			if(hit != null && (min == null || hit.t < min.t)){
-//				min = hit;
-//			}
-//		}
-//
-//		return (min != null) ? min.geo.color : backgroundColor;
-	}
+            if (objHit != null) {
+                if (hit == null || objHit.t < hit.t) {
+                    hit = objHit;
 
-	/**
-	 * Fügt ein neues Geometrisches-Objekt in die Liste der Objekte hinzu.
-	 *
-	 * @param obj
-	 *            Geometrisches-Objekt welches hinzugefügt werden soll.
-	 */
-	public void add(Geometry obj) {
-		objs.add(obj);
-	}
+                }
+            }
+        }
 
-	/**
-	 * Ueberschreibung der toString()-Methode.
-	 */
-	@Override
-	public String toString() {
-		return "World [backgroundColor=" + backgroundColor + ", objs=" + objs
-				+ "]";
-	}
+        if (hit != null) {
+            return hit.geo.color;
+        }
+        return backgroundColor;
 
-	/**
-	 * Ueberschreibung der hashCode()-Methode.
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((backgroundColor == null) ? 0 : backgroundColor.hashCode());
-		result = prime * result + ((objs == null) ? 0 : objs.hashCode());
-		return result;
-	}
+    }
 
-	/**
-	 * Ueberschreibung der equals()-Methode.
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		final World other = (World) obj;
-		if (backgroundColor == null) {
-			if (other.backgroundColor != null)
-				return false;
-		} else if (!backgroundColor.equals(other.backgroundColor))
-			return false;
-		if (objs == null) {
-			if (other.objs != null)
-				return false;
-		} else if (!objs.equals(other.objs))
-			return false;
-		return true;
-	}
+    /**
+     * Fügt ein neues Geometrisches-Objekt in die Liste der Objekte hinzu.
+     *
+     * @param obj Geometrisches-Objekt welches hinzugefügt werden soll.
+     * @throws IllegalArgumentException
+     */
+    public void add(Geometry obj) throws IllegalArgumentException {
+        if (obj == null) {
+            throw new IllegalArgumentException("The Geometry cannot be null!");
+        }
+
+        objs.add(obj);
+    }
+
+    /**
+     * Ueberschreibung der toString()-Methode.
+     */
+    @Override
+    public String toString() {
+        return "World [backgroundColor=" + backgroundColor + ", objs=" + objs
+                + "]";
+    }
+
+    /**
+     * Ueberschreibung der hashCode()-Methode.
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+                + ((backgroundColor == null) ? 0 : backgroundColor.hashCode());
+        result = prime * result + ((objs == null) ? 0 : objs.hashCode());
+        return result;
+    }
+
+    /**
+     * Ueberschreibung der equals()-Methode.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final World other = (World) obj;
+        if (backgroundColor == null) {
+            if (other.backgroundColor != null)
+                return false;
+        } else if (!backgroundColor.equals(other.backgroundColor))
+            return false;
+        if (objs == null) {
+            if (other.objs != null)
+                return false;
+        } else if (!objs.equals(other.objs))
+            return false;
+        return true;
+    }
 }

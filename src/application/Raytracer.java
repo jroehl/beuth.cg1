@@ -1,5 +1,6 @@
 package application;
 
+import camera.PerspectiveCamera;
 import geometries.AxisAlignedBox;
 import geometries.Plane;
 import geometries.Sphere;
@@ -34,227 +35,227 @@ import color.Color;
 
 public class Raytracer extends Application {
 
-	WritableImage wrImg;
-	Text renderingTime;
-	Stage primaryStage;
-	ImageView imgView;
+    /**
+     * wrImg - WritableImage Objekt
+     */
+    WritableImage wrImg;
+    /**
+     * renderingTime - Text Objekt
+     */
+    Text renderingTime;
 
-	Camera camera;
-	World world;
+    /**
+     * camera - Kamera Objekt
+     */
+    Camera camera;
+    /**
+     * world - Welt Objekt
+     */
+    World world;
 
-	@Override
-	public void start(Stage primaryStage) throws Exception {
+    /**
+     * @param primaryStage primaryStage der FX Applikation
+     * @throws Exception
+     */
+    @Override
+    public void start(Stage primaryStage) throws Exception {
 
-		primaryStage.setTitle("PNG Creator");
+        primaryStage.setTitle("PNG Creater");
 
-		primaryStage.setWidth(640);
-		primaryStage.setHeight(480);
+        primaryStage.setWidth(640);
+        primaryStage.setHeight(480);
 
-		final Menu fileMenu = new Menu("File");
+        final Menu fileMenu = new Menu("File");
 
-		final MenuBar menuBar = new MenuBar();
-		menuBar.getMenus().add(fileMenu);
-		menuBar.prefWidthProperty()
-				.bind(primaryStage.widthProperty().divide(2));
-		final MenuItem save = new MenuItem("Save");
-		fileMenu.getItems().add(save);
+        final MenuBar menuBar = new MenuBar();
+        menuBar.getMenus().add(fileMenu);
+        menuBar.prefWidthProperty()
+                .bind(primaryStage.widthProperty().divide(2));
+        final MenuItem save = new MenuItem("Save");
+        fileMenu.getItems().add(save);
 
-		final HBox hBox = new HBox();
+        final HBox hBox = new HBox();
 
-		renderingTime = new Text();
-		renderingTime.setFill(javafx.scene.paint.Color.WHITE);
+        renderingTime = new Text();
+        renderingTime.setFill(javafx.scene.paint.Color.WHITE);
 
-		final Group group = new Group();
-		final ImageView imgView = new ImageView();
-		group.getChildren().addAll(imgView, hBox);
-		hBox.getChildren().addAll(menuBar, renderingTime);
+        final Group group = new Group();
+        final ImageView imgView = new ImageView();
+        group.getChildren().addAll(imgView, hBox);
+        hBox.getChildren().addAll(menuBar, renderingTime);
 
-		primaryStage.setScene(new Scene(group));
+        primaryStage.setScene(new Scene(group));
 
-		// Plane wird erzeugt
+        createWorld();
+        createCamera();
 
-		final Color color1 = new Color(0, 1, 0);
-		final Point3 ap = new Point3(0, -1, 0);
-		final Normal3 np = new Normal3(0, 1, 0);
+        drawImage(primaryStage.getWidth(), primaryStage.getHeight(), camera);
+        imgView.setImage(wrImg);
 
-		final Plane plane = new Plane(color1, ap, np);
+        save.setOnAction(event -> {
+            final FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save Image");
+            final FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter(
+                    "JPG files (*.jpg)", "*.JPG");
+            final FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter(
+                    "PNG files (*.png)", "*.PNG");
+            fileChooser.getExtensionFilters()
+                    .addAll(extFilterJPG, extFilterPNG);
+            final File file = fileChooser.showSaveDialog(primaryStage);
+            if (file != null) {
+                try {
+                    ImageIO.write(SwingFXUtils.fromFXImage(wrImg, null), "png",
+                            file);
+                } catch (final IOException ex) {
+                    System.out.println(ex.getMessage());
+                }
+            }
+        });
 
-		// Sphere wird erzeugt
+        /**
+         * Über einen AddListener an der HeightProperty und der WidthProperty
+         * der primaryStage wird das neu Zeichnen des Bildes aufgerufen
+         */
+        primaryStage.heightProperty().addListener(
+                (ChangeEvent) -> {
+                    drawImage(primaryStage.getWidth(),
+                            primaryStage.getHeight(), camera);
+                    imgView.setImage(wrImg);
+                });
 
-		final Color color2 = new Color(1, 0, 0);
-		final Point3 cs = new Point3(0, 0, -3);
-		final double rs = 0.5;
+        primaryStage.widthProperty().addListener(
+                (ChangeEvent) -> {
+                    drawImage(primaryStage.getWidth(),
+                            primaryStage.getHeight(), camera);
+                    imgView.setImage(wrImg);
+                });
 
-		final Sphere sphere = new Sphere(color2, cs, rs);
+        primaryStage.show();
+    }
 
-		// Spheres1 werden erzeugt
+    /**
+     * Method: createWorld
+     * <p>
+     * Erzeugt die Welt und die Objekte für den Test
+     */
+    public void createWorld() {
+        // Plane wird erzeugt
 
-		final Point3 c1s = new Point3(-1, 0, -3);
-		final Point3 c2s = new Point3(1, 0, -6);
+        final Color color1 = new Color(0, 1, 0);
+        final Point3 ap = new Point3(0, -1, 0);
+        final Normal3 np = new Normal3(0, 1, 0);
 
-		final Sphere sphere1 = new Sphere(color2, c1s, rs);
-		final Sphere sphere2 = new Sphere(color2, c2s, rs);
+        final Plane plane = new Plane(color1, ap, np);
 
-		// Box wird erzeugt
+        // Sphere wird erzeugt
 
-		final Color color3 = new Color(0, 0, 1);
-		final Point3 lbf = new Point3(-0.5, 0, -0.5);
-		final Point3 run = new Point3(0.5, 1, 0.5);
+        final Color color2 = new Color(1, 0, 0);
+        final Point3 cs = new Point3(0, 0, -3);
+        final double rs = 0.5;
 
-		final AxisAlignedBox box = new AxisAlignedBox(color3, lbf, run);
+        final Sphere sphere = new Sphere(color2, cs, rs);
 
-		// Triangle erzeugen
+        // Spheres1 werden erzeugt
 
-		// final Color color4 = new Color(1, 0, 1);
-		// final Point3 at = new Point3(-0.5, 0.5, -3);
-		// final Point3 bt = new Point3(0.5, 0.5, -3);
-		// final Point3 ct = new Point3(0.5, -0.5, -3);
-		//
-		// final Triangle triangle = new Triangle(color4, at, bt, ct);
+        final Point3 c1s = new Point3(-1, 0, -3);
+        final Point3 c2s = new Point3(1, 0, -6);
 
-		// Welt wird erzeugt
+        final Sphere sphere1 = new Sphere(color2, c1s, rs);
+        final Sphere sphere2 = new Sphere(color2, c2s, rs);
 
-		final Color backgroundColor = new Color(0, 0, 0);
+        // Box wird erzeugt
 
-		world = new World(backgroundColor);
-		// world.add(box);
-		// world.add(plane);
-		// world.add(sphere);
-		world.add(sphere1);
-		world.add(sphere2);
+        final Color color3 = new Color(0, 0, 1);
+        final Point3 lbf = new Point3(-0.5, 0, -0.5);
+        final Point3 run = new Point3(0.5, 1, 0.5);
 
-		// world.add(triangle);
+        final AxisAlignedBox box = new AxisAlignedBox(color3, lbf, run);
 
-		// Kamera wird erzeugt
+        // Triangle erzeugen
 
-		final Point3 e = new Point3(0, 0, 0);
-		final Vector3 g = new Vector3(0, 0, -1);
-		final Vector3 t = new Vector3(0, 1, 0);
+        // final Color color4 = new Color(1, 0, 1);
+        // final Point3 at = new Point3(-0.5, 0.5, -3);
+        // final Point3 bt = new Point3(0.5, 0.5, -3);
+        // final Point3 ct = new Point3(0.5, -0.5, -3);
+        //
+        // final Triangle triangle = new Triangle(color4, at, bt, ct);
 
-		// 2. Kamera
-		//
-		// final Point3 e = new Point3(3, 3, 3);
-		// final Vector3 g = new Vector3(-3, -3, -3);
-		// final Vector3 t = new Vector3(0, 1, 0);
-		// final double angle = Math.PI / 4;
+        // Welt wird erzeugt
 
-		// camera = new PerspectiveCamera(e, g, t, angle);
+        final Color backgroundColor = new Color(0, 0, 0);
 
-		camera = new OrthographicCamera(e, g, t, 3);
+        world = new World(backgroundColor);
+        world.add(box);
+        // world.add(plane);
+        // world.add(sphere);
+        // world.add(triangle);
+//        world.add(sphere1);
+//        world.add(sphere2);
+    }
 
-		drawImage(primaryStage.getWidth(), primaryStage.getHeight(), camera);
-		imgView.setImage(wrImg);
+    /**
+     * Method: createCamera
+     * <p>
+     * Erzeugt die Kameras für den Test
+     */
+    public void createCamera() {
 
-		save.setOnAction(event -> {
-			final FileChooser fileChooser = new FileChooser();
-			fileChooser.setTitle("Save Image");
-			final FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter(
-					"JPG files (*.jpg)", "*.JPG");
-			final FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter(
-					"PNG files (*.png)", "*.PNG");
-			fileChooser.getExtensionFilters()
-					.addAll(extFilterJPG, extFilterPNG);
-			final File file = fileChooser.showSaveDialog(primaryStage);
-			if (file != null) {
-				try {
-					ImageIO.write(SwingFXUtils.fromFXImage(wrImg, null), "png",
-							file);
-				} catch (final IOException ex) {
-					System.out.println(ex.getMessage());
-				}
-			}
-		});
+        // 1. Kamera wird erzeugt
 
-		/**
-		 * Über einen AddListener an der HeightProperty und der WidthProperty
-		 * der primaryStage wird das neu Zeichnen des Bildes aufgerufen
-		 */
+//        final Point3 e = new Point3(0, 0, 0);
+//        final Vector3 g = new Vector3(0, 0, -1);
+//        final Vector3 t = new Vector3(0, 1, 0);
 
-		primaryStage.heightProperty().addListener(
-				(ChangeEvent) -> {
-					drawImage(primaryStage.getWidth(),
-							primaryStage.getHeight(), camera);
-					imgView.setImage(wrImg);
-				});
+        // 2. Kamera
 
-		primaryStage.widthProperty().addListener(
-				(ChangeEvent) -> {
-					drawImage(primaryStage.getWidth(),
-							primaryStage.getHeight(), camera);
-					imgView.setImage(wrImg);
-				});
+         final Point3 e = new Point3(3, 3, 3);
+         final Vector3 g = new Vector3(-3, -3, -3);
+         final Vector3 t = new Vector3(0, 1, 0);
+         final double angle = Math.PI / 4;
 
-		primaryStage.show();
-	}
+         camera = new PerspectiveCamera(e, g, t, angle);
 
-	/**
-	 * Geht von oben nach unten jedes Pixel durch und gibt diesen Farbe
-	 *
-	 * @param width
-	 *            Breite des Bilds
-	 * @param height
-	 *            Höhe des Bilds
-	 */
+//        camera = new OrthographicCamera(e, g, t, 3);
+    }
 
-	private void drawImage(double width, double height, Camera camera) {
+    /**
+     * Geht von oben nach unten jedes Pixel durch und gibt diesen Farbe
+     *
+     * @param width  Breite des Bilds
+     * @param height Höhe des Bilds
+     */
+    private void drawImage(double width, double height, Camera camera) {
 
-		final Integer iwidth = (int) width;
-		final Integer iheight = (int) height;
+        final Integer iwidth = (int) width;
+        final Integer iheight = (int) height;
 
-		wrImg = new WritableImage(iwidth, iheight);
+        wrImg = new WritableImage(iwidth, iheight);
 
-		final long start = System.nanoTime();
+        final long start = System.nanoTime();
 
-		Ray ray;
+        Ray ray;
 
-		for (int y = 0; y < iheight; y++) {
-			for (int x = 0; x < iwidth; x++) {
-				ray = camera.rayFor(iwidth, iheight, x, iheight - 1 - y);
-				final Color c = world.hit(ray);
-				final javafx.scene.paint.Color javaColor = new javafx.scene.paint.Color(
-						c.r, c.g, c.b, 1);
-				wrImg.getPixelWriter().setColor(x, y, javaColor);
-			}
-		}
-		final long end = System.nanoTime();
-		renderingTime
-				.setText((" Rendering Time: " + (end - start) / 1000000000.0F));
-	}
+        for (int y = 0; y < iheight; y++) {
+            for (int x = 0; x < iwidth; x++) {
+                ray = camera.rayFor(iwidth, iheight, x, iheight - 1 - y);
+                final Color c = world.hit(ray);
+                final javafx.scene.paint.Color javaColor = new javafx.scene.paint.Color(
+                        c.r, c.g, c.b, 1);
+                wrImg.getPixelWriter().setColor(x, y, javaColor);
+            }
+        }
+        final long end = System.nanoTime();
+        renderingTime
+                .setText((" Rendering Time: " + (end - start) / 1000000000.0F));
+    }
 
-	/**
-	 * Liefert den Farbwert zurück um eine Diagonale Linie in einem schwarzen
-	 * Bild zu malen.
-	 *
-	 * @param x
-	 *            , X Coordinate eines Pixels im Bild
-	 * @param y
-	 *            Y Coordinate eines Pixels im Bild
-	 * @return Farbe wie das Pixel eingefärbt werden soll
-	 */
 
-	// private Color getColor(Ray ray) {
-	//
-	// if (ray == null) {
-	// throw new IllegalArgumentException("The ray cannot be null!");
-	// }
-	//
-	// final Hit hit = world.hit(ray);
-	//
-	// if (hit != null) {
-	//
-	// return color;
-	//
-	// } else {
-	// return world.backgroundColor;
-	// }
-	// }
-
-	/**
-	 * Start-Methode für FX
-	 *
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		launch(args);
-	}
+    /**
+     * Start-Methode für FX
+     *
+     * @param args
+     */
+    public static void main(String[] args) {
+        launch(args);
+    }
 }

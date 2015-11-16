@@ -6,21 +6,70 @@ import ray.Ray;
 import Matrizen_Vektoren_Bibliothek.Point3;
 import color.Color;
 
+/**
+ * Triangle
+ *
+ * @author Waschmaschine
+ *         <p>
+ *         Die von Geometry abgeleitete Klasse Triangle implementiert
+ *         die Methode hit entsprechend der Formeln und Algorithmen zur Schnittberechnung.
+ */
 public class Triangle extends Geometry {
 
+    /**
+     * a - Point3 Objekt des Triangle
+     */
     private final Point3 a;
+    /**
+     * b - Point3 Objekt des Triangle
+     */
     private final Point3 b;
+    /**
+     * c - Point3 Objekt des Triangle
+     */
     private final Point3 c;
 
-    public Triangle(Color color, Point3 a, Point3 b, Point3 c) {
+    /**
+     * Konstruktor: Triangle
+     *
+     * @param color color Objekt der Geometrie
+     * @param a     Point3 Objekt des Triangle
+     * @param b     Point3 Objekt des Triangle
+     * @param c     Point3 Objekt des Triangle
+     * @throws IllegalArgumentException
+     */
+    public Triangle(Color color, Point3 a, Point3 b, Point3 c) throws IllegalArgumentException {
         super(color);
+
+        if (a == null) {
+            throw new IllegalArgumentException("The a cannot be null!");
+        }
+        if (b == null) {
+            throw new IllegalArgumentException("The b cannot be null!");
+        }
+        if (c == null) {
+            throw new IllegalArgumentException("The c cannot be null!");
+        }
+
         this.a = a;
         this.b = b;
         this.c = c;
     }
 
+    /**
+     * Method: hit(ray)
+     *
+     * @param ray Ray Objekt
+     * @return Hit / null
+     * Bei einem Treffer wird das generierte Hit Objekt zurückgegeben und null vice versa
+     * @throws IllegalArgumentException
+     */
     @Override
-    public Hit hit(Ray ray) {
+    public Hit hit(Ray ray) throws IllegalArgumentException {
+
+        if (ray == null) {
+            throw new IllegalArgumentException("The Ray cannot be null!");
+        }
 
         final Mat3x3 matA = new Mat3x3(
                 a.x - b.x, a.x - c.x, ray.direction.x,
@@ -34,7 +83,7 @@ public class Triangle extends Geometry {
 
         final double t = matA.changeCol3(vec).determinant / matA.determinant;
 
-        if ((beta > 0 && gamma > 0) && (beta+gamma) <= 1) {
+        if ((beta > 0 && gamma > 0) && (beta + gamma) <= 1) {
             return new Hit(t, ray, this);
         }
 
@@ -42,6 +91,12 @@ public class Triangle extends Geometry {
 
     }
 
+    /**
+     * Ueberschriebene equals-Methode
+     *
+     * @param o Objekt das mit der Matrix verglichen wird
+     * @return true | false
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -55,6 +110,11 @@ public class Triangle extends Geometry {
 
     }
 
+    /**
+     * Ueberschriebene hashCode-Methode
+     *
+     * @return int hashcode
+     */
     @Override
     public int hashCode() {
         int result = a != null ? a.hashCode() : 0;
@@ -63,6 +123,11 @@ public class Triangle extends Geometry {
         return result;
     }
 
+    /**
+     * Ueberschriebene toString-Methode
+     *
+     * @return String Geometry Werte
+     */
     @Override
     public String toString() {
         return "Triangle{" +

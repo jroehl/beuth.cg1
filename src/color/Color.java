@@ -1,5 +1,12 @@
 package color;
 
+/**
+ * Die Color Klasse repräsentiert eine Farbe im RGB-Farbraum.
+ * Die einzelnen Komponenten sollen hierbei in der Regel einen Wert zwischen 0 und 1 annehmen können. Eine Farbe
+ * Zweite Übungsaufgabe in Computergrafik 1 Seite 2
+ * kann mit einer anderen addiert, subtrahiert und multipliziert werden.
+ * Darüber hinaus kann eine Farbe mit einem Skalar multipliziert werden.
+ */
 public class Color {
 
     /**
@@ -25,7 +32,6 @@ public class Color {
     public Color(final double r, final double g, final double b) {
 
         // TODO: Keiner der Werte soll größer 1 sein, daher die Fallunterscheidung.
-        // Später soll das jedoch auch Möglich sein
         if (r > 1) {
             this.r = 1;
         } else {
@@ -48,8 +54,14 @@ public class Color {
      *
      * @param c
      * @return
+     *
+     * @throws IllegalArgumentException
      */
-    public Color add(final Color c) {
+    public Color add(final Color c) throws IllegalArgumentException {
+
+        if (c == null) {
+            throw new IllegalArgumentException("The Color cannot be null");
+        }
 
         return new Color(this.r + c.r, this.g + c.g, this.b + c.b);
     }
@@ -59,8 +71,14 @@ public class Color {
      *
      * @param c
      * @return
+     *
+     * @throws IllegalArgumentException
      */
-    public Color sub(final Color c) {
+    public Color sub(final Color c) throws IllegalArgumentException {
+
+        if (c == null) {
+            throw new IllegalArgumentException("The Color cannot be null");
+        }
 
         return new Color(this.r - c.r, this.g - c.g, this.b - c.b);
     }
@@ -70,8 +88,15 @@ public class Color {
      *
      * @param c
      * @return
+     *
+     * @throws IllegalArgumentException
      */
-    public Color mul(final Color c) {
+    public Color mul(final Color c) throws IllegalArgumentException {
+
+        if (c == null) {
+            throw new IllegalArgumentException("The Color cannot be null");
+        }
+
         // TODO: Wie Multipliziert man denn Farben ? :O
         return new Color(this.r * c.r, this.g * c.g, this.b * c.b);
     }
