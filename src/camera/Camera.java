@@ -31,7 +31,6 @@ public abstract class Camera {
 	 *            Vector3 der Kamera
 	 * @param t
 	 *            Vector3 der Kamera
-	 *
 	 * @throws IllegalArgumentException
 	 */
 	public Camera(final Point3 e, final Vector3 g, final Vector3 t)

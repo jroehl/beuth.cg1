@@ -54,6 +54,7 @@ public class OrthographicCamera extends Camera {
 		final double doub2 = (s * ((y - (h - 1) / 2))) / (w - 1);
 		final Point3 o = e.add((u.mul(doub1).mul(a)).add(v.mul(doub2)));
 		return new Ray(o, super.w.mul(-1)); // vector d = vector w * (-1)
+
 	}
 
 	/**
