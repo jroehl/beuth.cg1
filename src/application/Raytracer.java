@@ -24,13 +24,14 @@ import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
 
+import material.Material;
+import material.SingleColorMaterial;
 import ray.Ray;
 import ray.World;
 import Matrizen_Vektoren_Bibliothek.Normal3;
 import Matrizen_Vektoren_Bibliothek.Point3;
 import Matrizen_Vektoren_Bibliothek.Vector3;
 import camera.Camera;
-import camera.OrthographicCamera;
 import color.Color;
 
 public class Raytracer extends Application {
@@ -142,56 +143,55 @@ public class Raytracer extends Application {
 	public void createWorld() {
 		// Plane wird erzeugt
 
-		final Color color1 = new Color(0, 1, 0);
+		final Material mat1 = new SingleColorMaterial(new Color(0, 1, 0));
 		final Point3 ap = new Point3(0, -1, 0);
 		final Normal3 np = new Normal3(0, 1, 0);
 
-		final Plane plane = new Plane(color1, ap, np);
+		final Plane plane = new Plane(mat1, ap, np);
 
 		// Sphere wird erzeugt
 
-		final Color color2 = new Color(1, 0, 0);
+		final Material mat2 = new SingleColorMaterial(new Color(1, 0, 0));
 		final Point3 cs = new Point3(0, 0, -3);
 		final double rs = 0.5;
 
-		final Sphere sphere = new Sphere(color2, cs, rs);
+		final Sphere sphere = new Sphere(mat1, cs, rs);
 
 		// Spheres1 & 2 werden erzeugt
 
 		final Point3 c1s = new Point3(-1, 0, -3);
 		final Point3 c2s = new Point3(1, 0, -6);
 
-		final Sphere sphere1 = new Sphere(color2, c1s, rs);
-		final Sphere sphere2 = new Sphere(color2, c2s, rs);
+		final Sphere sphere1 = new Sphere(mat2, c1s, rs);
+		final Sphere sphere2 = new Sphere(mat2, c2s, rs);
 
 		// Box wird erzeugt
-
-		final Color color3 = new Color(0, 0, 1);
+		final Material mat3 = new SingleColorMaterial(new Color(0, 0, 1));
 		final Point3 lbf = new Point3(-0.5, 0, -0.5);
 		final Point3 run = new Point3(0.5, 1, 0.5);
 
-		final AxisAlignedBox box = new AxisAlignedBox(color3, lbf, run);
+		final AxisAlignedBox box = new AxisAlignedBox(mat3, lbf, run);
 
 		// Triangle erzeugen
 
-		final Color color4 = new Color(1, 0, 1);
+		final Material mat4 = new SingleColorMaterial(new Color(1, 0, 1));
 		final Point3 at = new Point3(-0.5, 0.5, -3);
 		final Point3 bt = new Point3(0.5, 0.5, -3);
 		final Point3 ct = new Point3(0.5, -0.5, -3);
 
-		final Triangle triangle = new Triangle(color4, at, bt, ct);
+		final Triangle triangle = new Triangle(mat4, at, bt, ct);
 
 		// Welt wird erzeugt
 
 		final Color backgroundColor = new Color(0, 0, 0);
 
 		world = new World(backgroundColor);
-		// world.add(box);
-		// world.add(plane);
-		// world.add(sphere);
-		// world.add(triangle);
-		world.add(sphere1);
-		world.add(sphere2);
+		// world.addGeometry(box);
+		// world.addGeometry(plane);
+		// world.addGeometry(sphere);
+		// world.addGeometry(triangle);
+		world.addGeometry(sphere1);
+		world.addGeometry(sphere2);
 	}
 
 	/**
@@ -208,7 +208,7 @@ public class Raytracer extends Application {
 		final Vector3 t = new Vector3(0, 1, 0);
 		final double angle = Math.PI / 4;
 
-		camera = new OrthographicCamera(e, g, t, 3);
+		// camera = new OrthographicCamera(e, g, t, 3);
 		// camera = new PerspectiveCamera(e, g, t, angle);
 
 		// 2. Kamera für die AxisAlignedBox

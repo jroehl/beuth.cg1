@@ -5,6 +5,7 @@ import geometries.Hit;
 
 import java.util.ArrayList;
 
+import light.Light;
 import color.Color;
 
 /**
@@ -17,123 +18,143 @@ import color.Color;
  */
 public class World {
 
-    /**
-     * Wird verwendet wenn ein Strahl keine Geometrie trifft
-     */
-    Color backgroundColor;
+	/**
+	 * Wird verwendet wenn ein Strahl keine Geometrie trifft
+	 */
+	Color backgroundColor;
 
-    /**
-     * Liste zum Speichern der Geometrischen Elemente.
-     */
-    ArrayList<Geometry> objs = new ArrayList<Geometry>();
+	/**
+	 * Liste zum Speichern der Geometrischen Elemente.
+	 */
+	ArrayList<Geometry> objs = new ArrayList<Geometry>();
 
-    /**
-     * Konstruktor
-     *
-     * @param backgroundColor
-     * @throws IllegalArgumentException
-     */
-    public World(Color backgroundColor) throws IllegalArgumentException {
+	ArrayList<Light> lights = new ArrayList<Light>();
 
-        if (backgroundColor == null) {
-            throw new IllegalArgumentException("The backgroundColor cannot be null!");
-        }
+	/**
+	 * Konstruktor
+	 *
+	 * @param backgroundColor
+	 * @throws IllegalArgumentException
+	 */
+	public World(Color backgroundColor) throws IllegalArgumentException {
 
-        this.backgroundColor = backgroundColor;
-    }
+		if (backgroundColor == null) {
+			throw new IllegalArgumentException(
+					"The backgroundColor cannot be null!");
+		}
 
-    /**
-     * Testet den Uebergebene Strahl gegen alle Objekte der Szene. Und liefert
-     * den Schnittpunkt mit dem kleinsten positiven 𝑡.
-     *
-     * @param ray Strahl welcher auf Objekte Geschickt wird.
-     * @return Schnittpunkt mit dem kleinsten positiven t
-     * @throws IllegalArgumentException
-     */
-    public Color hit(Ray ray) throws IllegalArgumentException {
+		this.backgroundColor = backgroundColor;
+	}
 
-        if (ray == null) {
-            throw new IllegalArgumentException("The Ray cannot be null!");
-        }
+	/**
+	 * Testet den Uebergebene Strahl gegen alle Objekte der Szene. Und liefert
+	 * den Schnittpunkt mit dem kleinsten positiven 𝑡.
+	 *
+	 * @param ray
+	 *            Strahl welcher auf Objekte Geschickt wird.
+	 * @return Schnittpunkt mit dem kleinsten positiven t
+	 * @throws IllegalArgumentException
+	 */
+	public Color hit(Ray ray) throws IllegalArgumentException {
 
-        Hit hit = null;
+		if (ray == null) {
+			throw new IllegalArgumentException("The Ray cannot be null!");
+		}
 
-        for (final Geometry obj : objs) {
-            final Hit objHit = obj.hit(ray);
+		Hit hit = null;
 
-            if (objHit != null) {
-                if (hit == null || objHit.t < hit.t) {
-                    hit = objHit;
+		for (final Geometry obj : objs) {
+			final Hit objHit = obj.hit(ray);
 
-                }
-            }
-        }
+			if (objHit != null) {
+				if (hit == null || objHit.t < hit.t) {
+					hit = objHit;
 
-        if (hit != null) {
-            return hit.geo.color;
-        }
-        return backgroundColor;
+				}
+			}
+		}
 
-    }
+		if (hit != null) {
+			return hit.geo.material.colorFor(hit, this);
+		}
+		return backgroundColor;
 
-    /**
-     * Fügt ein neues Geometrisches-Objekt in die Liste der Objekte hinzu.
-     *
-     * @param obj Geometrisches-Objekt welches hinzugefügt werden soll.
-     * @throws IllegalArgumentException
-     */
-    public void add(Geometry obj) throws IllegalArgumentException {
-        if (obj == null) {
-            throw new IllegalArgumentException("The Geometry cannot be null!");
-        }
+	}
 
-        objs.add(obj);
-    }
+	/**
+	 * Fügt ein neues Geometrisches-Objekt in die Liste der Objekte hinzu.
+	 *
+	 * @param obj
+	 *            Geometrisches-Objekt welches hinzugefügt werden soll.
+	 * @throws IllegalArgumentException
+	 */
+	public void addGeometry(Geometry obj) throws IllegalArgumentException {
+		if (obj == null) {
+			throw new IllegalArgumentException("The Geometry cannot be null!");
+		}
 
-    /**
-     * Ueberschreibung der toString()-Methode.
-     */
-    @Override
-    public String toString() {
-        return "World [backgroundColor=" + backgroundColor + ", objs=" + objs
-                + "]";
-    }
+		objs.add(obj);
+	}
 
-    /**
-     * Ueberschreibung der hashCode()-Methode.
-     */
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result
-                + ((backgroundColor == null) ? 0 : backgroundColor.hashCode());
-        result = prime * result + ((objs == null) ? 0 : objs.hashCode());
-        return result;
-    }
+	/**
+	 * Fügt ein neues Licht-Objekt in die Liste der Lichter hinzu.
+	 *
+	 * @param obj
+	 *            Light-Objekt welches hinzugefügt werden soll.
+	 * @throws IllegalArgumentException
+	 */
+	public void addLight(Light light) throws IllegalArgumentException {
+		if (light == null) {
+			throw new IllegalArgumentException("The Light cannot be null!");
+		}
 
-    /**
-     * Ueberschreibung der equals()-Methode.
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        final World other = (World) obj;
-        if (backgroundColor == null) {
-            if (other.backgroundColor != null)
-                return false;
-        } else if (!backgroundColor.equals(other.backgroundColor))
-            return false;
-        if (objs == null) {
-            if (other.objs != null)
-                return false;
-        } else if (!objs.equals(other.objs))
-            return false;
-        return true;
-    }
+		lights.add(light);
+	}
+
+	/**
+	 * Ueberschreibung der toString()-Methode.
+	 */
+	@Override
+	public String toString() {
+		return "World [backgroundColor=" + backgroundColor + ", objs=" + objs
+				+ "]";
+	}
+
+	/**
+	 * Ueberschreibung der hashCode()-Methode.
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((backgroundColor == null) ? 0 : backgroundColor.hashCode());
+		result = prime * result + ((objs == null) ? 0 : objs.hashCode());
+		return result;
+	}
+
+	/**
+	 * Ueberschreibung der equals()-Methode.
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final World other = (World) obj;
+		if (backgroundColor == null) {
+			if (other.backgroundColor != null)
+				return false;
+		} else if (!backgroundColor.equals(other.backgroundColor))
+			return false;
+		if (objs == null) {
+			if (other.objs != null)
+				return false;
+		} else if (!objs.equals(other.objs))
+			return false;
+		return true;
+	}
 }
