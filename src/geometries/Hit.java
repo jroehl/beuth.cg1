@@ -1,6 +1,7 @@
 package geometries;
 
 import ray.Ray;
+import Matrizen_Vektoren_Bibliothek.Normal3;
 
 /**
  * Hit
@@ -25,6 +26,10 @@ public class Hit {
 	 * geo - Geometry Objekt
 	 */
 	public final Geometry geo;
+	/**
+	 * n - Normal3 Normale Objekt
+	 */
+	public final Normal3 n;
 
 	// public final Normal3 normSP;
 
@@ -39,8 +44,8 @@ public class Hit {
 	 *            Geometry Objekt
 	 * @throws IllegalArgumentException
 	 */
-	public Hit(final double t, final Ray ray, final Geometry geo)
-			throws IllegalArgumentException {
+	public Hit(final double t, final Ray ray, final Geometry geo,
+			final Normal3 n) throws IllegalArgumentException {
 
 		if (ray == null) {
 			throw new IllegalArgumentException("The Ray cannot be null!");
@@ -51,6 +56,7 @@ public class Hit {
 		this.t = t;
 		this.ray = ray;
 		this.geo = geo;
+		this.n = n;
 
 	}
 

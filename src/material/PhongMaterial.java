@@ -5,9 +5,13 @@ import ray.World;
 import color.Color;
 
 public class PhongMaterial extends Material {
-	private final Color color;
-	public PhongMaterial(Color color) {
-		this.color = color;
+	private final Color diffuse;
+	private final Color specular;
+	private final int exponent;
+	public PhongMaterial(Color diffuse, Color specular, int exponent) {
+		this.diffuse = diffuse;
+		this.specular = specular;
+		this.exponent = exponent;
 	}
 
 	@Override

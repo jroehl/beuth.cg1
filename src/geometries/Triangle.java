@@ -3,6 +3,7 @@ package geometries;
 import material.Material;
 import ray.Ray;
 import Matrizen_Vektoren_Bibliothek.Mat3x3;
+import Matrizen_Vektoren_Bibliothek.Normal3;
 import Matrizen_Vektoren_Bibliothek.Point3;
 import Matrizen_Vektoren_Bibliothek.Vector3;
 
@@ -60,6 +61,7 @@ public class Triangle extends Geometry {
 		this.a = a;
 		this.b = b;
 		this.c = c;
+
 	}
 
 	/**
@@ -91,11 +93,18 @@ public class Triangle extends Geometry {
 		final double t = matA.changeCol3(vec).determinant / matA.determinant;
 
 		if ((beta > 0 && gamma > 0) && (beta + gamma) <= 1) {
-			return new Hit(t, ray, this);
+			return new Hit(t, ray, this, createNormalToSurface());
 		}
-
 		return null;
+	}
 
+	private Normal3 createNormalToSurface() {
+		final Vector3 v = this.b.sub(this.a);
+		final Vector3 w = this.c.sub(this.a);
+
+		final Normal3 normalToSurface = v.x(w).asNormal();
+
+		return normalToSurface;
 	}
 
 	/**

@@ -80,6 +80,7 @@ public class AxisAlignedBox extends Geometry {
 		final Plane[] planes = {b1, b2, b3, f1, f2, f3};
 
 		double tf = -1;
+		Normal3 nf = null;
 
 		for (final Plane plane : planes) {
 
@@ -91,13 +92,14 @@ public class AxisAlignedBox extends Geometry {
 					final double t = plane.a.sub(ray.origin).dot(plane.n) / d;
 
 					if (t > tf) {
+						nf = plane.n;
 						tf = t;
 					}
 				}
 			}
 		}
 
-		final Hit hit = new Hit(tf, ray, this);
+		final Hit hit = new Hit(tf, ray, this, nf);
 		final Point3 p = hit.ray.at(hit.t);
 		final double eps = 0.00001;
 

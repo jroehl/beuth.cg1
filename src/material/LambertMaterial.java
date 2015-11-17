@@ -5,13 +5,10 @@ import ray.World;
 import color.Color;
 
 public class LambertMaterial extends Material {
-	private final Color diffuse;
-	private final Color specular;
-	private final int exponent;
-	public LambertMaterial(Color diffuse, Color specular, int exponent) {
-		this.diffuse = diffuse;
-		this.specular = specular;
-		this.exponent = exponent;
+	private final Color color;
+
+	public LambertMaterial(Color color) {
+		this.color = color;
 	}
 
 	@Override

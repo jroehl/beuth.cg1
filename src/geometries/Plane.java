@@ -75,7 +75,7 @@ public class Plane extends Geometry {
 			// hier war ein
 			// fehle
 			if (t > 0) {
-				return new Hit(t, ray, this);
+				return new Hit(t, ray, this, this.n);
 			}
 		}
 		return null;

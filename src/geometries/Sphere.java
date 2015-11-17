@@ -2,6 +2,7 @@ package geometries;
 
 import material.Material;
 import ray.Ray;
+import Matrizen_Vektoren_Bibliothek.Normal3;
 import Matrizen_Vektoren_Bibliothek.Point3;
 
 /**
@@ -17,6 +18,7 @@ public class Sphere extends Geometry {
 	/**
 	 * center - Point3 Objekt der Sphere
 	 */
+
 	private final Point3 center;
 	/**
 	 * radius - double wert der Sphere
@@ -74,16 +76,25 @@ public class Sphere extends Geometry {
 		if (d > 0) {
 			final double t1 = (-b + Math.sqrt(d)) / (2 * a);
 			final double t2 = (-b - Math.sqrt(d)) / (2 * a);
+			final double minT = Math.min(t1, t2);
+			return new Hit(minT, ray, this, createNormalToPoint(ray, minT));
 
-			return new Hit(Math.min(t1, t2), ray, this);
 		} else if (d == 0) {
 
 			final double t = -b / (2 * a);
-			return new Hit(t, ray, this);
+
+			return new Hit(t, ray, this, createNormalToPoint(ray, t));
 
 		}
 
 		return null;
+
+	}
+
+	public Normal3 createNormalToPoint(Ray ray, double t) {
+		final Point3 p = ray.origin.add(ray.direction.mul(t));
+		final Normal3 normalToPoint = p.sub(center).mul(-1).asNormal();
+		return normalToPoint;
 
 	}
 

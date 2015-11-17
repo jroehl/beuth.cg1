@@ -6,16 +6,18 @@ import color.Color;
 
 public class PointLight extends Light {
 
-	private final Point3 position;
+	private final Point3 pl;
 
-	public PointLight(Color color, Point3 position) {
-		super(color);
-		this.position = position;
+	public PointLight(Color cl, Point3 position) {
+		super(cl);
+		this.pl = position;
 	}
 
 	@Override
 	public boolean illuminates(Point3 p) {
-		return false;
+		final Vector3 pl_point = p.sub(pl);
+
+		return ((pl_point.dot(n)) == true);
 	}
 
 	@Override
