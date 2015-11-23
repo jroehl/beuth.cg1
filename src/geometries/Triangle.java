@@ -31,19 +31,16 @@ public class Triangle extends Geometry {
 	 */
 	private final Point3 c;
 
-	/**
-	 * Konstruktor: Triangle
-	 *
-	 * @param color
-	 *            color Objekt der Geometrie
-	 * @param a
-	 *            Point3 Objekt des Triangle
-	 * @param b
-	 *            Point3 Objekt des Triangle
-	 * @param c
-	 *            Point3 Objekt des Triangle
-	 * @throws IllegalArgumentException
-	 */
+	private Normal3 na;
+	private Normal3 nb;
+	private Normal3 nc;
+	private double alpha;
+	private double beta;
+	private double gamma;
+
+	// Konstruktor ohne übergebene Normalen - es wird die Normale zur
+	// Dreiecksoberfläche errechnet und diese dann für die drei Eck-Normalen
+	// eingesetzt - wir bekommen ein ebenes Dreieck
 	public Triangle(Material material, Point3 a, Point3 b, Point3 c)
 			throws IllegalArgumentException {
 		super(material);
@@ -61,6 +58,34 @@ public class Triangle extends Geometry {
 		this.a = a;
 		this.b = b;
 		this.c = c;
+
+		final Normal3 n0 = createNormalToSurface();
+
+		this.na = n0;
+		this.nb = n0;
+		this.nc = n0;
+
+	}
+
+	/**
+	 * Konstruktor: Triangle
+	 *
+	 * @param color
+	 *            color Objekt der Geometrie
+	 * @param a
+	 *            Point3 Objekt des Triangle
+	 * @param b
+	 *            Point3 Objekt des Triangle
+	 * @param c
+	 *            Point3 Objekt des Triangle
+	 * @throws IllegalArgumentException
+	 */
+	public Triangle(Material material, Point3 a, Point3 b, Point3 c,
+			Normal3 na, Normal3 nb, Normal3 nc) throws IllegalArgumentException {
+		this(material, a, b, c);
+		this.na = na;
+		this.nb = nb;
+		this.nc = nc;
 
 	}
 
@@ -85,15 +110,20 @@ public class Triangle extends Geometry {
 				ray.direction.z);
 
 		final Vector3 vec = a.sub(ray.origin);
-
-		final double beta = matA.changeCol1(vec).determinant / matA.determinant;
-		final double gamma = matA.changeCol2(vec).determinant
-				/ matA.determinant;
+		alpha = matA.changeCol3(vec).determinant / matA.determinant; // werden
+																		// die
+																		// bar.
+																		// Koord.
+																		// hier
+																		// richtig
+																		// berechnet???
+		beta = matA.changeCol1(vec).determinant / matA.determinant;
+		gamma = matA.changeCol2(vec).determinant / matA.determinant;
 
 		final double t = matA.changeCol3(vec).determinant / matA.determinant;
 
 		if ((beta > 0 && gamma > 0) && (beta + gamma) <= 1) {
-			return new Hit(t, ray, this, createNormalToSurface());
+			return new Hit(t, ray, this, createNormalToPoint());
 		}
 		return null;
 	}
@@ -105,6 +135,12 @@ public class Triangle extends Geometry {
 		final Normal3 normalToSurface = v.x(w).asNormal();
 
 		return normalToSurface;
+	}
+
+	private Normal3 createNormalToPoint() {
+		final Normal3 nPoint = na.mul(alpha).add(nb.mul(beta))
+				.add(nc.mul(gamma));
+		return nPoint;
 	}
 
 	/**

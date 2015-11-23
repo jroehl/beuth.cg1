@@ -15,14 +15,16 @@ public class PointLight extends Light {
 
 	@Override
 	public boolean illuminates(Point3 p) {
-		final Vector3 pl_point = p.sub(pl);
+		// final Vector3 pl_point = p.sub(pl);
+		// return ((pl_point.dot(n) > 1) == true);
+		return true;
 
-		return ((pl_point.dot(n)) == true);
+		// ray im konstruktor übergeben????
 	}
 
 	@Override
 	public Vector3 directionFrom(Point3 p) {
-		return null;
+		return pl.sub(p).normalized();
 	}
 
 }
