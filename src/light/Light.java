@@ -19,4 +19,8 @@ public abstract class Light {
 	public Vector3 directionFrom(Point3 p) {
 		return null;
 	}
+
+	public Color getColor() {
+		return color;
+	}
 }

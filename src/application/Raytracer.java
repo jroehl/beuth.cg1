@@ -1,23 +1,15 @@
 package application;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-
-import javax.imageio.ImageIO;
-
-import Matrizen_Vektoren_Bibliothek.Normal3;
-import Matrizen_Vektoren_Bibliothek.Point3;
-import Matrizen_Vektoren_Bibliothek.Vector3;
-import camera.Camera;
-import camera.OrthographicCamera;
-import camera.PerspectiveCamera;
-import color.Color;
 import geometries.AxisAlignedBox;
 import geometries.Geometry;
 import geometries.Plane;
 import geometries.Sphere;
 import geometries.Triangle;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Group;
@@ -32,9 +24,19 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import javax.imageio.ImageIO;
+
 import material.SingleColorMaterial;
 import ray.Ray;
 import ray.World;
+import Matrizen_Vektoren_Bibliothek.Normal3;
+import Matrizen_Vektoren_Bibliothek.Point3;
+import Matrizen_Vektoren_Bibliothek.Vector3;
+import camera.Camera;
+import camera.OrthographicCamera;
+import camera.PerspectiveCamera;
+import color.Color;
 
 public class Raytracer extends Application {
 
@@ -164,24 +166,24 @@ public class Raytracer extends Application {
 		// Menu - Graphics
 		{
 			// AlignBox
-			generateGraphics(primaryStage, imgView, axisAlignedBox,
-					new AxisAlignedBox(new SingleColorMaterial(new Color(0, 0, 1)), new Point3(-0.5, 0, -0.5), new Point3(0.5, 1, 0.5)));
+			generateGraphics(primaryStage, imgView, axisAlignedBox, new AxisAlignedBox(new SingleColorMaterial(new Color(0, 0, 1)),
+					new Point3(-0.5, 0, -0.5), new Point3(0.5, 1, 0.5)));
 
 			// Plane
-			generateGraphics(primaryStage, imgView, plane,
-					new Plane(new SingleColorMaterial(new Color(0, 1, 0)), new Point3(0, -1, 0), new Normal3(0, 1, 0)));
+			generateGraphics(primaryStage, imgView, plane, new Plane(new SingleColorMaterial(new Color(0, 1, 0)), new Point3(0, -1, 0),
+					new Normal3(0, 1, 0)));
 
 			// Spheren
-			generateGraphics(primaryStage, imgView, sphere0,
-					new Sphere(new SingleColorMaterial(new Color(1, 0, 0)), new Point3(0, 0, -3), 0.5));
-			generateGraphics(primaryStage, imgView, sphere1,
-					new Sphere(new SingleColorMaterial(new Color(1, 0, 0)), new Point3(-1, 0, -3), 0.5));
-			generateGraphics(primaryStage, imgView, sphere2,
-					new Sphere(new SingleColorMaterial(new Color(1, 0, 0)), new Point3(1, 0, -6), 0.5));
+			generateGraphics(primaryStage, imgView, sphere0, new Sphere(new SingleColorMaterial(new Color(1, 0, 0)), new Point3(0, 0, -3),
+					0.5));
+			generateGraphics(primaryStage, imgView, sphere1, new Sphere(new SingleColorMaterial(new Color(1, 0, 0)), new Point3(-1, 0, -3),
+					0.5));
+			generateGraphics(primaryStage, imgView, sphere2, new Sphere(new SingleColorMaterial(new Color(1, 0, 0)), new Point3(1, 0, -6),
+					0.5));
 
 			// Triangle
-			generateGraphics(primaryStage, imgView, triangle, new Triangle(new SingleColorMaterial(new Color(1, 0, 1)),
-					new Point3(-0.5, 0.5, -3), new Point3(0.5, 0.5, -3), new Point3(0.5, -0.5, -3)));
+			generateGraphics(primaryStage, imgView, triangle, new Triangle(new SingleColorMaterial(new Color(1, 0, 1)), new Point3(-0.5,
+					0.5, -3), new Point3(0.5, 0.5, -3), new Point3(0.5, -0.5, -3)));
 		}
 
 		// Menu - Camera
@@ -189,24 +191,24 @@ public class Raytracer extends Application {
 			// Orthographic Camera
 			orthographicCamera.setOnAction(event -> {
 				// 1. Kamera - PerspectiveCamera mit geradem Blick
-				camera = new OrthographicCamera(new Point3(0, 0, 0), new Vector3(0, 0, -1), new Vector3(0, 1, 0), 3);
+					camera = new OrthographicCamera(new Point3(0, 0, 0), new Vector3(0, 0, -1), new Vector3(0, 1, 0), 3);
 
-				orthographicCamera.setSelected(true);
-				perspectiveCamera.setSelected(false);
+					orthographicCamera.setSelected(true);
+					perspectiveCamera.setSelected(false);
 
-				rerender(primaryStage, imgView);
-			});
+					rerender(primaryStage, imgView);
+				});
 
 			// Perspective Camera
 			perspectiveCamera.setOnAction(event -> {
 				// 2. Kamera für die AxisAlignedBox
-				camera = new PerspectiveCamera(new Point3(3, 3, 3), new Vector3(-3, -3, -3), new Vector3(0, 1, 0), Math.PI / 4);
+					camera = new PerspectiveCamera(new Point3(3, 3, 3), new Vector3(-3, -3, -3), new Vector3(0, 1, 0), Math.PI / 4);
 
-				orthographicCamera.setSelected(false);
-				perspectiveCamera.setSelected(true);
+					orthographicCamera.setSelected(false);
+					perspectiveCamera.setSelected(true);
 
-				rerender(primaryStage, imgView);
-			});
+					rerender(primaryStage, imgView);
+				});
 		}
 
 		// Menu - Backgrounsd
@@ -215,8 +217,8 @@ public class Raytracer extends Application {
 		}
 
 		/*
-		 * Über einen AddListener an der HeightProperty und der WidthProperty der primaryStage wird das neu Zeichnen des
-		 * Bildes aufgerufen
+		 * Über einen AddListener an der HeightProperty und der WidthProperty
+		 * der primaryStage wird das neu Zeichnen des Bildes aufgerufen
 		 */
 		primaryStage.heightProperty().addListener((ChangeEvent) -> {
 			rerender(primaryStage, imgView);
@@ -230,7 +232,7 @@ public class Raytracer extends Application {
 
 	/**
 	 * Hilfsmethode welche die Menueinträge für die einzelnen Objekte generiert.
-	 * 
+	 *
 	 * @param primaryStage
 	 * @param imgView
 	 * @param menuItem
@@ -261,7 +263,7 @@ public class Raytracer extends Application {
 		final Color backgroundColor = new Color(0, 0, 0);
 		world = new World(backgroundColor);
 
-		for (Geometry obj : graphics) {
+		for (final Geometry obj : graphics) {
 			world.addGeometry(obj);
 		}
 	}

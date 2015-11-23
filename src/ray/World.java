@@ -22,13 +22,16 @@ public class World {
 	 * Wird verwendet wenn ein Strahl keine Geometrie trifft
 	 */
 	Color backgroundColor;
+	public Color ambient; // wird auf die ganze Szene addiert, um alles heller
+							// zu
+	// machen
 
 	/**
 	 * Liste zum Speichern der Geometrischen Elemente.
 	 */
 	ArrayList<Geometry> objs = new ArrayList<Geometry>();
 
-	ArrayList<Light> lights = new ArrayList<Light>();
+	public ArrayList<Light> lights = new ArrayList<Light>();
 
 	/**
 	 * Konstruktor
@@ -39,8 +42,7 @@ public class World {
 	public World(Color backgroundColor) throws IllegalArgumentException {
 
 		if (backgroundColor == null) {
-			throw new IllegalArgumentException(
-					"The backgroundColor cannot be null!");
+			throw new IllegalArgumentException("The backgroundColor cannot be null!");
 		}
 
 		this.backgroundColor = backgroundColor;
@@ -117,8 +119,7 @@ public class World {
 	 */
 	@Override
 	public String toString() {
-		return "World [backgroundColor=" + backgroundColor + ", objs=" + objs
-				+ "]";
+		return "World [backgroundColor=" + backgroundColor + ", objs=" + objs + "]";
 	}
 
 	/**
@@ -128,8 +129,7 @@ public class World {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((backgroundColor == null) ? 0 : backgroundColor.hashCode());
+		result = prime * result + ((backgroundColor == null) ? 0 : backgroundColor.hashCode());
 		result = prime * result + ((objs == null) ? 0 : objs.hashCode());
 		return result;
 	}

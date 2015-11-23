@@ -110,13 +110,8 @@ public class Triangle extends Geometry {
 				ray.direction.z);
 
 		final Vector3 vec = a.sub(ray.origin);
-		alpha = matA.changeCol3(vec).determinant / matA.determinant; // werden
-																		// die
-																		// bar.
-																		// Koord.
-																		// hier
-																		// richtig
-																		// berechnet???
+		alpha = matA.changeCol3(vec).determinant / matA.determinant; // werden die bar. Koord. hier richtig berechnet?
+
 		beta = matA.changeCol1(vec).determinant / matA.determinant;
 		gamma = matA.changeCol2(vec).determinant / matA.determinant;
 
