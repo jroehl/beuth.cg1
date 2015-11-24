@@ -28,22 +28,17 @@ public class LambertMaterial extends Material {
 	@Override
 	public Color colorFor(Hit hit, World world) {
 
-		Color c = cd.mul(world.ambient);
+		Color returnColor = cd.mul(world.ambient);
 
-		for (final Light li : world.lights) {
+		for (Light light : world.lights) {
+			Color lightColor = light.color;
+				final Vector3 lightVector = light.directionFrom(
+						hit.ray.at(hit.t)).normalized();
+				final double max = Math.max(0.0, lightVector.dot(hit.n));
 
-			final Color lightColor = li.color;
-
-			final Vector3 lightVector = li.directionFrom(
-					hit.ray.at(hit.t)).normalized();
-
-			final double max = Math.max(0.0, lightVector.dot(hit.n));
-
-			c = c.add(c.mul(lightColor).mul(max));
-
-			// STIMMT DAS?????
+				returnColor = returnColor.add(cd.mul(lightColor).mul(max));
 		}
-		return c;
+		return returnColor;
 
 	}
 }

@@ -16,16 +16,6 @@ public class PointLight extends Light {
 
 	@Override
 	public boolean illuminates(Point3 p) {
-		// final Vector3 pl_point = p.sub(pl);
-		// return ((pl_point.dot(n) > 1) == true);
-
-//		Ray r = new Ray(p, directionFrom(p));
-//		double t1 = r.tOf(pl);
-//		if (world.hit(r).t < t1) {
-//			return false;
-//		} else {
-//			return true;
-//		}
 
 		return true;
 

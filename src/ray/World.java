@@ -79,7 +79,6 @@ public class World {
 		}
 
 		if (hit != null) {
-
 			return hit.geo.material.colorFor(hit, this);
 		}
 		return backgroundColor;
