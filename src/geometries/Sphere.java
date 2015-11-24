@@ -92,9 +92,10 @@ public class Sphere extends Geometry {
 	}
 
 	public Normal3 createNormalToPoint(Ray ray, double t) {
-		final Point3 p = ray.origin.add(ray.direction.mul(t));
-		final Normal3 normalToPoint = p.sub(center).asNormal();
-		return normalToPoint;
+
+		final Normal3 normal = ray.at(t).sub(this.center).normalized().asNormal();
+
+		return normal;
 
 	}
 
