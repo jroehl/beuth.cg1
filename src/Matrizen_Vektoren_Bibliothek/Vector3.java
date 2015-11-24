@@ -179,10 +179,14 @@ public class Vector3 {
 	public Vector3 reflectedOn(final Normal3 n) throws IllegalArgumentException {
 
 		if (n == null) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("The normal cannot be null!");
 		}
 
-		return (this.mul(-1)).add(n.mul(2).mul(n.dot(this)));
+		final double dot = dot(n);
+
+		return new Vector3( 2 * dot * n.x - x , 2 * dot * n.y - y , 2 * dot * n.z - z );
+
+//		return (this.mul(-1)).add(n.mul(2).mul(n.dot(this)));
 
 	}
 

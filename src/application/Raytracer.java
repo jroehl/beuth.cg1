@@ -170,14 +170,14 @@ public class Raytracer extends Application {
 		// Menu - Graphics
 		{
 			// AlignBox
-			generateGraphics(primaryStage, imgView, axisAlignedBox, new AxisAlignedBox(new LambertMaterial(new Color(0, 0, 1)), new Point3(-1.5, 0.5, 0.5), new Point3(-0.5, 1.5, 1.5)));
+			generateGraphics(primaryStage, imgView, axisAlignedBox, new AxisAlignedBox(new PhongMaterial(new Color(0, 0, 1), new Color(1,1,1), 64), new Point3(-1.5, 0.5, 0.5), new Point3(-0.5, 1.5, 1.5)));
 
 			// Plane
-			generateGraphics(primaryStage, imgView, plane, new Plane(new LambertMaterial(new Color(0, 1, 0)),
+			generateGraphics(primaryStage, imgView, plane, new Plane(new PhongMaterial(new Color(0, 1, 0), new Color(1,1,1), 64),
 					new Point3(0, 0, 0), new Normal3(0, 1, 0)));
 
 			// Spheren
-			generateGraphics(primaryStage, imgView, sphere0, new Sphere(new LambertMaterial(new Color(1, 0, 0)),
+			generateGraphics(primaryStage, imgView, sphere0, new Sphere(new PhongMaterial(new Color(1, 0, 0), new Color(1,1,1), 64),
 					new Point3(1, 1, 1), 0.5));
 			generateGraphics(primaryStage, imgView, sphere1,
 					new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(-1, 0, -3), 0.5));
@@ -185,7 +185,7 @@ public class Raytracer extends Application {
 					new Point3(1, 0, -6), 0.5));
 
 			// Triangle
-			generateGraphics(primaryStage, imgView, triangle, new Triangle(new LambertMaterial(new Color(1, 0, 1)),
+			generateGraphics(primaryStage, imgView, triangle, new Triangle(new PhongMaterial(new Color(1, 0, 1), new Color(1,1,1), 64),
 					new Point3(0, 0, -1), new Point3(1, 0, -1), new Point3(1, 1, -1)));
 		}
 

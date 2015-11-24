@@ -16,10 +16,7 @@ public class PointLight extends Light {
 
 	@Override
 	public boolean illuminates(Point3 p) {
-
 		return true;
-
-		// ray im konstruktor übergeben????
 	}
 
 	@Override

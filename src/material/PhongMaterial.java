@@ -9,77 +9,43 @@ import ray.World;
 import color.Color;
 
 public class PhongMaterial extends Material {
-	private final Color diffuse;
-	private final Color specular;
-	private final int exponent;
+    private final Color diffuse;
+    private final Color specular;
+    private final int exponent;
 
-	public PhongMaterial(Color diffuse, Color specular, int exponent) {
-		this.diffuse = diffuse;
-		this.specular = specular;
-		this.exponent = exponent;
-	}
+    public PhongMaterial(Color diffuse, Color specular, int exponent) {
+        this.diffuse = diffuse;
+        this.specular = specular;
+        this.exponent = exponent;
+    }
 
-	@Override
-	// public Color colorFor(Hit hit, World world) {
-	// final Color c = diffuse.mul(world.ambient);
-	// for (int i = 0; i < world.lights.size(); i++) {
-	//
-	// c.add(diffuse.mul(world.lights.get(i).getColor()).mul(
-	// Math.max(0,
-	// world.lights.get(i).directionFrom(hit.ray.at(hit.t)).dot(hit.n)))).add(
-	// specular.mul(world.lights.get(i).getColor()).mul(
-	// Math.max(
-	// 0,
-	// (hit.ray.origin.sub(hit.ray.at(hit.t)).dot(world.lights.get(i).directionFrom(hit.ray.at(hit.t))
-	// .reflectedOn(hit.n))))));
-	//
-	// }
-	//
-	// return c;
-	//
-	// }
-	public Color colorFor(Hit hit, World world) {
-//		Color c = diffuse.mul(world.ambient);
-//		for (final Light li : world.lights) {
-//			c = c.add(diffuse.mul(li.color).mul(Math.max(0, li.directionFrom(hit.ray.at(hit.t)).dot(hit.n)))).add(
-//					specular.mul(li.color)
-//							.mul(Math.max(0,
-//									(hit.ray.origin.sub(hit.ray.at(hit.t)).dot(li.directionFrom(hit.ray.at(hit.t)).reflectedOn(hit.n))))));
-//
-//		}
-//
-//		return c;
+    @Override
+    public Color colorFor(Hit hit, World world) {
 
-		final Normal3 normal = hit.n;
+        Color returnColor = diffuse.mul(world.ambient);
 
-		final Point3 point = hit.ray.at(hit.t);
+        for (Light light : world.lights) {
 
-		Color color = world.ambient.mul(diffuse);
+            Color lightColor = light.color;
 
-		final Vector3 e = (hit.ray.direction.mul(-1)).normalized();
+            final Vector3 lightVector = light.directionFrom(
+                    hit.ray.at(hit.t)).normalized();
 
-		Color lightColor = new Color(0, 0, 0);
+            final Vector3 reflectedVector = lightVector.reflectedOn(hit.n);
 
-		for (Light light : world.lights) {
+            final Vector3 e = (hit.ray.direction.mul(-1)).normalized();
 
-				final Vector3 lightVector = light.directionFrom(point)
-						.normalized();
-				final Vector3 reflectedVector = lightVector.reflectedOn(normal);
+            final double max = Math.max(0.0, lightVector.dot(hit.n));
 
-				final double maxNL = Math.max(0.0, lightVector.dot(normal));
-				final double maxER = Math.pow(
-						Math.max(0.0, reflectedVector.dot(e)), exponent);
+            returnColor = returnColor.add(diffuse.mul(lightColor).mul(max));
 
-				lightColor = lightColor
-						.add(light.color.mul(diffuse).mul(maxNL)).add(
-								light.color.mul(specular).mul(maxER));
+            returnColor = returnColor.add(specular.mul(lightColor.mul(Math.pow(Math.max(0.0, reflectedVector.dot(e)), exponent))));
 
-				color = color.add(lightColor);
+        }
 
-		}
+        return returnColor;
 
-		return color;
 
-	}
+    }
 
 }
