@@ -6,7 +6,7 @@ import color.Color;
 
 public abstract class Light {
 
-	private final Color color;
+	public final Color color;
 
 	public Light(Color color) {
 		this.color = color;
@@ -20,7 +20,4 @@ public abstract class Light {
 		return null;
 	}
 
-	public Color getColor() {
-		return color;
-	}
 }

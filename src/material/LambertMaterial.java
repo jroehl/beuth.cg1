@@ -26,10 +26,9 @@ public class LambertMaterial extends Material {
 	// }
 	@Override
 	public Color colorFor(Hit hit, World world) {
-		final Color c = cd.mul(world.ambient);
+		Color c = cd.mul(world.ambient);
 		for (final Light li : world.lights) {
-
-			c.add(cd.mul(li.getColor()).mul(Math.max(0, li.directionFrom(hit.ray.at(hit.t)).dot(hit.n))));
+			c = c.add(cd.mul(li.color).mul(Math.max(0, li.directionFrom(hit.ray.at(hit.t)).dot(hit.n))));
 			// STIMMT DAS?????
 		}
 		return c;

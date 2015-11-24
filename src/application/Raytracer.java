@@ -27,6 +27,7 @@ import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
 
+import light.PointLight;
 import material.LambertMaterial;
 import material.PhongMaterial;
 import ray.Ray;
@@ -279,6 +280,7 @@ public class Raytracer extends Application {
 
 		final Color backgroundColor = new Color(0, 0, 0);
 		world = new World(backgroundColor);
+		world.addLight(new PointLight(new Color(1, 1, 0), new Point3(1, 1, 1)));
 
 		for (final Geometry obj : graphics) {
 			world.addGeometry(obj);

@@ -36,10 +36,10 @@ public class PhongMaterial extends Material {
 	//
 	// }
 	public Color colorFor(Hit hit, World world) {
-		final Color c = diffuse.mul(world.ambient);
+		Color c = diffuse.mul(world.ambient);
 		for (final Light li : world.lights) {
-			c.add(diffuse.mul(li.getColor()).mul(Math.max(0, li.directionFrom(hit.ray.at(hit.t)).dot(hit.n)))).add(
-					specular.mul(li.getColor())
+			c = c.add(diffuse.mul(li.color).mul(Math.max(0, li.directionFrom(hit.ray.at(hit.t)).dot(hit.n)))).add(
+					specular.mul(li.color)
 							.mul(Math.max(0,
 									(hit.ray.origin.sub(hit.ray.at(hit.t)).dot(li.directionFrom(hit.ray.at(hit.t)).reflectedOn(hit.n))))));
 
