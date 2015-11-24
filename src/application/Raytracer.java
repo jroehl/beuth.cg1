@@ -27,7 +27,7 @@ import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
 
-import material.SingleColorMaterial;
+import material.LambertMaterial;
 import ray.Ray;
 import ray.World;
 import Matrizen_Vektoren_Bibliothek.Normal3;
@@ -166,24 +166,22 @@ public class Raytracer extends Application {
 		// Menu - Graphics
 		{
 			// AlignBox
-			generateGraphics(primaryStage, imgView, axisAlignedBox, new AxisAlignedBox(new SingleColorMaterial(new Color(0, 0, 1)),
-					new Point3(-0.5, 0, -0.5), new Point3(0.5, 1, 0.5)));
+			generateGraphics(primaryStage, imgView, axisAlignedBox, new AxisAlignedBox(new LambertMaterial(new Color(0, 0, 1)), new Point3(
+					-0.5, 0, -0.5), new Point3(0.5, 1, 0.5)));
 
 			// Plane
-			generateGraphics(primaryStage, imgView, plane, new Plane(new SingleColorMaterial(new Color(0, 1, 0)), new Point3(0, -1, 0),
+			generateGraphics(primaryStage, imgView, plane, new Plane(new LambertMaterial(new Color(0, 1, 0)), new Point3(0, -1, 0),
 					new Normal3(0, 1, 0)));
 
 			// Spheren
-			generateGraphics(primaryStage, imgView, sphere0, new Sphere(new SingleColorMaterial(new Color(1, 0, 0)), new Point3(0, 0, -3),
-					0.5));
-			generateGraphics(primaryStage, imgView, sphere1, new Sphere(new SingleColorMaterial(new Color(1, 0, 0)), new Point3(-1, 0, -3),
-					0.5));
-			generateGraphics(primaryStage, imgView, sphere2, new Sphere(new SingleColorMaterial(new Color(1, 0, 0)), new Point3(1, 0, -6),
-					0.5));
+			generateGraphics(primaryStage, imgView, sphere0, new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(0, 0, -3), 0.5));
+			generateGraphics(primaryStage, imgView, sphere1,
+					new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(-1, 0, -3), 0.5));
+			generateGraphics(primaryStage, imgView, sphere2, new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(1, 0, -6), 0.5));
 
 			// Triangle
-			generateGraphics(primaryStage, imgView, triangle, new Triangle(new SingleColorMaterial(new Color(1, 0, 1)), new Point3(-0.5,
-					0.5, -3), new Point3(0.5, 0.5, -3), new Point3(0.5, -0.5, -3)));
+			generateGraphics(primaryStage, imgView, triangle, new Triangle(new LambertMaterial(new Color(1, 0, 1)), new Point3(-0.5, 0.5,
+					-3), new Point3(0.5, 0.5, -3), new Point3(0.5, -0.5, -3)));
 		}
 
 		// Menu - Camera

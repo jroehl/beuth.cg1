@@ -22,8 +22,10 @@ public class World {
 	 * Wird verwendet wenn ein Strahl keine Geometrie trifft
 	 */
 	Color backgroundColor;
-	public Color ambient; // wird auf die ganze Szene addiert, um alles heller
-							// zu
+	public Color ambient = new Color(0.5, 0.5, 0.5); // wird auf die ganze Szene
+														// addiert, um alles
+														// heller
+	// zu
 	// machen
 
 	/**
