@@ -1,5 +1,6 @@
 package material;
 
+import Matrizen_Vektoren_Bibliothek.Vector3;
 import geometries.Hit;
 import light.Light;
 import ray.World;
@@ -26,9 +27,20 @@ public class LambertMaterial extends Material {
 	// }
 	@Override
 	public Color colorFor(Hit hit, World world) {
+
 		Color c = cd.mul(world.ambient);
+
 		for (final Light li : world.lights) {
-			c = c.add(cd.mul(li.color).mul(Math.max(0, li.directionFrom(hit.ray.at(hit.t)).dot(hit.n))));
+
+			final Color lightColor = li.color;
+
+			final Vector3 lightVector = li.directionFrom(
+					hit.ray.at(hit.t)).normalized();
+
+			final double max = Math.max(0.0, lightVector.dot(hit.n));
+
+			c = c.add(c.mul(lightColor).mul(max));
+
 			// STIMMT DAS?????
 		}
 		return c;
