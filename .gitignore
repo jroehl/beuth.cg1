@@ -43,3 +43,11 @@ out/production/Beuth_CGI/test_Matrizen_Vektoren_Bibliothek/Normal3Test.class
 out/production/Beuth_CGI/test_Matrizen_Vektoren_Bibliothek/Point3Test.class
 out/production/Beuth_CGI/test_Matrizen_Vektoren_Bibliothek/Vector3Test.class
 AxisAlignedBox2.class
+out/production/Beuth_CGI/light/DirectionalLight.class
+out/production/Beuth_CGI/light/Light.class
+out/production/Beuth_CGI/light/PointLight.class
+out/production/Beuth_CGI/light/SpotLight.class
+out/production/Beuth_CGI/material/LambertMaterial.class
+out/production/Beuth_CGI/material/Material.class
+out/production/Beuth_CGI/material/PhongMaterial.class
+out/production/Beuth_CGI/material/SingleColorMaterial.class

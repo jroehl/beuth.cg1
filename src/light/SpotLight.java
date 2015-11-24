@@ -3,6 +3,8 @@ package light;
 import Matrizen_Vektoren_Bibliothek.Point3;
 import Matrizen_Vektoren_Bibliothek.Vector3;
 import color.Color;
+import geometries.Hit;
+import ray.Ray;
 
 public class SpotLight extends Light {
 
@@ -20,12 +22,31 @@ public class SpotLight extends Light {
 
 	@Override
 	public boolean illuminates(Point3 p) {
+
+		if (p == null) {
+			throw new IllegalArgumentException("The Point cannot be null!");
+		}
+
+		if (Math.sin(position.sub(p).normalized().x(direction).magnitude) <= halfAngle) {
+
+			double t = (position.sub(p).magnitude)	/ (directionFrom(p).magnitude);
+
+			if (t > 1) {
+				return true;
+			}
+
+			return false;
+		}
 		return false;
+
 	}
 
 	@Override
 	public Vector3 directionFrom(Point3 p) {
-		return null;
+		if (p == null) {
+			throw new IllegalArgumentException("The Point cannot be null!");
+		}
+		return direction.mul(-1.0);
 	}
 
 }
