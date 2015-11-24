@@ -284,7 +284,7 @@ public class Raytracer extends Application {
 
 //		world.addLight(new PointLight(new Color(1, 1, 1), new Point3(4, 4, 4)));
 //		world.addLight(new DirectionalLight(new Color(1,1,1), new Vector3(-1,-1,-1)));
-		world.addLight(new SpotLight(new Color(1,1,1), new Vector3(-1,-1,-1), new Point3(4, 4, 4), Math.PI / 14));
+		world.addLight(new SpotLight(new Color(1,1,1), new Vector3(-1,-1,-1), new Point3(4, 4, 4), Math.PI/14));
 
 
 		for (final Geometry obj : graphics) {

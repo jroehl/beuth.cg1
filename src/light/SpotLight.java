@@ -27,11 +27,7 @@ public class SpotLight extends Light {
             throw new IllegalArgumentException("The Point cannot be null!");
         }
 
-//		if (Math.sin(position.sub(p).normalized().x(direction).magnitude) <= halfAngle) {
-//			return true;
-//		}
-
-        if (Math.cos(p.sub(position).normalized().dot(direction)) <= halfAngle) {
+        if (Math.sin(position.sub(p).normalized().x(direction.normalized()).magnitude) <= halfAngle) {
             return true;
         }
 

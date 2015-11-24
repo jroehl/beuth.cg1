@@ -26,20 +26,24 @@ public class PhongMaterial extends Material {
 
         for (Light light : world.lights) {
 
-            Color lightColor = light.color;
+            if (light.illuminates(hit.ray.at(hit.t))) {
 
-            final Vector3 lightVector = light.directionFrom(
-                    hit.ray.at(hit.t)).normalized();
+                Color lightColor = light.color;
 
-            final Vector3 reflectedVector = lightVector.reflectedOn(hit.n);
+                final Vector3 lightVector = light.directionFrom(
+                        hit.ray.at(hit.t)).normalized();
 
-            final Vector3 e = (hit.ray.direction.mul(-1)).normalized();
+                final Vector3 reflectedVector = lightVector.reflectedOn(hit.n);
 
-            final double max = Math.max(0.0, lightVector.dot(hit.n));
+                final Vector3 e = (hit.ray.direction.mul(-1)).normalized();
 
-            returnColor = returnColor.add(diffuse.mul(lightColor).mul(max));
+                final double max = Math.max(0.0, lightVector.dot(hit.n));
 
-            returnColor = returnColor.add(specular.mul(lightColor.mul(Math.pow(Math.max(0.0, reflectedVector.dot(e)), exponent))));
+                returnColor = returnColor.add(diffuse.mul(lightColor).mul(max));
+
+                returnColor = returnColor.add(specular.mul(lightColor.mul(Math.pow(Math.max(0.0, reflectedVector.dot(e)), exponent))));
+
+            }
 
         }
 
