@@ -113,8 +113,10 @@ public class Raytracer extends Application {
 		// Camera Menu
 		final RadioMenuItem orthographicCamera = new RadioMenuItem("Orthographic Camera");
 		final RadioMenuItem perspectiveCamera = new RadioMenuItem("Perspective Camera");
+		final RadioMenuItem perspectiveCamera2 = new RadioMenuItem("Perspective Camera 2");
 		menuCamera.getItems().add(orthographicCamera);
 		menuCamera.getItems().add(perspectiveCamera);
+		menuCamera.getItems().add(perspectiveCamera2);
 
 		// Settings
 		final MenuItem backgroundColor = new MenuItem("Background Color");
@@ -193,6 +195,7 @@ public class Raytracer extends Application {
 
 					orthographicCamera.setSelected(true);
 					perspectiveCamera.setSelected(false);
+					perspectiveCamera2.setSelected(false);
 
 					rerender(primaryStage, imgView);
 				});
@@ -204,6 +207,19 @@ public class Raytracer extends Application {
 
 					orthographicCamera.setSelected(false);
 					perspectiveCamera.setSelected(true);
+					perspectiveCamera2.setSelected(false);
+
+					rerender(primaryStage, imgView);
+				});
+
+			// Perspective Camera 2
+			perspectiveCamera2.setOnAction(event -> {
+				// 2. Kamera für die AxisAlignedBox
+					camera = new PerspectiveCamera(new Point3(0, 0, 0), new Vector3(0, 0, 1), new Vector3(0, 1, 0), Math.PI / 4);
+
+					orthographicCamera.setSelected(false);
+					perspectiveCamera.setSelected(false);
+					perspectiveCamera2.setSelected(true);
 
 					rerender(primaryStage, imgView);
 				});
