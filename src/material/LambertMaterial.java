@@ -1,47 +1,117 @@
 package material;
 
-import Matrizen_Vektoren_Bibliothek.Vector3;
 import geometries.Hit;
 import light.Light;
 import ray.World;
+import Matrizen_Vektoren_Bibliothek.Vector3;
 import color.Color;
 
+/**
+ * LambertMaterial
+ *
+ * @author Waschmaschine
+ *         <p>
+ *         Das LambertMaterial erbt von der abstrakten Klasse Material und
+ *         überschreibt die Methode colorFor. Es reflektiert das Licht diffus.
+ */
+
 public class LambertMaterial extends Material {
-    private final Color cd;
 
-    public LambertMaterial(Color cd) {
-        this.cd = cd;
-    }
+	private final Color cd;
 
-    // @Override
-    // public Color colorFor(Hit hit, World world) {
-    // final Color c = cd.mul(world.ambient);
-    // for (int i = 0; i < world.lights.size(); i++) {
-    //
-    // c.add(cd.mul(world.lights.get(i).getColor()).mul(Math.max(0,
-    // world.lights.get(i).directionFrom(hit.ray.at(hit.t)).dot(hit.n))));
-    // // STIMMT DAS?????
-    // }
-    // return c;
-    //
-    // }
-    @Override
-    public Color colorFor(Hit hit, World world) {
+	/**
+	 * Konstruktor: LambertMaterial
+	 *
+	 * @param cd
+	 *            einzige farbe des Materials
+	 * @throws IllegalArgumentException
+	 */
+	public LambertMaterial(Color cd) throws IllegalArgumentException {
+		if (cd == null) {
+			throw new IllegalArgumentException();
+		}
+		this.cd = cd;
+	}
+	/**
+	 * Method: colorFor(Color)
+	 *
+	 * @param hit
+	 *            : übergebenes hit - Objekt
+	 * @param world
+	 *            : übergebenes world - Objekt
+	 * @return color - für jeden Pixel wird, falls er von der Lichtquelle
+	 *         angeleuchtet wird, die Farbe errechnet und zurück gegeben
+	 * @throws IllegalArgumentException
+	 */
+	@Override
+	public Color colorFor(Hit hit, World world) throws IllegalArgumentException {
+		if (hit == null) {
+			throw new IllegalArgumentException("hit cannot be null!");
+		}
+		if (world == null) {
+			throw new IllegalArgumentException("world cannot be null!");
+		}
 
-        Color returnColor = cd.mul(world.ambient);
+		Color returnColor = cd.mul(world.ambient);
 
-        for (Light light : world.lights) {
+		for (final Light light : world.lights) {
 
-            if (light.illuminates(hit.ray.at(hit.t))) {
-                Color lightColor = light.color;
-                final Vector3 lightVector = light.directionFrom(
-                        hit.ray.at(hit.t)).normalized();
-                final double max = Math.max(0.0, lightVector.dot(hit.n));
+			if (light.illuminates(hit.ray.at(hit.t))) {
+				final Color lightColor = light.color;
+				final Vector3 lightVector = light.directionFrom(hit.ray.at(hit.t)).normalized();
+				final double max = Math.max(0.0, lightVector.dot(hit.n));
 
-                returnColor = returnColor.add(cd.mul(lightColor).mul(max));
-            }
-        }
-        return returnColor;
+				returnColor = returnColor.add(cd.mul(lightColor).mul(max));
+			}
+		}
+		return returnColor;
+	}
+	/**
+	 * Ueberschriebene toString-Methode
+	 *
+	 * @return String LambertMaterial Werte
+	 */
+	@Override
+	public String toString() {
+		return "LambertMaterial [cd=" + cd + ", toString()=" + super.toString() + ", getClass()=" + getClass() + ", hashCode()="
+				+ hashCode() + "]";
+	}
 
-    }
+	/**
+	 * Ueberschriebene hashCode-Methode
+	 *
+	 * @return int hashcode
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((cd == null) ? 0 : cd.hashCode());
+		return result;
+	}
+
+	/**
+	 * Ueberschriebene equals-Methode
+	 *
+	 * @param o
+	 *            Objekt das mit der Matrix verglichen wird
+	 * @return true | false
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final LambertMaterial other = (LambertMaterial) obj;
+		if (cd == null) {
+			if (other.cd != null)
+				return false;
+		} else if (!cd.equals(other.cd))
+			return false;
+		return true;
+	}
+
 }

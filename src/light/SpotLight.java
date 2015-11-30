@@ -17,6 +17,7 @@ public class SpotLight extends Light {
 	private final Vector3 direction;
 	private final Point3 position;
 	private final double halfAngle;
+	private final Color color;
 
 	/**
 	 * Konstruktor: SpotLight
@@ -31,15 +32,21 @@ public class SpotLight extends Light {
 	 *            double Winkel des Lichts
 	 * @throws IllegalArgumentException
 	 */
-	public SpotLight(Color color, Vector3 direction, Point3 position, double halfAngle) {
+	public SpotLight(Color color, Vector3 direction, Point3 position, double halfAngle) throws IllegalArgumentException {
 		super(color);
+		if (color == null) {
+			throw new IllegalArgumentException("The color cannot be null!");
+		}
+
 		if (direction == null) {
 			throw new IllegalArgumentException("The direction cannot be null!");
 		}
-		this.direction = direction;
+
 		if (position == null) {
 			throw new IllegalArgumentException("The position cannot be null!");
 		}
+		this.color = color;
+		this.direction = direction;
 		this.position = position;
 		this.halfAngle = halfAngle;
 	}
@@ -53,7 +60,7 @@ public class SpotLight extends Light {
 	 * @throws IllegalArgumentException
 	 */
 	@Override
-	public boolean illuminates(Point3 p) {
+	public boolean illuminates(Point3 p) throws IllegalArgumentException {
 
 		if (p == null) {
 			throw new IllegalArgumentException("The Point cannot be null!");
@@ -76,7 +83,7 @@ public class SpotLight extends Light {
 	 * @throws IllegalArgumentException
 	 */
 	@Override
-	public Vector3 directionFrom(Point3 p) {
+	public Vector3 directionFrom(Point3 p) throws IllegalArgumentException {
 		if (p == null) {
 			throw new IllegalArgumentException("The Point cannot be null!");
 		}
@@ -90,7 +97,24 @@ public class SpotLight extends Light {
 	 */
 	@Override
 	public String toString() {
-		return "SpotLight{" + "direction=" + direction + ", position=" + position + ", halfAngle=" + halfAngle + '}';
+		return "SpotLight [direction=" + direction + ", position=" + position + ", halfAngle=" + halfAngle + ", color=" + color + "]";
+	}
+	/**
+	 * Ueberschriebene hashCode-Methode
+	 *
+	 * @return int hashcode
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((color == null) ? 0 : color.hashCode());
+		result = prime * result + ((direction == null) ? 0 : direction.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(halfAngle);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((position == null) ? 0 : position.hashCode());
+		return result;
 	}
 
 	/**
@@ -101,37 +125,32 @@ public class SpotLight extends Light {
 	 * @return true | false
 	 */
 	@Override
-	public boolean equals(Object o) {
-		if (this == o)
+	public boolean equals(Object obj) {
+		if (this == obj)
 			return true;
-		if (o == null || getClass() != o.getClass())
+		if (obj == null)
 			return false;
-		if (!super.equals(o))
+		if (getClass() != obj.getClass())
 			return false;
-
-		final SpotLight spotLight = (SpotLight) o;
-
-		if (Double.compare(spotLight.halfAngle, halfAngle) != 0)
+		final SpotLight other = (SpotLight) obj;
+		if (color == null) {
+			if (other.color != null)
+				return false;
+		} else if (!color.equals(other.color))
 			return false;
-		if (direction != null ? !direction.equals(spotLight.direction) : spotLight.direction != null)
+		if (direction == null) {
+			if (other.direction != null)
+				return false;
+		} else if (!direction.equals(other.direction))
 			return false;
-		return !(position != null ? !position.equals(spotLight.position) : spotLight.position != null);
-
+		if (Double.doubleToLongBits(halfAngle) != Double.doubleToLongBits(other.halfAngle))
+			return false;
+		if (position == null) {
+			if (other.position != null)
+				return false;
+		} else if (!position.equals(other.position))
+			return false;
+		return true;
 	}
 
-	/**
-	 * Ueberschriebene hashCode-Methode
-	 *
-	 * @return int hashcode
-	 */
-	@Override
-	public int hashCode() {
-		int result = super.hashCode();
-		long temp;
-		result = 31 * result + (direction != null ? direction.hashCode() : 0);
-		result = 31 * result + (position != null ? position.hashCode() : 0);
-		temp = Double.doubleToLongBits(halfAngle);
-		result = 31 * result + (int) (temp ^ (temp >>> 32));
-		return result;
-	}
 }
