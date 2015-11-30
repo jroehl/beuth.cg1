@@ -25,7 +25,7 @@ public abstract class Geometry {
 	/**
 	 * Konstruktor: Geometry
 	 *
-	 * @param color
+	 * @param material
 	 *            RGB Color der Geometrie
 	 * @throws IllegalArgumentException
 	 */
@@ -92,7 +92,7 @@ public abstract class Geometry {
 	/**
 	 * Ueberschriebene equals-Methode
 	 *
-	 * @param o
+	 * @param obj
 	 *            Objekt das mit der Matrix verglichen wird
 	 * @return true | false
 	 */
