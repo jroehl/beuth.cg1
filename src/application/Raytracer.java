@@ -1,39 +1,12 @@
 package application;
 
-import geometries.AxisAlignedBox;
-import geometries.Geometry;
-import geometries.Plane;
-import geometries.Sphere;
-import geometries.Triangle;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import javafx.application.Application;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.RadioMenuItem;
-import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
-import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
+import java.util.Optional;
 
 import javax.imageio.ImageIO;
 
-import light.DirectionalLight;
-import light.PointLight;
-import light.SpotLight;
-import material.LambertMaterial;
-import material.PhongMaterial;
-import ray.Ray;
-import ray.World;
 import Matrizen_Vektoren_Bibliothek.Normal3;
 import Matrizen_Vektoren_Bibliothek.Point3;
 import Matrizen_Vektoren_Bibliothek.Vector3;
@@ -41,33 +14,74 @@ import camera.Camera;
 import camera.OrthographicCamera;
 import camera.PerspectiveCamera;
 import color.Color;
+import geometries.AxisAlignedBox;
+import geometries.Geometry;
+import geometries.Plane;
+import geometries.Sphere;
+import geometries.Triangle;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.geometry.Insets;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioMenuItem;
+import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import light.DirectionalLight;
+import light.Light;
+import light.PointLight;
+import light.SpotLight;
+import material.LambertMaterial;
+import material.PhongMaterial;
+import material.SingleColorMaterial;
+import ray.Ray;
+import ray.World;
 
 public class Raytracer extends Application {
 
 	/**
 	 * wrImg - WritableImage Objekt
 	 */
-	WritableImage wrImg;
+	private WritableImage wrImg;
 
 	/**
 	 * renderingTime - Text Objekt
 	 */
-	Text renderingTime;
+	private Menu renderingTime;
 
 	/**
 	 * camera - Kamera Objekt
 	 */
-	Camera camera;
+	private Camera camera;
+
+	/**
+	 * Light - Light Objekt
+	 */
+	private Light light;
 
 	/**
 	 * world - Welt Objekt
 	 */
-	World world;
+	private World world;
 
 	/**
 	 * graphics - Liste mit darzustellenden Objecten
 	 */
-	ArrayList<Geometry> graphics = new ArrayList<Geometry>();
+	private ArrayList<Geometry> graphics = new ArrayList<Geometry>();
 
 	/**
 	 * @param primaryStage
@@ -77,7 +91,7 @@ public class Raytracer extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
-		primaryStage.setTitle("PNG Creater");
+		primaryStage.setTitle("Waschmaschine - Raytracer");
 
 		primaryStage.setWidth(640);
 		primaryStage.setHeight(480);
@@ -85,14 +99,20 @@ public class Raytracer extends Application {
 		final Menu menuFile = new Menu("File");
 		final Menu menuGraph = new Menu("Graphics");
 		final Menu menuCamera = new Menu("Camera");
+		final Menu menuLight = new Menu("Light");
+		final Menu menuMaterial = new Menu("Material");
 		final Menu menuSettings = new Menu("Settings");
+		renderingTime = new Menu();
 
 		final MenuBar menuBar = new MenuBar();
 		menuBar.getMenus().add(menuFile);
 		menuBar.getMenus().add(menuGraph);
 		menuBar.getMenus().add(menuCamera);
+		menuBar.getMenus().add(menuLight);
+		menuBar.getMenus().add(menuMaterial);
 		menuBar.getMenus().add(menuSettings);
-		menuBar.prefWidthProperty().bind(primaryStage.widthProperty().divide(2));
+		menuBar.getMenus().add(renderingTime);
+		menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
 
 		// Save Menu
 		final MenuItem save = new MenuItem("Save as...");
@@ -101,12 +121,13 @@ public class Raytracer extends Application {
 		menuFile.getItems().add(exit);
 
 		// Graphics Menu
-		final RadioMenuItem axisAlignedBox = new RadioMenuItem("AxisAlignedBox");
-		final RadioMenuItem triangle = new RadioMenuItem("Triangle");
-		final RadioMenuItem plane = new RadioMenuItem("Plane");
-		final RadioMenuItem sphere0 = new RadioMenuItem("Sphere 0");
-		final RadioMenuItem sphere1 = new RadioMenuItem("Sphere 1");
-		final RadioMenuItem sphere2 = new RadioMenuItem("Sphere 2");
+		final Menu axisAlignedBox = new Menu("AxisAlignedBox");
+		final Menu triangle = new Menu("Triangle");
+		final Menu plane = new Menu("Plane");
+		final Menu sphere0 = new Menu("Sphere 0");
+		final Menu sphere1 = new Menu("Sphere 1");
+		final Menu sphere2 = new Menu("Sphere 2");
+
 		menuGraph.getItems().add(axisAlignedBox);
 		menuGraph.getItems().add(triangle);
 		menuGraph.getItems().add(plane);
@@ -122,30 +143,39 @@ public class Raytracer extends Application {
 		menuCamera.getItems().add(perspectiveCamera);
 		menuCamera.getItems().add(perspectiveCamera2);
 
+		// Light Menu
+		final RadioMenuItem pointLight = new RadioMenuItem("Point Light");
+		final RadioMenuItem directionalLight = new RadioMenuItem("Directional Light");
+		final RadioMenuItem spotLight = new RadioMenuItem("Spot Light");
+		menuLight.getItems().add(pointLight);
+		menuLight.getItems().add(directionalLight);
+		menuLight.getItems().add(spotLight);
+
 		// Settings
 		final MenuItem backgroundColor = new MenuItem("Background Color");
 		menuSettings.getItems().add(backgroundColor);
 
 		final HBox hBox = new HBox();
 
-		renderingTime = new Text();
-		renderingTime.setFill(javafx.scene.paint.Color.WHITE);
-
 		final Group group = new Group();
 		final ImageView imgView = new ImageView();
 		group.getChildren().addAll(imgView, hBox);
-		hBox.getChildren().addAll(menuBar, renderingTime);
+		hBox.getChildren().addAll(menuBar);
 
 		primaryStage.setScene(new Scene(group));
 
-		createWorld(graphics);
 		// Default Kamera
 		camera = new OrthographicCamera(new Point3(0, 0, 0), new Vector3(0, 0, -1), new Vector3(0, 1, 0), 3);
+		orthographicCamera.setSelected(true);
+		// Default Licht
+		light = new PointLight(new Color(1, 1, 1), new Point3(4, 4, 4));
+		pointLight.setSelected(true);
+
+		createWorld();
 		rerender(primaryStage, imgView);
 
 		// Menu - File
 		{
-
 			// Save As...
 			save.setOnAction(event -> {
 				final FileChooser fileChooser = new FileChooser();
@@ -172,23 +202,24 @@ public class Raytracer extends Application {
 		// Menu - Graphics
 		{
 			// AlignBox
-			generateGraphics(primaryStage, imgView, axisAlignedBox, new AxisAlignedBox(new PhongMaterial(new Color(0, 0, 1), new Color(1,1,1), 64), new Point3(-1.5, 0.5, 0.5), new Point3(-0.5, 1.5, 1.5)));
+			initializeButton(primaryStage, imgView, axisAlignedBox,
+					new AxisAlignedBox(new LambertMaterial(new Color(0, 0, 1)), new Point3(-0.5, 0, -0.5), new Point3(0.5, 1, 0.5)));
 
 			// Plane
-			generateGraphics(primaryStage, imgView, plane, new Plane(new PhongMaterial(new Color(0, 1, 0), new Color(1,1,1), 64),
-					new Point3(0, 0, 0), new Normal3(0, 1, 0)));
+			initializeButton(primaryStage, imgView, plane,
+					new Plane(new LambertMaterial(new Color(0, 1, 0)), new Point3(0, -1, 0), new Normal3(0, 1, 0)));
 
 			// Spheren
-			generateGraphics(primaryStage, imgView, sphere0, new Sphere(new PhongMaterial(new Color(1, 0, 0), new Color(1,1,1), 64),
-					new Point3(1, 1, 1), 0.5));
-			generateGraphics(primaryStage, imgView, sphere1,
+			initializeButton(primaryStage, imgView, sphere0,
+					new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(0, 0, -3), 0.5));
+			initializeButton(primaryStage, imgView, sphere1,
 					new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(-1, 0, -3), 0.5));
-			generateGraphics(primaryStage, imgView, sphere2, new Sphere(new LambertMaterial(new Color(1, 0, 0)),
-					new Point3(1, 0, -6), 0.5));
+			initializeButton(primaryStage, imgView, sphere2,
+					new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(1, 0, -6), 0.5));
 
 			// Triangle
-			generateGraphics(primaryStage, imgView, triangle, new Triangle(new PhongMaterial(new Color(1, 0, 1), new Color(1,1,1), 64),
-					new Point3(0, 0, -1), new Point3(1, 0, -1), new Point3(1, 1, -1)));
+			initializeButton(primaryStage, imgView, triangle, new Triangle(new LambertMaterial(new Color(1, 0, 1)),
+					new Point3(-0.5, 0.5, -3), new Point3(0.5, 0.5, -3), new Point3(0.5, -0.5, -3)));
 		}
 
 		// Menu - Camera
@@ -196,48 +227,102 @@ public class Raytracer extends Application {
 			// Orthographic Camera
 			orthographicCamera.setOnAction(event -> {
 				// 1. Kamera - PerspectiveCamera mit geradem Blick
-					camera = new OrthographicCamera(new Point3(0, 0, 0), new Vector3(0, 0, -1), new Vector3(0, 1, 0), 3);
+				camera = new OrthographicCamera(new Point3(0, 0, 0), new Vector3(0, 0, -1), new Vector3(0, 1, 0), 3);
 
-					orthographicCamera.setSelected(true);
-					perspectiveCamera.setSelected(false);
-					perspectiveCamera2.setSelected(false);
+				orthographicCamera.setSelected(true);
+				perspectiveCamera.setSelected(false);
+				perspectiveCamera2.setSelected(false);
 
-					rerender(primaryStage, imgView);
-				});
+				rerender(primaryStage, imgView);
+			});
 
 			// Perspective Camera
 			perspectiveCamera.setOnAction(event -> {
 				// 2. Kamera für die AxisAlignedBox
-					camera = new PerspectiveCamera(new Point3(4, 4, 4), new Vector3(-1, -1, -1), new Vector3(0, 1, 0), Math.PI / 4);
+				camera = new PerspectiveCamera(new Point3(3, 3, 3), new Vector3(-3, -3, -3), new Vector3(0, 1, 0), Math.PI / 4);
 
-					orthographicCamera.setSelected(false);
-					perspectiveCamera.setSelected(true);
-					perspectiveCamera2.setSelected(false);
+				orthographicCamera.setSelected(false);
+				perspectiveCamera.setSelected(true);
+				perspectiveCamera2.setSelected(false);
 
-					rerender(primaryStage, imgView);
-				});
+				rerender(primaryStage, imgView);
+			});
 
 			// Perspective Camera 2
 			perspectiveCamera2.setOnAction(event -> {
 				// 2. Kamera für die AxisAlignedBox
-					camera = new PerspectiveCamera(new Point3(0, 0, 0), new Vector3(0, 0, 1), new Vector3(0, 1, 0), Math.PI / 4);
+				camera = new PerspectiveCamera(new Point3(0, 0, 0), new Vector3(0, 0, 1), new Vector3(0, 1, 0), Math.PI / 4);
 
-					orthographicCamera.setSelected(false);
-					perspectiveCamera.setSelected(false);
-					perspectiveCamera2.setSelected(true);
+				orthographicCamera.setSelected(false);
+				perspectiveCamera.setSelected(false);
+				perspectiveCamera2.setSelected(true);
 
-					rerender(primaryStage, imgView);
-				});
+				rerender(primaryStage, imgView);
+			});
 		}
 
-		// Menu - Backgrounsd
+		// Menu - Light
+		{
+			// PointLight
+			pointLight.setOnAction(event -> {
+				light = new PointLight(new Color(1, 1, 1), new Point3(4, 4, 4));
+
+				if (world.lights.contains(light)) {
+					world.lights.remove(light);
+					pointLight.setSelected(false);
+				} else {
+					world.lights.add(light);
+					pointLight.setSelected(true);
+				}
+
+				rerender(primaryStage, imgView);
+			});
+
+			// DirectionalLight
+			directionalLight.setOnAction(event -> {
+
+				light = new DirectionalLight(new Color(1, 1, 1), new Vector3(-1, -1, -1));
+
+				if (world.lights.contains(light)) {
+					world.lights.remove(light);
+					directionalLight.setSelected(false);
+				} else {
+					world.lights.add(light);
+					directionalLight.setSelected(true);
+				}
+
+				rerender(primaryStage, imgView);
+			});
+
+			// SpotLight
+			spotLight.setOnAction(event -> {
+
+				light = new SpotLight(new Color(1, 1, 1), new Vector3(-1, -1, -1), new Point3(4, 4, 4), Math.PI / 14);
+
+				if (world.lights.contains(light)) {
+					world.lights.remove(light);
+					spotLight.setSelected(false);
+				} else {
+					world.lights.add(light);
+					spotLight.setSelected(true);
+				}
+
+				rerender(primaryStage, imgView);
+			});
+		}
+
+		// Menu - Material
+		{
+		}
+
+		// Menu - Settings
 		{
 
 		}
 
 		/*
-		 * Über einen AddListener an der HeightProperty und der WidthProperty
-		 * der primaryStage wird das neu Zeichnen des Bildes aufgerufen
+		 * Über einen AddListener an der HeightProperty und der WidthProperty der primaryStage wird das neu Zeichnen des
+		 * Bildes aufgerufen
 		 */
 		primaryStage.heightProperty().addListener((ChangeEvent) -> {
 			rerender(primaryStage, imgView);
@@ -249,27 +334,168 @@ public class Raytracer extends Application {
 		primaryStage.show();
 	}
 
-	/**
-	 * Hilfsmethode welche die Menueinträge für die einzelnen Objekte generiert.
-	 *
-	 * @param primaryStage
-	 * @param imgView
-	 * @param menuItem
-	 * @param geometry
-	 */
-	private void generateGraphics(Stage primaryStage, final ImageView imgView, final RadioMenuItem menuItem, final Geometry geometry) {
-		menuItem.setOnAction(event -> {
-			if (graphics.contains(geometry)) {
-				graphics.remove(geometry);
-				menuItem.setSelected(false);
-			} else {
+	private void initializeButton(Stage primaryStage, final ImageView imgView, Menu menu, final Geometry geometry) {
+
+		final RadioMenuItem singleColorMaterial = new RadioMenuItem("Single-Color-Material");
+		final RadioMenuItem lambertMaterial = new RadioMenuItem("Lambert-Material");
+		final RadioMenuItem phongMaterial = new RadioMenuItem("Phong-Material");
+		menu.getItems().addAll(singleColorMaterial, lambertMaterial, phongMaterial);
+
+		// SingleColor - Material
+		singleColorMaterial.setOnAction(event -> {
+			if (!graphics.contains(geometry)) {
+				ArrayList<Object> properties = showDialog(false);
+				geometry.material = new SingleColorMaterial((Color) properties.get(0));
+
 				graphics.add(geometry);
-				menuItem.setSelected(true);
+
+				singleColorMaterial.setSelected(true);
+				lambertMaterial.setSelected(false);
+				phongMaterial.setSelected(false);
+			} else {
+				graphics.remove(geometry);
+
+				singleColorMaterial.setSelected(false);
+				lambertMaterial.setSelected(false);
+				phongMaterial.setSelected(false);
 			}
 
-			createWorld(graphics);
+			createWorld();
 			rerender(primaryStage, imgView);
 		});
+
+		// Lambert Material
+		lambertMaterial.setOnAction(event -> {
+			if (!graphics.contains(geometry)) {
+				ArrayList<Object> properties = showDialog(false);
+				geometry.material = new LambertMaterial((Color) properties.get(0));
+
+				graphics.add(geometry);
+
+				singleColorMaterial.setSelected(false);
+				lambertMaterial.setSelected(true);
+				phongMaterial.setSelected(false);
+			} else {
+				graphics.remove(geometry);
+
+				singleColorMaterial.setSelected(false);
+				lambertMaterial.setSelected(false);
+				phongMaterial.setSelected(false);
+			}
+
+			createWorld();
+			rerender(primaryStage, imgView);
+		});
+
+		// Phong Material
+		phongMaterial.setOnAction(event -> {
+			if (!graphics.contains(geometry)) {
+				ArrayList<Object> properties = showDialog(true);
+				geometry.material = new PhongMaterial((Color) properties.get(0), (Color) properties.get(1), (int) properties.get(2));
+
+				graphics.add(geometry);
+
+				singleColorMaterial.setSelected(false);
+				lambertMaterial.setSelected(false);
+				phongMaterial.setSelected(true);
+			} else {
+				graphics.remove(geometry);
+
+				singleColorMaterial.setSelected(false);
+				lambertMaterial.setSelected(false);
+				phongMaterial.setSelected(false);
+			}
+
+			createWorld();
+			rerender(primaryStage, imgView);
+		});
+	}
+
+	private ArrayList<Object> showDialog(boolean b) {
+
+		// Create the custom dialog.
+		Dialog<ArrayList<Object>> dialog = new Dialog<>();
+		dialog.setTitle("Material Properties");
+
+		ArrayList<Object> result = new ArrayList<Object>();
+
+		// Set the button types.
+		ButtonType buttonTypeCreat = new ButtonType("Creat", ButtonData.OK_DONE);
+		dialog.getDialogPane().getButtonTypes().addAll(buttonTypeCreat, ButtonType.CANCEL);
+
+		GridPane grid = new GridPane();
+		grid.setHgap(10);
+		grid.setVgap(10);
+		grid.setPadding(new Insets(20, 150, 10, 10));
+
+		TextField colorR = new TextField();
+		TextField colorG = new TextField();
+		TextField colorB = new TextField();
+
+		grid.add(new Label("Color:"), 0, 0);
+		grid.add(colorR, 1, 0);
+		grid.add(colorG, 2, 0);
+		grid.add(colorB, 3, 0);
+
+		TextField colorX = new TextField();
+		TextField colorY = new TextField();
+		TextField colorZ = new TextField();
+
+		TextField exponent = new TextField();
+
+		if (b) {
+			grid.add(new Label("Exponent:"), 0, 2);
+
+			grid.add(new Label("Specular:"), 0, 1);
+			grid.add(colorX, 1, 1);
+			grid.add(colorY, 2, 1);
+			grid.add(colorZ, 3, 1);
+
+			grid.add(exponent, 1, 2);
+		}
+
+		// Enable/Disable login button depending on whether a username was entered.
+		Node loginButton = dialog.getDialogPane().lookupButton(buttonTypeCreat);
+		loginButton.setDisable(true);
+
+		// Do some validation (using the Java 8 lambda syntax).
+		colorR.textProperty().addListener((observable, oldValue, newValue) -> {
+			loginButton.setDisable(newValue.trim().isEmpty());
+		});
+		colorG.textProperty().addListener((observable, oldValue, newValue) -> {
+			loginButton.setDisable(newValue.trim().isEmpty());
+		});
+		colorB.textProperty().addListener((observable, oldValue, newValue) -> {
+			loginButton.setDisable(newValue.trim().isEmpty());
+		});
+
+		dialog.getDialogPane().setContent(grid);
+
+		// Request focus on the username field by default.
+		Platform.runLater(() -> colorR.requestFocus());
+
+		// Convert the result to a username-password-pair when the login button is clicked.
+		dialog.setResultConverter(dialogButton -> {
+			if (dialogButton == buttonTypeCreat) {
+
+				result.add(new Color(Double.parseDouble(colorR.getText()), Double.parseDouble(colorG.getText()),
+						Double.parseDouble(colorB.getText())));
+
+				if (!colorX.getText().isEmpty() && !colorY.getText().isEmpty() && !colorY.getText().isEmpty()) {
+					result.add(new Color(Double.parseDouble(colorX.getText()), Double.parseDouble(colorY.getText()),
+							Double.parseDouble(colorZ.getText())));
+				}
+
+				if (!exponent.getText().isEmpty()) {
+					result.add(Integer.parseInt(exponent.getText()));
+				}
+
+				return result;
+			}
+			return null;
+		});
+		Optional<ArrayList<Object>> result1 = dialog.showAndWait();
+		return result;
 	}
 
 	/**
@@ -277,27 +503,15 @@ public class Raytracer extends Application {
 	 * <p>
 	 * Erzeugt die Welt und die Objekte für den Test
 	 */
-	public void createWorld(ArrayList<Geometry> graphics) {
+	public void createWorld() {
 
 		final Color backgroundColor = new Color(0, 0, 0);
 		world = new World(backgroundColor);
-
-//		world.addLight(new PointLight(new Color(1, 1, 1), new Point3(4, 4, 4)));
-//		world.addLight(new DirectionalLight(new Color(1,1,1), new Vector3(-1,-1,-1)));
-		world.addLight(new SpotLight(new Color(1,1,1), new Vector3(-1,-1,-1), new Point3(4, 4, 4), Math.PI/14));
-
+		world.addLight(light);
 
 		for (final Geometry obj : graphics) {
 			world.addGeometry(obj);
 		}
-	}
-
-	/**
-	 * Method: createCamera
-	 * <p>
-	 * Erzeugt die Kameras für den Test
-	 */
-	private void createCamera() {
 	}
 
 	/**

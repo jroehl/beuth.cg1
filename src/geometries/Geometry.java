@@ -8,19 +8,17 @@ import ray.Ray;
  *
  * @author Waschmaschine
  *         <p>
- *         Die Geomotrie-Klasse beinhaltet als Attribut eine Farbe. Darüber
- *         hinaus deklariert sie die Methode hit, welche einen Strahl als
- *         Parameter entgegen nimmt. In einer Implementierung dieser Methode
- *         erfolgt die Schnittberechnung. Eine Implementierung gibt bei mehreren
- *         Schnittpunkten immer den mit dem kleinsten positiven t zurück. Wird
- *         kein Schnittpunkt gefunden, wird null zurückgegeben.
+ *         Die Geomotrie-Klasse beinhaltet als Attribut eine Farbe. Darüber hinaus deklariert sie die Methode hit,
+ *         welche einen Strahl als Parameter entgegen nimmt. In einer Implementierung dieser Methode erfolgt die
+ *         Schnittberechnung. Eine Implementierung gibt bei mehreren Schnittpunkten immer den mit dem kleinsten
+ *         positiven t zurück. Wird kein Schnittpunkt gefunden, wird null zurückgegeben.
  */
 public abstract class Geometry {
 
 	/**
 	 * Color - color Objekt der Geometrie
 	 */
-	public final Material material;
+	public Material material;
 
 	/**
 	 * Konstruktor: Geometry
@@ -37,13 +35,13 @@ public abstract class Geometry {
 
 		this.material = material;
 	}
+
 	/**
 	 * Method: hit(ray)
 	 *
 	 * @param ray
 	 *            Ray Objekt
-	 * @return Hit / null Bei einem Treffer wird das generierte Hit Objekt
-	 *         zurückgegeben und null vice versa
+	 * @return Hit / null Bei einem Treffer wird das generierte Hit Objekt zurückgegeben und null vice versa
 	 * @throws IllegalArgumentException
 	 */
 	public abstract Hit hit(Ray ray) throws IllegalArgumentException;
@@ -79,8 +77,7 @@ public abstract class Geometry {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((material == null) ? 0 : material.hashCode());
+		result = prime * result + ((material == null) ? 0 : material.hashCode());
 		return result;
 	}
 	/*
