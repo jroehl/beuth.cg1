@@ -1,20 +1,17 @@
 package ray;
 
-import geometries.Geometry;
-import geometries.Hit;
-
 import java.util.ArrayList;
 
-import light.Light;
 import color.Color;
+import geometries.Geometry;
+import geometries.Hit;
+import light.Light;
 
 /**
- * Die Klasse World beinhaltet eine Menge mit den Objekten zu dazustellenden
- * Szene. Sie hat ebenfalls eine Methode hit, wobei der uebergebene Strahl gegen
- * alle Objekte der Szene getestet wird. Es wird der Schnittpunkt mit dem
- * kleinsten positiven 𝑡 zurückgegeben. Die Klasse World hat ein Attribut
- * namens backgroundColor vom Typ Color, welche verwendet wird, wenn ein Strahl
- * keine Geometrie trifft.
+ * Die Klasse World beinhaltet eine Menge mit den Objekten zu dazustellenden Szene. Sie hat ebenfalls eine Methode hit,
+ * wobei der uebergebene Strahl gegen alle Objekte der Szene getestet wird. Es wird der Schnittpunkt mit dem kleinsten
+ * positiven 𝑡 zurückgegeben. Die Klasse World hat ein Attribut namens backgroundColor vom Typ Color, welche verwendet
+ * wird, wenn ein Strahl keine Geometrie trifft.
  */
 public class World {
 
@@ -22,17 +19,16 @@ public class World {
 	 * Wird verwendet wenn ein Strahl keine Geometrie trifft
 	 */
 	Color backgroundColor;
-	public Color ambient = new Color(0.25, 0.25, 0.25); // wird auf die ganze Szene
-														// addiert, um alles
-														// heller
-	// zu
-	// machen
+	public Color ambient = new Color(0.25, 0.25, 0.25); // wird auf die ganze Szene addiert, um alles heller zu machen
 
 	/**
 	 * Liste zum Speichern der Geometrischen Elemente.
 	 */
-	ArrayList<Geometry> objs = new ArrayList<Geometry>();
+	public ArrayList<Geometry> objs = new ArrayList<Geometry>();
 
+	/**
+	 * Liste aller Lichter welche auf der World initialisiert sind.
+	 */
 	public ArrayList<Light> lights = new ArrayList<Light>();
 
 	/**
@@ -51,8 +47,8 @@ public class World {
 	}
 
 	/**
-	 * Testet den Uebergebene Strahl gegen alle Objekte der Szene. Und liefert
-	 * den Schnittpunkt mit dem kleinsten positiven 𝑡.
+	 * Testet den Uebergebene Strahl gegen alle Objekte der Szene. Und liefert den Schnittpunkt mit dem kleinsten
+	 * positiven 𝑡.
 	 *
 	 * @param ray
 	 *            Strahl welcher auf Objekte Geschickt wird.
@@ -120,7 +116,7 @@ public class World {
 	 */
 	@Override
 	public String toString() {
-		return "World [backgroundColor=" + backgroundColor + ", objs=" + objs + "]";
+		return "World [backgroundColor=" + backgroundColor + ", ambient=" + ambient + ", objs=" + objs + ", lights=" + lights + "]";
 	}
 
 	/**
@@ -130,7 +126,9 @@ public class World {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((ambient == null) ? 0 : ambient.hashCode());
 		result = prime * result + ((backgroundColor == null) ? 0 : backgroundColor.hashCode());
+		result = prime * result + ((lights == null) ? 0 : lights.hashCode());
 		result = prime * result + ((objs == null) ? 0 : objs.hashCode());
 		return result;
 	}
@@ -146,11 +144,21 @@ public class World {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		final World other = (World) obj;
+		World other = (World) obj;
+		if (ambient == null) {
+			if (other.ambient != null)
+				return false;
+		} else if (!ambient.equals(other.ambient))
+			return false;
 		if (backgroundColor == null) {
 			if (other.backgroundColor != null)
 				return false;
 		} else if (!backgroundColor.equals(other.backgroundColor))
+			return false;
+		if (lights == null) {
+			if (other.lights != null)
+				return false;
+		} else if (!lights.equals(other.lights))
 			return false;
 		if (objs == null) {
 			if (other.objs != null)
