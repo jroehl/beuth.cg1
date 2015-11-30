@@ -100,7 +100,6 @@ public class Raytracer extends Application {
 		final Menu menuGraph = new Menu("Graphics");
 		final Menu menuCamera = new Menu("Camera");
 		final Menu menuLight = new Menu("Light");
-		final Menu menuMaterial = new Menu("Material");
 		final Menu menuSettings = new Menu("Settings");
 		renderingTime = new Menu();
 
@@ -109,7 +108,6 @@ public class Raytracer extends Application {
 		menuBar.getMenus().add(menuGraph);
 		menuBar.getMenus().add(menuCamera);
 		menuBar.getMenus().add(menuLight);
-		menuBar.getMenus().add(menuMaterial);
 		menuBar.getMenus().add(menuSettings);
 		menuBar.getMenus().add(renderingTime);
 		menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
