@@ -2,6 +2,7 @@ package ray;
 
 import java.util.ArrayList;
 
+import application.Tracer;
 import color.Color;
 import geometries.Geometry;
 import geometries.Hit;
@@ -75,7 +76,7 @@ public class World {
 		}
 
 		if (hit != null) {
-			return hit.geo.material.colorFor(hit, this);
+ 			return hit.geo.material.colorFor(hit, this, new Tracer());
 		}
 		return backgroundColor;
 

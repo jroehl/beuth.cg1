@@ -3,6 +3,7 @@ package light;
 import Matrizen_Vektoren_Bibliothek.Point3;
 import Matrizen_Vektoren_Bibliothek.Vector3;
 import color.Color;
+import ray.Ray;
 import ray.World;
 
 /**
@@ -47,6 +48,15 @@ public class PointLight extends Light {
         if (p == null) {
             throw new IllegalArgumentException("The point3 cannot be null!");
         }
+        if (castsShadows) {
+
+            if (world.hit(new Ray(p, directionFrom(p))) == null) {
+                return true;
+            }
+            return true;
+
+        }
+
         return true;
     }
 

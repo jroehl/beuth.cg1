@@ -57,7 +57,7 @@ public class LambertMaterial extends Material {
 
 		for (final Light light : world.lights) {
 
-			if (light.illuminates(hit.ray.at(hit.t))) {
+			if (light.illuminates(hit.ray.at(hit.t), world)) {
 				final Color lightColor = light.color;
 				final Vector3 lightVector = light.directionFrom(hit.ray.at(hit.t)).normalized();
 				final double max = Math.max(0.0, lightVector.dot(hit.n));

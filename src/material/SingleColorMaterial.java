@@ -50,6 +50,7 @@ public class SingleColorMaterial extends Material {
 		if (world == null) {
 			throw new IllegalArgumentException("world cannot be null!");
 		}
+
 		return color;
 	}
 

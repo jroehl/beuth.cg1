@@ -51,3 +51,5 @@ out/production/Beuth_CGI/material/LambertMaterial.class
 out/production/Beuth_CGI/material/Material.class
 out/production/Beuth_CGI/material/PhongMaterial.class
 out/production/Beuth_CGI/material/SingleColorMaterial.class
+out/production/Beuth_CGI/application/Tracer.class
+out/production/Beuth_CGI/material/ReflectiveMaterial.class

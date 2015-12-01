@@ -168,7 +168,7 @@ public class Raytracer extends Application {
 		camera = new OrthographicCamera(new Point3(0, 0, 0), new Vector3(0, 0, -1), new Vector3(0, 1, 0), 3);
 		orthographicCamera.setSelected(true);
 		// Default Licht
-		light = new PointLight(new Color(1, 1, 1), new Point3(4, 4, 4));
+		light = new PointLight(new Color(1, 1, 1), new Point3(4, 4, 4), true);
 		pointLight.setSelected(true);
 
 		createWorld();
@@ -262,7 +262,7 @@ public class Raytracer extends Application {
 		{
 			// PointLight
 			pointLight.setOnAction(event -> {
-				light = new PointLight(new Color(1, 1, 1), new Point3(4, 4, 4));
+				light = new PointLight(new Color(1, 1, 1), new Point3(4, 4, 4), true);
 
 				if (world.lights.contains(light)) {
 					world.lights.remove(light);
@@ -278,7 +278,7 @@ public class Raytracer extends Application {
 			// DirectionalLight
 			directionalLight.setOnAction(event -> {
 
-				light = new DirectionalLight(new Color(1, 1, 1), new Vector3(-1, -1, -1));
+				light = new DirectionalLight(new Color(1, 1, 1), new Vector3(-1, -1, -1), true);
 
 				if (world.lights.contains(light)) {
 					world.lights.remove(light);
@@ -294,7 +294,7 @@ public class Raytracer extends Application {
 			// SpotLight
 			spotLight.setOnAction(event -> {
 
-				light = new SpotLight(new Color(1, 1, 1), new Vector3(-1, -1, -1), new Point3(4, 4, 4), Math.PI / 14);
+				light = new SpotLight(new Color(1, 1, 1), new Vector3(-1, -1, -1), new Point3(4, 4, 4), Math.PI / 14, true);
 
 				if (world.lights.contains(light)) {
 					world.lights.remove(light);

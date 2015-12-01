@@ -61,7 +61,7 @@ public class PhongMaterial extends Material {
 
 		for (final Light light : world.lights) {
 
-			if (light.illuminates(hit.ray.at(hit.t))) {
+			if (light.illuminates(hit.ray.at(hit.t), world)) {
 
 				final Color lightColor = light.color;
 
