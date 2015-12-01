@@ -3,6 +3,7 @@ package light;
 import Matrizen_Vektoren_Bibliothek.Point3;
 import Matrizen_Vektoren_Bibliothek.Vector3;
 import color.Color;
+import ray.World;
 
 /**
  * Light
@@ -20,9 +21,12 @@ import color.Color;
 public abstract class Light {
 
 	public Color color;
+	public boolean castsShadows;
 
-	public Light(Color color) {
+
+	public Light(Color color, boolean castsShadows) {
 		this.color = color;
+		this.castsShadows = castsShadows;
 	}
 
 	/**
@@ -32,7 +36,7 @@ public abstract class Light {
 	 *            Übergebenes Point3 - Objekt
 	 * @return true / false wenn der übergebene Punkt beleuchtet wird
 	 */
-	public abstract boolean illuminates(Point3 p) throws IllegalArgumentException;
+	public abstract boolean illuminates(Point3 p, World world) throws IllegalArgumentException;
 
 	/**
 	 * Method: directionFrom(Point3)

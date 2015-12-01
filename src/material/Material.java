@@ -1,5 +1,6 @@
 package material;
 
+import application.Tracer;
 import geometries.Hit;
 import ray.World;
 import color.Color;
@@ -25,10 +26,7 @@ public abstract class Material {
 	 * @return null - muss in den erbenden Klassen überschrieben werden
 	 */
 
-	public Color colorFor(Hit hit, World world) {
-		return null;
-
-	}
+	public abstract Color colorFor(Hit hit, World world, Tracer tracer);
 
 	/*
 	 * (non-Javadoc)

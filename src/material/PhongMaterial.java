@@ -1,5 +1,6 @@
 package material;
 
+import application.Tracer;
 import geometries.Hit;
 import light.Light;
 import ray.World;
@@ -54,7 +55,7 @@ public class PhongMaterial extends Material {
 	 */
 
 	@Override
-	public Color colorFor(Hit hit, World world) {
+	public Color colorFor(Hit hit, World world, Tracer tracer) {
 
 		Color returnColor = diffuse.mul(world.ambient);
 

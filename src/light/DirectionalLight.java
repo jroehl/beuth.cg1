@@ -3,6 +3,7 @@ package light;
 import Matrizen_Vektoren_Bibliothek.Point3;
 import Matrizen_Vektoren_Bibliothek.Vector3;
 import color.Color;
+import ray.World;
 
 /**
  * DirectionalLight
@@ -15,7 +16,6 @@ import color.Color;
 public class DirectionalLight extends Light {
 
 	private final Vector3 direction;
-	private final Color color;
 
 	/**
 	 * Konstruktor: DirectionalLight
@@ -26,15 +26,11 @@ public class DirectionalLight extends Light {
 	 *            Vector3 des Lichts
 	 * @throws IllegalArgumentException
 	 */
-	public DirectionalLight(Color color, Vector3 direction) throws IllegalArgumentException {
-		super(color);
-		if (color == null) {
-			throw new IllegalArgumentException("The direction cannot be null!");
-		}
+	public DirectionalLight(Color color, Vector3 direction, boolean castsShadows) throws IllegalArgumentException {
+		super(color, castsShadows);
 		if (direction == null) {
 			throw new IllegalArgumentException("The direction cannot be null!");
 		}
-		this.color = color;
 		this.direction = direction;
 	}
 
@@ -47,7 +43,7 @@ public class DirectionalLight extends Light {
 	 * @throws IllegalArgumentException
 	 */
 	@Override
-	public boolean illuminates(Point3 p) throws IllegalArgumentException {
+	public boolean illuminates(Point3 p, World world) throws IllegalArgumentException {
 		if (p == null) {
 			throw new IllegalArgumentException("The point3 cannot be null!");
 		}
