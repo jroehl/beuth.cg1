@@ -3,6 +3,7 @@ package application;
 import geometries.AxisAlignedBox;
 import geometries.Geometry;
 import geometries.Plane;
+import geometries.Pyramid;
 import geometries.Sphere;
 import geometries.Triangle;
 
@@ -122,6 +123,7 @@ public class Raytracer extends Application {
 
 		// Graphics Menu
 		final Menu axisAlignedBox = new Menu("AxisAlignedBox");
+		final Menu pyramid = new Menu("Pyramid");
 		final Menu triangle = new Menu("Triangle");
 		final Menu plane = new Menu("Plane");
 		final Menu sphere0 = new Menu("Sphere 0");
@@ -129,6 +131,7 @@ public class Raytracer extends Application {
 		final Menu sphere2 = new Menu("Sphere 2");
 
 		menuGraph.getItems().add(axisAlignedBox);
+		menuGraph.getItems().add(pyramid);
 		menuGraph.getItems().add(triangle);
 		menuGraph.getItems().add(plane);
 		menuGraph.getItems().add(sphere0);
@@ -203,7 +206,10 @@ public class Raytracer extends Application {
 		{
 			// AlignBox
 			initializeButton(primaryStage, imgView, axisAlignedBox, new AxisAlignedBox(new LambertMaterial(new Color(0, 0, 1)), new Point3(
-					-1.5, 0.5, 0.5), new Point3(-0.5, 1.5, 1.5)));
+					-1, 2, 0), new Point3(-0.5, 1.5, 1.5)));
+			// Pyramid
+			initializeButton(primaryStage, imgView, pyramid, new Pyramid(new LambertMaterial(new Color(0, 0, 1)), new Point3(-1, -1, -1),
+					new Point3(1, 1, 1)));
 
 			// Plane
 			initializeButton(primaryStage, imgView, plane, new Plane(new LambertMaterial(new Color(0, 1, 0)), new Point3(0, 0, 0),
@@ -236,7 +242,7 @@ public class Raytracer extends Application {
 			// Perspective Camera
 			perspectiveCamera.setOnAction(event -> {
 				// 2. Kamera für die AxisAlignedBox
-					camera = new PerspectiveCamera(new Point3(4, 4, 4), new Vector3(-1, -1, -1), new Vector3(0, 1, 0), Math.PI / 4);
+					camera = new PerspectiveCamera(new Point3(3, 3, 3), new Vector3(-2, -2, -1), new Vector3(0, 1, 0), Math.PI / 4);
 
 					orthographicCamera.setSelected(false);
 					perspectiveCamera.setSelected(true);
@@ -248,7 +254,7 @@ public class Raytracer extends Application {
 			// Perspective Camera 2
 			perspectiveCamera2.setOnAction(event -> {
 				// 2. Kamera für die AxisAlignedBox
-					camera = new PerspectiveCamera(new Point3(0, 0, 0), new Vector3(0, 0, 1), new Vector3(0, 1, 0), Math.PI / 4);
+					camera = new PerspectiveCamera(new Point3(1.1, 0.9, 0.2), new Vector3(-1, 4, -7), new Vector3(-1, 1, 0), Math.PI / 4);
 
 					orthographicCamera.setSelected(false);
 					perspectiveCamera.setSelected(false);
