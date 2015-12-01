@@ -1,5 +1,6 @@
 package material;
 
+import application.Tracer;
 import geometries.Hit;
 import light.Light;
 import ray.World;
@@ -44,7 +45,7 @@ public class LambertMaterial extends Material {
 	 * @throws IllegalArgumentException
 	 */
 	@Override
-	public Color colorFor(Hit hit, World world) throws IllegalArgumentException {
+	public Color colorFor(Hit hit, World world, Tracer tracer) throws IllegalArgumentException {
 		if (hit == null) {
 			throw new IllegalArgumentException("hit cannot be null!");
 		}
@@ -93,7 +94,7 @@ public class LambertMaterial extends Material {
 	/**
 	 * Ueberschriebene equals-Methode
 	 *
-	 * @param o
+	 * @param obj
 	 *            Objekt das mit der Matrix verglichen wird
 	 * @return true | false
 	 */

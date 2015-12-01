@@ -1,5 +1,6 @@
 package material;
 
+import application.Tracer;
 import geometries.Hit;
 import ray.World;
 import color.Color;
@@ -42,7 +43,7 @@ public class SingleColorMaterial extends Material {
 	 * @throws IllegalArgumentException
 	 */
 	@Override
-	public Color colorFor(Hit hit, World world) throws IllegalArgumentException {
+	public Color colorFor(Hit hit, World world, Tracer tracer) throws IllegalArgumentException {
 		if (hit == null) {
 			throw new IllegalArgumentException("hit cannot be null!");
 		}
