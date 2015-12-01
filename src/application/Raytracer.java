@@ -1,24 +1,16 @@
 package application;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Optional;
-
-import javax.imageio.ImageIO;
-
-import Matrizen_Vektoren_Bibliothek.Normal3;
-import Matrizen_Vektoren_Bibliothek.Point3;
-import Matrizen_Vektoren_Bibliothek.Vector3;
-import camera.Camera;
-import camera.OrthographicCamera;
-import camera.PerspectiveCamera;
-import color.Color;
 import geometries.AxisAlignedBox;
 import geometries.Geometry;
 import geometries.Plane;
 import geometries.Sphere;
 import geometries.Triangle;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Optional;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
@@ -41,6 +33,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import javax.imageio.ImageIO;
+
 import light.DirectionalLight;
 import light.Light;
 import light.PointLight;
@@ -50,6 +45,13 @@ import material.PhongMaterial;
 import material.SingleColorMaterial;
 import ray.Ray;
 import ray.World;
+import Matrizen_Vektoren_Bibliothek.Normal3;
+import Matrizen_Vektoren_Bibliothek.Point3;
+import Matrizen_Vektoren_Bibliothek.Vector3;
+import camera.Camera;
+import camera.OrthographicCamera;
+import camera.PerspectiveCamera;
+import color.Color;
 
 public class Raytracer extends Application {
 
@@ -81,7 +83,7 @@ public class Raytracer extends Application {
 	/**
 	 * graphics - Liste mit darzustellenden Objecten
 	 */
-	private ArrayList<Geometry> graphics = new ArrayList<Geometry>();
+	private final ArrayList<Geometry> graphics = new ArrayList<Geometry>();
 
 	/**
 	 * @param primaryStage
@@ -200,24 +202,21 @@ public class Raytracer extends Application {
 		// Menu - Graphics
 		{
 			// AlignBox
-			initializeButton(primaryStage, imgView, axisAlignedBox,
-					new AxisAlignedBox(new LambertMaterial(new Color(0, 0, 1)), new Point3(-0.5, 0, -0.5), new Point3(0.5, 1, 0.5)));
+			initializeButton(primaryStage, imgView, axisAlignedBox, new AxisAlignedBox(new LambertMaterial(new Color(0, 0, 1)), new Point3(
+					-1.5, 0.5, 0.5), new Point3(-0.5, 1.5, 1.5)));
 
 			// Plane
-			initializeButton(primaryStage, imgView, plane,
-					new Plane(new LambertMaterial(new Color(0, 1, 0)), new Point3(0, -1, 0), new Normal3(0, 1, 0)));
+			initializeButton(primaryStage, imgView, plane, new Plane(new LambertMaterial(new Color(0, 1, 0)), new Point3(0, 0, 0),
+					new Normal3(0, 1, 0)));
 
 			// Spheren
-			initializeButton(primaryStage, imgView, sphere0,
-					new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(0, 0, -3), 0.5));
-			initializeButton(primaryStage, imgView, sphere1,
-					new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(-1, 0, -3), 0.5));
-			initializeButton(primaryStage, imgView, sphere2,
-					new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(1, 0, -6), 0.5));
+			initializeButton(primaryStage, imgView, sphere0, new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(0, 0, -3), 0.5));
+			initializeButton(primaryStage, imgView, sphere1, new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(1, 1, 1), 0.5));
+			initializeButton(primaryStage, imgView, sphere2, new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(1, 0, -6), 0.5));
 
 			// Triangle
-			initializeButton(primaryStage, imgView, triangle, new Triangle(new LambertMaterial(new Color(1, 0, 1)),
-					new Point3(-0.5, 0.5, -3), new Point3(0.5, 0.5, -3), new Point3(0.5, -0.5, -3)));
+			initializeButton(primaryStage, imgView, triangle, new Triangle(new LambertMaterial(new Color(1, 0, 1)), new Point3(0, 0, -1),
+					new Point3(1, 0, -1), new Point3(1, 1, -1)));
 		}
 
 		// Menu - Camera
@@ -225,38 +224,38 @@ public class Raytracer extends Application {
 			// Orthographic Camera
 			orthographicCamera.setOnAction(event -> {
 				// 1. Kamera - PerspectiveCamera mit geradem Blick
-				camera = new OrthographicCamera(new Point3(0, 0, 0), new Vector3(0, 0, -1), new Vector3(0, 1, 0), 3);
+					camera = new OrthographicCamera(new Point3(0, 0, 0), new Vector3(0, 0, -1), new Vector3(0, 1, 0), 3);
 
-				orthographicCamera.setSelected(true);
-				perspectiveCamera.setSelected(false);
-				perspectiveCamera2.setSelected(false);
+					orthographicCamera.setSelected(true);
+					perspectiveCamera.setSelected(false);
+					perspectiveCamera2.setSelected(false);
 
-				rerender(primaryStage, imgView);
-			});
+					rerender(primaryStage, imgView);
+				});
 
 			// Perspective Camera
 			perspectiveCamera.setOnAction(event -> {
 				// 2. Kamera für die AxisAlignedBox
-				camera = new PerspectiveCamera(new Point3(3, 3, 3), new Vector3(-3, -3, -3), new Vector3(0, 1, 0), Math.PI / 4);
+					camera = new PerspectiveCamera(new Point3(4, 4, 4), new Vector3(-1, -1, -1), new Vector3(0, 1, 0), Math.PI / 4);
 
-				orthographicCamera.setSelected(false);
-				perspectiveCamera.setSelected(true);
-				perspectiveCamera2.setSelected(false);
+					orthographicCamera.setSelected(false);
+					perspectiveCamera.setSelected(true);
+					perspectiveCamera2.setSelected(false);
 
-				rerender(primaryStage, imgView);
-			});
+					rerender(primaryStage, imgView);
+				});
 
 			// Perspective Camera 2
 			perspectiveCamera2.setOnAction(event -> {
 				// 2. Kamera für die AxisAlignedBox
-				camera = new PerspectiveCamera(new Point3(0, 0, 0), new Vector3(0, 0, 1), new Vector3(0, 1, 0), Math.PI / 4);
+					camera = new PerspectiveCamera(new Point3(0, 0, 0), new Vector3(0, 0, 1), new Vector3(0, 1, 0), Math.PI / 4);
 
-				orthographicCamera.setSelected(false);
-				perspectiveCamera.setSelected(false);
-				perspectiveCamera2.setSelected(true);
+					orthographicCamera.setSelected(false);
+					perspectiveCamera.setSelected(false);
+					perspectiveCamera2.setSelected(true);
 
-				rerender(primaryStage, imgView);
-			});
+					rerender(primaryStage, imgView);
+				});
 		}
 
 		// Menu - Light
@@ -319,8 +318,8 @@ public class Raytracer extends Application {
 		}
 
 		/*
-		 * Über einen AddListener an der HeightProperty und der WidthProperty der primaryStage wird das neu Zeichnen des
-		 * Bildes aufgerufen
+		 * Über einen AddListener an der HeightProperty und der WidthProperty
+		 * der primaryStage wird das neu Zeichnen des Bildes aufgerufen
 		 */
 		primaryStage.heightProperty().addListener((ChangeEvent) -> {
 			rerender(primaryStage, imgView);
@@ -342,7 +341,7 @@ public class Raytracer extends Application {
 		// SingleColor - Material
 		singleColorMaterial.setOnAction(event -> {
 			if (!graphics.contains(geometry)) {
-				ArrayList<Object> properties = showDialog(false);
+				final ArrayList<Object> properties = showDialog(false);
 				geometry.material = new SingleColorMaterial((Color) properties.get(0));
 
 				graphics.add(geometry);
@@ -365,7 +364,7 @@ public class Raytracer extends Application {
 		// Lambert Material
 		lambertMaterial.setOnAction(event -> {
 			if (!graphics.contains(geometry)) {
-				ArrayList<Object> properties = showDialog(false);
+				final ArrayList<Object> properties = showDialog(false);
 				geometry.material = new LambertMaterial((Color) properties.get(0));
 
 				graphics.add(geometry);
@@ -388,7 +387,7 @@ public class Raytracer extends Application {
 		// Phong Material
 		phongMaterial.setOnAction(event -> {
 			if (!graphics.contains(geometry)) {
-				ArrayList<Object> properties = showDialog(true);
+				final ArrayList<Object> properties = showDialog(true);
 				geometry.material = new PhongMaterial((Color) properties.get(0), (Color) properties.get(1), (int) properties.get(2));
 
 				graphics.add(geometry);
@@ -412,34 +411,34 @@ public class Raytracer extends Application {
 	private ArrayList<Object> showDialog(boolean b) {
 
 		// Create the custom dialog.
-		Dialog<ArrayList<Object>> dialog = new Dialog<>();
+		final Dialog<ArrayList<Object>> dialog = new Dialog<>();
 		dialog.setTitle("Material Properties");
 
-		ArrayList<Object> result = new ArrayList<Object>();
+		final ArrayList<Object> result = new ArrayList<Object>();
 
 		// Set the button types.
-		ButtonType buttonTypeCreat = new ButtonType("Creat", ButtonData.OK_DONE);
+		final ButtonType buttonTypeCreat = new ButtonType("Creat", ButtonData.OK_DONE);
 		dialog.getDialogPane().getButtonTypes().addAll(buttonTypeCreat, ButtonType.CANCEL);
 
-		GridPane grid = new GridPane();
+		final GridPane grid = new GridPane();
 		grid.setHgap(10);
 		grid.setVgap(10);
 		grid.setPadding(new Insets(20, 150, 10, 10));
 
-		TextField colorR = new TextField();
-		TextField colorG = new TextField();
-		TextField colorB = new TextField();
+		final TextField colorR = new TextField();
+		final TextField colorG = new TextField();
+		final TextField colorB = new TextField();
 
 		grid.add(new Label("Color:"), 0, 0);
 		grid.add(colorR, 1, 0);
 		grid.add(colorG, 2, 0);
 		grid.add(colorB, 3, 0);
 
-		TextField colorX = new TextField();
-		TextField colorY = new TextField();
-		TextField colorZ = new TextField();
+		final TextField colorX = new TextField();
+		final TextField colorY = new TextField();
+		final TextField colorZ = new TextField();
 
-		TextField exponent = new TextField();
+		final TextField exponent = new TextField();
 
 		if (b) {
 			grid.add(new Label("Exponent:"), 0, 2);
@@ -452,8 +451,9 @@ public class Raytracer extends Application {
 			grid.add(exponent, 1, 2);
 		}
 
-		// Enable/Disable login button depending on whether a username was entered.
-		Node loginButton = dialog.getDialogPane().lookupButton(buttonTypeCreat);
+		// Enable/Disable login button depending on whether a username was
+		// entered.
+		final Node loginButton = dialog.getDialogPane().lookupButton(buttonTypeCreat);
 		loginButton.setDisable(true);
 
 		// Do some validation (using the Java 8 lambda syntax).
@@ -472,16 +472,17 @@ public class Raytracer extends Application {
 		// Request focus on the username field by default.
 		Platform.runLater(() -> colorR.requestFocus());
 
-		// Convert the result to a username-password-pair when the login button is clicked.
+		// Convert the result to a username-password-pair when the login button
+		// is clicked.
 		dialog.setResultConverter(dialogButton -> {
 			if (dialogButton == buttonTypeCreat) {
 
-				result.add(new Color(Double.parseDouble(colorR.getText()), Double.parseDouble(colorG.getText()),
-						Double.parseDouble(colorB.getText())));
+				result.add(new Color(Double.parseDouble(colorR.getText()), Double.parseDouble(colorG.getText()), Double.parseDouble(colorB
+						.getText())));
 
 				if (!colorX.getText().isEmpty() && !colorY.getText().isEmpty() && !colorY.getText().isEmpty()) {
-					result.add(new Color(Double.parseDouble(colorX.getText()), Double.parseDouble(colorY.getText()),
-							Double.parseDouble(colorZ.getText())));
+					result.add(new Color(Double.parseDouble(colorX.getText()), Double.parseDouble(colorY.getText()), Double
+							.parseDouble(colorZ.getText())));
 				}
 
 				if (!exponent.getText().isEmpty()) {
@@ -492,7 +493,7 @@ public class Raytracer extends Application {
 			}
 			return null;
 		});
-		Optional<ArrayList<Object>> result1 = dialog.showAndWait();
+		final Optional<ArrayList<Object>> result1 = dialog.showAndWait();
 		return result;
 	}
 
