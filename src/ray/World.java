@@ -1,18 +1,21 @@
 package ray;
 
-import java.util.ArrayList;
-
-import application.Tracer;
-import color.Color;
 import geometries.Geometry;
 import geometries.Hit;
+
+import java.util.ArrayList;
+
 import light.Light;
+import application.Tracer;
+import color.Color;
 
 /**
- * Die Klasse World beinhaltet eine Menge mit den Objekten zu dazustellenden Szene. Sie hat ebenfalls eine Methode hit,
- * wobei der uebergebene Strahl gegen alle Objekte der Szene getestet wird. Es wird der Schnittpunkt mit dem kleinsten
- * positiven 𝑡 zurückgegeben. Die Klasse World hat ein Attribut namens backgroundColor vom Typ Color, welche verwendet
- * wird, wenn ein Strahl keine Geometrie trifft.
+ * Die Klasse World beinhaltet eine Menge mit den Objekten zu dazustellenden
+ * Szene. Sie hat ebenfalls eine Methode hit, wobei der uebergebene Strahl gegen
+ * alle Objekte der Szene getestet wird. Es wird der Schnittpunkt mit dem
+ * kleinsten positiven 𝑡 zurückgegeben. Die Klasse World hat ein Attribut
+ * namens backgroundColor vom Typ Color, welche verwendet wird, wenn ein Strahl
+ * keine Geometrie trifft.
  */
 public class World {
 
@@ -20,7 +23,10 @@ public class World {
 	 * Wird verwendet wenn ein Strahl keine Geometrie trifft
 	 */
 	Color backgroundColor;
-	public Color ambient = new Color(0.25, 0.25, 0.25); // wird auf die ganze Szene addiert, um alles heller zu machen
+	public Color ambient = new Color(0.25, 0.25, 0.25); // wird auf die ganze
+														// Szene addiert, um
+														// alles heller zu
+														// machen
 
 	/**
 	 * Liste zum Speichern der Geometrischen Elemente.
@@ -48,8 +54,8 @@ public class World {
 	}
 
 	/**
-	 * Testet den Uebergebene Strahl gegen alle Objekte der Szene. Und liefert den Schnittpunkt mit dem kleinsten
-	 * positiven 𝑡.
+	 * Testet den Uebergebene Strahl gegen alle Objekte der Szene. Und liefert
+	 * den Schnittpunkt mit dem kleinsten positiven 𝑡.
 	 *
 	 * @param ray
 	 *            Strahl welcher auf Objekte Geschickt wird.
@@ -76,7 +82,11 @@ public class World {
 		}
 
 		if (hit != null) {
- 			return hit.geo.material.colorFor(hit, this, new Tracer());
+			return hit.geo.material.colorFor(hit, this, new Tracer()); // hier
+																		// neues
+																		// Tracer
+																		// Objekt
+																		// erzeugen???
 		}
 		return backgroundColor;
 
@@ -145,7 +155,7 @@ public class World {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		World other = (World) obj;
+		final World other = (World) obj;
 		if (ambient == null) {
 			if (other.ambient != null)
 				return false;
