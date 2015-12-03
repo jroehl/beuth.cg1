@@ -53,3 +53,7 @@ out/production/Beuth_CGI/material/PhongMaterial.class
 out/production/Beuth_CGI/material/SingleColorMaterial.class
 out/production/Beuth_CGI/application/Tracer.class
 out/production/Beuth_CGI/material/ReflectiveMaterial.class
+master_git/cgm.iml
+master_git/Computergrafik-1-Raytracer-Java-master.ipr
+master_git/Computergrafik-1-Raytracer-Java-master.iws
+out/production/Beuth_CGI/geometries/Pyramid.class

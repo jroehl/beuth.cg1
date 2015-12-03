@@ -30,6 +30,7 @@ public class ReflectiveMaterial extends Material {
 	@Override
 	public Color colorFor(Hit hit, World world, Tracer tracer) {
 
+
 		Color returnColor = diffuse.mul(world.ambient);
 		final Point3 hitPoint = hit.ray.at(hit.t);
 		final double factor = hit.n.dot(hit.ray.direction.mul(-1.0)) * 2;
@@ -52,7 +53,7 @@ public class ReflectiveMaterial extends Material {
 			}
 		}
 
-		final Color reflColor = tracer.reflectedColors(new Ray(hitPoint, hit.ray.direction.add(hit.n.mul(factor))), hit);
+		final Color reflColor = tracer.reflectedColors(new Ray(hitPoint, hit.ray.direction.add(hit.n.mul(factor))));
 		return returnColor.add(reflectionColor.mul(reflColor));
 
 	}

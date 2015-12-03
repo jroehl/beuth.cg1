@@ -1,5 +1,6 @@
 package light;
 
+import ray.Ray;
 import ray.World;
 import Matrizen_Vektoren_Bibliothek.Point3;
 import Matrizen_Vektoren_Bibliothek.Vector3;
@@ -49,14 +50,19 @@ public class PointLight extends Light {
 		if (p == null) {
 			throw new IllegalArgumentException("The point3 cannot be null!");
 		}
-		// if (castsShadows) {
-		//
-		// if (world.hit(new Ray(p, directionFrom(p))) == null) {
-		// return true;
-		// }
-		// return true;
-		//
-		// }
+		if (castsShadows) {
+
+			if(world.hitHit(new Ray(p, directionFrom(p))) == null){
+				return true;
+			}
+			Ray r = new Ray(p, directionFrom(p));
+			double t1 = r.tOf( pl );
+			if (world.hitHit(r).t < t1) {
+				return false;
+			} else {
+				return true;
+			}
+		}
 
 		return true;
 	}

@@ -172,7 +172,7 @@ public class Raytracer extends Application {
 		camera = new OrthographicCamera(new Point3(0, 0, 0), new Vector3(0, 0, -1), new Vector3(0, 1, 0), 3);
 		orthographicCamera.setSelected(true);
 		// Default Licht
-		light = new PointLight(new Color(1, 1, 1), new Point3(4, 4, 4), true);
+		light = new PointLight(new Color(1, 1, 1), new Point3(8, 8, 8), true);
 		pointLight.setSelected(true);
 
 		createWorld();
@@ -213,14 +213,14 @@ public class Raytracer extends Application {
 					new Point3(1, 1, 1)));
 
 			// Plane
-			initializeButton(primaryStage, imgView, plane, new Plane(new LambertMaterial(new Color(0, 1, 0)), new Point3(0, -1, 0),
+			initializeButton(primaryStage, imgView, plane, new Plane(new LambertMaterial(new Color(0, 1, 0)), new Point3(0, 0, 0),
 					new Normal3(0, 1, 0)));
 
 			// Spheren
-			initializeButton(primaryStage, imgView, sphere0, new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(0, 0, -3), 0.7));
+			initializeButton(primaryStage, imgView, sphere0, new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(-3, 1, 0), 1));
 			initializeButton(primaryStage, imgView, sphere1,
-					new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(-1, 0, -3), 0.3));
-			initializeButton(primaryStage, imgView, sphere2, new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(1, 0, -6), 0.5));
+					new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(0, 1, 0), 1));
+			initializeButton(primaryStage, imgView, sphere2, new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(3, 1, 0), 1));
 
 			// Triangle
 			initializeButton(primaryStage, imgView, triangle, new Triangle(new LambertMaterial(new Color(1, 0, 1)), new Point3(-0.5, 0.5,
@@ -244,7 +244,7 @@ public class Raytracer extends Application {
 			// Perspective Camera
 			perspectiveCamera.setOnAction(event -> {
 				// 2. Kamera für die AxisAlignedBox
-					camera = new PerspectiveCamera(new Point3(3, 3, 3), new Vector3(-3, -3, -3), new Vector3(0, 1, 0), Math.PI / 4);
+					camera = new PerspectiveCamera(new Point3(8, 8, 8), new Vector3(-1, -1, -1), new Vector3(0, 1, 0), Math.PI / 4);
 
 					orthographicCamera.setSelected(false);
 					perspectiveCamera.setSelected(true);
