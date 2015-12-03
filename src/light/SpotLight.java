@@ -62,14 +62,13 @@ public class SpotLight extends Light {
 
 
         if (Math.sin(position.sub(p).normalized().x(direction.normalized()).magnitude) <= halfAngle) {
-            Hit hit = world.hitHit(new Ray(p, directionFrom(p)));
+            Hit hit = world.getHit(new Ray(p, directionFrom(p)));
             if (hit != null) {
-                double t1 = (position.sub(p).magnitude)	/ (directionFrom(p).magnitude);
+                double t1 = (position.sub(p).magnitude) / (directionFrom(p).magnitude);
                 if (hit.t < t1) {
                     return false;
-                } else {
-                    return true;
                 }
+                return true;
             }
             if (hit == null) {
                 return true;

@@ -86,7 +86,7 @@ public class World {
 
     }
 
-    public Hit hitHit(Ray ray) throws IllegalArgumentException {
+    public Hit getHit(Ray ray) throws IllegalArgumentException {
 
         if (ray == null) {
             throw new IllegalArgumentException("The Ray cannot be null!");
@@ -106,11 +106,7 @@ public class World {
         }
 
         if (hit != null) {
-            return hit; // hier
-            // neues
-            // Tracer
-            // Objekt
-            // erzeugen???
+            return hit;
         }
 
         return null;

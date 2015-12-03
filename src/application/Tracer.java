@@ -1,6 +1,5 @@
 package application;
 
-import Matrizen_Vektoren_Bibliothek.Point3;
 import geometries.Hit;
 import ray.Ray;
 import ray.World;
@@ -12,31 +11,30 @@ import color.Color;
  */
 public class Tracer {
 
-	public int depth;
-	private final World world;
+    public int depth;
+    private final World world;
 
-	public Tracer(World world, int depth) {
-		super();
-		this.world = world;
-		this.depth = depth;
-	}
-	public Color reflectedColors(Ray ray) {
+    public Tracer(World world, int depth) {
+        super();
+        this.world = world;
+        this.depth = depth;
+    }
 
-		if (ray == null) {
-			throw new IllegalArgumentException("The ray cannot be null!");
-		}
+    public Color reflectedColors(Ray ray) {
 
-		if (depth <= 0) {
-			return world.backgroundColor;
-		}
-
-		Hit hit = world.hitHit(ray);
-		if (hit != null) {
+        if (ray == null) {
+            throw new IllegalArgumentException("The ray cannot be null!");
+        }
+        if (depth <= 0) {
+            return world.backgroundColor;
+        }
+        Hit hit = world.getHit(ray);
+        if (hit != null) {
 //			return world.hit(ray);
-			return hit.geo.material.colorFor(hit, world, new Tracer(world, depth-1)); // hier
-		}
-		return world.backgroundColor;
+            return hit.geo.material.colorFor(hit, world, new Tracer(world, depth - 1)); // hier
+        }
+        return world.backgroundColor;
 
-	}
+    }
 
 }
