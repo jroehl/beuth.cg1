@@ -1,10 +1,9 @@
 package light;
 
+import ray.World;
 import Matrizen_Vektoren_Bibliothek.Point3;
 import Matrizen_Vektoren_Bibliothek.Vector3;
 import color.Color;
-import ray.Ray;
-import ray.World;
 
 /**
  * DirectionalLight
@@ -48,15 +47,15 @@ public class DirectionalLight extends Light {
 		if (p == null) {
 			throw new IllegalArgumentException("The point3 cannot be null!");
 		}
-		if (castsShadows) {
-
-			if(world.hit(new Ray(p, directionFrom(p))) == null){
-				return true;
-			}
-			else{
-				return false;
-			}
-		}
+		// if (castsShadows) {
+		//
+		// if(world.hit(new Ray(p, directionFrom(p))) == null){
+		// return true;
+		// }
+		// else{
+		// return false;
+		// }
+		// }
 		return true;
 	}
 

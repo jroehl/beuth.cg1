@@ -22,7 +22,7 @@ public class World {
 	/**
 	 * Wird verwendet wenn ein Strahl keine Geometrie trifft
 	 */
-	Color backgroundColor;
+	public Color backgroundColor;
 	public Color ambient = new Color(0.25, 0.25, 0.25); // wird auf die ganze
 														// Szene addiert, um
 														// alles heller zu
@@ -82,11 +82,11 @@ public class World {
 		}
 
 		if (hit != null) {
-			return hit.geo.material.colorFor(hit, this, new Tracer()); // hier
-																		// neues
-																		// Tracer
-																		// Objekt
-																		// erzeugen???
+			return hit.geo.material.colorFor(hit, this, new Tracer(this, 1)); // hier
+			// neues
+			// Tracer
+			// Objekt
+			// erzeugen???
 		}
 		return backgroundColor;
 

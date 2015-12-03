@@ -41,8 +41,7 @@ public class Triangle extends Geometry {
 	// Konstruktor ohne übergebene Normalen - es wird die Normale zur
 	// Dreiecksoberfläche errechnet und diese dann für die drei Eck-Normalen
 	// eingesetzt - wir bekommen ein ebenes Dreieck
-	public Triangle(Material material, Point3 a, Point3 b, Point3 c)
-			throws IllegalArgumentException {
+	public Triangle(Material material, Point3 a, Point3 b, Point3 c) throws IllegalArgumentException {
 		super(material);
 
 		if (a == null) {
@@ -80,8 +79,7 @@ public class Triangle extends Geometry {
 	 *            Point3 Objekt des Triangle
 	 * @throws IllegalArgumentException
 	 */
-	public Triangle(Material material, Point3 a, Point3 b, Point3 c,
-			Normal3 na, Normal3 nb, Normal3 nc) throws IllegalArgumentException {
+	public Triangle(Material material, Point3 a, Point3 b, Point3 c, Normal3 na, Normal3 nb, Normal3 nc) throws IllegalArgumentException {
 		this(material, a, b, c);
 		this.na = na;
 		this.nb = nb;
@@ -105,8 +103,7 @@ public class Triangle extends Geometry {
 			throw new IllegalArgumentException("The Ray cannot be null!");
 		}
 
-		final Mat3x3 matA = new Mat3x3(a.x - b.x, a.x - c.x, ray.direction.x,
-				a.y - b.y, a.y - c.y, ray.direction.y, a.z - b.z, a.z - c.z,
+		final Mat3x3 matA = new Mat3x3(a.x - b.x, a.x - c.x, ray.direction.x, a.y - b.y, a.y - c.y, ray.direction.y, a.z - b.z, a.z - c.z,
 				ray.direction.z);
 
 		final Vector3 vec = a.sub(ray.origin);
@@ -114,7 +111,8 @@ public class Triangle extends Geometry {
 		beta = matA.changeCol1(vec).determinant / matA.determinant;
 		gamma = matA.changeCol2(vec).determinant / matA.determinant;
 
-		alpha = 1 - beta - gamma; // werden die bar. Koord. hier richtig berechnet?
+		alpha = 1 - beta - gamma; // werden die bar. Koord. hier richtig
+									// berechnet?
 
 		final double t = matA.changeCol3(vec).determinant / matA.determinant;
 
@@ -134,8 +132,7 @@ public class Triangle extends Geometry {
 	}
 
 	private Normal3 createNormalToPoint() {
-		final Normal3 nPoint = na.mul(alpha).add(nb.mul(beta))
-				.add(nc.mul(gamma));
+		final Normal3 nPoint = na.mul(alpha).add(nb.mul(beta)).add(nc.mul(gamma));
 		return nPoint;
 	}
 

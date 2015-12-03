@@ -43,6 +43,7 @@ import light.PointLight;
 import light.SpotLight;
 import material.LambertMaterial;
 import material.PhongMaterial;
+import material.ReflectiveMaterial;
 import material.SingleColorMaterial;
 import ray.Ray;
 import ray.World;
@@ -206,23 +207,24 @@ public class Raytracer extends Application {
 		{
 			// AlignBox
 			initializeButton(primaryStage, imgView, axisAlignedBox, new AxisAlignedBox(new LambertMaterial(new Color(0, 0, 1)), new Point3(
-					-1, 2, 0), new Point3(-0.5, 1.5, 1.5)));
+					-0.5, 0, -0.5), new Point3(0.5, 1, 0.5)));
 			// Pyramid
 			initializeButton(primaryStage, imgView, pyramid, new Pyramid(new LambertMaterial(new Color(0, 0, 1)), new Point3(-1, -1, -1),
 					new Point3(1, 1, 1)));
 
 			// Plane
-			initializeButton(primaryStage, imgView, plane, new Plane(new LambertMaterial(new Color(0, 1, 0)), new Point3(0, 0, 0),
+			initializeButton(primaryStage, imgView, plane, new Plane(new LambertMaterial(new Color(0, 1, 0)), new Point3(0, -1, 0),
 					new Normal3(0, 1, 0)));
 
 			// Spheren
-			initializeButton(primaryStage, imgView, sphere0, new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(0, 0, -3), 0.5));
-			initializeButton(primaryStage, imgView, sphere1, new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(1, 1, 1), 0.5));
+			initializeButton(primaryStage, imgView, sphere0, new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(0, 0, -3), 0.7));
+			initializeButton(primaryStage, imgView, sphere1,
+					new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(-1, 0, -3), 0.3));
 			initializeButton(primaryStage, imgView, sphere2, new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(1, 0, -6), 0.5));
 
 			// Triangle
-			initializeButton(primaryStage, imgView, triangle, new Triangle(new LambertMaterial(new Color(1, 0, 1)), new Point3(0, 0, -1),
-					new Point3(1, 0, -1), new Point3(1, 1, -1)));
+			initializeButton(primaryStage, imgView, triangle, new Triangle(new LambertMaterial(new Color(1, 0, 1)), new Point3(-0.5, 0.5,
+					-3), new Point3(0.5, 0.5, -3), new Point3(0.5, -0.5, -3)));
 		}
 
 		// Menu - Camera
@@ -242,7 +244,7 @@ public class Raytracer extends Application {
 			// Perspective Camera
 			perspectiveCamera.setOnAction(event -> {
 				// 2. Kamera für die AxisAlignedBox
-					camera = new PerspectiveCamera(new Point3(3, 3, 3), new Vector3(-2, -2, -1), new Vector3(0, 1, 0), Math.PI / 4);
+					camera = new PerspectiveCamera(new Point3(3, 3, 3), new Vector3(-3, -3, -3), new Vector3(0, 1, 0), Math.PI / 4);
 
 					orthographicCamera.setSelected(false);
 					perspectiveCamera.setSelected(true);
@@ -254,7 +256,7 @@ public class Raytracer extends Application {
 			// Perspective Camera 2
 			perspectiveCamera2.setOnAction(event -> {
 				// 2. Kamera für die AxisAlignedBox
-					camera = new PerspectiveCamera(new Point3(1.1, 0.9, 0.2), new Vector3(-1, 4, -7), new Vector3(-1, 1, 0), Math.PI / 4);
+					camera = new PerspectiveCamera(new Point3(0, 0, 0), new Vector3(0, 0, 1), new Vector3(0, 1, 0), Math.PI / 4);
 
 					orthographicCamera.setSelected(false);
 					perspectiveCamera.setSelected(false);
@@ -342,12 +344,13 @@ public class Raytracer extends Application {
 		final RadioMenuItem singleColorMaterial = new RadioMenuItem("Single-Color-Material");
 		final RadioMenuItem lambertMaterial = new RadioMenuItem("Lambert-Material");
 		final RadioMenuItem phongMaterial = new RadioMenuItem("Phong-Material");
-		menu.getItems().addAll(singleColorMaterial, lambertMaterial, phongMaterial);
+		final RadioMenuItem reflectiveMaterial = new RadioMenuItem("Reflective-Material");
+		menu.getItems().addAll(singleColorMaterial, lambertMaterial, phongMaterial, reflectiveMaterial);
 
 		// SingleColor - Material
 		singleColorMaterial.setOnAction(event -> {
 			if (!graphics.contains(geometry)) {
-				final ArrayList<Object> properties = showDialog(false);
+				final ArrayList<Object> properties = showDialog(0);
 				geometry.material = new SingleColorMaterial((Color) properties.get(0));
 
 				graphics.add(geometry);
@@ -355,12 +358,14 @@ public class Raytracer extends Application {
 				singleColorMaterial.setSelected(true);
 				lambertMaterial.setSelected(false);
 				phongMaterial.setSelected(false);
+				reflectiveMaterial.setSelected(false);
 			} else {
 				graphics.remove(geometry);
 
 				singleColorMaterial.setSelected(false);
 				lambertMaterial.setSelected(false);
 				phongMaterial.setSelected(false);
+				reflectiveMaterial.setSelected(false);
 			}
 
 			createWorld();
@@ -370,7 +375,7 @@ public class Raytracer extends Application {
 		// Lambert Material
 		lambertMaterial.setOnAction(event -> {
 			if (!graphics.contains(geometry)) {
-				final ArrayList<Object> properties = showDialog(false);
+				final ArrayList<Object> properties = showDialog(0);
 				geometry.material = new LambertMaterial((Color) properties.get(0));
 
 				graphics.add(geometry);
@@ -378,12 +383,14 @@ public class Raytracer extends Application {
 				singleColorMaterial.setSelected(false);
 				lambertMaterial.setSelected(true);
 				phongMaterial.setSelected(false);
+				reflectiveMaterial.setSelected(false);
 			} else {
 				graphics.remove(geometry);
 
 				singleColorMaterial.setSelected(false);
 				lambertMaterial.setSelected(false);
 				phongMaterial.setSelected(false);
+				reflectiveMaterial.setSelected(false);
 			}
 
 			createWorld();
@@ -393,13 +400,14 @@ public class Raytracer extends Application {
 		// Phong Material
 		phongMaterial.setOnAction(event -> {
 			if (!graphics.contains(geometry)) {
-				final ArrayList<Object> properties = showDialog(true);
-				geometry.material = new PhongMaterial((Color) properties.get(0), (Color) properties.get(1), (int) properties.get(2));
+				final ArrayList<Object> properties = showDialog(1);
+				geometry.material = new PhongMaterial((Color) properties.get(0), (Color) properties.get(1), (int) properties.get(3));
 
 				graphics.add(geometry);
 
 				singleColorMaterial.setSelected(false);
 				lambertMaterial.setSelected(false);
+				reflectiveMaterial.setSelected(false);
 				phongMaterial.setSelected(true);
 			} else {
 				graphics.remove(geometry);
@@ -407,6 +415,33 @@ public class Raytracer extends Application {
 				singleColorMaterial.setSelected(false);
 				lambertMaterial.setSelected(false);
 				phongMaterial.setSelected(false);
+				reflectiveMaterial.setSelected(false);
+			}
+
+			createWorld();
+			rerender(primaryStage, imgView);
+		});
+
+		// reflective Material
+		reflectiveMaterial.setOnAction(event -> {
+			if (!graphics.contains(geometry)) {
+				final ArrayList<Object> properties = showDialog(2);
+				geometry.material = new ReflectiveMaterial((Color) properties.get(0), (Color) properties.get(1), (Color) properties.get(2),
+						(int) properties.get(3));
+
+				graphics.add(geometry);
+
+				singleColorMaterial.setSelected(false);
+				lambertMaterial.setSelected(false);
+				phongMaterial.setSelected(false);
+				reflectiveMaterial.setSelected(true);
+			} else {
+				graphics.remove(geometry);
+
+				singleColorMaterial.setSelected(false);
+				lambertMaterial.setSelected(false);
+				phongMaterial.setSelected(false);
+				reflectiveMaterial.setSelected(false);
 			}
 
 			createWorld();
@@ -414,7 +449,10 @@ public class Raytracer extends Application {
 		});
 	}
 
-	private ArrayList<Object> showDialog(boolean b) {
+	public String random() {
+		return String.valueOf(Math.random());
+	}
+	private ArrayList<Object> showDialog(int i) {
 
 		// Create the custom dialog.
 		final Dialog<ArrayList<Object>> dialog = new Dialog<>();
@@ -423,7 +461,7 @@ public class Raytracer extends Application {
 		final ArrayList<Object> result = new ArrayList<Object>();
 
 		// Set the button types.
-		final ButtonType buttonTypeCreat = new ButtonType("Creat", ButtonData.OK_DONE);
+		final ButtonType buttonTypeCreat = new ButtonType("Create", ButtonData.OK_DONE);
 		dialog.getDialogPane().getButtonTypes().addAll(buttonTypeCreat, ButtonType.CANCEL);
 
 		final GridPane grid = new GridPane();
@@ -431,22 +469,25 @@ public class Raytracer extends Application {
 		grid.setVgap(10);
 		grid.setPadding(new Insets(20, 150, 10, 10));
 
-		final TextField colorR = new TextField();
-		final TextField colorG = new TextField();
-		final TextField colorB = new TextField();
+		final TextField colorR = new TextField(random());
+		final TextField colorG = new TextField(random());
+		final TextField colorB = new TextField(random());
 
 		grid.add(new Label("Color:"), 0, 0);
 		grid.add(colorR, 1, 0);
 		grid.add(colorG, 2, 0);
 		grid.add(colorB, 3, 0);
 
-		final TextField colorX = new TextField();
-		final TextField colorY = new TextField();
-		final TextField colorZ = new TextField();
+		final TextField colorX = new TextField(random());
+		final TextField colorY = new TextField(random());
+		final TextField colorZ = new TextField(random());
+		final TextField colorO = new TextField(random());
+		final TextField colorP = new TextField(random());
+		final TextField colorQ = new TextField(random());
 
-		final TextField exponent = new TextField();
+		final TextField exponent = new TextField("65");
 
-		if (b) {
+		if (i == 1) {
 			grid.add(new Label("Exponent:"), 0, 2);
 
 			grid.add(new Label("Specular:"), 0, 1);
@@ -456,44 +497,66 @@ public class Raytracer extends Application {
 
 			grid.add(exponent, 1, 2);
 		}
+		if (i == 2) {
+			grid.add(new Label("Exponent:"), 0, 3);
 
-		// Enable/Disable login button depending on whether a username was
-		// entered.
+			grid.add(new Label("Specular:"), 0, 1);
+			grid.add(colorX, 1, 1);
+			grid.add(colorY, 2, 1);
+			grid.add(colorZ, 3, 1);
+
+			grid.add(new Label("Reflective:"), 0, 2);
+
+			grid.add(colorO, 1, 2);
+			grid.add(colorP, 2, 2);
+			grid.add(colorQ, 3, 2);
+
+			grid.add(exponent, 1, 3);
+		}
+
 		final Node loginButton = dialog.getDialogPane().lookupButton(buttonTypeCreat);
-		loginButton.setDisable(true);
+		// loginButton.setDisable(true);
 
 		// Do some validation (using the Java 8 lambda syntax).
-		colorR.textProperty().addListener((observable, oldValue, newValue) -> {
-			loginButton.setDisable(newValue.trim().isEmpty());
-		});
-		colorG.textProperty().addListener((observable, oldValue, newValue) -> {
-			loginButton.setDisable(newValue.trim().isEmpty());
-		});
-		colorB.textProperty().addListener((observable, oldValue, newValue) -> {
-			loginButton.setDisable(newValue.trim().isEmpty());
-		});
+		// colorR.textProperty().addListener((observable, oldValue, newValue) ->
+		// {
+		// loginButton.setDisable(newValue.trim().isEmpty());
+		// });
+		// colorG.textProperty().addListener((observable, oldValue, newValue) ->
+		// {
+		// loginButton.setDisable(newValue.trim().isEmpty());
+		// });
+		// colorB.textProperty().addListener((observable, oldValue, newValue) ->
+		// {
+		// loginButton.setDisable(newValue.trim().isEmpty());
+		// });
 
 		dialog.getDialogPane().setContent(grid);
 
 		// Request focus on the username field by default.
 		Platform.runLater(() -> colorR.requestFocus());
 
-		// Convert the result to a username-password-pair when the login button
-		// is clicked.
 		dialog.setResultConverter(dialogButton -> {
 			if (dialogButton == buttonTypeCreat) {
 
 				result.add(new Color(Double.parseDouble(colorR.getText()), Double.parseDouble(colorG.getText()), Double.parseDouble(colorB
 						.getText())));
 
-				if (!colorX.getText().isEmpty() && !colorY.getText().isEmpty() && !colorY.getText().isEmpty()) {
-					result.add(new Color(Double.parseDouble(colorX.getText()), Double.parseDouble(colorY.getText()), Double
-							.parseDouble(colorZ.getText())));
-				}
+				// if (!colorX.getText().isEmpty() &&
+				// !colorY.getText().isEmpty() && !colorY.getText().isEmpty()) {
+				result.add(new Color(Double.parseDouble(colorX.getText()), Double.parseDouble(colorY.getText()), Double.parseDouble(colorZ
+						.getText())));
+				// }
 
-				if (!exponent.getText().isEmpty()) {
-					result.add(Integer.parseInt(exponent.getText()));
-				}
+				// if (!colorO.getText().isEmpty() &&
+				// !colorP.getText().isEmpty() && !colorQ.getText().isEmpty()) {
+				result.add(new Color(Double.parseDouble(colorO.getText()), Double.parseDouble(colorP.getText()), Double.parseDouble(colorQ
+						.getText())));
+				// }
+
+				// if (!exponent.getText().isEmpty()) {
+				result.add(Integer.parseInt(exponent.getText()));
+				// }
 
 				return result;
 			}

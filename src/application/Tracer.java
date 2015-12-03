@@ -1,5 +1,6 @@
 package application;
 
+import geometries.Hit;
 import ray.Ray;
 import ray.World;
 import color.Color;
@@ -10,28 +11,28 @@ import color.Color;
  */
 public class Tracer {
 
-	private final int depth;
+	public int depth;
 	private final World world;
-	private Color cr;
 
 	public Tracer(World world, int depth) {
+		super();
 		this.world = world;
 		this.depth = depth;
-
 	}
-	public Color reflectedColors(Ray ray, Color cr, int depth) {
+	public Color reflectedColors(Ray ray, Hit hit) {
 
-		if (depth == 0) {
-			return world.ambient;
+		if (depth <= 0) {
+			return world.backgroundColor;
 		}
-		cr = cr.mul(world.hit(ray));
-
-		return reflectedColors(new Ray(), cr, depth--); // hier den neuen Strahl
-														// mit an der Oberfläche
-														// des Objektes
-														// reflektierter
-														// Richtung erzeugen!!
-														// Aber wie?
+		return hit.geo.material.colorFor(hit, world, new Tracer(world, depth - 1)); // hier
+		// den
+		// neuen
+		// Strahl
+		// mit an der Oberfläche
+		// des Objektes
+		// reflektierter
+		// Richtung erzeugen!!
+		// Aber wie?
 
 	}
 

@@ -6,10 +6,6 @@ import Matrizen_Vektoren_Bibliothek.Normal3;
 import Matrizen_Vektoren_Bibliothek.Point3;
 
 /**
- * Idee: ein Mittelpunkt von dem aus ein Strahl nach unten und drei Strahlen mit
- * jeweils gleichem winkel zuieinander in jede richtung nach schräg oben
- * geschickt werden... AxisAlignedBox
- *
  * @author Waschmaschine
  *         <p>
  *         Die von Geometry abgeleitete Klasse AxisAlignedBox implementiert die

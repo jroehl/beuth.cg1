@@ -15,6 +15,8 @@ import Matrizen_Vektoren_Bibliothek.Point3;
  */
 public class Sphere extends Geometry {
 
+	public Normal3 n;
+
 	/**
 	 * center - Point3 Objekt der Sphere
 	 */
@@ -36,8 +38,7 @@ public class Sphere extends Geometry {
 	 *            double wert der Sphere
 	 * @throws IllegalArgumentException
 	 */
-	public Sphere(Material material, Point3 center, double radius)
-			throws IllegalArgumentException {
+	public Sphere(Material material, Point3 center, double radius) throws IllegalArgumentException {
 		super(material);
 
 		if (center == null) {
@@ -67,8 +68,7 @@ public class Sphere extends Geometry {
 
 		final double a = ray.direction.dot(ray.direction);
 		final double b = ray.direction.dot(ray.origin.sub(center).mul(2));
-		final double c = (ray.origin.sub(center).dot(ray.origin.sub(center)))
-				- (this.radius * this.radius);
+		final double c = (ray.origin.sub(center).dot(ray.origin.sub(center))) - (this.radius * this.radius);
 
 		// unter der wurzel
 		final double d = (b * b) - (4 * a * c);
@@ -82,15 +82,14 @@ public class Sphere extends Geometry {
 		} else if (d == 0) {
 
 			final double t = -b / (2 * a);
-
-			return new Hit(t, ray, this, createNormalToPoint(ray, t));
+			n = createNormalToPoint(ray, t);
+			return new Hit(t, ray, this, n);
 
 		}
 
 		return null;
 
 	}
-
 	public Normal3 createNormalToPoint(Ray ray, double t) {
 
 		final Normal3 normal = ray.at(t).sub(this.center).normalized().asNormal();
@@ -117,9 +116,7 @@ public class Sphere extends Geometry {
 
 		if (Double.compare(sphere.radius, radius) != 0)
 			return false;
-		return !(center != null
-				? !center.equals(sphere.center)
-				: sphere.center != null);
+		return !(center != null ? !center.equals(sphere.center) : sphere.center != null);
 
 	}
 
