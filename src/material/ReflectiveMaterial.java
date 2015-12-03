@@ -30,6 +30,16 @@ public class ReflectiveMaterial extends Material {
 	@Override
 	public Color colorFor(Hit hit, World world, Tracer tracer) {
 
+		if (hit == null) {
+			throw new IllegalArgumentException("The hit cannot be null!");
+		}
+		if (world == null) {
+			throw new IllegalArgumentException("The world cannot be null!");
+		}
+		if (tracer == null) {
+			throw new IllegalArgumentException("The tracer cannot be null!");
+		}
+
 
 		Color returnColor = diffuse.mul(world.ambient);
 		final Point3 hitPoint = hit.ray.at(hit.t);

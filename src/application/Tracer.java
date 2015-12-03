@@ -30,7 +30,6 @@ public class Tracer {
         }
         Hit hit = world.getHit(ray);
         if (hit != null) {
-//			return world.hit(ray);
             return hit.geo.material.colorFor(hit, world, new Tracer(world, depth - 1)); // hier
         }
         return world.backgroundColor;
