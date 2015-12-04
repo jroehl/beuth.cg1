@@ -455,37 +455,37 @@ public class Raytracer extends Application {
 	private ArrayList<Object> showDialog(int i) {
 
 		// Create the custom dialog.
-		final Dialog<ArrayList<Object>> dialog = new Dialog<>();
+		final Dialog<ArrayList<Object>> dialog = new Dialog<ArrayList<Object>>();
 		dialog.setTitle("Material Properties");
 
 		final ArrayList<Object> result = new ArrayList<Object>();
 
 		// Set the button types.
-		final ButtonType buttonTypeCreat = new ButtonType("Create", ButtonData.OK_DONE);
-		dialog.getDialogPane().getButtonTypes().addAll(buttonTypeCreat, ButtonType.CANCEL);
+		final ButtonType buttonTypeCreate = new ButtonType("Create", ButtonData.OK_DONE);
+		dialog.getDialogPane().getButtonTypes().addAll(buttonTypeCreate, ButtonType.CANCEL);
 
 		final GridPane grid = new GridPane();
 		grid.setHgap(10);
 		grid.setVgap(10);
 		grid.setPadding(new Insets(20, 150, 10, 10));
 
-		final TextField colorR = new TextField(random());
-		final TextField colorG = new TextField(random());
-		final TextField colorB = new TextField(random());
+		final TextField colorR = new TextField();
+		final TextField colorG = new TextField();
+		final TextField colorB = new TextField();
 
 		grid.add(new Label("Color:"), 0, 0);
 		grid.add(colorR, 1, 0);
 		grid.add(colorG, 2, 0);
 		grid.add(colorB, 3, 0);
 
-		final TextField colorX = new TextField(random());
-		final TextField colorY = new TextField(random());
-		final TextField colorZ = new TextField(random());
-		final TextField colorO = new TextField(random());
-		final TextField colorP = new TextField(random());
-		final TextField colorQ = new TextField(random());
+		final TextField colorX = new TextField("1");
+		final TextField colorY = new TextField("1");
+		final TextField colorZ = new TextField("1");
+		final TextField colorO = new TextField("0.5");
+		final TextField colorP = new TextField("0.5");
+		final TextField colorQ = new TextField("0.5");
 
-		final TextField exponent = new TextField("65");
+		final TextField exponent = new TextField("64");
 
 		if (i == 1) {
 			grid.add(new Label("Exponent:"), 0, 2);
@@ -514,7 +514,7 @@ public class Raytracer extends Application {
 			grid.add(exponent, 1, 3);
 		}
 
-		final Node loginButton = dialog.getDialogPane().lookupButton(buttonTypeCreat);
+		final Node loginButton = dialog.getDialogPane().lookupButton(buttonTypeCreate);
 		// loginButton.setDisable(true);
 
 		// Do some validation (using the Java 8 lambda syntax).
@@ -537,7 +537,7 @@ public class Raytracer extends Application {
 		Platform.runLater(() -> colorR.requestFocus());
 
 		dialog.setResultConverter(dialogButton -> {
-			if (dialogButton == buttonTypeCreat) {
+			if (dialogButton == buttonTypeCreate) {
 
 				result.add(new Color(Double.parseDouble(colorR.getText()), Double.parseDouble(colorG.getText()), Double.parseDouble(colorB
 						.getText())));

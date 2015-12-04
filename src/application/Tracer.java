@@ -16,6 +16,7 @@ public class Tracer {
 
 	public Tracer(World world, int depth) {
 		super();
+		System.out.println("hier");
 		this.world = world;
 		this.depth = depth;
 	}
@@ -32,6 +33,7 @@ public class Tracer {
 		if (hit != null) {
 			return hit.geo.material.colorFor(hit, world, new Tracer(world, depth - 1)); // hier
 		}
+
 		return world.backgroundColor;
 
 	}
