@@ -13,12 +13,13 @@ public class Tracer {
 
 	public int depth;
 	private final World world;
+	// private final Ray ray;
 
-	public Tracer(World world, int depth) {
+	public Tracer(World world, int depth) {// Ray ray
 		super();
-		System.out.println("hier");
 		this.world = world;
 		this.depth = depth;
+		// this.ray = ray;
 	}
 
 	public Color reflectedColors(Ray ray) {
@@ -30,8 +31,12 @@ public class Tracer {
 			return world.backgroundColor;
 		}
 		final Hit hit = world.getHit(ray);
+		// ray = new Ray(hit.ray.at(hit.t),
+		// hit.ray.direction.reflectedOn(hit.n));
+
 		if (hit != null) {
-			return hit.geo.material.colorFor(hit, world, new Tracer(world, depth - 1)); // hier
+
+			return hit.geo.material.colorFor(hit, world, new Tracer(world, depth - 1)); // ray
 		}
 
 		return world.backgroundColor;

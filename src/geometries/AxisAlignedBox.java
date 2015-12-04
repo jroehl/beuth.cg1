@@ -37,8 +37,7 @@ public class AxisAlignedBox extends Geometry {
 	 *
 	 * @throws IllegalArgumentException
 	 */
-	public AxisAlignedBox(Material material, Point3 lbf, Point3 run)
-			throws IllegalArgumentException {
+	public AxisAlignedBox(Material material, Point3 lbf, Point3 run) throws IllegalArgumentException {
 		super(material);
 
 		if (lbf == null) {
@@ -103,9 +102,9 @@ public class AxisAlignedBox extends Geometry {
 		final Point3 p = hit.ray.at(hit.t);
 		final double eps = 0.00001;
 
-		if ((lbf.x <= p.x + eps && p.x <= run.x + eps)
-				&& (lbf.y <= p.y + eps && p.y <= run.y + eps)
+		if ((lbf.x <= p.x + eps && p.x <= run.x + eps) && (lbf.y <= p.y + eps && p.y <= run.y + eps)
 				&& (lbf.z <= p.z + eps && p.z <= run.z + eps)) {
+
 			return hit;
 		}
 
