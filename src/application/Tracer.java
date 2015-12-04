@@ -11,29 +11,29 @@ import color.Color;
  */
 public class Tracer {
 
-    public int depth;
-    private final World world;
+	public int depth;
+	private final World world;
 
-    public Tracer(World world, int depth) {
-        super();
-        this.world = world;
-        this.depth = depth;
-    }
+	public Tracer(World world, int depth) {
+		super();
+		this.world = world;
+		this.depth = depth;
+	}
 
-    public Color reflectedColors(Ray ray) {
+	public Color reflectedColors(Ray ray) {
 
-        if (ray == null) {
-            throw new IllegalArgumentException("The ray cannot be null!");
-        }
-        if (depth <= 0) {
-            return world.backgroundColor;
-        }
-        Hit hit = world.getHit(ray);
-        if (hit != null) {
-            return hit.geo.material.colorFor(hit, world, new Tracer(world, depth - 1)); // hier
-        }
-        return world.backgroundColor;
+		if (ray == null) {
+			throw new IllegalArgumentException("The ray cannot be null!");
+		}
+		if (depth <= 0) {
+			return world.backgroundColor;
+		}
+		final Hit hit = world.getHit(ray);
+		if (hit != null) {
+			return hit.geo.material.colorFor(hit, world, new Tracer(world, depth - 1)); // hier
+		}
+		return world.backgroundColor;
 
-    }
+	}
 
 }
