@@ -44,8 +44,7 @@ public class Hit {
 	 *            Geometry Objekt
 	 * @throws IllegalArgumentException
 	 */
-	public Hit(final double t, final Ray ray, final Geometry geo,
-			final Normal3 n) throws IllegalArgumentException {
+	public Hit(final double t, final Ray ray, final Geometry geo, final Normal3 n) throws IllegalArgumentException {
 
 		if (ray == null) {
 			throw new IllegalArgumentException("The Ray cannot be null!");

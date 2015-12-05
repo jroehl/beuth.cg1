@@ -52,7 +52,7 @@ public class ReflectiveMaterial extends Material {
 
 				final Vector3 lightVector = light.directionFrom(hitPoint).normalized();
 
-				final Vector3 reflectedVector = lightVector.reflectedOn(hit.n).normalized();
+				final Vector3 reflectedVector = lightVector.normalized().reflectedOn(hit.n);
 
 				final double max = Math.max(0.0, lightVector.dot(hit.n));
 				final double maxSP = Math.pow(Math.max(0.0, reflectedVector.dot(e)), this.exponent);
@@ -61,8 +61,8 @@ public class ReflectiveMaterial extends Material {
 			}
 		}
 
-		return returnColor.add(reflectionColor.mul(tracer.reflectedColors(new Ray(hitPoint, hit.ray.direction.add(hit.n.mul(factor))
-				.normalized()))));
+		return returnColor.add(reflectionColor.mul(tracer.reflectedColors(new Ray(hitPoint, hit.ray.direction.add(
+				hit.n.mul(factor + 0.0001)).normalized()))));
 		// return returnColor.add(reflectionColor.mul(tracer.reflectedColors(new
 		// Ray(hitPoint, hit.ray.direction.add(hit.n.mul(factor))))));
 		// return returnColor;

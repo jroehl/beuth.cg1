@@ -1,5 +1,6 @@
 package application;
 
+import geometries.Geometry;
 import geometries.Hit;
 import ray.Ray;
 import ray.World;
@@ -33,19 +34,29 @@ public class Tracer {
 
 			return world.backgroundColor;
 		}
+
+		Hit h = null;
+		final double u = 0.00001;
+		double t2 = 0;
+		for (final Geometry g : world.objs) {
+			h = g.hit(ray);
+
+			if (h != null) {
+				t2 = h.t;
+			}
+			if (h != null && t2 >= u) {
+				return h.geo.material.colorFor(h, world, new Tracer(world, depth - 1));
+			}
+		}
 		// System.out.println(ray.direction.x + "\n" + ray.direction.y + "\n" +
 		// ray.direction.z + "\n");
-		final Hit hit = world.getHit(ray);
+		// final Hit hit = world.getHit(ray);
 		// ray = new Ray(hit.ray.at(hit.t),
 		// hit.ray.direction.reflectedOn(hit.n));
 
-		if (hit != null) {
-
-			return hit.geo.material.colorFor(hit, world, new Tracer(world, depth - 1)); // ray
-		}
+		//
 
 		return world.backgroundColor;
 
 	}
-
 }

@@ -33,8 +33,7 @@ public abstract class Camera {
 	 *            Vector3 der Kamera
 	 * @throws IllegalArgumentException
 	 */
-	public Camera(final Point3 e, final Vector3 g, final Vector3 t)
-			throws IllegalArgumentException {
+	public Camera(final Point3 e, final Vector3 g, final Vector3 t) throws IllegalArgumentException {
 
 		if (e == null) {
 			throw new IllegalArgumentException("The Point  e cannot be null!");
@@ -75,8 +74,7 @@ public abstract class Camera {
 
 	@Override
 	public String toString() {
-		return "Camera{" + "e=" + e + ", g=" + g + ", t=" + t + ", u=" + u
-				+ ", v=" + v + ", w=" + w + '}';
+		return "Camera{" + "e=" + e + ", g=" + g + ", t=" + t + ", u=" + u + ", v=" + v + ", w=" + w + '}';
 	}
 
 	@Override

@@ -96,14 +96,18 @@ public class World {
 
 		Hit hit = null;
 
+		final double u = 0.00001;
+		double t2 = 0;
+
 		for (final Geometry obj : objs) {
-			final Hit objHit = obj.hit(ray);
+			hit = obj.hit(ray);
 
-			if (objHit != null) {
-				if (hit == null || objHit.t < hit.t) {
-					hit = objHit;
+			if (hit != null) {
+				t2 = hit.t;
+			}
 
-				}
+			if (hit != null && t2 >= u) {
+				hit.geo.material.colorFor(hit, this, new Tracer(this, 5));
 			}
 		}
 
