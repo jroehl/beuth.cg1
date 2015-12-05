@@ -50,19 +50,19 @@ public class ReflectiveMaterial extends Material {
 
 			if (light.illuminates(hitPoint, world)) {
 
-				final Vector3 lightVector = light.directionFrom(hitPoint);
+				final Vector3 lightVector = light.directionFrom(hitPoint).normalized();
 
-				final Vector3 reflectedVector = lightVector.reflectedOn(hit.n);
+				final Vector3 reflectedVector = lightVector.reflectedOn(hit.n).normalized();
 
 				final double max = Math.max(0.0, lightVector.dot(hit.n));
 				final double maxSP = Math.pow(Math.max(0.0, reflectedVector.dot(e)), this.exponent);
 
-				returnColor = returnColor.add(light.color.mul(this.diffuse));
-				returnColor = returnColor.mul(max).add(light.color.mul(this.specular).mul(maxSP));
+				returnColor = returnColor.add(light.color.mul(this.diffuse).mul(max)).add(light.color.mul(this.specular).mul(maxSP));
 			}
 		}
 
-		return returnColor.add(reflectionColor.mul(tracer.reflectedColors(new Ray(hitPoint, hit.ray.direction.add(hit.n.mul(factor))))));
+		return returnColor.add(reflectionColor.mul(tracer.reflectedColors(new Ray(hitPoint, hit.ray.direction.add(hit.n.mul(factor))
+				.normalized()))));
 		// return returnColor.add(reflectionColor.mul(tracer.reflectedColors(new
 		// Ray(hitPoint, hit.ray.direction.add(hit.n.mul(factor))))));
 		// return returnColor;

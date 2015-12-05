@@ -13,12 +13,14 @@ public class Tracer {
 
 	public int depth;
 	private final World world;
+
 	// private final Ray ray;
 
 	public Tracer(World world, int depth) {// Ray ray
 		super();
 		this.world = world;
 		this.depth = depth;
+
 		// this.ray = ray;
 	}
 
