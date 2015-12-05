@@ -3,6 +3,7 @@ package material;
 import geometries.Hit;
 import light.Light;
 import ray.World;
+import Matrizen_Vektoren_Bibliothek.Point3;
 import Matrizen_Vektoren_Bibliothek.Vector3;
 import application.Tracer;
 import color.Color;
@@ -58,24 +59,40 @@ public class PhongMaterial extends Material {
 	public Color colorFor(Hit hit, World world, Tracer tracer) {
 
 		Color returnColor = diffuse.mul(world.ambient);
-
+		final Vector3 e = (hit.ray.direction.mul(-1.0)).normalized();
+		final Point3 hitPoint = hit.ray.at(hit.t);
 		for (final Light light : world.lights) {
 
 			if (light.illuminates(hit.ray.at(hit.t), world)) {
 
-				final Color lightColor = light.color;
-
-				final Vector3 lightVector = light.directionFrom(hit.ray.at(hit.t)).normalized();
+				// final Color lightColor = light.color;
+				//
+				// final Vector3 lightVector =
+				// light.directionFrom(hit.ray.at(hit.t)).normalized();
+				//
+				// final Vector3 reflectedVector =
+				// lightVector.reflectedOn(hit.n);
+				//
+				// final Vector3 e = (hit.ray.direction.mul(-1));
+				//
+				// final double max = Math.max(0.0, lightVector.dot(hit.n));
+				//
+				// returnColor =
+				// returnColor.add(diffuse.mul(lightColor).mul(max));
+				//
+				// returnColor =
+				// returnColor.add(specular.mul(lightColor.mul(Math.pow(Math.max(0.0,
+				// reflectedVector.dot(e)), exponent))));
+				// }
+				final Vector3 lightVector = light.directionFrom(hitPoint).normalized();
 
 				final Vector3 reflectedVector = lightVector.reflectedOn(hit.n);
 
-				final Vector3 e = (hit.ray.direction.mul(-1)).normalized();
-
 				final double max = Math.max(0.0, lightVector.dot(hit.n));
+				final double maxSP = Math.pow(Math.max(0.0, reflectedVector.dot(e)), this.exponent);
 
-				returnColor = returnColor.add(diffuse.mul(lightColor).mul(max));
-
-				returnColor = returnColor.add(specular.mul(lightColor.mul(Math.pow(Math.max(0.0, reflectedVector.dot(e)), exponent))));
+				returnColor = returnColor.add(light.color.mul(this.diffuse));
+				returnColor = returnColor.mul(max).add(light.color.mul(this.specular).mul(maxSP));
 			}
 		}
 		return returnColor;

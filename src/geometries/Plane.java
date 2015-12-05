@@ -35,8 +35,7 @@ public class Plane extends Geometry {
 	 *            Normal3 Objekt der Ebene
 	 * @throws IllegalArgumentException
 	 */
-	public Plane(Material material, Point3 a, Normal3 n)
-			throws IllegalArgumentException {
+	public Plane(Material material, Point3 a, Normal3 n) throws IllegalArgumentException {
 		super(material);
 
 		if (a == null) {
@@ -70,11 +69,13 @@ public class Plane extends Geometry {
 		// denonimator / nenner
 		final double nenner = ray.direction.dot(n);
 
-		if (nenner != 0) {
-			final double t = n.dot(a.sub(ray.origin)) / nenner; // ich glaube
+		if (nenner != 0.0) {
+			final double t = n.dot(a.sub(ray.origin)) / nenner; // ich
+			// glaube
 			// hier war ein
 			// fehle
-			if (t > 0) {
+
+			if (t > 0.0) {
 				return new Hit(t, ray, this, this.n);
 			}
 		}

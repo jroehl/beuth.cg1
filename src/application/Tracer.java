@@ -28,8 +28,11 @@ public class Tracer {
 			throw new IllegalArgumentException("The ray cannot be null!");
 		}
 		if (depth <= 0) {
+
 			return world.backgroundColor;
 		}
+		// System.out.println(ray.direction.x + "\n" + ray.direction.y + "\n" +
+		// ray.direction.z + "\n");
 		final Hit hit = world.getHit(ray);
 		// ray = new Ray(hit.ray.at(hit.t),
 		// hit.ray.direction.reflectedOn(hit.n));

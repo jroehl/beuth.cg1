@@ -43,24 +43,28 @@ public class ReflectiveMaterial extends Material {
 		Color returnColor = diffuse.mul(world.ambient);
 		final Point3 hitPoint = hit.ray.at(hit.t);
 		final double factor = hit.n.dot(hit.ray.direction.mul(-1.0)) * 2;
-		final Vector3 e = (hit.ray.direction.mul(-1));
-
+		// final double factor = hit.n.dot(hit.ray.direction.reflectedOn(hit.n))
+		// * 2;
+		final Vector3 e = (hit.ray.direction.mul(-1.0)).normalized();
 		for (final Light light : world.lights) {
 
 			if (light.illuminates(hitPoint, world)) {
-				final Color lightColor = light.color;
-				final Vector3 lightVector = light.directionFrom(hit.ray.at(hit.t));
-				final Vector3 reflectedVector = lightVector.reflectedOn(hit.n);
-				final double max = Math.max(0.0, hit.n.dot(lightVector));
-				returnColor = returnColor.add(diffuse.mul(lightColor).mul(max));
-				returnColor = returnColor.add(specular.mul(lightColor.mul(Math.pow(Math.max(0.0, reflectedVector.dot(e)), exponent))));
 
+				final Vector3 lightVector = light.directionFrom(hitPoint);
+
+				final Vector3 reflectedVector = lightVector.reflectedOn(hit.n);
+
+				final double max = Math.max(0.0, lightVector.dot(hit.n));
+				final double maxSP = Math.pow(Math.max(0.0, reflectedVector.dot(e)), this.exponent);
+
+				returnColor = returnColor.add(light.color.mul(this.diffuse));
+				returnColor = returnColor.mul(max).add(light.color.mul(this.specular).mul(maxSP));
 			}
 		}
-		final Color reflColor = tracer.reflectedColors(new Ray(hitPoint, hit.ray.direction.add(hit.n.mul(factor)).normalized()));
-		returnColor = (reflectionColor.mul(reflColor)).add(returnColor);
 
-		return returnColor;
-
+		return returnColor.add(reflectionColor.mul(tracer.reflectedColors(new Ray(hitPoint, hit.ray.direction.add(hit.n.mul(factor))))));
+		// return returnColor.add(reflectionColor.mul(tracer.reflectedColors(new
+		// Ray(hitPoint, hit.ray.direction.add(hit.n.mul(factor))))));
+		// return returnColor;
 	}
 }
