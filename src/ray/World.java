@@ -88,6 +88,36 @@ public class World {
 
 	}
 
+	// public Hit getHit(Ray ray) throws IllegalArgumentException {
+	//
+	// if (ray == null) {
+	// throw new IllegalArgumentException("The Ray cannot be null!");
+	// }
+	//
+	// Hit hit = null;
+	//
+	// final double u = 0.00001;
+	// double t2 = 0;
+	//
+	// for (final Geometry obj : objs) {
+	// hit = obj.hit(ray);
+	//
+	// if (hit != null) {
+	// t2 = hit.t;
+	// }
+	//
+	// if (hit != null && t2 >= u) {
+	// hit.geo.material.colorFor(hit, this, new Tracer(this, 5));
+	// }
+	// }
+	//
+	// if (hit != null) {
+	// return hit;
+	// }
+	//
+	// return null;
+	//
+	// }
 	public Hit getHit(Ray ray) throws IllegalArgumentException {
 
 		if (ray == null) {
@@ -96,18 +126,14 @@ public class World {
 
 		Hit hit = null;
 
-		final double u = 0.00001;
-		double t2 = 0;
-
 		for (final Geometry obj : objs) {
-			hit = obj.hit(ray);
+			final Hit objHit = obj.hit(ray);
 
-			if (hit != null) {
-				t2 = hit.t;
-			}
+			if (objHit != null) {
+				if (hit == null || objHit.t < hit.t) {
+					hit = objHit;
 
-			if (hit != null && t2 >= u) {
-				hit.geo.material.colorFor(hit, this, new Tracer(this, 5));
+				}
 			}
 		}
 
