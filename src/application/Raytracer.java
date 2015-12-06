@@ -285,7 +285,7 @@ public class Raytracer extends Application {
 			// DirectionalLight
 			directionalLight.setOnAction(event -> {
 
-				light = new DirectionalLight(new Color(1, 1, 1), new Vector3(-1, -1, -1), true);
+				light = new DirectionalLight(new Color(1, 1, 1), new Vector3(8, 8, 0), true);
 
 				if (world.lights.contains(light)) {
 					world.lights.remove(light);
@@ -301,7 +301,7 @@ public class Raytracer extends Application {
 			// SpotLight
 			spotLight.setOnAction(event -> {
 
-				light = new SpotLight(new Color(1, 1, 1), new Vector3(-1, -1, -1), new Point3(4, 4, 4), Math.PI / 14, true);
+				light = new SpotLight(new Color(1, 1, 1), new Vector3(-1, -1, -1), new Point3(8, 8, 0), Math.PI / 14, true);
 
 				if (world.lights.contains(light)) {
 					world.lights.remove(light);

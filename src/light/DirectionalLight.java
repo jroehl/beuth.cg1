@@ -1,5 +1,7 @@
 package light;
 
+import geometries.Geometry;
+import geometries.Hit;
 import ray.Ray;
 import ray.World;
 import Matrizen_Vektoren_Bibliothek.Point3;
@@ -49,11 +51,24 @@ public class DirectionalLight extends Light {
 			throw new IllegalArgumentException("The point3 cannot be null!");
 		}
 		if (castsShadows) {
-			if (world.getHit(new Ray(p, directionFrom(p))) == null) {
-				return true;
+			final Ray r = new Ray(p, directionFrom(p));
+			final double tMin = 0.00001;
+			for (final Geometry g : world.objs) {
+				double t2 = 0;
+				final Hit h = g.hit(r);
+
+				if (h != null) {
+					t2 = h.t;
+				}
+				if (t2 >= tMin && h != null) {
+					return false;
+				}
 			}
+			return true;
+
 		}
 		return false;
+
 	}
 
 	/**
