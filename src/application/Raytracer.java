@@ -269,7 +269,7 @@ public class Raytracer extends Application {
 		{
 			// PointLight
 			pointLight.setOnAction(event -> {
-				light = new PointLight(new Color(1, 1, 1), new Point3(8, 8, 8), true);
+				light = new PointLight(new Color(1, 1, 1), new Point3(8, 8, 0), true);
 
 				if (world.lights.contains(light)) {
 					world.lights.remove(light);

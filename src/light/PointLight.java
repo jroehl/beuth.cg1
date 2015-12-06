@@ -55,10 +55,6 @@ public class PointLight extends Light {
 		if (castsShadows) {
 			final Ray r = new Ray(p, directionFrom(p));
 
-			if (world.getHit(r) == null) {
-				return true;
-			}
-
 			final double tMax = r.tOf(pl);
 			final double tMin = 0.00001;
 
