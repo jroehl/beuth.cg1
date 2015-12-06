@@ -1,5 +1,7 @@
 package light;
 
+import geometries.Geometry;
+import geometries.Hit;
 import ray.Ray;
 import ray.World;
 import Matrizen_Vektoren_Bibliothek.Point3;
@@ -56,11 +58,18 @@ public class PointLight extends Light {
 			if (world.getHit(r) == null) {
 				return true;
 			}
-			final double t1 = r.tOf(pl);
-			if (world.getHit(r).t > t1) {
-				return false;
-			}
 
+			final double tMax = r.tOf(pl);
+			final double tMin = 0.00001;
+
+			for (final Geometry g : world.objs) {
+
+				final Hit h = g.hit(r);
+
+				if (h != null && (h.t >= tMin && h.t <= tMax)) {
+					return false;
+				}
+			}
 		}
 		return true;
 	}
