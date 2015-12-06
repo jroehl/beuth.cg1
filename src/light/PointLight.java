@@ -52,24 +52,29 @@ public class PointLight extends Light {
 		if (p == null) {
 			throw new IllegalArgumentException("The point3 cannot be null!");
 		}
+
 		if (castsShadows) {
 			final Ray r = new Ray(p, directionFrom(p));
 
 			final double tMax = r.tOf(pl);
 			final double tMin = 0.00001;
-
+			double t2 = 0;
 			for (final Geometry g : world.objs) {
 
 				final Hit h = g.hit(r);
+				if (h != null) {
 
-				if (h != null && (h.t >= tMin && h.t <= tMax)) {
+					t2 = h.t;
+				}
+				if (t2 >= tMin && t2 <= tMax) {
+
 					return false;
+
 				}
 			}
 		}
 		return true;
 	}
-
 	/**
 	 * Method: directionFrom(Point3)
 	 *

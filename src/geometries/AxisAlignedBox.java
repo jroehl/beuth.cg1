@@ -78,40 +78,39 @@ public class AxisAlignedBox extends Geometry {
 
 		final Plane[] planes = {b1, b2, b3, f1, f2, f3};
 
-		double tf = -1;
-		Normal3 nf = null;
+		// double tf = -1;
+		// Normal3 nf = null;
+
+		Hit hit = null;
 
 		for (final Plane plane : planes) {
 
-			if (ray.origin.sub(plane.a).dot(plane.n) > 0) {
+			if (ray.origin.sub(plane.a).normalized().dot(plane.n) > 0) {
 				// denonimator / nenner
 				final double d = ray.direction.dot(plane.n);
 
 				if (d != 0) {
 					final double t = plane.a.sub(ray.origin).dot(plane.n) / d;
 
-					if (t > tf) {
-						nf = plane.n;
-						tf = t;
+					if (hit == null || t > hit.t) {
+						hit = new Hit(t, ray, this, plane.n);
 					}
 				}
 			}
 		}
+		if (hit != null) {
+			final Point3 p = hit.ray.at(hit.t);
+			final double eps = 0.00001;
 
-		final Hit hit = new Hit(tf, ray, this, nf);
-		final Point3 p = hit.ray.at(hit.t);
-		final double eps = 0.00001;
+			if ((lbf.x <= p.x + eps && p.x <= run.x + eps) && (lbf.y <= p.y + eps && p.y <= run.y + eps)
+					&& (lbf.z <= p.z + eps && p.z <= run.z + eps)) {
 
-		if ((lbf.x <= p.x + eps && p.x <= run.x + eps) && (lbf.y <= p.y + eps && p.y <= run.y + eps)
-				&& (lbf.z <= p.z + eps && p.z <= run.z + eps)) {
-
-			return hit;
+				return hit;
+			}
 		}
-
 		return null;
 
 	}
-
 	/**
 	 * Ueberschriebene toString-Methode
 	 *
