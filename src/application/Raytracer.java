@@ -301,7 +301,7 @@ public class Raytracer extends Application {
 			// SpotLight
 			spotLight.setOnAction(event -> {
 
-				light = new SpotLight(new Color(1, 1, 1), new Vector3(-1, -1, -1), new Point3(8, 8, 0), Math.PI / 14, true);
+				light = new SpotLight(new Color(1, 1, 1), new Vector3(-1, -1, -1), new Point3(-3, -3, -3), Math.PI / 14, true);
 
 				if (world.lights.contains(light)) {
 					world.lights.remove(light);

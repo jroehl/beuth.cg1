@@ -51,22 +51,25 @@ public class DirectionalLight extends Light {
 			throw new IllegalArgumentException("The point3 cannot be null!");
 		}
 		if (castsShadows) {
-			final Ray r = new Ray(p, directionFrom(p));// Vector3 zum Licht
+			final Ray r = new Ray(p, directionFrom(p));
+
+			final double tMax = Double.MAX_VALUE;
 			final double tMin = 0.00001;
 			double t2 = 0;
 			for (final Geometry g : world.objs) {
 
 				final Hit h = g.hit(r);
-
+				System.out.println(h);
 				if (h != null) {
 
 					t2 = h.t;
 				}
-				if (t2 >= tMin) {
+				if (t2 >= tMin && t2 <= tMax) {
+
 					return false;
+
 				}
 			}
-
 		}
 		return true;
 
