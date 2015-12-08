@@ -77,6 +77,7 @@ public class Sphere extends Geometry {
 			final double t1 = (-b + Math.sqrt(d)) / (2 * a);
 			final double t2 = (-b - Math.sqrt(d)) / (2 * a);
 			final double minT = Math.min(t1, t2);
+
 			return new Hit(minT, ray, this, createNormalToPoint(ray, minT));
 
 		} else if (d == 0) {

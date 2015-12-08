@@ -214,7 +214,7 @@ public class Raytracer extends Application {
 
 			// Plane
 			initializeButton(primaryStage, imgView, plane, new Plane(new LambertMaterial(new Color(0, 1, 0)), new Point3(0, 0, 0),
-					new Normal3(0, 1, 0)));
+					new Normal3(1, 1, 0)));
 
 			// Spheren
 			initializeButton(primaryStage, imgView, sphere0, new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(-3, 1, 0), 1));
@@ -269,12 +269,12 @@ public class Raytracer extends Application {
 		{
 			// PointLight
 			pointLight.setOnAction(event -> {
-				light = new PointLight(new Color(1, 1, 1), new Point3(8, 8, 0), true);
 
 				if (world.lights.contains(light)) {
 					world.lights.remove(light);
 					pointLight.setSelected(false);
 				} else {
+					light = new PointLight(new Color(1, 1, 1), new Point3(8, 8, 0), true);
 					world.lights.add(light);
 					pointLight.setSelected(true);
 				}
@@ -285,12 +285,11 @@ public class Raytracer extends Application {
 			// DirectionalLight
 			directionalLight.setOnAction(event -> {
 
-				light = new DirectionalLight(new Color(1, 1, 1), new Vector3(8, 8, 0), true);
-
 				if (world.lights.contains(light)) {
 					world.lights.remove(light);
 					directionalLight.setSelected(false);
 				} else {
+					light = new DirectionalLight(new Color(1, 1, 1), new Vector3(8, 8, 0), true);
 					world.lights.add(light);
 					directionalLight.setSelected(true);
 				}
@@ -301,12 +300,11 @@ public class Raytracer extends Application {
 			// SpotLight
 			spotLight.setOnAction(event -> {
 
-				light = new SpotLight(new Color(1, 1, 1), new Vector3(-1, -1, -1), new Point3(-3, -3, -3), Math.PI / 14, true);
-
 				if (world.lights.contains(light)) {
 					world.lights.remove(light);
 					spotLight.setSelected(false);
 				} else {
+					light = new SpotLight(new Color(1, 1, 1), new Vector3(-1, -1, -1), new Point3(-3, -3, -3), Math.PI / 14, true);
 					world.lights.add(light);
 					spotLight.setSelected(true);
 				}
