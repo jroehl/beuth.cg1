@@ -18,11 +18,11 @@ public class TrianglePyramid extends Geometry {
 	public TrianglePyramid(Material material, Point3 eckeA) throws IllegalArgumentException {
 		super(material);
 		this.eckeA = eckeA;
-		eckeB = new Point3(eckeA.x + 2, eckeA.y, eckeA.z);
-		eckeC = new Point3(eckeA.x + 2, eckeA.y, eckeA.z - 2);
-		eckeD = new Point3(eckeA.x, eckeA.y, eckeA.z - 2);
+		eckeB = new Point3(eckeA.x + 3, eckeA.y, eckeA.z);
+		eckeC = new Point3(eckeA.x + 3, eckeA.y, eckeA.z - 3);
+		eckeD = new Point3(eckeA.x, eckeA.y, eckeA.z - 3);
 		final Vector3 bottomMiddle = (eckeB.sub(eckeA)).mul(0.5).add(eckeD.sub(eckeA)).mul(0.5);
-		top = new Point3(bottomMiddle.x, bottomMiddle.y + 3, bottomMiddle.z);
+		top = new Point3(bottomMiddle.x, bottomMiddle.y + 2.5, bottomMiddle.z);
 
 	}
 	@Override
@@ -41,10 +41,16 @@ public class TrianglePyramid extends Geometry {
 				-1, 0));
 
 		final Triangle[] triangles = {a, b, c, d, bottom1, bottom2};
+		Hit h = null;
 
 		for (final Triangle tri : triangles) {
-			return tri.hit(ray);
-
+			final Hit h2 = tri.hit(ray);
+			if (h2 != null) {
+				if (h2.t > 0.0000001 && (h == null || h.t < h2.t)) {
+					h = h2;
+				}
+				return h;
+			}
 		}
 
 		// Müssen nun alle über die world erzeugt werden und dann jeweils der
