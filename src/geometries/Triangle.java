@@ -111,12 +111,11 @@ public class Triangle extends Geometry {
 		beta = matA.changeCol1(vec).determinant / matA.determinant;
 		gamma = matA.changeCol2(vec).determinant / matA.determinant;
 
-		alpha = 1 - beta - gamma; // werden die bar. Koord. hier richtig
-									// berechnet?
+		alpha = 1 - beta - gamma;
 
 		final double t = matA.changeCol3(vec).determinant / matA.determinant;
 
-		if ((beta > 0 && gamma > 0) && (beta + gamma) <= 1) {
+		if ((beta > 0.0 && gamma > 0.0) && (beta + gamma) <= 1) {
 			return new Hit(t, ray, this, createNormalToPoint());
 		}
 		return null;
@@ -126,7 +125,7 @@ public class Triangle extends Geometry {
 		final Vector3 v = this.b.sub(this.a);
 		final Vector3 w = this.c.sub(this.a);
 
-		final Normal3 normalToSurface = v.x(w).asNormal();
+		final Normal3 normalToSurface = v.x(w).normalized().asNormal();
 
 		return normalToSurface;
 	}

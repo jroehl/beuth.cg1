@@ -1,5 +1,6 @@
 package light;
 
+import geometries.Geometry;
 import geometries.Hit;
 import ray.Ray;
 import ray.World;
@@ -68,21 +69,24 @@ public class SpotLight extends Light {
 
 		if (castsShadows) {
 			final Ray r = new Ray(p, directionFrom(p));
-			if (world.getHit(r) == null) {
-				if (Math.sin(position.sub(p).normalized().x(direction.normalized()).magnitude) <= halfAngle) {
-					final Hit hit = world.getHit(new Ray(p, directionFrom(p)));
-					if (hit != null) {
-						final double t1 = (position.sub(p).magnitude) / (directionFrom(p).magnitude);
-						if (hit.t > t1) {
-							return false;
+			for (final Geometry g : world.objs) {
+
+				if (g.hit(r) == null) {
+					if (Math.sin(position.sub(p).normalized().x(direction.normalized()).magnitude) <= halfAngle) {
+						final Hit hit = world.getHit(new Ray(p, directionFrom(p)));
+						if (hit != null) {
+							final double t1 = (position.sub(p).magnitude) / (directionFrom(p).magnitude);
+							if (hit.t > t1) {
+								return false;
+							}
+						}
+						if (hit == null) {
+							return true;
 						}
 					}
-					if (hit == null) {
-						return true;
-					}
 				}
-			}
 
+			}
 		}
 		return false;
 	}

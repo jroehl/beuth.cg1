@@ -51,7 +51,7 @@ public class DirectionalLight extends Light {
 			throw new IllegalArgumentException("The point3 cannot be null!");
 		}
 		if (castsShadows) {
-			final Ray r = new Ray(p, direction);
+			final Ray r = new Ray(p, directionFrom(p));
 
 			final double tMax = Double.MAX_VALUE;
 			final double tMin = 0.00001;
@@ -93,6 +93,12 @@ public class DirectionalLight extends Light {
 		return direction.mul(-1).normalized();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see java.lang.Object#toString()
+	 */
+
 	/**
 	 * Ueberschriebene toString-Methode
 	 *
@@ -100,7 +106,7 @@ public class DirectionalLight extends Light {
 	 */
 	@Override
 	public String toString() {
-		return "DirectionalLight [direction=" + direction + ", color=" + color + "]";
+		return "DirectionalLight [direction=" + direction + "]";
 	}
 
 	/**
@@ -114,16 +120,11 @@ public class DirectionalLight extends Light {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		final DirectionalLight other = (DirectionalLight) obj;
-		if (color == null) {
-			if (other.color != null)
-				return false;
-		} else if (!color.equals(other.color))
-			return false;
 		if (direction == null) {
 			if (other.direction != null)
 				return false;
@@ -131,7 +132,6 @@ public class DirectionalLight extends Light {
 			return false;
 		return true;
 	}
-
 	/**
 	 * Ueberschriebene hashCode-Methode
 	 *
@@ -140,8 +140,7 @@ public class DirectionalLight extends Light {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((color == null) ? 0 : color.hashCode());
+		int result = super.hashCode();
 		result = prime * result + ((direction == null) ? 0 : direction.hashCode());
 		return result;
 	}

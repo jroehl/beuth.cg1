@@ -1,9 +1,9 @@
 package light;
 
+import ray.World;
 import Matrizen_Vektoren_Bibliothek.Point3;
 import Matrizen_Vektoren_Bibliothek.Vector3;
 import color.Color;
-import ray.World;
 
 /**
  * Light
@@ -20,9 +20,46 @@ import ray.World;
  */
 public abstract class Light {
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (castsShadows ? 1231 : 1237);
+		result = prime * result + ((color == null) ? 0 : color.hashCode());
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final Light other = (Light) obj;
+		if (castsShadows != other.castsShadows)
+			return false;
+		if (color == null) {
+			if (other.color != null)
+				return false;
+		} else if (!color.equals(other.color))
+			return false;
+		return true;
+	}
+
 	public Color color;
 	public boolean castsShadows;
-
 
 	public Light(Color color, boolean castsShadows) {
 		this.color = color;
@@ -48,13 +85,13 @@ public abstract class Light {
 	 */
 	public abstract Vector3 directionFrom(Point3 p) throws IllegalArgumentException;
 
-	/**
-	 * Ueberschriebene toString-Methode
-	 *
-	 * @return String Light Werte
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "Light [color=" + color + "]";
+		return "Light [color=" + color + ", castsShadows=" + castsShadows + "]";
 	}
 }
