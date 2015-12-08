@@ -59,7 +59,7 @@ public class DirectionalLight extends Light {
 			for (final Geometry g : world.objs) {
 
 				final Hit h = g.hit(r);
-				System.out.println(h);
+				// System.out.println(h);
 				if (h != null) {
 
 					t2 = h.t;

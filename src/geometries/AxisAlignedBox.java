@@ -97,15 +97,16 @@ public class AxisAlignedBox extends Geometry {
 					}
 				}
 			}
-		}
-		if (hit != null) {
-			final Point3 p = hit.ray.at(hit.t);
-			final double eps = 0.0001;
 
-			if ((lbf.x <= p.x + eps && p.x <= run.x + eps) && (lbf.y <= p.y + eps && p.y <= run.y + eps)
-					&& (lbf.z <= p.z + eps && p.z <= run.z + eps)) {
+			if (hit != null) {
+				final Point3 p = hit.ray.at(hit.t);
+				final double eps = 0.0001;
 
-				return hit;
+				if ((lbf.x <= p.x + eps && p.x <= run.x + eps) && (lbf.y <= p.y + eps && p.y <= run.y + eps)
+						&& (lbf.z <= p.z + eps && p.z <= run.z + eps)) {
+
+					return plane.hit(ray);
+				}
 			}
 		}
 		return null;

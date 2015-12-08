@@ -3,9 +3,9 @@ package application;
 import geometries.AxisAlignedBox;
 import geometries.Geometry;
 import geometries.Plane;
-import geometries.Pyramid;
 import geometries.Sphere;
 import geometries.Triangle;
+import geometries.TrianglePyramid;
 
 import java.io.File;
 import java.io.IOException;
@@ -209,8 +209,8 @@ public class Raytracer extends Application {
 			initializeButton(primaryStage, imgView, axisAlignedBox, new AxisAlignedBox(new LambertMaterial(new Color(0, 0, 1)), new Point3(
 					-0.5, 0, -0.5), new Point3(0.5, 1, 0.5)));
 			// Pyramid
-			initializeButton(primaryStage, imgView, pyramid, new Pyramid(new LambertMaterial(new Color(0, 0, 1)), new Point3(-1, -1, -1),
-					new Point3(1, 1, 1)));
+			initializeButton(primaryStage, imgView, pyramid, new TrianglePyramid(new LambertMaterial(new Color(0, 0, 1)), new Point3(0, 0,
+					0)));
 
 			// Plane
 			initializeButton(primaryStage, imgView, plane, new Plane(new LambertMaterial(new Color(0, 1, 0)), new Point3(0, 0, 0),
@@ -337,7 +337,6 @@ public class Raytracer extends Application {
 
 		primaryStage.show();
 	}
-
 	private void initializeButton(Stage primaryStage, final ImageView imgView, Menu menu, final Geometry geometry) {
 
 		final RadioMenuItem singleColorMaterial = new RadioMenuItem("Single-Color-Material");

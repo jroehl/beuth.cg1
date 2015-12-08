@@ -56,7 +56,7 @@ public class PointLight extends Light {
 		if (castsShadows) {
 			final Ray r = new Ray(p, directionFrom(p));
 
-			final double tMax = r.tOf(pl);
+			final double tMax = r.tOf(pl);// t der Lichtquelle
 			final double tMin = 0.00001;
 			double t2 = 0;
 			for (final Geometry g : world.objs) {

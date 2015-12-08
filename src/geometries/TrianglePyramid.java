@@ -40,7 +40,8 @@ public class TrianglePyramid extends Geometry {
 		final Triangle[] triangles = {a, b, c, d, bottom1, bottom2};
 
 		for (final Triangle tri : triangles) {
-			// kleinstes t suchen.. damit Hit returnen
+			return tri.hit(ray);
+
 		}
 
 		// Müssen nun alle über die world erzeugt werden und dann jeweils der
