@@ -51,7 +51,7 @@ public class DirectionalLight extends Light {
 			throw new IllegalArgumentException("The point3 cannot be null!");
 		}
 		if (castsShadows) {
-			final Ray r = new Ray(p, directionFrom(p));
+			final Ray r = new Ray(p, direction);
 
 			final double tMax = Double.MAX_VALUE;
 			final double tMin = 0.00001;
@@ -63,6 +63,7 @@ public class DirectionalLight extends Light {
 				if (h != null) {
 
 					t2 = h.t;
+
 				}
 				if (t2 >= tMin && t2 <= tMax) {
 
@@ -71,6 +72,7 @@ public class DirectionalLight extends Light {
 				}
 			}
 		}
+		System.out.println("!");
 		return true;
 
 	}

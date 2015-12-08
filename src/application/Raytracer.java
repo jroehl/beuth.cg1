@@ -214,7 +214,7 @@ public class Raytracer extends Application {
 
 			// Plane
 			initializeButton(primaryStage, imgView, plane, new Plane(new LambertMaterial(new Color(0, 1, 0)), new Point3(0, 0, 0),
-					new Normal3(1, 1, 0)));
+					new Normal3(0, 1, 0)));
 
 			// Spheren
 			initializeButton(primaryStage, imgView, sphere0, new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(-3, 1, 0), 1));
