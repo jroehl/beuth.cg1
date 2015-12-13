@@ -196,24 +196,27 @@ public class Raytracer extends Application {
 		// Menu - Graphics
 		{
 			// AlignBox
-			initializeButton(primaryStage, imgView, axisAlignedBox, new AxisAlignedBox(new LambertMaterial(new Color(0, 0, 1)), new Point3(
-					-0.5, 0, -0.5), new Point3(0.5, 1, 0.5)));
+			initializeMaterials(primaryStage, imgView, axisAlignedBox,
+					new AxisAlignedBox(new LambertMaterial(new Color(0, 0, 1)), new Point3(-0.5, 0, -0.5), new Point3(0.5, 1, 0.5)));
 			// Pyramid
-			initializeButton(primaryStage, imgView, pyramid, new TrianglePyramid(new LambertMaterial(new Color(0, 0, 1)), new Point3(0, 0,
-					0)));
+			initializeMaterials(primaryStage, imgView, pyramid,
+					new TrianglePyramid(new LambertMaterial(new Color(0, 0, 1)), new Point3(0, 0, 0)));
 
 			// Plane
-			initializeButton(primaryStage, imgView, plane, new Plane(new LambertMaterial(new Color(0, 1, 0)), new Point3(0, 0, 0),
-					new Normal3(0, 1, 0)));
+			initializeMaterials(primaryStage, imgView, plane,
+					new Plane(new LambertMaterial(new Color(0, 1, 0)), new Point3(0, 0, 0), new Normal3(0, 1, 0)));
 
 			// Spheren
-			initializeButton(primaryStage, imgView, sphere0, new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(-3, 1, 0), 1));
-			initializeButton(primaryStage, imgView, sphere1, new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(0, 1, 0), 1));
-			initializeButton(primaryStage, imgView, sphere2, new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(3, 1, 0), 1));
+			initializeMaterials(primaryStage, imgView, sphere0,
+					new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(-3, 1, 0), 1));
+			initializeMaterials(primaryStage, imgView, sphere1,
+					new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(0, 1, 0), 1));
+			initializeMaterials(primaryStage, imgView, sphere2,
+					new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(3, 1, 0), 1));
 
 			// Triangle
-			initializeButton(primaryStage, imgView, triangle, new Triangle(new LambertMaterial(new Color(1, 0, 1)), new Point3(-0.5, 0.5,
-					-3), new Point3(0.5, 0.5, -3), new Point3(0.5, -0.5, -3)));
+			initializeMaterials(primaryStage, imgView, triangle, new Triangle(new LambertMaterial(new Color(1, 0, 1)),
+					new Point3(-0.5, 0.5, -3), new Point3(0.5, 0.5, -3), new Point3(0.5, -0.5, -3)));
 		}
 
 		// Menu - Camera
@@ -325,7 +328,19 @@ public class Raytracer extends Application {
 
 		primaryStage.show();
 	}
-	private void initializeButton(Stage primaryStage, final ImageView imgView, Menu menu, final Geometry geometry) {
+	/**
+	 * Hilfmethode welche für jeden Objekt-Menueintrag die entsprechenden Materialien bereitstellt.
+	 * 
+	 * @param primaryStage
+	 *            primaryStage für das rerendern
+	 * @param imgView
+	 *            imgView für das rerendern
+	 * @param menu
+	 *            Menueintrag der Geomety
+	 * @param geometry
+	 *            Geomety für welche ein Menüeintrag erzeugt werden soll.
+	 */
+	private void initializeMaterials(Stage primaryStage, final ImageView imgView, Menu menu, final Geometry geometry) {
 
 		final RadioMenuItem singleColorMaterial = new RadioMenuItem("Single-Color-Material");
 		final RadioMenuItem lambertMaterial = new RadioMenuItem("Lambert-Material");
