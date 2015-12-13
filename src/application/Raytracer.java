@@ -261,53 +261,13 @@ public class Raytracer extends Application {
 		// Menu - Light
 		{
 			// PointLight
-			pointLight.setOnAction(event -> {
-
-				if (world.lights.contains(light)) {
-					world.lights.remove(light);
-					pointLight.setSelected(false);
-				} else {
-					light = new PointLight(new Color(1, 1, 1), new Point3(8, 8, 0), true);
-					world.lights.add(light);
-					pointLight.setSelected(true);
-				}
-
-				rerender(primaryStage, imgView);
-			});
+			initializeLight(primaryStage, imgView, pointLight, new PointLight(new Color(1, 1, 1), new Point3(8, 8, 0), true));
 
 			// DirectionalLight
-			directionalLight.setOnAction(event -> {
-
-				if (world.lights.contains(light)) {
-					world.lights.remove(light);
-					directionalLight.setSelected(false);
-				} else {
-					light = new DirectionalLight(new Color(1, 1, 1), new Vector3(8, 8, 0), true);
-					world.lights.add(light);
-					directionalLight.setSelected(true);
-				}
-
-				rerender(primaryStage, imgView);
-			});
-
+			initializeLight(primaryStage, imgView, directionalLight, new DirectionalLight(new Color(1, 1, 1), new Vector3(8, 8, 0), true));
 			// SpotLight
-			spotLight.setOnAction(event -> {
-
-				if (world.lights.contains(light)) {
-					world.lights.remove(light);
-					spotLight.setSelected(false);
-				} else {
-					light = new SpotLight(new Color(1, 1, 1), new Vector3(-1, -1, -1), new Point3(-3, -3, -3), Math.PI / 14, true);
-					world.lights.add(light);
-					spotLight.setSelected(true);
-				}
-
-				rerender(primaryStage, imgView);
-			});
-		}
-
-		// Menu - Material
-		{
+			initializeLight(primaryStage, imgView, spotLight,
+					new SpotLight(new Color(1, 1, 1), new Vector3(-1, -1, -1), new Point3(-3, -3, -3), Math.PI / 14, true));
 		}
 
 		// Menu - Settings
@@ -328,6 +288,28 @@ public class Raytracer extends Application {
 
 		primaryStage.show();
 	}
+
+	/**
+	 * 
+	 * @param primaryStage
+	 * @param imgView
+	 * @param button
+	 * @param light
+	 */
+	private void initializeLight(Stage primaryStage, final ImageView imgView, final RadioMenuItem button, Light light) {
+		button.setOnAction(event -> {
+			if (world.lights.contains(light)) {
+				world.lights.remove(light);
+				// light = null;
+				button.setSelected(false);
+			} else {
+				world.addLight(light);
+				button.setSelected(true);
+			}
+			rerender(primaryStage, imgView);
+		});
+	}
+
 	/**
 	 * Hilfmethode welche für jeden Objekt-Menueintrag die entsprechenden Materialien bereitstellt.
 	 * 
