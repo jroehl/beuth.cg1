@@ -108,19 +108,20 @@ public class Raytracer extends Application {
 		renderingTime = new Menu();
 
 		final MenuBar menuBar = new MenuBar();
+		menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
 		menuBar.getMenus().add(menuFile);
 		menuBar.getMenus().add(menuGraph);
 		menuBar.getMenus().add(menuCamera);
 		menuBar.getMenus().add(menuLight);
 		menuBar.getMenus().add(menuSettings);
 		menuBar.getMenus().add(renderingTime);
-		menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
 
 		// Save Menu
+		final MenuItem newObject = new MenuItem("New");
+		final MenuItem load = new MenuItem("Load");
 		final MenuItem save = new MenuItem("Save as...");
 		final MenuItem exit = new MenuItem("Exit");
-		menuFile.getItems().add(save);
-		menuFile.getItems().add(exit);
+		menuFile.getItems().addAll(newObject, load, save, exit);
 
 		// Graphics Menu
 		final Menu axisAlignedBox = new Menu("AxisAlignedBox");
@@ -130,30 +131,19 @@ public class Raytracer extends Application {
 		final Menu sphere0 = new Menu("Sphere 0");
 		final Menu sphere1 = new Menu("Sphere 1");
 		final Menu sphere2 = new Menu("Sphere 2");
-
-		menuGraph.getItems().add(axisAlignedBox);
-		menuGraph.getItems().add(pyramid);
-		menuGraph.getItems().add(triangle);
-		menuGraph.getItems().add(plane);
-		menuGraph.getItems().add(sphere0);
-		menuGraph.getItems().add(sphere1);
-		menuGraph.getItems().add(sphere2);
+		menuGraph.getItems().addAll(axisAlignedBox, pyramid, triangle, plane, sphere0, sphere1, sphere2);
 
 		// Camera Menu
 		final RadioMenuItem orthographicCamera = new RadioMenuItem("Orthographic Camera");
 		final RadioMenuItem perspectiveCamera = new RadioMenuItem("Perspective Camera");
 		final RadioMenuItem perspectiveCamera2 = new RadioMenuItem("Perspective Camera 2");
-		menuCamera.getItems().add(orthographicCamera);
-		menuCamera.getItems().add(perspectiveCamera);
-		menuCamera.getItems().add(perspectiveCamera2);
+		menuCamera.getItems().addAll(orthographicCamera, perspectiveCamera, perspectiveCamera2);
 
 		// Light Menu
 		final RadioMenuItem pointLight = new RadioMenuItem("Point Light");
 		final RadioMenuItem directionalLight = new RadioMenuItem("Directional Light");
 		final RadioMenuItem spotLight = new RadioMenuItem("Spot Light");
-		menuLight.getItems().add(pointLight);
-		menuLight.getItems().add(directionalLight);
-		menuLight.getItems().add(spotLight);
+		menuLight.getItems().addAll(pointLight, directionalLight, spotLight);
 
 		// Settings
 		final MenuItem backgroundColor = new MenuItem("Background Color");
