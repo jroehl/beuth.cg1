@@ -71,7 +71,7 @@ public class Raytracer extends Application {
 	private Camera camera;
 
 	/**
-	 * Lights - Liste aller Lichter
+	 * lights - Liste aller Lichter
 	 */
 	private ArrayList<Light> lights = new ArrayList<Light>();
 
@@ -83,7 +83,7 @@ public class Raytracer extends Application {
 	/**
 	 * graphics - Liste mit darzustellenden Objecten
 	 */
-	private final ArrayList<Geometry> graphics = new ArrayList<Geometry>();
+	private final ArrayList<Geometry> geometries = new ArrayList<Geometry>();
 
 	/**
 	 * View für die Erzeugung des Images
@@ -198,22 +198,22 @@ public class Raytracer extends Application {
 		// Menu - Graphics
 		{
 			// AlignBox
-			initializeMaterials(primaryStage, axisAlignedBox,
+			initializeGeometries(primaryStage, axisAlignedBox,
 					new AxisAlignedBox(new LambertMaterial(new Color(0, 0, 1)), new Point3(-0.5, 0, -0.5), new Point3(0.5, 1, 0.5)));
 			// Pyramid
-			initializeMaterials(primaryStage, pyramid, new TrianglePyramid(new LambertMaterial(new Color(0, 0, 1)), new Point3(0, 0, 0)));
+			initializeGeometries(primaryStage, pyramid, new TrianglePyramid(new LambertMaterial(new Color(0, 0, 1)), new Point3(0, 0, 0)));
 
 			// Plane
-			initializeMaterials(primaryStage, plane,
+			initializeGeometries(primaryStage, plane,
 					new Plane(new LambertMaterial(new Color(0, 1, 0)), new Point3(0, 0, 0), new Normal3(0, 1, 0)));
 
 			// Spheren
-			initializeMaterials(primaryStage, sphere0, new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(-3, 1, 0), 1));
-			initializeMaterials(primaryStage, sphere1, new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(0, 1, 0), 1));
-			initializeMaterials(primaryStage, sphere2, new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(3, 1, 0), 1));
+			initializeGeometries(primaryStage, sphere0, new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(-3, 1, 0), 1));
+			initializeGeometries(primaryStage, sphere1, new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(0, 1, 0), 1));
+			initializeGeometries(primaryStage, sphere2, new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(3, 1, 0), 1));
 
 			// Triangle
-			initializeMaterials(primaryStage, triangle, new Triangle(new LambertMaterial(new Color(1, 0, 1)), new Point3(-0.5, 0.5, -3),
+			initializeGeometries(primaryStage, triangle, new Triangle(new LambertMaterial(new Color(1, 0, 1)), new Point3(-0.5, 0.5, -3),
 					new Point3(0.5, 0.5, -3), new Point3(0.5, -0.5, -3)));
 		}
 
@@ -263,6 +263,7 @@ public class Raytracer extends Application {
 
 			// DirectionalLight
 			initializeLights(primaryStage, directionalLight, new DirectionalLight(new Color(1, 1, 1), new Vector3(8, 8, 0), true));
+
 			// SpotLight
 			initializeLights(primaryStage, spotLight,
 					new SpotLight(new Color(1, 1, 1), new Vector3(-1, -1, -1), new Point3(-3, -3, -3), Math.PI / 14, true));
@@ -316,7 +317,7 @@ public class Raytracer extends Application {
 	 * @param geometry
 	 *            Geomety für welche ein Menüeintrag erzeugt werden soll.
 	 */
-	private void initializeMaterials(Stage primaryStage, Menu menu, final Geometry geometry) {
+	private void initializeGeometries(Stage primaryStage, Menu menu, final Geometry geometry) {
 
 		final RadioMenuItem singleColorMaterial = new RadioMenuItem("Single-Color-Material");
 		final RadioMenuItem lambertMaterial = new RadioMenuItem("Lambert-Material");
@@ -326,12 +327,12 @@ public class Raytracer extends Application {
 
 		// SingleColor - Material
 		singleColorMaterial.setOnAction(event -> {
-			if (!graphics.contains(geometry)) {
+			if (!geometries.contains(geometry)) {
 				final ArrayList<Object> properties = showDialog(0);
 
 				if (!properties.isEmpty()) {
 					geometry.material = new SingleColorMaterial((Color) properties.get(0));
-					graphics.add(geometry);
+					geometries.add(geometry);
 
 					singleColorMaterial.setSelected(true);
 					lambertMaterial.setSelected(false);
@@ -341,7 +342,7 @@ public class Raytracer extends Application {
 					singleColorMaterial.setSelected(false);
 				}
 			} else {
-				graphics.remove(geometry);
+				geometries.remove(geometry);
 
 				singleColorMaterial.setSelected(false);
 				lambertMaterial.setSelected(false);
@@ -354,12 +355,12 @@ public class Raytracer extends Application {
 
 		// Lambert Material
 		lambertMaterial.setOnAction(event -> {
-			if (!graphics.contains(geometry)) {
+			if (!geometries.contains(geometry)) {
 				final ArrayList<Object> properties = showDialog(0);
 
 				if (!properties.isEmpty()) {
 					geometry.material = new LambertMaterial((Color) properties.get(0));
-					graphics.add(geometry);
+					geometries.add(geometry);
 
 					singleColorMaterial.setSelected(false);
 					lambertMaterial.setSelected(true);
@@ -369,7 +370,7 @@ public class Raytracer extends Application {
 					lambertMaterial.setSelected(false);
 				}
 			} else {
-				graphics.remove(geometry);
+				geometries.remove(geometry);
 
 				singleColorMaterial.setSelected(false);
 				lambertMaterial.setSelected(false);
@@ -382,12 +383,12 @@ public class Raytracer extends Application {
 
 		// Phong Material
 		phongMaterial.setOnAction(event -> {
-			if (!graphics.contains(geometry)) {
+			if (!geometries.contains(geometry)) {
 				final ArrayList<Object> properties = showDialog(1);
 
 				if (!properties.isEmpty()) {
 					geometry.material = new PhongMaterial((Color) properties.get(0), (Color) properties.get(1), (int) properties.get(3));
-					graphics.add(geometry);
+					geometries.add(geometry);
 
 					singleColorMaterial.setSelected(false);
 					lambertMaterial.setSelected(false);
@@ -397,7 +398,7 @@ public class Raytracer extends Application {
 					phongMaterial.setSelected(false);
 				}
 			} else {
-				graphics.remove(geometry);
+				geometries.remove(geometry);
 
 				singleColorMaterial.setSelected(false);
 				lambertMaterial.setSelected(false);
@@ -410,13 +411,13 @@ public class Raytracer extends Application {
 
 		// reflective Material
 		reflectiveMaterial.setOnAction(event -> {
-			if (!graphics.contains(geometry)) {
+			if (!geometries.contains(geometry)) {
 				final ArrayList<Object> properties = showDialog(2);
 
 				if (!properties.isEmpty()) {
 					geometry.material = new ReflectiveMaterial((Color) properties.get(0), (Color) properties.get(1),
 							(Color) properties.get(2), (int) properties.get(3));
-					graphics.add(geometry);
+					geometries.add(geometry);
 
 					singleColorMaterial.setSelected(false);
 					lambertMaterial.setSelected(false);
@@ -426,7 +427,7 @@ public class Raytracer extends Application {
 					reflectiveMaterial.setSelected(false);
 				}
 			} else {
-				graphics.remove(geometry);
+				geometries.remove(geometry);
 
 				singleColorMaterial.setSelected(false);
 				lambertMaterial.setSelected(false);
@@ -526,7 +527,7 @@ public class Raytracer extends Application {
 
 		dialog.getDialogPane().setContent(grid);
 
-		// Request focus on the username field by default.
+		// Request focus on the Color field by default.
 		Platform.runLater(() -> colorR.requestFocus());
 
 		dialog.setResultConverter(dialogButton -> {
@@ -574,9 +575,9 @@ public class Raytracer extends Application {
 			}
 		}
 
-		if (!graphics.isEmpty()) {
-			for (final Geometry obj : graphics) {
-				world.addGeometry(obj);
+		if (!geometries.isEmpty()) {
+			for (final Geometry geo : geometries) {
+				world.addGeometry(geo);
 			}
 		}
 	}
@@ -616,6 +617,9 @@ public class Raytracer extends Application {
 	/**
 	 * Rendert das Bild einmal komplett neu indem eine neue World erzeugt wird und anschließend das Bild neu gezeichnet
 	 * wird
+	 * 
+	 * @param primaryStage
+	 *            Dient dazu das Bild zu erzeugen
 	 */
 	private void rerender(Stage primaryStage) {
 		createWorld();
