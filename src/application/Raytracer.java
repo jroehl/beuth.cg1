@@ -73,9 +73,9 @@ public class Raytracer extends Application {
 	private Camera camera;
 
 	/**
-	 * Light - Light Objekt
+	 * Lights - Liste aller Lichter
 	 */
-	private Light light;
+	private ArrayList<Light> lights = new ArrayList<Light>();
 
 	/**
 	 * world - Welt Objekt
@@ -162,7 +162,7 @@ public class Raytracer extends Application {
 		camera = new OrthographicCamera(new Point3(0, 0, 0), new Vector3(0, 0, -1), new Vector3(0, 1, 0), 3);
 		orthographicCamera.setSelected(true);
 		// Default Licht
-		light = new PointLight(new Color(1, 1, 1), new Point3(8, 8, 8), true);
+		lights.add(new PointLight(new Color(1, 1, 1), new Point3(8, 8, 0), true));
 		pointLight.setSelected(true);
 
 		createWorld();
@@ -300,10 +300,11 @@ public class Raytracer extends Application {
 		button.setOnAction(event -> {
 			if (world.lights.contains(light)) {
 				world.lights.remove(light);
-				// light = null;
+				lights.remove(light);
 				button.setSelected(false);
 			} else {
 				world.addLight(light);
+				lights.add(light);
 				button.setSelected(true);
 			}
 			rerender(primaryStage, imgView);
@@ -556,13 +557,19 @@ public class Raytracer extends Application {
 	 * Erzeugt die Welt und die Objekte für den Test
 	 */
 	public void createWorld() {
-
 		final Color backgroundColor = new Color(0, 0, 0);
 		world = new World(backgroundColor);
-		world.addLight(light);
 
-		for (final Geometry obj : graphics) {
-			world.addGeometry(obj);
+		if (!lights.isEmpty()) {
+			for (final Light light : lights) {
+				world.addLight(light);
+			}
+		}
+
+		if (!graphics.isEmpty()) {
+			for (final Geometry obj : graphics) {
+				world.addGeometry(obj);
+			}
 		}
 	}
 
