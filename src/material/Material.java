@@ -4,6 +4,7 @@ import application.Tracer;
 import geometries.Hit;
 import ray.World;
 import color.Color;
+
 /**
  * material
  *
@@ -16,26 +17,25 @@ import color.Color;
 
 public abstract class Material {
 
-	/**
-	 * Method: colorFor(Color)
-	 *
-	 * @param hit
-	 *            : übergebenes hit - Objekt
-	 * @param world
-	 *            : übergebenes world - Objekt
-	 * @return null - muss in den erbenden Klassen überschrieben werden
-	 */
+    /**
+     * Method: colorFor(Color)
+     *
+     * @param hit    : übergebenes hit - Objekt
+     * @param world  : übergebenes world - Objekt
+     * @param tracer : übergebenes tracer - Objekt
+     * @return null - muss in den erbenden Klassen überschrieben werden
+     */
 
-	public abstract Color colorFor(Hit hit, World world, Tracer tracer);
+    public abstract Color colorFor(Hit hit, World world, Tracer tracer);
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "Material [getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return "Material [getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
+    }
 
 }

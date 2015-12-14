@@ -10,61 +10,125 @@ import application.Tracer;
 import color.Color;
 
 /**
- * Created by Waschmaschine on 01.12.15.
+ * ReflectiveMaterial
+ *
+ * @author Waschmaschine
+ *         <p>
+ *         Das ReflectiveMaterial erbt von der abstrakten Klasse Material und
+ *         überschreibt die Methode colorFor. Es reflektiert das Licht und umliegende Objekte
  */
 public class ReflectiveMaterial extends Material {
 
-	private final Color diffuse;
-	private final Color specular;
-	private final Color reflectionColor;
-	private final int exponent;
+    private final Color diffuse;
+    private final Color specular;
+    private final Color reflectionColor;
+    private final int exponent;
 
-	public ReflectiveMaterial(Color diffuse, Color specular, Color reflectionColor, int exponent) {
-		this.diffuse = diffuse;
-		this.specular = specular;
-		this.reflectionColor = reflectionColor;
-		this.exponent = exponent;
+    /**
+     * Konstruktor: ReflectiveMaterial
+     *
+     * @param diffuse         Farbe der diffusen Reflektion
+     * @param specular        Farbe des Reflektionspunktes
+     * @param exponent        der Exponent bestimmt die größe des errechneten
+     *                        Reflektionspunktes
+     * @param reflectionColor die reflektierte Farbe
+     * @throws IllegalArgumentException
+     */
+    public ReflectiveMaterial(Color diffuse, Color specular, Color reflectionColor, int exponent) {
+        this.diffuse = diffuse;
+        this.specular = specular;
+        this.reflectionColor = reflectionColor;
+        this.exponent = exponent;
 
-	}
+    }
 
-	@Override
-	public Color colorFor(Hit hit, World world, Tracer tracer) {
+    /**
+     * Method: colorFor(Color)
+     *
+     * @param hit   : übergebenes hit - Objekt
+     * @param world : übergebenes world - Objekt
+     * @param tracer : übergebenes tracer - Objekt
+     * @return color - für jeden Pixel wird, falls er von der Lichtquelle
+     * angeleuchtet wird, die Farbe errechnet und zurück gegeben.
+     * @throws IllegalArgumentException
+     */
 
-		if (hit == null) {
-			throw new IllegalArgumentException("The hit cannot be null!");
-		}
-		if (world == null) {
-			throw new IllegalArgumentException("The world cannot be null!");
-		}
-		if (tracer == null) {
-			throw new IllegalArgumentException("The tracer cannot be null!");
-		}
+    @Override
+    public Color colorFor(Hit hit, World world, Tracer tracer) {
 
-		Color returnColor = diffuse.mul(world.ambient);
-		final Point3 hitPoint = hit.ray.at(hit.t);
-		final double factor = hit.n.dot(hit.ray.direction.mul(-1.0)) * 2;
-		// final double factor = hit.n.dot(hit.ray.direction.reflectedOn(hit.n))
-		// * 2;
-		final Vector3 e = (hit.ray.direction.mul(-1.0)).normalized();
-		for (final Light light : world.lights) {
+        if (hit == null) {
+            throw new IllegalArgumentException("The hit cannot be null!");
+        }
+        if (world == null) {
+            throw new IllegalArgumentException("The world cannot be null!");
+        }
+        if (tracer == null) {
+            throw new IllegalArgumentException("The tracer cannot be null!");
+        }
 
-			if (light.illuminates(hitPoint, world)) {
+        Color returnColor = diffuse.mul(world.ambient);
+        final Point3 hitPoint = hit.ray.at(hit.t);
+        final double factor = hit.n.dot(hit.ray.direction.mul(-1.0)) * 2;
+        final Vector3 e = (hit.ray.direction.mul(-1.0)).normalized();
+        for (final Light light : world.lights) {
+            if (light.illuminates(hitPoint, world)) {
+                final Vector3 lightVector = light.directionFrom(hitPoint).normalized();
+                final Vector3 reflectedVector = lightVector.normalized().reflectedOn(hit.n);
+                final double max = Math.max(0.0, lightVector.dot(hit.n));
+                final double maxSP = Math.pow(Math.max(0.0, reflectedVector.dot(e)), this.exponent);
 
-				final Vector3 lightVector = light.directionFrom(hitPoint).normalized();
+                returnColor = returnColor.add(light.color.mul(this.diffuse).mul(max)).add(light.color.mul(this.specular).mul(maxSP));
+            }
+        }
+        return returnColor.add(reflectionColor.mul(tracer.reflectedColors(new Ray(hitPoint, hit.ray.direction.add(
+                hit.n.mul(factor + 0.0001)).normalized()))));
+    }
 
-				final Vector3 reflectedVector = lightVector.normalized().reflectedOn(hit.n);
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return "ReflectiveMaterial{" +
+                "diffuse=" + diffuse +
+                ", specular=" + specular +
+                ", reflectionColor=" + reflectionColor +
+                ", exponent=" + exponent +
+                '}';
+    }
 
-				final double max = Math.max(0.0, lightVector.dot(hit.n));
-				final double maxSP = Math.pow(Math.max(0.0, reflectedVector.dot(e)), this.exponent);
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-				returnColor = returnColor.add(light.color.mul(this.diffuse).mul(max)).add(light.color.mul(this.specular).mul(maxSP));
-			}
-		}
+        ReflectiveMaterial that = (ReflectiveMaterial) o;
 
-		return returnColor.add(reflectionColor.mul(tracer.reflectedColors(new Ray(hitPoint, hit.ray.direction.add(
-				hit.n.mul(factor + 0.0001)).normalized()))));
-		// return returnColor.add(reflectionColor.mul(tracer.reflectedColors(new
-		// Ray(hitPoint, hit.ray.direction.add(hit.n.mul(factor))))));
-		// return returnColor;
-	}
+        if (exponent != that.exponent) return false;
+        if (diffuse != null ? !diffuse.equals(that.diffuse) : that.diffuse != null) return false;
+        if (specular != null ? !specular.equals(that.specular) : that.specular != null) return false;
+        return !(reflectionColor != null ? !reflectionColor.equals(that.reflectionColor) : that.reflectionColor != null);
+
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        int result = diffuse != null ? diffuse.hashCode() : 0;
+        result = 31 * result + (specular != null ? specular.hashCode() : 0);
+        result = 31 * result + (reflectionColor != null ? reflectionColor.hashCode() : 0);
+        result = 31 * result + exponent;
+        return result;
+    }
 }
