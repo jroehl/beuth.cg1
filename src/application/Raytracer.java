@@ -1,17 +1,25 @@
 package application;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Optional;
+
+import javax.imageio.ImageIO;
+
+import Matrizen_Vektoren_Bibliothek.Normal3;
+import Matrizen_Vektoren_Bibliothek.Point3;
+import Matrizen_Vektoren_Bibliothek.Vector3;
+import camera.Camera;
+import camera.OrthographicCamera;
+import camera.PerspectiveCamera;
+import color.Color;
 import geometries.AxisAlignedBox;
 import geometries.Geometry;
 import geometries.Plane;
 import geometries.Sphere;
 import geometries.Triangle;
 import geometries.TrianglePyramid;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Optional;
-
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
@@ -34,9 +42,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
-import javax.imageio.ImageIO;
-
 import light.DirectionalLight;
 import light.Light;
 import light.PointLight;
@@ -47,13 +52,6 @@ import material.ReflectiveMaterial;
 import material.SingleColorMaterial;
 import ray.Ray;
 import ray.World;
-import Matrizen_Vektoren_Bibliothek.Normal3;
-import Matrizen_Vektoren_Bibliothek.Point3;
-import Matrizen_Vektoren_Bibliothek.Vector3;
-import camera.Camera;
-import camera.OrthographicCamera;
-import camera.PerspectiveCamera;
-import color.Color;
 
 public class Raytracer extends Application {
 
@@ -86,6 +84,11 @@ public class Raytracer extends Application {
 	 * graphics - Liste mit darzustellenden Objecten
 	 */
 	private final ArrayList<Geometry> graphics = new ArrayList<Geometry>();
+
+	/**
+	 * View für die Erzeugung des Images
+	 */
+	private ImageView imgView;
 
 	/**
 	 * @param primaryStage
@@ -150,9 +153,8 @@ public class Raytracer extends Application {
 		menuSettings.getItems().add(backgroundColor);
 
 		final HBox hBox = new HBox();
-
+		imgView = new ImageView();
 		final Group group = new Group();
-		final ImageView imgView = new ImageView();
 		group.getChildren().addAll(imgView, hBox);
 		hBox.getChildren().addAll(menuBar);
 
@@ -165,9 +167,9 @@ public class Raytracer extends Application {
 		lights.add(new PointLight(new Color(1, 1, 1), new Point3(8, 8, 0), true));
 		pointLight.setSelected(true);
 
-		createWorld();
-		rerender(primaryStage, imgView);
+		rerender(primaryStage);
 
+		// Ab hier werden die einzelnen Menus Initialisiert.
 		// Menu - File
 		{
 			// Save As...
@@ -196,27 +198,23 @@ public class Raytracer extends Application {
 		// Menu - Graphics
 		{
 			// AlignBox
-			initializeMaterials(primaryStage, imgView, axisAlignedBox,
+			initializeMaterials(primaryStage, axisAlignedBox,
 					new AxisAlignedBox(new LambertMaterial(new Color(0, 0, 1)), new Point3(-0.5, 0, -0.5), new Point3(0.5, 1, 0.5)));
 			// Pyramid
-			initializeMaterials(primaryStage, imgView, pyramid,
-					new TrianglePyramid(new LambertMaterial(new Color(0, 0, 1)), new Point3(0, 0, 0)));
+			initializeMaterials(primaryStage, pyramid, new TrianglePyramid(new LambertMaterial(new Color(0, 0, 1)), new Point3(0, 0, 0)));
 
 			// Plane
-			initializeMaterials(primaryStage, imgView, plane,
+			initializeMaterials(primaryStage, plane,
 					new Plane(new LambertMaterial(new Color(0, 1, 0)), new Point3(0, 0, 0), new Normal3(0, 1, 0)));
 
 			// Spheren
-			initializeMaterials(primaryStage, imgView, sphere0,
-					new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(-3, 1, 0), 1));
-			initializeMaterials(primaryStage, imgView, sphere1,
-					new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(0, 1, 0), 1));
-			initializeMaterials(primaryStage, imgView, sphere2,
-					new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(3, 1, 0), 1));
+			initializeMaterials(primaryStage, sphere0, new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(-3, 1, 0), 1));
+			initializeMaterials(primaryStage, sphere1, new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(0, 1, 0), 1));
+			initializeMaterials(primaryStage, sphere2, new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(3, 1, 0), 1));
 
 			// Triangle
-			initializeMaterials(primaryStage, imgView, triangle, new Triangle(new LambertMaterial(new Color(1, 0, 1)),
-					new Point3(-0.5, 0.5, -3), new Point3(0.5, 0.5, -3), new Point3(0.5, -0.5, -3)));
+			initializeMaterials(primaryStage, triangle, new Triangle(new LambertMaterial(new Color(1, 0, 1)), new Point3(-0.5, 0.5, -3),
+					new Point3(0.5, 0.5, -3), new Point3(0.5, -0.5, -3)));
 		}
 
 		// Menu - Camera
@@ -230,7 +228,7 @@ public class Raytracer extends Application {
 				perspectiveCamera.setSelected(false);
 				perspectiveCamera2.setSelected(false);
 
-				rerender(primaryStage, imgView);
+				rerender(primaryStage);
 			});
 
 			// Perspective Camera
@@ -242,7 +240,7 @@ public class Raytracer extends Application {
 				perspectiveCamera.setSelected(true);
 				perspectiveCamera2.setSelected(false);
 
-				rerender(primaryStage, imgView);
+				rerender(primaryStage);
 			});
 
 			// Perspective Camera 2
@@ -254,19 +252,19 @@ public class Raytracer extends Application {
 				perspectiveCamera.setSelected(false);
 				perspectiveCamera2.setSelected(true);
 
-				rerender(primaryStage, imgView);
+				rerender(primaryStage);
 			});
 		}
 
 		// Menu - Light
 		{
 			// PointLight
-			initializeLights(primaryStage, imgView, pointLight, new PointLight(new Color(1, 1, 1), new Point3(8, 8, 0), true));
+			initializeLights(primaryStage, pointLight, new PointLight(new Color(1, 1, 1), new Point3(8, 8, 0), true));
 
 			// DirectionalLight
-			initializeLights(primaryStage, imgView, directionalLight, new DirectionalLight(new Color(1, 1, 1), new Vector3(8, 8, 0), true));
+			initializeLights(primaryStage, directionalLight, new DirectionalLight(new Color(1, 1, 1), new Vector3(8, 8, 0), true));
 			// SpotLight
-			initializeLights(primaryStage, imgView, spotLight,
+			initializeLights(primaryStage, spotLight,
 					new SpotLight(new Color(1, 1, 1), new Vector3(-1, -1, -1), new Point3(-3, -3, -3), Math.PI / 14, true));
 		}
 
@@ -276,14 +274,14 @@ public class Raytracer extends Application {
 		}
 
 		/*
-		 * Über einen AddListener an der HeightProperty und der WidthProperty
-		 * der primaryStage wird das neu Zeichnen des Bildes aufgerufen
+		 * Über einen AddListener an der HeightProperty und der WidthProperty der primaryStage wird das neu Zeichnen des
+		 * Bildes aufgerufen
 		 */
 		primaryStage.heightProperty().addListener((ChangeEvent) -> {
-			rerender(primaryStage, imgView);
+			rerender(primaryStage);
 		});
 		primaryStage.widthProperty().addListener((ChangeEvent) -> {
-			rerender(primaryStage, imgView);
+			rerender(primaryStage);
 		});
 
 		primaryStage.show();
@@ -292,22 +290,19 @@ public class Raytracer extends Application {
 	/**
 	 * 
 	 * @param primaryStage
-	 * @param imgView
 	 * @param button
 	 * @param light
 	 */
-	private void initializeLights(Stage primaryStage, final ImageView imgView, final RadioMenuItem button, Light light) {
+	private void initializeLights(Stage primaryStage, final RadioMenuItem button, Light light) {
 		button.setOnAction(event -> {
-			if (world.lights.contains(light)) {
-				world.lights.remove(light);
+			if (lights.contains(light)) {
 				lights.remove(light);
 				button.setSelected(false);
 			} else {
-				world.addLight(light);
 				lights.add(light);
 				button.setSelected(true);
 			}
-			rerender(primaryStage, imgView);
+			rerender(primaryStage);
 		});
 	}
 
@@ -316,14 +311,12 @@ public class Raytracer extends Application {
 	 * 
 	 * @param primaryStage
 	 *            primaryStage für das rerendern
-	 * @param imgView
-	 *            imgView für das rerendern
 	 * @param menu
 	 *            Menueintrag der Geomety
 	 * @param geometry
 	 *            Geomety für welche ein Menüeintrag erzeugt werden soll.
 	 */
-	private void initializeMaterials(Stage primaryStage, final ImageView imgView, Menu menu, final Geometry geometry) {
+	private void initializeMaterials(Stage primaryStage, Menu menu, final Geometry geometry) {
 
 		final RadioMenuItem singleColorMaterial = new RadioMenuItem("Single-Color-Material");
 		final RadioMenuItem lambertMaterial = new RadioMenuItem("Lambert-Material");
@@ -352,8 +345,7 @@ public class Raytracer extends Application {
 				reflectiveMaterial.setSelected(false);
 			}
 
-			createWorld();
-			rerender(primaryStage, imgView);
+			rerender(primaryStage);
 		});
 
 		// Lambert Material
@@ -377,8 +369,7 @@ public class Raytracer extends Application {
 				reflectiveMaterial.setSelected(false);
 			}
 
-			createWorld();
-			rerender(primaryStage, imgView);
+			rerender(primaryStage);
 		});
 
 		// Phong Material
@@ -402,8 +393,7 @@ public class Raytracer extends Application {
 				reflectiveMaterial.setSelected(false);
 			}
 
-			createWorld();
-			rerender(primaryStage, imgView);
+			rerender(primaryStage);
 		});
 
 		// reflective Material
@@ -428,15 +418,17 @@ public class Raytracer extends Application {
 				reflectiveMaterial.setSelected(false);
 			}
 
-			createWorld();
-			rerender(primaryStage, imgView);
+			rerender(primaryStage);
 		});
 	}
 
-	public String random() {
-		return String.valueOf(Math.random());
-	}
-
+	/**
+	 * Hilsmethode welche dem User die Möglichkeit gibt die Farben über das angezeigte Fenster selbst zu wählen.
+	 * 
+	 * @param i
+	 *            true zeigt dem User die erweiterte Ansiche, zusätzlich noch Reflective anzeigt.
+	 * @return liefert eine Liste mit Allen Farbens
+	 */
 	private ArrayList<Object> showDialog(int i) {
 
 		// Create the custom dialog.
@@ -599,16 +591,19 @@ public class Raytracer extends Application {
 			}
 		}
 
+		imgView.setImage(wrImg);
+
 		final long end = System.nanoTime();
 		renderingTime.setText((" Rendering Time: " + (end - start) / 1000000000.0F));
 	}
 
 	/**
-	 * Rendert das Bild einmal komplett neu
+	 * Rendert das Bild einmal komplett neu indem eine neue World erzeugt wird und anschließend das Bild neu gezeichnet
+	 * wird
 	 */
-	private void rerender(Stage primaryStage, ImageView imgView) {
+	private void rerender(Stage primaryStage) {
+		createWorld();
 		drawImage(primaryStage.getWidth(), primaryStage.getHeight(), camera);
-		imgView.setImage(wrImg);
 	}
 
 	/**
