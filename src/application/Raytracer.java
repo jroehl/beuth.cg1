@@ -337,8 +337,9 @@ public class Raytracer extends Application {
 					lambertMaterial.setSelected(false);
 					phongMaterial.setSelected(false);
 					reflectiveMaterial.setSelected(false);
+				} else {
+					singleColorMaterial.setSelected(false);
 				}
-				singleColorMaterial.setSelected(false);
 			} else {
 				graphics.remove(geometry);
 
@@ -364,8 +365,9 @@ public class Raytracer extends Application {
 					lambertMaterial.setSelected(true);
 					phongMaterial.setSelected(false);
 					reflectiveMaterial.setSelected(false);
+				} else {
+					lambertMaterial.setSelected(false);
 				}
-				lambertMaterial.setSelected(false);
 			} else {
 				graphics.remove(geometry);
 
@@ -391,8 +393,9 @@ public class Raytracer extends Application {
 					lambertMaterial.setSelected(false);
 					phongMaterial.setSelected(true);
 					reflectiveMaterial.setSelected(false);
+				} else {
+					phongMaterial.setSelected(false);
 				}
-				phongMaterial.setSelected(false);
 			} else {
 				graphics.remove(geometry);
 
@@ -419,8 +422,9 @@ public class Raytracer extends Application {
 					lambertMaterial.setSelected(false);
 					phongMaterial.setSelected(false);
 					reflectiveMaterial.setSelected(true);
+				} else {
+					reflectiveMaterial.setSelected(false);
 				}
-				reflectiveMaterial.setSelected(false);
 			} else {
 				graphics.remove(geometry);
 
