@@ -328,14 +328,17 @@ public class Raytracer extends Application {
 		singleColorMaterial.setOnAction(event -> {
 			if (!graphics.contains(geometry)) {
 				final ArrayList<Object> properties = showDialog(0);
-				geometry.material = new SingleColorMaterial((Color) properties.get(0));
 
-				graphics.add(geometry);
+				if (!properties.isEmpty()) {
+					geometry.material = new SingleColorMaterial((Color) properties.get(0));
+					graphics.add(geometry);
 
-				singleColorMaterial.setSelected(true);
-				lambertMaterial.setSelected(false);
-				phongMaterial.setSelected(false);
-				reflectiveMaterial.setSelected(false);
+					singleColorMaterial.setSelected(true);
+					lambertMaterial.setSelected(false);
+					phongMaterial.setSelected(false);
+					reflectiveMaterial.setSelected(false);
+				}
+				singleColorMaterial.setSelected(false);
 			} else {
 				graphics.remove(geometry);
 
@@ -352,14 +355,17 @@ public class Raytracer extends Application {
 		lambertMaterial.setOnAction(event -> {
 			if (!graphics.contains(geometry)) {
 				final ArrayList<Object> properties = showDialog(0);
-				geometry.material = new LambertMaterial((Color) properties.get(0));
 
-				graphics.add(geometry);
+				if (!properties.isEmpty()) {
+					geometry.material = new LambertMaterial((Color) properties.get(0));
+					graphics.add(geometry);
 
-				singleColorMaterial.setSelected(false);
-				lambertMaterial.setSelected(true);
-				phongMaterial.setSelected(false);
-				reflectiveMaterial.setSelected(false);
+					singleColorMaterial.setSelected(false);
+					lambertMaterial.setSelected(true);
+					phongMaterial.setSelected(false);
+					reflectiveMaterial.setSelected(false);
+				}
+				lambertMaterial.setSelected(false);
 			} else {
 				graphics.remove(geometry);
 
@@ -376,14 +382,17 @@ public class Raytracer extends Application {
 		phongMaterial.setOnAction(event -> {
 			if (!graphics.contains(geometry)) {
 				final ArrayList<Object> properties = showDialog(1);
-				geometry.material = new PhongMaterial((Color) properties.get(0), (Color) properties.get(1), (int) properties.get(3));
 
-				graphics.add(geometry);
+				if (!properties.isEmpty()) {
+					geometry.material = new PhongMaterial((Color) properties.get(0), (Color) properties.get(1), (int) properties.get(3));
+					graphics.add(geometry);
 
-				singleColorMaterial.setSelected(false);
-				lambertMaterial.setSelected(false);
-				phongMaterial.setSelected(true);
-				reflectiveMaterial.setSelected(false);
+					singleColorMaterial.setSelected(false);
+					lambertMaterial.setSelected(false);
+					phongMaterial.setSelected(true);
+					reflectiveMaterial.setSelected(false);
+				}
+				phongMaterial.setSelected(false);
 			} else {
 				graphics.remove(geometry);
 
@@ -400,15 +409,18 @@ public class Raytracer extends Application {
 		reflectiveMaterial.setOnAction(event -> {
 			if (!graphics.contains(geometry)) {
 				final ArrayList<Object> properties = showDialog(2);
-				geometry.material = new ReflectiveMaterial((Color) properties.get(0), (Color) properties.get(1), (Color) properties.get(2),
-						(int) properties.get(3));
 
-				graphics.add(geometry);
+				if (!properties.isEmpty()) {
+					geometry.material = new ReflectiveMaterial((Color) properties.get(0), (Color) properties.get(1),
+							(Color) properties.get(2), (int) properties.get(3));
+					graphics.add(geometry);
 
-				singleColorMaterial.setSelected(false);
-				lambertMaterial.setSelected(false);
-				phongMaterial.setSelected(false);
-				reflectiveMaterial.setSelected(true);
+					singleColorMaterial.setSelected(false);
+					lambertMaterial.setSelected(false);
+					phongMaterial.setSelected(false);
+					reflectiveMaterial.setSelected(true);
+				}
+				reflectiveMaterial.setSelected(false);
 			} else {
 				graphics.remove(geometry);
 
