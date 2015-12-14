@@ -224,49 +224,49 @@ public class Raytracer extends Application {
 			// Orthographic Camera
 			orthographicCamera.setOnAction(event -> {
 				// 1. Kamera - PerspectiveCamera mit geradem Blick
-					camera = new OrthographicCamera(new Point3(0, 0, 0), new Vector3(0, 0, -1), new Vector3(0, 1, 0), 3);
+				camera = new OrthographicCamera(new Point3(0, 0, 0), new Vector3(0, 0, -1), new Vector3(0, 1, 0), 3);
 
-					orthographicCamera.setSelected(true);
-					perspectiveCamera.setSelected(false);
-					perspectiveCamera2.setSelected(false);
+				orthographicCamera.setSelected(true);
+				perspectiveCamera.setSelected(false);
+				perspectiveCamera2.setSelected(false);
 
-					rerender(primaryStage, imgView);
-				});
+				rerender(primaryStage, imgView);
+			});
 
 			// Perspective Camera
 			perspectiveCamera.setOnAction(event -> {
 				// 2. Kamera für die AxisAlignedBox
-					camera = new PerspectiveCamera(new Point3(8, 8, 8), new Vector3(-1, -1, -1), new Vector3(0, 1, 0), Math.PI / 4);
+				camera = new PerspectiveCamera(new Point3(8, 8, 8), new Vector3(-1, -1, -1), new Vector3(0, 1, 0), Math.PI / 4);
 
-					orthographicCamera.setSelected(false);
-					perspectiveCamera.setSelected(true);
-					perspectiveCamera2.setSelected(false);
+				orthographicCamera.setSelected(false);
+				perspectiveCamera.setSelected(true);
+				perspectiveCamera2.setSelected(false);
 
-					rerender(primaryStage, imgView);
-				});
+				rerender(primaryStage, imgView);
+			});
 
 			// Perspective Camera 2
 			perspectiveCamera2.setOnAction(event -> {
 				// 2. Kamera für die AxisAlignedBox
-					camera = new PerspectiveCamera(new Point3(0, 0, 0), new Vector3(0, 0, 1), new Vector3(0, 1, 0), Math.PI / 4);
+				camera = new PerspectiveCamera(new Point3(0, 0, 0), new Vector3(0, 0, 1), new Vector3(0, 1, 0), Math.PI / 4);
 
-					orthographicCamera.setSelected(false);
-					perspectiveCamera.setSelected(false);
-					perspectiveCamera2.setSelected(true);
+				orthographicCamera.setSelected(false);
+				perspectiveCamera.setSelected(false);
+				perspectiveCamera2.setSelected(true);
 
-					rerender(primaryStage, imgView);
-				});
+				rerender(primaryStage, imgView);
+			});
 		}
 
 		// Menu - Light
 		{
 			// PointLight
-			initializeLight(primaryStage, imgView, pointLight, new PointLight(new Color(1, 1, 1), new Point3(8, 8, 0), true));
+			initializeLights(primaryStage, imgView, pointLight, new PointLight(new Color(1, 1, 1), new Point3(8, 8, 0), true));
 
 			// DirectionalLight
-			initializeLight(primaryStage, imgView, directionalLight, new DirectionalLight(new Color(1, 1, 1), new Vector3(8, 8, 0), true));
+			initializeLights(primaryStage, imgView, directionalLight, new DirectionalLight(new Color(1, 1, 1), new Vector3(8, 8, 0), true));
 			// SpotLight
-			initializeLight(primaryStage, imgView, spotLight,
+			initializeLights(primaryStage, imgView, spotLight,
 					new SpotLight(new Color(1, 1, 1), new Vector3(-1, -1, -1), new Point3(-3, -3, -3), Math.PI / 14, true));
 		}
 
@@ -296,7 +296,7 @@ public class Raytracer extends Application {
 	 * @param button
 	 * @param light
 	 */
-	private void initializeLight(Stage primaryStage, final ImageView imgView, final RadioMenuItem button, Light light) {
+	private void initializeLights(Stage primaryStage, final ImageView imgView, final RadioMenuItem button, Light light) {
 		button.setOnAction(event -> {
 			if (world.lights.contains(light)) {
 				world.lights.remove(light);
@@ -499,7 +499,7 @@ public class Raytracer extends Application {
 			grid.add(exponent, 1, 3);
 		}
 
-		final Node loginButton = dialog.getDialogPane().lookupButton(buttonTypeCreate);
+		final Node creatButton = dialog.getDialogPane().lookupButton(buttonTypeCreate);
 		// loginButton.setDisable(true);
 
 		// Do some validation (using the Java 8 lambda syntax).
@@ -590,16 +590,15 @@ public class Raytracer extends Application {
 
 		final long start = System.nanoTime();
 
-		Ray ray;
-
 		for (int y = 0; y < iheight; y++) {
 			for (int x = 0; x < iwidth; x++) {
-				ray = camera.rayFor(iwidth, iheight, x, iheight - 1 - y);
+				Ray ray = camera.rayFor(iwidth, iheight, x, iheight - 1 - y);
 				final Color c = world.hit(ray);
 				final javafx.scene.paint.Color javaColor = new javafx.scene.paint.Color(c.r, c.g, c.b, 1);
 				wrImg.getPixelWriter().setColor(x, y, javaColor);
 			}
 		}
+
 		final long end = System.nanoTime();
 		renderingTime.setText((" Rendering Time: " + (end - start) / 1000000000.0F));
 	}
