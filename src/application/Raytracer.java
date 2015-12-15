@@ -1,25 +1,17 @@
 package application;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Optional;
-
-import javax.imageio.ImageIO;
-
-import Matrizen_Vektoren_Bibliothek.Normal3;
-import Matrizen_Vektoren_Bibliothek.Point3;
-import Matrizen_Vektoren_Bibliothek.Vector3;
-import camera.Camera;
-import camera.OrthographicCamera;
-import camera.PerspectiveCamera;
-import color.Color;
 import geometries.AxisAlignedBox;
 import geometries.Geometry;
 import geometries.Plane;
 import geometries.Sphere;
 import geometries.Triangle;
 import geometries.TrianglePyramid;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Optional;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
@@ -42,6 +34,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import javax.imageio.ImageIO;
+
 import light.DirectionalLight;
 import light.Light;
 import light.PointLight;
@@ -52,6 +47,13 @@ import material.ReflectiveMaterial;
 import material.SingleColorMaterial;
 import ray.Ray;
 import ray.World;
+import Matrizen_Vektoren_Bibliothek.Normal3;
+import Matrizen_Vektoren_Bibliothek.Point3;
+import Matrizen_Vektoren_Bibliothek.Vector3;
+import camera.Camera;
+import camera.OrthographicCamera;
+import camera.PerspectiveCamera;
+import color.Color;
 
 public class Raytracer extends Application {
 
@@ -73,7 +75,7 @@ public class Raytracer extends Application {
 	/**
 	 * lights - Liste aller Lichter
 	 */
-	private ArrayList<Light> lights = new ArrayList<Light>();
+	private final ArrayList<Light> lights = new ArrayList<Light>();
 
 	/**
 	 * world - Welt Objekt
@@ -198,14 +200,14 @@ public class Raytracer extends Application {
 		// Menu - Graphics
 		{
 			// AlignBox
-			initializeGeometries(primaryStage, axisAlignedBox,
-					new AxisAlignedBox(new LambertMaterial(new Color(0, 0, 1)), new Point3(-0.5, 0, -0.5), new Point3(0.5, 1, 0.5)));
+			initializeGeometries(primaryStage, axisAlignedBox, new AxisAlignedBox(new LambertMaterial(new Color(0, 0, 1)), new Point3(-0.5,
+					0, -0.5), new Point3(0.5, 1, 0.5)));
 			// Pyramid
 			initializeGeometries(primaryStage, pyramid, new TrianglePyramid(new LambertMaterial(new Color(0, 0, 1)), new Point3(0, 0, 0)));
 
 			// Plane
-			initializeGeometries(primaryStage, plane,
-					new Plane(new LambertMaterial(new Color(0, 1, 0)), new Point3(0, 0, 0), new Normal3(0, 1, 0)));
+			initializeGeometries(primaryStage, plane, new Plane(new LambertMaterial(new Color(0, 1, 0)), new Point3(0, 0, 0), new Normal3(
+					0, 1, 0)));
 
 			// Spheren
 			initializeGeometries(primaryStage, sphere0, new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(-3, 1, 0), 1));
@@ -222,38 +224,38 @@ public class Raytracer extends Application {
 			// Orthographic Camera
 			orthographicCamera.setOnAction(event -> {
 				// 1. Kamera - PerspectiveCamera mit geradem Blick
-				camera = new OrthographicCamera(new Point3(0, 0, 0), new Vector3(0, 0, -1), new Vector3(0, 1, 0), 3);
+					camera = new OrthographicCamera(new Point3(0, 0, 0), new Vector3(0, 0, -1), new Vector3(0, 1, 0), 3);
 
-				orthographicCamera.setSelected(true);
-				perspectiveCamera.setSelected(false);
-				perspectiveCamera2.setSelected(false);
+					orthographicCamera.setSelected(true);
+					perspectiveCamera.setSelected(false);
+					perspectiveCamera2.setSelected(false);
 
-				rerender(primaryStage);
-			});
+					rerender(primaryStage);
+				});
 
 			// Perspective Camera
 			perspectiveCamera.setOnAction(event -> {
 				// 2. Kamera für die AxisAlignedBox
-				camera = new PerspectiveCamera(new Point3(8, 8, 8), new Vector3(-1, -1, -1), new Vector3(0, 1, 0), Math.PI / 4);
+					camera = new PerspectiveCamera(new Point3(8, 8, 8), new Vector3(-1, -1, -1), new Vector3(0, 1, 0), Math.PI / 4);
 
-				orthographicCamera.setSelected(false);
-				perspectiveCamera.setSelected(true);
-				perspectiveCamera2.setSelected(false);
+					orthographicCamera.setSelected(false);
+					perspectiveCamera.setSelected(true);
+					perspectiveCamera2.setSelected(false);
 
-				rerender(primaryStage);
-			});
+					rerender(primaryStage);
+				});
 
 			// Perspective Camera 2
 			perspectiveCamera2.setOnAction(event -> {
 				// 2. Kamera für die AxisAlignedBox
-				camera = new PerspectiveCamera(new Point3(0, 0, 0), new Vector3(0, 0, 1), new Vector3(0, 1, 0), Math.PI / 4);
+					camera = new PerspectiveCamera(new Point3(0, 0, 0), new Vector3(0, 0, 1), new Vector3(0, 1, 0), Math.PI / 4);
 
-				orthographicCamera.setSelected(false);
-				perspectiveCamera.setSelected(false);
-				perspectiveCamera2.setSelected(true);
+					orthographicCamera.setSelected(false);
+					perspectiveCamera.setSelected(false);
+					perspectiveCamera2.setSelected(true);
 
-				rerender(primaryStage);
-			});
+					rerender(primaryStage);
+				});
 		}
 
 		// Menu - Light
@@ -262,11 +264,11 @@ public class Raytracer extends Application {
 			initializeLights(primaryStage, pointLight, new PointLight(new Color(1, 1, 1), new Point3(8, 8, 0), true));
 
 			// DirectionalLight
-			initializeLights(primaryStage, directionalLight, new DirectionalLight(new Color(1, 1, 1), new Vector3(8, 8, 0), true));
+			initializeLights(primaryStage, directionalLight, new DirectionalLight(new Color(1, 1, 1), new Vector3(-8, -8, 0), true));
 
 			// SpotLight
-			initializeLights(primaryStage, spotLight,
-					new SpotLight(new Color(1, 1, 1), new Vector3(-1, -1, -1), new Point3(-3, -3, -3), Math.PI / 14, true));
+			initializeLights(primaryStage, spotLight, new SpotLight(new Color(1, 1, 1), new Vector3(-1, -1, -1), new Point3(-3, -3, -3),
+					Math.PI / 14, true));
 		}
 
 		// Menu - Settings
@@ -275,8 +277,8 @@ public class Raytracer extends Application {
 		}
 
 		/*
-		 * Über einen AddListener an der HeightProperty und der WidthProperty der primaryStage wird das neu Zeichnen des
-		 * Bildes aufgerufen
+		 * Über einen AddListener an der HeightProperty und der WidthProperty
+		 * der primaryStage wird das neu Zeichnen des Bildes aufgerufen
 		 */
 		primaryStage.heightProperty().addListener((ChangeEvent) -> {
 			rerender(primaryStage);
@@ -289,7 +291,7 @@ public class Raytracer extends Application {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param primaryStage
 	 * @param button
 	 * @param light
@@ -308,8 +310,9 @@ public class Raytracer extends Application {
 	}
 
 	/**
-	 * Hilfmethode welche für jeden Objekt-Menueintrag die entsprechenden Materialien bereitstellt.
-	 * 
+	 * Hilfmethode welche für jeden Objekt-Menueintrag die entsprechenden
+	 * Materialien bereitstellt.
+	 *
 	 * @param primaryStage
 	 *            primaryStage für das rerendern
 	 * @param menu
@@ -415,8 +418,8 @@ public class Raytracer extends Application {
 				final ArrayList<Object> properties = showDialog(2);
 
 				if (!properties.isEmpty()) {
-					geometry.material = new ReflectiveMaterial((Color) properties.get(0), (Color) properties.get(1),
-							(Color) properties.get(2), (int) properties.get(3));
+					geometry.material = new ReflectiveMaterial((Color) properties.get(0), (Color) properties.get(1), (Color) properties
+							.get(2), (int) properties.get(3));
 					geometries.add(geometry);
 
 					singleColorMaterial.setSelected(false);
@@ -440,10 +443,12 @@ public class Raytracer extends Application {
 	}
 
 	/**
-	 * Hilsmethode welche dem User die Möglichkeit gibt die Farben über das angezeigte Fenster selbst zu wählen.
-	 * 
+	 * Hilsmethode welche dem User die Möglichkeit gibt die Farben über das
+	 * angezeigte Fenster selbst zu wählen.
+	 *
 	 * @param i
-	 *            true zeigt dem User die erweiterte Ansiche, zusätzlich noch Reflective anzeigt.
+	 *            true zeigt dem User die erweiterte Ansiche, zusätzlich noch
+	 *            Reflective anzeigt.
 	 * @return liefert eine Liste mit Allen Farbens
 	 */
 	private ArrayList<Object> showDialog(int i) {
@@ -601,7 +606,7 @@ public class Raytracer extends Application {
 
 		for (int y = 0; y < iheight; y++) {
 			for (int x = 0; x < iwidth; x++) {
-				Ray ray = camera.rayFor(iwidth, iheight, x, iheight - 1 - y);
+				final Ray ray = camera.rayFor(iwidth, iheight, x, iheight - 1 - y);
 				final Color c = world.hit(ray);
 				final javafx.scene.paint.Color javaColor = new javafx.scene.paint.Color(c.r, c.g, c.b, 1);
 				wrImg.getPixelWriter().setColor(x, y, javaColor);
@@ -615,9 +620,9 @@ public class Raytracer extends Application {
 	}
 
 	/**
-	 * Rendert das Bild einmal komplett neu indem eine neue World erzeugt wird und anschließend das Bild neu gezeichnet
-	 * wird
-	 * 
+	 * Rendert das Bild einmal komplett neu indem eine neue World erzeugt wird
+	 * und anschließend das Bild neu gezeichnet wird
+	 *
 	 * @param primaryStage
 	 *            Dient dazu das Bild zu erzeugen
 	 */
