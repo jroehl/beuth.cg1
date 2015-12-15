@@ -215,8 +215,8 @@ public class Raytracer extends Application {
 			initializeGeometries(primaryStage, sphere2, new Sphere(new LambertMaterial(new Color(1, 0, 0)), new Point3(3, 1, 0), 1));
 
 			// Triangle
-			initializeGeometries(primaryStage, triangle, new Triangle(new LambertMaterial(new Color(1, 0, 1)), new Point3(-0.5, 0.5, -3),
-					new Point3(0.5, 0.5, -3), new Point3(0.5, -0.5, -3)));
+			initializeGeometries(primaryStage, triangle, new Triangle(new LambertMaterial(new Color(1, 0, 1)), new Point3(0, 0, 0),
+					new Point3(3, 0, 0), new Point3(1.5, 3, -1.5)));
 		}
 
 		// Menu - Camera
