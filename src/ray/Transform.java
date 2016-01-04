@@ -2,6 +2,7 @@ package ray;
 
 import Matrizen_Vektoren_Bibliothek.Mat4x4;
 import Matrizen_Vektoren_Bibliothek.Normal3;
+import Matrizen_Vektoren_Bibliothek.Point3;
 import Matrizen_Vektoren_Bibliothek.Vector3;
 
 public class Transform {
@@ -25,9 +26,9 @@ public class Transform {
 	// 0 1 0 -y
 	// 0 0 1 -z
 	// 0 0 0 1
-	public Transform translate(double x, double y, double z) {
-		final Transform t = new Transform(new Mat4x4(1, 0, 0, x, 0, 1, 0, y, 0, 0, 1, z, 0, 0, 0, 1), new Mat4x4(1, 0, 0, -x, 0, 1, 0, -y,
-				0, 0, 1, -z, 0, 0, 0, 1));
+	public Transform translate(Point3 p) {
+		final Transform t = new Transform(new Mat4x4(1, 0, 0, p.x, 0, 1, 0, p.y, 0, 0, 1, p.z, 0, 0, 0, 1), new Mat4x4(1, 0, 0, -p.x, 0, 1,
+				0, -p.y, 0, 0, 1, -p.z, 0, 0, 0, 1));
 
 		return new Transform(m.mul(t.m), i.mul(t.i));
 	}

@@ -1,8 +1,10 @@
 package geometries;
 
+import java.util.ArrayList;
+
 import material.Material;
 import ray.Ray;
-import Matrizen_Vektoren_Bibliothek.Normal3;
+import ray.Transform;
 import Matrizen_Vektoren_Bibliothek.Point3;
 
 /**
@@ -60,22 +62,31 @@ public class AxisAlignedBox extends Geometry {
 		if (ray == null) {
 			throw new IllegalArgumentException("The Ray cannot be null!");
 		}
+		final ArrayList<Geometry> geos = new ArrayList<Geometry>();
+		geos.add(new Plane(material));
+		final OurNode b1 = new OurNode(new Transform().translate(this.lbf).rotateZ(Math.PI / 2), geos);
+		final OurNode b2 = new OurNode(new Transform().translate(this.lbf).rotateX(Math.PI), geos);
+		final OurNode b3 = new OurNode(new Transform().translate(this.lbf).rotateZ(Math.PI).rotateX(-Math.PI / 2), geos);
+		final OurNode f1 = new OurNode(new Transform().translate(this.run).rotateZ(-Math.PI / 2), geos);
+		final OurNode f2 = new OurNode(new Transform().translate(this.run), geos);
+		final OurNode f3 = new OurNode(new Transform().translate(this.run).rotateZ(Math.PI).rotateX(Math.PI / 2), geos);
 
-		final Plane b1 = new Plane(material, lbf, new Normal3(-1, 0, 0));
-		final Plane b2 = new Plane(material, lbf, new Normal3(0, -1, 0));
-		final Plane b3 = new Plane(material, lbf, new Normal3(0, 0, -1));
+		// final Plane b1 = new Plane(material, lbf, new Normal3(-1, 0, 0));
+		// final Plane b2 = new Plane(material, lbf, new Normal3(0, -1, 0));
+		// final Plane b3 = new Plane(material, lbf, new Normal3(0, 0, -1));
+		//
+		// final Plane f1 = new Plane(material, run, new Normal3(1, 0, 0));
+		// final Plane f2 = new Plane(material, run, new Normal3(0, 1, 0));
+		// final Plane f3 = new Plane(material, run, new Normal3(0, 0, 1));
 
-		final Plane f1 = new Plane(material, run, new Normal3(1, 0, 0));
-		final Plane f2 = new Plane(material, run, new Normal3(0, 1, 0));
-		final Plane f3 = new Plane(material, run, new Normal3(0, 0, 1));
-
-		final Plane[] planes = {b1, b2, b3, f1, f2, f3};
+		final OurNode[] nodes = {b1, b2, b3, f1, f2, f3};
 
 		// double tf = -1;
 		// Normal3 nf = null;
 
 		Hit hit = null;
-
+		// ________________________________________________________________________________________________________________________________________
+		// Hits neu berechnen mit den Nodes...?
 		for (final Plane plane : planes) {
 
 			if (ray.origin.sub(plane.a).normalized().dot(plane.n) > 0) {
