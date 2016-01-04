@@ -2,6 +2,7 @@ package geometries;
 
 import material.Material;
 import ray.Ray;
+import Matrizen_Vektoren_Bibliothek.Normal3;
 import Matrizen_Vektoren_Bibliothek.Point3;
 
 /**
@@ -38,6 +39,7 @@ public class AxisAlignedBox extends Geometry {
 	 */
 	public AxisAlignedBox(Material material) throws IllegalArgumentException {
 		super(material);
+
 		this.lbf = new Point3(-0.5, -0.5, -0.5);
 		this.run = new Point3(0.5, 0.5, 0.5);
 	}
@@ -59,13 +61,13 @@ public class AxisAlignedBox extends Geometry {
 			throw new IllegalArgumentException("The Ray cannot be null!");
 		}
 
-		final Plane b1 = new Plane(material);
-		final Plane b2 = new Plane(material);
-		final Plane b3 = new Plane(material);
+		final Plane b1 = new Plane(material, lbf, new Normal3(-1, 0, 0));
+		final Plane b2 = new Plane(material, lbf, new Normal3(0, -1, 0));
+		final Plane b3 = new Plane(material, lbf, new Normal3(0, 0, -1));
 
-		final Plane f1 = new Plane(material);
-		final Plane f2 = new Plane(material);
-		final Plane f3 = new Plane(material);
+		final Plane f1 = new Plane(material, run, new Normal3(1, 0, 0));
+		final Plane f2 = new Plane(material, run, new Normal3(0, 1, 0));
+		final Plane f3 = new Plane(material, run, new Normal3(0, 0, 1));
 
 		final Plane[] planes = {b1, b2, b3, f1, f2, f3};
 

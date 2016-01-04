@@ -29,9 +29,9 @@ public class TrianglePyramid extends Geometry {
 	private final Material mat5;
 	private final Material mat6;
 
-	public TrianglePyramid(Material material, Point3 eckeA) throws IllegalArgumentException {
+	public TrianglePyramid(Material material) throws IllegalArgumentException {
 		super(material);
-		this.eckeA = eckeA;
+		this.eckeA = new Point3(0, 0, 0);
 		eckeB = new Point3(eckeA.x + 3, eckeA.y, eckeA.z);
 
 		eckeC = new Point3(eckeA.x + 3, eckeA.y, eckeA.z - 3);

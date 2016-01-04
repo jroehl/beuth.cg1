@@ -210,7 +210,7 @@ public class Raytracer extends Application {
 			// AlignBox
 			initializeGeometries(primaryStage, axisAlignedBox, new AxisAlignedBox(new LambertMaterial(new Color(0, 0, 1))));
 			// Pyramid
-			initializeGeometries(primaryStage, pyramid, new TrianglePyramid(new LambertMaterial(new Color(0, 0, 1)), new Point3(0, 0, 0)));
+			initializeGeometries(primaryStage, pyramid, new TrianglePyramid(new LambertMaterial(new Color(0, 0, 1))));
 
 			// Plane
 			initializeGeometries(primaryStage, plane, new Plane(new LambertMaterial(new Color(0, 1, 0))));
@@ -225,8 +225,10 @@ public class Raytracer extends Application {
 					new Point3(3, 0, 0), new Point3(1.5, 3, -1.5)));
 
 			// Node mit Sphere darin
-			final OurNode no = new OurNode(new Transform().scale(1.5, 2.2, 3.3), new ArrayList<Geometry>());
-			no.geos.add(new Sphere(new PhongMaterial(new Color(1, 0, 0), new Color(1, 1, 1), 64)));
+			final OurNode no = new OurNode(new Transform().scale(1.4, 0.4, 4).rotateX(3), new ArrayList<Geometry>());
+			// no.geos.add(new Sphere(new PhongMaterial(new Color(1, 0, 0), new
+			// Color(1, 1, 1), 64)));
+			no.geos.add(new AxisAlignedBox(new LambertMaterial(new Color(1, 0.5, 0.6))));
 			initializeNode(primaryStage, node, no);
 		}
 
