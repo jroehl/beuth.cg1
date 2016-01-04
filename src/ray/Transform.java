@@ -1,6 +1,8 @@
 package ray;
 
 import Matrizen_Vektoren_Bibliothek.Mat4x4;
+import Matrizen_Vektoren_Bibliothek.Normal3;
+import Matrizen_Vektoren_Bibliothek.Vector3;
 
 public class Transform {
 
@@ -85,4 +87,16 @@ public class Transform {
 		return new Transform(m.mul(t.m), i.mul(t.i));
 	}
 
+	// _________________________________________________________________________________
+	// Transformation der Normalen
+	public Normal3 mul(Normal3 n) {
+		return i.transposed().mul(new Vector3(n.x, n.y, n.z)).normalized().asNormal();
+	}
+
+	// _________________________________________________________________________________
+	// Transformation des Strahls
+
+	public Ray mul(Ray r) {
+		return new Ray(i.mul(r.origin), i.mul(r.direction));
+	}
 }

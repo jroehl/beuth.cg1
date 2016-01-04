@@ -20,7 +20,25 @@ public class Node extends Geometry {
 
 	@Override
 	public Hit hit(Ray ray) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
+		final Ray transformedRay = trans.mul(ray);
+		double t = Double.MAX_VALUE;
+		Hit hitLow = null;
+
+		for (final Geometry g : geos) {
+
+			final Hit hit = g.hit(transformedRay);
+			if (hit != null) {
+				if (hit.t < t && hit.t > 0.0001) {
+					t = hit.t;
+					hitLow = hit;
+				}
+			}
+
+		}
+		if (hitLow != null) {
+
+			return new Hit(hitLow.t, hitLow.ray, hitLow.geo, trans.mul(hitLow.n));
+		}
 		return null;
 	}
 

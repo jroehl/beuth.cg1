@@ -93,21 +93,10 @@ public class TrianglePyramid extends Geometry {
 			}
 		}
 
-		// Müssen nun alle über die world erzeugt werden und dann jeweils der
-		// hit abgefragt werden - evtl ArrayList<Triangle> zurück geben?
-		// Oder hier für jedes Dreieck die Hits abfragen??
 		return null;
 	}
 
-	public final Material switchColor(final Material material) { // instanceof
-																	// scheint
-																	// nicht zu
-																	// laufen..
-																	// es wird
-																	// immer
-																	// lambertmaterial
-																	// zurück
-																	// gegeben...
+	public final Material switchColor(final Material material) {
 		if (material instanceof SingleColorMaterial) {
 			return new SingleColorMaterial(new Color(r.nextDouble(), r.nextDouble(), r.nextDouble()));
 		}
