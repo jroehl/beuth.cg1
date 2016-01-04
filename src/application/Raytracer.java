@@ -166,8 +166,9 @@ public class Raytracer extends Application {
 		camera = new OrthographicCamera(new Point3(0, 0, 0), new Vector3(0, 0, -1), new Vector3(0, 1, 0), 3);
 		orthographicCamera.setSelected(true);
 		// Default Licht
-		lights.add(new PointLight(new Color(1, 1, 1), new Point3(8, 8, 0), true));
-		pointLight.setSelected(true);
+		// lights.add(new PointLight(new Color(1, 1, 1), new Point3(8, 8, 0),
+		// true));
+		// pointLight.setSelected(true);
 
 		rerender(primaryStage);
 
@@ -261,7 +262,7 @@ public class Raytracer extends Application {
 		// Menu - Light
 		{
 			// PointLight
-			initializeLights(primaryStage, pointLight, new PointLight(new Color(1, 1, 1), new Point3(8, 8, 0), true));
+			initializeLights(primaryStage, pointLight, new PointLight(new Color(1, 1, 1), new Point3(8, 8, 8), true));
 
 			// DirectionalLight
 			initializeLights(primaryStage, directionalLight, new DirectionalLight(new Color(1, 1, 1), new Vector3(-8, -8, 0), true));
