@@ -35,18 +35,11 @@ public class Plane extends Geometry {
 	 *            Normal3 Objekt der Ebene
 	 * @throws IllegalArgumentException
 	 */
-	public Plane(Material material, Point3 a, Normal3 n) throws IllegalArgumentException {
+	public Plane(Material material) throws IllegalArgumentException {
 		super(material);
 
-		if (a == null) {
-			throw new IllegalArgumentException("The a cannot be null!");
-		}
-		if (n == null) {
-			throw new IllegalArgumentException("The n cannot be null!");
-		}
-
-		this.a = a;
-		this.n = n;
+		this.a = new Point3(0, 0, 0);
+		this.n = new Normal3(0, 1, 0);
 
 	}
 

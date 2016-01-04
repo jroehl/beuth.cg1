@@ -38,15 +38,11 @@ public class Sphere extends Geometry {
 	 *            double wert der Sphere
 	 * @throws IllegalArgumentException
 	 */
-	public Sphere(Material material, Point3 center, double radius) throws IllegalArgumentException {
+	public Sphere(Material material) throws IllegalArgumentException {
 		super(material);
 
-		if (center == null) {
-			throw new IllegalArgumentException("The c cannot be null!");
-		}
-
-		this.center = center;
-		this.radius = radius;
+		this.center = new Point3(0, 0, 0);
+		this.radius = 1;
 
 	}
 

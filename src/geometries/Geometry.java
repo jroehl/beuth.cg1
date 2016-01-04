@@ -1,17 +1,21 @@
 package geometries;
 
 import material.Material;
+import material.SingleColorMaterial;
 import ray.Ray;
+import color.Color;
 
 /**
  * Geometry
  *
  * @author Waschmaschine
  *         <p>
- *         Die Geomotrie-Klasse beinhaltet als Attribut eine Farbe. Darüber hinaus deklariert sie die Methode hit,
- *         welche einen Strahl als Parameter entgegen nimmt. In einer Implementierung dieser Methode erfolgt die
- *         Schnittberechnung. Eine Implementierung gibt bei mehreren Schnittpunkten immer den mit dem kleinsten
- *         positiven t zurück. Wird kein Schnittpunkt gefunden, wird null zurückgegeben.
+ *         Die Geomotrie-Klasse beinhaltet als Attribut eine Farbe. Darüber
+ *         hinaus deklariert sie die Methode hit, welche einen Strahl als
+ *         Parameter entgegen nimmt. In einer Implementierung dieser Methode
+ *         erfolgt die Schnittberechnung. Eine Implementierung gibt bei mehreren
+ *         Schnittpunkten immer den mit dem kleinsten positiven t zurück. Wird
+ *         kein Schnittpunkt gefunden, wird null zurückgegeben.
  */
 public abstract class Geometry {
 
@@ -19,6 +23,11 @@ public abstract class Geometry {
 	 * Color - color Objekt der Geometrie
 	 */
 	public Material material;
+
+	public Geometry() throws IllegalArgumentException {
+
+		this.material = new SingleColorMaterial(new Color(1, 0, 0));
+	}
 
 	/**
 	 * Konstruktor: Geometry
@@ -41,13 +50,14 @@ public abstract class Geometry {
 	 *
 	 * @param ray
 	 *            Ray Objekt
-	 * @return Hit / null Bei einem Treffer wird das generierte Hit Objekt zurückgegeben und null vice versa
+	 * @return Hit / null Bei einem Treffer wird das generierte Hit Objekt
+	 *         zurückgegeben und null vice versa
 	 * @throws IllegalArgumentException
 	 */
 	public abstract Hit hit(Ray ray) throws IllegalArgumentException;
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#toString()
 	 */
 
@@ -63,7 +73,7 @@ public abstract class Geometry {
 	}
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#hashCode()
 	 */
 
@@ -82,7 +92,7 @@ public abstract class Geometry {
 	}
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 

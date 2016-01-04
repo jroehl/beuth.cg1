@@ -1,12 +1,8 @@
 package application;
 
-import geometries.AxisAlignedBox;
 import geometries.Geometry;
 import geometries.OurNode;
-import geometries.Plane;
 import geometries.Sphere;
-import geometries.Triangle;
-import geometries.TrianglePyramid;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,20 +38,16 @@ import light.Light;
 import light.PointLight;
 import light.SpotLight;
 import material.LambertMaterial;
-import material.PhongMaterial;
-import material.ReflectiveMaterial;
-import material.SingleColorMaterial;
 import ray.Ray;
 import ray.Transform;
 import ray.World;
 import Matrizen_Vektoren_Bibliothek.Point3;
 import Matrizen_Vektoren_Bibliothek.Vector3;
 import camera.Camera;
-import camera.OrthographicCamera;
 import camera.PerspectiveCamera;
 import color.Color;
 
-public class Raytracer extends Application {
+public class RayTracerOhneGui extends Application {
 
 	/**
 	 * wrImg - WritableImage Objekt
@@ -106,21 +98,19 @@ public class Raytracer extends Application {
 		primaryStage.setHeight(480);
 
 		final Menu menuFile = new Menu("File");
-		final Menu menuGraph = new Menu("Graphics");
-		final Menu menuCamera = new Menu("Camera");
+		// final Menu menuGraph = new Menu("Graphics");
+		// final Menu menuCamera = new Menu("Camera");
 		final Menu menuLight = new Menu("Light");
-		final Menu menuSettings = new Menu("Settings");
-		final Menu menuNode = new Menu("Node");
+		// final Menu menuSettings = new Menu("Settings");
 		renderingTime = new Menu();
 
 		final MenuBar menuBar = new MenuBar();
 		menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
 		menuBar.getMenus().add(menuFile);
-		menuBar.getMenus().add(menuGraph);
-		menuBar.getMenus().add(menuCamera);
+		// menuBar.getMenus().add(menuGraph);
+		// menuBar.getMenus().add(menuCamera);
 		menuBar.getMenus().add(menuLight);
-		menuBar.getMenus().add(menuSettings);
-		menuBar.getMenus().add(menuNode);
+		// menuBar.getMenus().add(menuSettings);
 		menuBar.getMenus().add(renderingTime);
 
 		// Save Menu
@@ -131,35 +121,35 @@ public class Raytracer extends Application {
 		menuFile.getItems().addAll(newObject, load, save, exit);
 
 		// Graphics Menu
-		final Menu axisAlignedBox = new Menu("AxisAlignedBox");
-		final Menu pyramid = new Menu("Pyramid");
-		final Menu triangle = new Menu("Triangle");
-		final Menu plane = new Menu("Plane");
-		final Menu sphere0 = new Menu("Sphere 0");
-		final Menu sphere1 = new Menu("Sphere 1");
-		final Menu sphere2 = new Menu("Sphere 2");
-
-		menuGraph.getItems().addAll(axisAlignedBox, pyramid, triangle, plane, sphere0, sphere1, sphere2);
-
-		// menuNode
-		final Menu node = new Menu("Node");
-		menuNode.getItems().add(node);
+		// final Menu axisAlignedBox = new Menu("AxisAlignedBox");
+		// final Menu pyramid = new Menu("Pyramid");
+		// final Menu triangle = new Menu("Triangle");
+		// final Menu plane = new Menu("Plane");
+		// final Menu sphere0 = new Menu("Sphere 0");
+		// final Menu sphere1 = new Menu("Sphere 1");
+		// final Menu sphere2 = new Menu("Sphere 2");
+		// menuGraph.getItems().addAll(axisAlignedBox, pyramid, triangle, plane,
+		// sphere0, sphere1, sphere2);
 
 		// Camera Menu
-		final RadioMenuItem orthographicCamera = new RadioMenuItem("Orthographic Camera");
-		final RadioMenuItem perspectiveCamera = new RadioMenuItem("Perspective Camera");
-		final RadioMenuItem perspectiveCamera2 = new RadioMenuItem("Perspective Camera 2");
-		menuCamera.getItems().addAll(orthographicCamera, perspectiveCamera, perspectiveCamera2);
+		// final RadioMenuItem orthographicCamera = new
+		// RadioMenuItem("Orthographic Camera");
+		// final RadioMenuItem perspectiveCamera = new
+		// RadioMenuItem("Perspective Camera");
+		// final RadioMenuItem perspectiveCamera2 = new
+		// RadioMenuItem("Perspective Camera 2");
+		// menuCamera.getItems().addAll(orthographicCamera, perspectiveCamera,
+		// perspectiveCamera2);
 
-		// Light Menu
+		// final Light Menu
 		final RadioMenuItem pointLight = new RadioMenuItem("Point Light");
 		final RadioMenuItem directionalLight = new RadioMenuItem("Directional Light");
 		final RadioMenuItem spotLight = new RadioMenuItem("Spot Light");
 		menuLight.getItems().addAll(pointLight, directionalLight, spotLight);
 
 		// Settings
-		final MenuItem backgroundColor = new MenuItem("Background Color");
-		menuSettings.getItems().add(backgroundColor);
+		// final MenuItem backgroundColor = new MenuItem("Background Color");
+		// menuSettings.getItems().add(backgroundColor);
 
 		final HBox hBox = new HBox();
 		imgView = new ImageView();
@@ -169,13 +159,14 @@ public class Raytracer extends Application {
 
 		primaryStage.setScene(new Scene(group));
 
+		// ________________________________________________________________________________________________________________
+
 		// Default Kamera
-		camera = new OrthographicCamera(new Point3(0, 0, 0), new Vector3(0, 0, -1), new Vector3(0, 1, 0), 3);
-		orthographicCamera.setSelected(true);
-		// Default Licht
-		// lights.add(new PointLight(new Color(1, 1, 1), new Point3(8, 8, 0),
-		// true));
-		// pointLight.setSelected(true);
+		// camera = new OrthographicCamera(new Point3(0, 0, 0), new Vector3(0,
+		// 0, -1), new Vector3(0, 1, 0), 3);
+		camera = new PerspectiveCamera(new Point3(8, 8, 8), new Vector3(-1, -1, -1), new Vector3(0, 1, 0), Math.PI / 4);
+
+		// ________________________________________________________________________________________________________________
 
 		rerender(primaryStage);
 
@@ -207,67 +198,81 @@ public class Raytracer extends Application {
 
 		// Menu - Graphics
 		{
-			// AlignBox
-			initializeGeometries(primaryStage, axisAlignedBox, new AxisAlignedBox(new LambertMaterial(new Color(0, 0, 1))));
-			// Pyramid
-			initializeGeometries(primaryStage, pyramid, new TrianglePyramid(new LambertMaterial(new Color(0, 0, 1)), new Point3(0, 0, 0)));
+			// // AlignBox
+			// initializeGeometries(primaryStage, axisAlignedBox, new
+			// AxisAlignedBox(new LambertMaterial(new Color(0, 0, 1)), new
+			// Point3(-0.5,
+			// 0, -0.5), new Point3(0.5, 1, 0.5)));
+			// // Pyramid
+			// initializeGeometries(primaryStage, pyramid, new
+			// TrianglePyramid(new LambertMaterial(new Color(0, 0, 1)), new
+			// Point3(0, 0, 0)));
+			//
+			// // Plane
+			// initializeGeometries(primaryStage, plane, new Plane(new
+			// LambertMaterial(new Color(0, 1, 0)), new Point3(0, 0, 0), new
+			// Normal3(
+			// 0, 1, 0)));
+			//
+			// // Spheren
+			// initializeGeometries(primaryStage, sphere0, new Sphere(new
+			// LambertMaterial(new Color(1, 0, 0)), new Point3(-3, 1, 0), 1));
+			// initializeGeometries(primaryStage, sphere1, new Sphere(new
+			// LambertMaterial(new Color(1, 0, 0)), new Point3(0, 1, 0), 1));
+			// initializeGeometries(primaryStage, sphere2, new Sphere(new
+			// LambertMaterial(new Color(1, 0, 0)), new Point3(3, 1, 0), 1));
+			//
+			// // Triangle
+			// initializeGeometries(primaryStage, triangle, new Triangle(new
+			// LambertMaterial(new Color(1, 0, 1)), new Point3(0, 0, 0),
+			// new Point3(3, 0, 0), new Point3(1.5, 3, -1.5)));
 
-			// Plane
-			initializeGeometries(primaryStage, plane, new Plane(new LambertMaterial(new Color(0, 1, 0))));
-
-			// Spheren
-			initializeGeometries(primaryStage, sphere0, new Sphere(new LambertMaterial(new Color(1, 0, 0))));
-			initializeGeometries(primaryStage, sphere1, new Sphere(new LambertMaterial(new Color(1, 0, 0))));
-			initializeGeometries(primaryStage, sphere2, new Sphere(new LambertMaterial(new Color(1, 0, 0))));
-
-			// Triangle
-			initializeGeometries(primaryStage, triangle, new Triangle(new LambertMaterial(new Color(1, 0, 1)), new Point3(0, 0, 0),
-					new Point3(3, 0, 0), new Point3(1.5, 3, -1.5)));
-
-			// Node mit Sphere darin
-			final OurNode no = new OurNode(new Transform().scale(1.5, 2.2, 3.3), new ArrayList<Geometry>());
-			no.geos.add(new Sphere(new PhongMaterial(new Color(1, 0, 0), new Color(1, 1, 1), 64)));
-			initializeNode(primaryStage, node, no);
+			final OurNode node = new OurNode(new Transform(), new ArrayList<Geometry>());
+			node.geos.add(new Sphere(new LambertMaterial(new Color(1, 0, 0))));
+			world.objs.add(node);
 		}
 
-		// Menu - Camera
-		{
-			// Orthographic Camera
-			orthographicCamera.setOnAction(event -> {
-				// 1. Kamera - PerspectiveCamera mit geradem Blick
-					camera = new OrthographicCamera(new Point3(0, 0, 0), new Vector3(0, 0, -1), new Vector3(0, 1, 0), 3);
-
-					orthographicCamera.setSelected(true);
-					perspectiveCamera.setSelected(false);
-					perspectiveCamera2.setSelected(false);
-
-					rerender(primaryStage);
-				});
-
-			// Perspective Camera
-			perspectiveCamera.setOnAction(event -> {
-				// 2. Kamera für die AxisAlignedBox
-					camera = new PerspectiveCamera(new Point3(5.5, 5.5, 5.5), new Vector3(-1, -1, -1), new Vector3(0, 1, 0), Math.PI / 4);
-
-					orthographicCamera.setSelected(false);
-					perspectiveCamera.setSelected(true);
-					perspectiveCamera2.setSelected(false);
-
-					rerender(primaryStage);
-				});
-
-			// Perspective Camera 2
-			perspectiveCamera2.setOnAction(event -> {
-				// 2. Kamera für die AxisAlignedBox
-					camera = new PerspectiveCamera(new Point3(0, 0, 0), new Vector3(0, 0, 1), new Vector3(0, 1, 0), Math.PI / 4);
-
-					orthographicCamera.setSelected(false);
-					perspectiveCamera.setSelected(false);
-					perspectiveCamera2.setSelected(true);
-
-					rerender(primaryStage);
-				});
-		}
+		// // Menu - Camera
+		// {
+		// // Orthographic Camera
+		// orthographicCamera.setOnAction(event -> {
+		// // 1. Kamera - PerspectiveCamera mit geradem Blick
+		// camera = new OrthographicCamera(new Point3(0, 0, 0), new Vector3(0,
+		// 0, -1), new Vector3(0, 1, 0), 3);
+		//
+		// orthographicCamera.setSelected(true);
+		// perspectiveCamera.setSelected(false);
+		// perspectiveCamera2.setSelected(false);
+		//
+		// rerender(primaryStage);
+		// });
+		//
+		// // Perspective Camera
+		// perspectiveCamera.setOnAction(event -> {
+		// // 2. Kamera für die AxisAlignedBox
+		// camera = new PerspectiveCamera(new Point3(8, 8, 8), new Vector3(-1,
+		// -1, -1), new Vector3(0, 1, 0), Math.PI / 4);
+		//
+		// orthographicCamera.setSelected(false);
+		// perspectiveCamera.setSelected(true);
+		// perspectiveCamera2.setSelected(false);
+		//
+		// rerender(primaryStage);
+		// });
+		//
+		// // Perspective Camera 2
+		// perspectiveCamera2.setOnAction(event -> {
+		// // 2. Kamera für die AxisAlignedBox
+		// camera = new PerspectiveCamera(new Point3(0, 0, 0), new Vector3(0, 0,
+		// 1), new Vector3(0, 1, 0), Math.PI / 4);
+		//
+		// orthographicCamera.setSelected(false);
+		// perspectiveCamera.setSelected(false);
+		// perspectiveCamera2.setSelected(true);
+		//
+		// rerender(primaryStage);
+		// });
+		// }
 
 		// Menu - Light
 		{
@@ -280,11 +285,6 @@ public class Raytracer extends Application {
 			// SpotLight
 			initializeLights(primaryStage, spotLight, new SpotLight(new Color(1, 1, 1), new Vector3(-1, -1, -1), new Point3(-3, -3, -3),
 					Math.PI / 14, true));
-		}
-
-		// Menu - Settings
-		{
-
 		}
 
 		/*
@@ -319,23 +319,6 @@ public class Raytracer extends Application {
 		});
 	}
 
-	private void initializeNode(Stage primaryStage, Menu menu, final Geometry geometry) {
-		final RadioMenuItem addNode = new RadioMenuItem("Add Node");
-		menu.getItems().add(addNode);
-
-		addNode.setOnAction(event -> {
-			if (!geometries.contains(geometry)) {
-				geometries.add(geometry);
-				addNode.setSelected(true);
-			} else {
-				geometries.remove(geometry);
-				addNode.setSelected(false);
-			}
-			rerender(primaryStage);
-		});
-
-	}
-
 	/**
 	 * Hilfmethode welche für jeden Objekt-Menueintrag die entsprechenden
 	 * Materialien bereitstellt.
@@ -347,128 +330,134 @@ public class Raytracer extends Application {
 	 * @param geometry
 	 *            Geomety für welche ein Menüeintrag erzeugt werden soll.
 	 */
-	private void initializeGeometries(Stage primaryStage, Menu menu, final Geometry geometry) {
+	// private void initializeGeometries(Stage primaryStage, Menu menu, final
+	// Geometry geometry) {
+	//
+	// final RadioMenuItem singleColorMaterial = new
+	// RadioMenuItem("Single-Color-Material");
+	// final RadioMenuItem lambertMaterial = new
+	// RadioMenuItem("Lambert-Material");
+	// final RadioMenuItem phongMaterial = new RadioMenuItem("Phong-Material");
+	// final RadioMenuItem reflectiveMaterial = new
+	// RadioMenuItem("Reflective-Material");
+	// menu.getItems().addAll(singleColorMaterial, lambertMaterial,
+	// phongMaterial, reflectiveMaterial);
 
-		final RadioMenuItem singleColorMaterial = new RadioMenuItem("Single-Color-Material");
-		final RadioMenuItem lambertMaterial = new RadioMenuItem("Lambert-Material");
-		final RadioMenuItem phongMaterial = new RadioMenuItem("Phong-Material");
-		final RadioMenuItem reflectiveMaterial = new RadioMenuItem("Reflective-Material");
-		menu.getItems().addAll(singleColorMaterial, lambertMaterial, phongMaterial, reflectiveMaterial);
-
-		// SingleColor - Material
-		singleColorMaterial.setOnAction(event -> {
-			if (!geometries.contains(geometry)) {
-				final ArrayList<Object> properties = showDialog(0);
-
-				if (!properties.isEmpty()) {
-					geometry.material = new SingleColorMaterial((Color) properties.get(0));
-					geometries.add(geometry);
-
-					singleColorMaterial.setSelected(true);
-					lambertMaterial.setSelected(false);
-					phongMaterial.setSelected(false);
-					reflectiveMaterial.setSelected(false);
-				} else {
-					singleColorMaterial.setSelected(false);
-				}
-			} else {
-				geometries.remove(geometry);
-
-				singleColorMaterial.setSelected(false);
-				lambertMaterial.setSelected(false);
-				phongMaterial.setSelected(false);
-				reflectiveMaterial.setSelected(false);
-			}
-
-			rerender(primaryStage);
-		});
-
-		// Lambert Material
-		lambertMaterial.setOnAction(event -> {
-			if (!geometries.contains(geometry)) {
-				final ArrayList<Object> properties = showDialog(0);
-
-				if (!properties.isEmpty()) {
-					geometry.material = new LambertMaterial((Color) properties.get(0));
-					geometries.add(geometry);
-
-					singleColorMaterial.setSelected(false);
-					lambertMaterial.setSelected(true);
-					phongMaterial.setSelected(false);
-					reflectiveMaterial.setSelected(false);
-				} else {
-					lambertMaterial.setSelected(false);
-				}
-			} else {
-				geometries.remove(geometry);
-
-				singleColorMaterial.setSelected(false);
-				lambertMaterial.setSelected(false);
-				phongMaterial.setSelected(false);
-				reflectiveMaterial.setSelected(false);
-			}
-
-			rerender(primaryStage);
-		});
-
-		// Phong Material
-		phongMaterial.setOnAction(event -> {
-			if (!geometries.contains(geometry)) {
-				final ArrayList<Object> properties = showDialog(1);
-
-				if (!properties.isEmpty()) {
-					geometry.material = new PhongMaterial((Color) properties.get(0), (Color) properties.get(1), (int) properties.get(3));
-					geometries.add(geometry);
-
-					singleColorMaterial.setSelected(false);
-					lambertMaterial.setSelected(false);
-					phongMaterial.setSelected(true);
-					reflectiveMaterial.setSelected(false);
-				} else {
-					phongMaterial.setSelected(false);
-				}
-			} else {
-				geometries.remove(geometry);
-
-				singleColorMaterial.setSelected(false);
-				lambertMaterial.setSelected(false);
-				phongMaterial.setSelected(false);
-				reflectiveMaterial.setSelected(false);
-			}
-
-			rerender(primaryStage);
-		});
-
-		// reflective Material
-		reflectiveMaterial.setOnAction(event -> {
-			if (!geometries.contains(geometry)) {
-				final ArrayList<Object> properties = showDialog(2);
-
-				if (!properties.isEmpty()) {
-					geometry.material = new ReflectiveMaterial((Color) properties.get(0), (Color) properties.get(1), (Color) properties
-							.get(2), (int) properties.get(3));
-					geometries.add(geometry);
-
-					singleColorMaterial.setSelected(false);
-					lambertMaterial.setSelected(false);
-					phongMaterial.setSelected(false);
-					reflectiveMaterial.setSelected(true);
-				} else {
-					reflectiveMaterial.setSelected(false);
-				}
-			} else {
-				geometries.remove(geometry);
-
-				singleColorMaterial.setSelected(false);
-				lambertMaterial.setSelected(false);
-				phongMaterial.setSelected(false);
-				reflectiveMaterial.setSelected(false);
-			}
-
-			rerender(primaryStage);
-		});
-
-	}
+	// SingleColor - Material
+	// singleColorMaterial.setOnAction(event -> {
+	// if (!geometries.contains(geometry)) {
+	// final ArrayList<Object> properties = showDialog(0);
+	//
+	// if (!properties.isEmpty()) {
+	// geometry.material = new SingleColorMaterial((Color) properties.get(0));
+	// geometries.add(geometry);
+	//
+	// singleColorMaterial.setSelected(true);
+	// lambertMaterial.setSelected(false);
+	// phongMaterial.setSelected(false);
+	// reflectiveMaterial.setSelected(false);
+	// } else {
+	// singleColorMaterial.setSelected(false);
+	// }
+	// } else {
+	// geometries.remove(geometry);
+	//
+	// singleColorMaterial.setSelected(false);
+	// lambertMaterial.setSelected(false);
+	// phongMaterial.setSelected(false);
+	// reflectiveMaterial.setSelected(false);
+	// }
+	//
+	// rerender(primaryStage);
+	// });
+	//
+	// // Lambert Material
+	// lambertMaterial.setOnAction(event -> {
+	// if (!geometries.contains(geometry)) {
+	// final ArrayList<Object> properties = showDialog(0);
+	//
+	// if (!properties.isEmpty()) {
+	// geometry.material = new LambertMaterial((Color) properties.get(0));
+	// geometries.add(geometry);
+	//
+	// singleColorMaterial.setSelected(false);
+	// lambertMaterial.setSelected(true);
+	// phongMaterial.setSelected(false);
+	// reflectiveMaterial.setSelected(false);
+	// } else {
+	// lambertMaterial.setSelected(false);
+	// }
+	// } else {
+	// geometries.remove(geometry);
+	//
+	// singleColorMaterial.setSelected(false);
+	// lambertMaterial.setSelected(false);
+	// phongMaterial.setSelected(false);
+	// reflectiveMaterial.setSelected(false);
+	// }
+	//
+	// rerender(primaryStage);
+	// });
+	//
+	// // Phong Material
+	// phongMaterial.setOnAction(event -> {
+	// if (!geometries.contains(geometry)) {
+	// final ArrayList<Object> properties = showDialog(1);
+	//
+	// if (!properties.isEmpty()) {
+	// geometry.material = new PhongMaterial((Color) properties.get(0), (Color)
+	// properties.get(1), (int) properties.get(3));
+	// geometries.add(geometry);
+	//
+	// singleColorMaterial.setSelected(false);
+	// lambertMaterial.setSelected(false);
+	// phongMaterial.setSelected(true);
+	// reflectiveMaterial.setSelected(false);
+	// } else {
+	// phongMaterial.setSelected(false);
+	// }
+	// } else {
+	// geometries.remove(geometry);
+	//
+	// singleColorMaterial.setSelected(false);
+	// lambertMaterial.setSelected(false);
+	// phongMaterial.setSelected(false);
+	// reflectiveMaterial.setSelected(false);
+	// }
+	//
+	// rerender(primaryStage);
+	// });
+	//
+	// // reflective Material
+	// reflectiveMaterial.setOnAction(event -> {
+	// if (!geometries.contains(geometry)) {
+	// final ArrayList<Object> properties = showDialog(2);
+	//
+	// if (!properties.isEmpty()) {
+	// geometry.material = new ReflectiveMaterial((Color) properties.get(0),
+	// (Color) properties.get(1), (Color) properties
+	// .get(2), (int) properties.get(3));
+	// geometries.add(geometry);
+	//
+	// singleColorMaterial.setSelected(false);
+	// lambertMaterial.setSelected(false);
+	// phongMaterial.setSelected(false);
+	// reflectiveMaterial.setSelected(true);
+	// } else {
+	// reflectiveMaterial.setSelected(false);
+	// }
+	// } else {
+	// geometries.remove(geometry);
+	//
+	// singleColorMaterial.setSelected(false);
+	// lambertMaterial.setSelected(false);
+	// phongMaterial.setSelected(false);
+	// reflectiveMaterial.setSelected(false);
+	// }
+	//
+	// rerender(primaryStage);
+	// });
+	// }
 
 	/**
 	 * Hilsmethode welche dem User die Möglichkeit gibt die Farben über das
