@@ -17,24 +17,72 @@ public class Transform {
 		this.i = i;
 	}
 
+	// _________________________________________________________________________________
+	// Translationsmatrix:
+	// 1 0 0 -x
+	// 0 1 0 -y
+	// 0 0 1 -z
+	// 0 0 0 1
 	public Transform translate(double x, double y, double z) {
-		return null;
+		final Transform t = new Transform(new Mat4x4(1, 0, 0, x, 0, 1, 0, y, 0, 0, 1, z, 0, 0, 0, 1), new Mat4x4(1, 0, 0, -x, 0, 1, 0, -y,
+				0, 0, 1, -z, 0, 0, 0, 1));
+
+		return new Transform(m.mul(t.m), i.mul(t.i));
 	}
 
+	// _________________________________________________________________________________
+	// Skalierungssmatrix:
+	// 1/x 0 0 0
+	// 0 1/y 0 0
+	// 0 0 1/z 0
+	// 0 0 0 1
 	public Transform scale(double x, double y, double z) {
-		return null;
+		final Transform t = new Transform(new Mat4x4(x, 0, 0, 0, 0, y, 0, 0, 0, 0, z, 0, 0, 0, 0, 1),
+
+		new Mat4x4(1.0 / x, 0, 0, 0, 0, 1.0 / y, 0, 0, 0, 0, 1.0 / z, 0, 0, 0, 0, 1));
+
+		return new Transform(m.mul(t.m), i.mul(t.i));
 	}
 
+	// _________________________________________________________________________________
+	// Rotatioinsmatrix_X:
+	// 1 0 0 0
+	// 0 cos(a) sin(a) 0
+	// 0 -sin(a) cos(a) 0
+	// 0 0 0 1
 	public Transform rotateX(double angle) {
-		return null;
+		final Transform t = new Transform(new Mat4x4(1, 0, 0, 0, 0, Math.cos(angle), -Math.sin(angle), 0, 0, Math.sin(angle),
+				Math.cos(angle), 0, 0, 0, 0, 1), new Mat4x4(1, 0, 0, 0, 0, Math.cos(angle), Math.sin(angle), 0, 0, -Math.sin(angle),
+				Math.cos(angle), 0, 0, 0, 0, 1));
+
+		return new Transform(m.mul(t.m), i.mul(t.i));
 	}
 
+	// _________________________________________________________________________________
+	// Rotatioinsmatrix_Y:
+	// cos(a) 0 -sin(a) 0
+	// 0 1 0 0
+	// sin(a) 0 cos(a) 0
+	// 0 0 0 1
 	public Transform rotateY(double angle) {
-		return null;
+		final Transform t = new Transform(new Mat4x4(Math.cos(angle), 0, Math.sin(angle), 0, 0, 1, 0, 0, -Math.sin(angle), 0,
+				Math.cos(angle), 0, 0, 0, 0, 1), new Mat4x4(Math.cos(angle), 0, -Math.sin(angle), 0, 0, 1, 0, 0, Math.sin(angle), 0,
+				Math.cos(angle), 0, 0, 0, 0, 1));
+		return new Transform(m.mul(t.m), i.mul(t.i));
 	}
 
+	// _________________________________________________________________________________
+	// Rotatioinsmatrix_Z:
+	// cos(a) sin(a) 0 0
+	// -sin(a) cos(a) 0 0
+	// 0 0 1 0
+	// 0 0 0 1
 	public Transform rotateZ(double angle) {
-		return null;
+		final Transform t = new Transform(new Mat4x4(Math.cos(angle), -Math.sin(angle), 0, 0, Math.sin(angle), Math.cos(angle), 0, 0, 0, 0,
+				1, 0, 0, 0, 0, 1), new Mat4x4(Math.cos(angle), Math.sin(angle), 0, 0, -Math.sin(angle), Math.cos(angle), 0, 0, 0, 0, 1, 0,
+				0, 0, 0, 1));
+
+		return new Transform(m.mul(t.m), i.mul(t.i));
 	}
 
 }
