@@ -11,7 +11,9 @@ public class Transform {
 	private final Mat4x4 i;// Inverse von m
 
 	public Transform() {
+
 		this.m = new Mat4x4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); // Einheitsmatrix
+
 		this.i = m;
 	}
 
@@ -27,8 +29,15 @@ public class Transform {
 	// 0 0 1 -z
 	// 0 0 0 1
 	public Transform translate(Point3 p) {
-		final Transform t = new Transform(new Mat4x4(1, 0, 0, p.x, 0, 1, 0, p.y, 0, 0, 1, p.z, 0, 0, 0, 1), new Mat4x4(1, 0, 0, -p.x, 0, 1,
-				0, -p.y, 0, 0, 1, -p.z, 0, 0, 0, 1));
+		final Transform t = new Transform(new Mat4x4(
+
+		1, 0, 0, p.x, 0, 1, 0, p.y, 0, 0, 1, p.z, 0, 0, 0, 1
+
+		), new Mat4x4(
+
+		1, 0, 0, -p.x, 0, 1, 0, -p.y, 0, 0, 1, -p.z, 0, 0, 0, 1
+
+		));
 
 		return new Transform(m.mul(t.m), t.i.mul(i));
 	}
@@ -54,9 +63,15 @@ public class Transform {
 	// 0 -sin(a) cos(a) 0
 	// 0 0 0 1
 	public Transform rotateX(double angle) {
-		final Transform t = new Transform(new Mat4x4(1, 0, 0, 0, 0, Math.cos(angle), -Math.sin(angle), 0, 0, Math.sin(angle),
-				Math.cos(angle), 0, 0, 0, 0, 1), new Mat4x4(1, 0, 0, 0, 0, Math.cos(angle), Math.sin(angle), 0, 0, -Math.sin(angle),
-				Math.cos(angle), 0, 0, 0, 0, 1));
+		final Transform t = new Transform(new Mat4x4(
+
+		1, 0, 0, 0, 0, Math.cos(angle), -Math.sin(angle), 0, 0, Math.sin(angle), Math.cos(angle), 0, 0, 0, 0, 1
+
+		), new Mat4x4(
+
+		1, 0, 0, 0, 0, Math.cos(angle), Math.sin(angle), 0, 0, -Math.sin(angle), Math.cos(angle), 0, 0, 0, 0, 1
+
+		));
 
 		return new Transform(m.mul(t.m), t.i.mul(i));
 	}

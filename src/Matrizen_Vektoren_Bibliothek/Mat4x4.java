@@ -47,15 +47,27 @@ public class Mat4x4 {
 	// _________________________________________________________________________________
 
 	public Vector3 mul(Vector3 v) {
-		return new Vector3(v.x * this.m11 + v.y * this.m12 + v.z * this.m13, v.x * this.m21 + v.y * this.m22 + v.z * this.m23, v.x
-				* this.m31 + v.y * this.m32 + v.z * this.m33);
+		return new Vector3(
+
+		v.x * m11 + v.y * m12 + v.z * m13,
+
+		v.x * m21 + v.y * m22 + v.z * m23,
+
+		v.x * m31 + v.y * m32 + v.z * m33);
 	}
 
 	// _________________________________________________________________________________
 
 	public Point3 mul(Point3 p) {
-		return new Point3(p.x * this.m11 + p.y * this.m12 + p.z * m13 + m14, p.x * this.m21 + p.y * this.m22 + p.z * m23 + m24, p.x
-				* this.m31 + p.y * this.m32 + p.z * m33 + m34);
+		return new Point3(
+
+		p.x * m11 + p.y * m12 + p.z * m13 + m14,
+
+		p.x * m21 + p.y * m22 + p.z * m23 + m24,
+
+		p.x * m31 + p.y * m32 + p.z * m33 + m34
+
+		);
 	}
 
 	// _________________________________________________________________________________
@@ -69,12 +81,17 @@ public class Mat4x4 {
 				* m.m14 + m32 * m.m24 + m33 * m.m34 + m34 * m.m44, m41 * m.m11 + m42 * m.m21 + m43 * m.m31 + m44 * m.m41, m41 * m.m12 + m42
 				* m.m22 + m43 * m.m32 + m44 * m.m42, m41 * m.m13 + m42 * m.m23 + m43 * m.m33 + m44 * m.m43, m41 * m.m14 + m42 * m.m24 + m43
 				* m.m34 + m44 * m.m44);
+
 	}
 
 	// _________________________________________________________________________________
 
 	public Mat4x4 transposed() { // Zeilen und Spalten vertauscht
-		return new Mat4x4(m11, m21, m31, m41, m12, m22, m32, m42, m13, m23, m33, m43, m14, m24, m34, m44);
+		return new Mat4x4(
+
+		m11, m21, m31, m41, m12, m22, m32, m42, m13, m23, m33, m43, m14, m24, m34, m44
+
+		);
 	}
 
 }

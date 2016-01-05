@@ -61,8 +61,8 @@ public class AxisAlignedBox extends Geometry {
 		top = new Node(new Transform().translate(this.run), geos);
 		bottom = new Node(new Transform().translate(this.lbf).rotateX(Math.PI), geos);
 
-		front = new Node(new Transform().translate(this.run).rotateX(Math.PI / 2), geos);
-		far = new Node(new Transform().translate(this.lbf).rotateX(-Math.PI / 2), geos);
+		front = new Node(new Transform().translate(this.run).rotateZ(Math.PI).rotateX(Math.PI / 2), geos);
+		far = new Node(new Transform().translate(this.lbf).rotateZ(Math.PI).rotateX(-Math.PI / 2), geos);
 
 	}
 
@@ -173,10 +173,10 @@ public class AxisAlignedBox extends Geometry {
 				t = h.t;
 				returnHit = h;
 			}
+
 		}
 		return returnHit;
 	}
-
 	// ________________________________________________________________________________________________________________________________________
 
 	/**

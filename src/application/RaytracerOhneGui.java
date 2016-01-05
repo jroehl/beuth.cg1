@@ -1,8 +1,8 @@
 package application;
 
+import geometries.AxisAlignedBox;
 import geometries.Geometry;
 import geometries.Node;
-import geometries.Sphere;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,8 +23,8 @@ import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
 
+import light.DirectionalLight;
 import light.Light;
-import light.PointLight;
 import material.PhongMaterial;
 import ray.Ray;
 import ray.Transform;
@@ -115,11 +115,11 @@ public class RaytracerOhneGui extends Application {
 		// ________________________________________________________________________________________________________________________
 		// .rotateX(0.5).rotateZ(-0.6).scale(2, -0.3, 2)
 
-		final Node no = new Node(new Transform().scale(2, 2, 2), new ArrayList<Geometry>());
-		no.geos.add(new Sphere(new PhongMaterial(new Color(1, 0, 0), new Color(1, 1, 1), 64)));
+		final Node no = new Node(new Transform(), new ArrayList<Geometry>());
+		no.geos.add(new AxisAlignedBox(new PhongMaterial(new Color(1, 0, 0), new Color(1, 1, 1), 64)));
 		geometries.add(no);
 		camera = new PerspectiveCamera(new Point3(8, 8, 8), new Vector3(-1, -1, -1), new Vector3(0, 1, 0), Math.PI / 4);
-		lights.add(new PointLight(new Color(1, 1, 1), new Point3(8, 8, 8), true));
+		lights.add(new DirectionalLight(new Color(1, 1, 1), new Vector3(-8, -8, -8), true));
 
 		// ________________________________________________________________________________________________________________________
 		// ________________________________________________________________________________________________________________________
