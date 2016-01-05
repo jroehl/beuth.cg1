@@ -43,6 +43,14 @@ public class Plane extends Geometry {
 
 	}
 
+	public Plane(Material material, Point3 p, Normal3 n) throws IllegalArgumentException {
+		super(material);
+
+		this.a = p;
+		this.n = n;
+
+	}
+
 	/**
 	 * Method: hit(ray)
 	 *
