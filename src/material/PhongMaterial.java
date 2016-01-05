@@ -60,9 +60,10 @@ public class PhongMaterial extends Material {
 	@Override
 	public Color colorFor(Hit hit, World world, Tracer tracer) {
 
-		Color returnColor = diffuse.mul(world.ambient);
+		final Color returnColor = diffuse.mul(world.ambient);
 		final Vector3 e = (hit.ray.direction.mul(-1.0)).normalized();
 		final Point3 hitPoint = hit.ray.at(hit.t);
+		Color lightColor = new Color(0, 0, 0);
 		for (final Light light : world.lights) {
 
 			if (light.illuminates(hit.ray.at(hit.t), world)) {
@@ -93,16 +94,18 @@ public class PhongMaterial extends Material {
 				final double max = Math.max(0.0, lightVector.dot(hit.n));
 				final double maxSP = Math.pow(Math.max(0.0, reflectedVector.dot(e)), this.exponent);
 
-				returnColor = returnColor.add(light.color.mul(this.diffuse));
-				returnColor = returnColor.mul(max).add(light.color.mul(this.specular).mul(maxSP));
+				lightColor = returnColor.add(light.color.mul(diffuse).mul(max)).add(light.color.mul(specular).mul(maxSP));
+				// returnColor = returnColor.add(light.color.mul(this.diffuse));
+				// returnColor =
+				// returnColor.mul(max).add(light.color.mul(this.specular).mul(maxSP));
 			}
 		}
-		return returnColor;
+		return returnColor.add(lightColor);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -113,7 +116,7 @@ public class PhongMaterial extends Material {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -128,7 +131,7 @@ public class PhongMaterial extends Material {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override

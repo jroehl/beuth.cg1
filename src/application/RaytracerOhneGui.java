@@ -25,7 +25,7 @@ import javax.imageio.ImageIO;
 
 import light.Light;
 import light.PointLight;
-import material.ReflectiveMaterial;
+import material.PhongMaterial;
 import ray.Ray;
 import ray.Transform;
 import ray.World;
@@ -126,7 +126,7 @@ public class RaytracerOhneGui extends Application {
 		// new Color(1, 1, 1), 64)));
 		// no2.geos.add(new Sphere(new PhongMaterial(new Color(1, 0, 0), new
 		// Color(1, 1, 1), 64)));
-		no2.geos.add(new Cylinder(new ReflectiveMaterial(new Color(0, 1, 0), new Color(1, 1, 1), new Color(0.5, 0.5, 0.5), 64)));
+		no2.geos.add(new Cylinder(new PhongMaterial(new Color(0, 1, 0), new Color(1, 1, 1), 64)));
 
 		geometries.add(no2);
 		camera = new PerspectiveCamera(new Point3(8, 8, 8), new Vector3(-1, -1, -1), new Vector3(0, 1, 0), Math.PI / 4);

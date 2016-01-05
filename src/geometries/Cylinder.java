@@ -76,10 +76,12 @@ public class Cylinder extends Geometry {
 			final double minT = Math.min(t1, t2);
 			final Hit h = new Hit(minT, ray, this, createNormalToPoint(ray, minT));
 
-			if (h.ray.at(minT).y < 1 && h.ray.at(minT).y < 1) { // Versuch einer
-																// Begrenzung...
-																// läuft noch
-																// nicht
+			if (h.ray.at(minT).y < 1 && h.ray.at(minT).y > -1) { // Versuch
+																	// einer
+																	// Begrenzung...
+																	// läuft
+																	// noch
+																	// nicht
 				return h;
 			}
 
@@ -88,7 +90,7 @@ public class Cylinder extends Geometry {
 			final double t = -b / (2 * a);
 			n = createNormalToPoint(ray, t);
 			final Hit h = new Hit(t, ray, this, n);
-			if (h.ray.at(t).y < 1 && h.ray.at(t).y < 1) {
+			if (h.ray.at(t).y < 1 && h.ray.at(t).y > -1) {
 				return h;
 			}
 
