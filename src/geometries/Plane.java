@@ -65,7 +65,7 @@ public class Plane extends Geometry {
 		if (nenner != 0.0) {
 			final double t = n.dot(a.sub(ray.origin)) / nenner;
 
-			if (t > 0.00001) {
+			if (t > 0.0001) {
 				return new Hit(t, ray, this, this.n);
 			}
 		}

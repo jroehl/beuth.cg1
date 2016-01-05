@@ -69,7 +69,7 @@ public class Sphere extends Geometry {
 		// unter der wurzel
 		final double d = (b * b) - (4 * a * c);
 
-		if (d > 0.00001) {
+		if (d > 0.0001) {
 			final double t1 = (-b + Math.sqrt(d)) / (2 * a);
 			final double t2 = (-b - Math.sqrt(d)) / (2 * a);
 			final double minT = Math.min(t1, t2);

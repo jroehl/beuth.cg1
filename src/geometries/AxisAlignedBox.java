@@ -95,7 +95,7 @@ public class AxisAlignedBox extends Geometry {
 		for (int i = 0; i < 2; i++) {
 			if (xHits[i] != null) {
 				final Point3 p = ray.at(xHits[i].t);
-				if (p.y >= lbf.y && p.y <= run.y && p.z >= lbf.z && p.z <= run.z)
+				if (p.y + 0.0001 >= lbf.y && p.y + 0.0001 <= run.y && p.z + 0.0001 >= lbf.z && p.z + 0.0001 <= run.z)
 					hits.add(xHits[i]);
 			}
 		}
@@ -103,7 +103,7 @@ public class AxisAlignedBox extends Geometry {
 		for (int i = 0; i < 2; i++) {
 			if (yHits[i] != null) {
 				final Point3 p = ray.at(yHits[i].t);
-				if (p.x >= lbf.x && p.x <= run.x && p.z >= lbf.z && p.z <= run.z)
+				if (p.x + 0.0001 >= lbf.x && p.x + 0.0001 <= run.x && p.z + 0.0001 >= lbf.z && p.z + 0.0001 <= run.z)
 					hits.add(yHits[i]);
 			}
 		}
@@ -111,14 +111,14 @@ public class AxisAlignedBox extends Geometry {
 		for (int i = 0; i < 2; i++) {
 			if (zHits[i] != null) {
 				final Point3 p = ray.at(zHits[i].t);
-				if (p.x >= lbf.x && p.x <= run.x && p.y >= lbf.y && p.y <= run.y)
+				if (p.x + 0.0001 >= lbf.x && p.x + 0.0001 <= run.x && p.y + 0.0001 >= lbf.y && p.y + 0.0001 <= run.y)
 					hits.add(zHits[i]);
 			}
 		}
 
 		for (final Hit h : hits) {
 
-			if (h != null && h.t < t && t > 0.00001 && h.t > 0.00001) {
+			if (h != null && h.t < t && t > 0 && h.t > 0.0001) {
 				t = h.t;
 				returnHit = h;
 			}
