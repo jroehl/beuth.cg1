@@ -27,7 +27,7 @@ public class Node extends Geometry {
 
 			final Hit hit = g.hit(transformedRay);
 			if (hit != null) {
-				if (hit.t < t && hit.t > 0.00001) {
+				if (hit.t < t && hit.t > 0.0001) {
 					t = hit.t;
 					hitLow = hit;
 				}

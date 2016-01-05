@@ -225,7 +225,8 @@ public class Raytracer extends Application {
 					new Point3(3, 0, 0), new Point3(1.5, 3, -1.5)));
 
 			// Node mit Sphere darin
-			final Node no = new Node(new Transform().translate(new Point3(0.1, 0.5, 0.3)).scale(1.6, 1, 1), new ArrayList<Geometry>());
+			final Node no = new Node(new Transform().rotateX(-190).translate(new Point3(0.1, 0.5, 0.3)).scale(1.6, 1, 1),
+					new ArrayList<Geometry>());
 			no.geos.add(new Sphere(new PhongMaterial(new Color(1, 0, 0), new Color(1, 1, 1), 64)));
 			// no.geos.add(new AxisAlignedBox(new LambertMaterial(new Color(1,
 			// 0.5, 0.6))));
@@ -542,24 +543,6 @@ public class Raytracer extends Application {
 
 			grid.add(exponent, 1, 3);
 		}
-
-		// final Node creatButton =
-		// dialog.getDialogPane().lookupButton(buttonTypeCreate);
-		// loginButton.setDisable(true);
-
-		// Do some validation (using the Java 8 lambda syntax).
-		// colorR.textProperty().addListener((observable, oldValue, newValue) ->
-		// {
-		// loginButton.setDisable(newValue.trim().isEmpty());
-		// });
-		// colorG.textProperty().addListener((observable, oldValue, newValue) ->
-		// {
-		// loginButton.setDisable(newValue.trim().isEmpty());
-		// });
-		// colorB.textProperty().addListener((observable, oldValue, newValue) ->
-		// {
-		// loginButton.setDisable(newValue.trim().isEmpty());
-		// });
 
 		dialog.getDialogPane().setContent(grid);
 

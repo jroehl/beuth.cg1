@@ -55,14 +55,14 @@ public class AxisAlignedBox extends Geometry {
 		final ArrayList<Geometry> geos = new ArrayList<Geometry>();
 		geos.add(new Plane(material));
 
-		left = new Node(new Transform().translate(this.lbf).rotateZ(-Math.PI / 2), geos);
-		right = new Node(new Transform().translate(this.run).rotateZ(Math.PI / 2), geos);
+		left = new Node(new Transform().translate(this.lbf).rotateZ(Math.PI / 2), geos);
+		right = new Node(new Transform().translate(this.run).rotateZ(-Math.PI / 2), geos);
 
-		top = new Node(new Transform().translate(this.run).rotateX(Math.PI), geos);
-		bottom = new Node(new Transform().translate(this.lbf), geos);
+		top = new Node(new Transform().translate(this.run), geos);
+		bottom = new Node(new Transform().translate(this.lbf).rotateX(Math.PI), geos);
 
-		front = new Node(new Transform().translate(this.run).rotateX(-Math.PI / 2), geos);
-		far = new Node(new Transform().translate(this.lbf).rotateX(Math.PI / 2), geos);
+		front = new Node(new Transform().translate(this.run).rotateZ(Math.PI).rotateX(Math.PI / 2), geos);
+		far = new Node(new Transform().translate(this.lbf).rotateZ(Math.PI).rotateX(-Math.PI / 2), geos);
 
 	}
 
@@ -118,7 +118,7 @@ public class AxisAlignedBox extends Geometry {
 
 		for (final Hit h : hits) {
 
-			if (h != null && h.t < t && t > 0 && h.t > 0.0001) {
+			if (h != null && h.t < t && t > 0.0001 && h.t > 0.0001) {
 				t = h.t;
 				returnHit = h;
 			}
