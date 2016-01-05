@@ -170,11 +170,11 @@ public class Raytracer extends Application {
 		primaryStage.setScene(new Scene(group));
 
 		// Default Kamera
-		camera = new OrthographicCamera(new Point3(0, 0, 0), new Vector3(0, 0, -1), new Vector3(0, 1, 0), 3);
-		orthographicCamera.setSelected(true);
+		camera = new PerspectiveCamera(new Point3(0, 0, 8), new Vector3(0, 0, -1), new Vector3(0, 1, 0), Math.PI / 4);
+		perspectiveCamera.setSelected(true);
 		// Default Licht
-		// lights.add(new PointLight(new Color(1, 1, 1), new Point3(8, 8, 0),
-		// true));
+		lights.add(new PointLight(new Color(1, 1, 1), new Point3(8, 8, 8), true));
+
 		// pointLight.setSelected(true);
 
 		rerender(primaryStage);
@@ -225,10 +225,10 @@ public class Raytracer extends Application {
 					new Point3(3, 0, 0), new Point3(1.5, 3, -1.5)));
 
 			// Node mit Sphere darin
-			final Node no = new Node(new Transform().rotateX(-190), new ArrayList<Geometry>());
-			// no.geos.add(new Sphere(new PhongMaterial(new Color(1, 0, 0), new
-			// Color(1, 1, 1), 64)));
-			no.geos.add(new AxisAlignedBox(new LambertMaterial(new Color(1, 0.7, 0.6))));
+			final Node no = new Node(new Transform().rotateX(0.5).rotateZ(-0.6).scale(2, -0.3, 2), new ArrayList<Geometry>());
+			no.geos.add(new Sphere(new PhongMaterial(new Color(1, 0, 0), new Color(1, 1, 1), 64)));
+			// no.geos.add(new AxisAlignedBox(new LambertMaterial(new Color(1,
+			// 0, 0))));
 			initializeNode(primaryStage, node, no);
 		}
 
