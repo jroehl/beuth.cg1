@@ -2,7 +2,7 @@ package application;
 
 import geometries.AxisAlignedBox;
 import geometries.Geometry;
-import geometries.OurNode;
+import geometries.Node;
 import geometries.Plane;
 import geometries.Sphere;
 import geometries.Triangle;
@@ -225,7 +225,7 @@ public class Raytracer extends Application {
 					new Point3(3, 0, 0), new Point3(1.5, 3, -1.5)));
 
 			// Node mit Sphere darin
-			final OurNode no = new OurNode(new Transform().scale(1.4, 0.4, 4).rotateX(3), new ArrayList<Geometry>());
+			final Node no = new Node(new Transform(), new ArrayList<Geometry>());
 			// no.geos.add(new Sphere(new PhongMaterial(new Color(1, 0, 0), new
 			// Color(1, 1, 1), 64)));
 			no.geos.add(new AxisAlignedBox(new LambertMaterial(new Color(1, 0.5, 0.6))));
@@ -237,7 +237,7 @@ public class Raytracer extends Application {
 			// Orthographic Camera
 			orthographicCamera.setOnAction(event -> {
 				// 1. Kamera - PerspectiveCamera mit geradem Blick
-					camera = new OrthographicCamera(new Point3(0, 0, 0), new Vector3(0, 0, -1), new Vector3(0, 1, 0), 3);
+					camera = new OrthographicCamera(new Point3(4, 4, 4), new Vector3(-0.9, -0.9, -0.9), new Vector3(0, 1, 0), 3);
 
 					orthographicCamera.setSelected(true);
 					perspectiveCamera.setSelected(false);
@@ -249,7 +249,7 @@ public class Raytracer extends Application {
 			// Perspective Camera
 			perspectiveCamera.setOnAction(event -> {
 				// 2. Kamera für die AxisAlignedBox
-					camera = new PerspectiveCamera(new Point3(5.5, 5.5, 5.5), new Vector3(-1, -1, -1), new Vector3(0, 1, 0), Math.PI / 4);
+					camera = new PerspectiveCamera(new Point3(5, 5, 5), new Vector3(-1, -1, -1), new Vector3(0, 1, 0), Math.PI / 4);
 
 					orthographicCamera.setSelected(false);
 					perspectiveCamera.setSelected(true);
@@ -261,7 +261,7 @@ public class Raytracer extends Application {
 			// Perspective Camera 2
 			perspectiveCamera2.setOnAction(event -> {
 				// 2. Kamera für die AxisAlignedBox
-					camera = new PerspectiveCamera(new Point3(0, 0, 0), new Vector3(0, 0, 1), new Vector3(0, 1, 0), Math.PI / 4);
+					camera = new PerspectiveCamera(new Point3(7, 7, 7), new Vector3(-1.1, -1.1, -1.1), new Vector3(0, 1, 0), Math.PI / 4);
 
 					orthographicCamera.setSelected(false);
 					perspectiveCamera.setSelected(false);
@@ -277,10 +277,10 @@ public class Raytracer extends Application {
 			initializeLights(primaryStage, pointLight, new PointLight(new Color(1, 1, 1), new Point3(8, 8, 8), true));
 
 			// DirectionalLight
-			initializeLights(primaryStage, directionalLight, new DirectionalLight(new Color(1, 1, 1), new Vector3(-8, -8, 0), true));
+			initializeLights(primaryStage, directionalLight, new DirectionalLight(new Color(1, 1, 1), new Vector3(-8, -8, -8), true));
 
 			// SpotLight
-			initializeLights(primaryStage, spotLight, new SpotLight(new Color(1, 1, 1), new Vector3(-1, -1, -1), new Point3(-3, -3, -3),
+			initializeLights(primaryStage, spotLight, new SpotLight(new Color(1, 1, 1), new Vector3(-1, -1, -1), new Point3(3, 3, 3),
 					Math.PI / 14, true));
 		}
 
@@ -498,9 +498,9 @@ public class Raytracer extends Application {
 		grid.setVgap(10);
 		grid.setPadding(new Insets(20, 150, 10, 10));
 
-		final TextField colorR = new TextField();
-		final TextField colorG = new TextField();
-		final TextField colorB = new TextField();
+		final TextField colorR = new TextField("1");
+		final TextField colorG = new TextField("0.5");
+		final TextField colorB = new TextField("0.2");
 
 		grid.add(new Label("Color:"), 0, 0);
 		grid.add(colorR, 1, 0);

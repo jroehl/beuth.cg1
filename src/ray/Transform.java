@@ -30,7 +30,7 @@ public class Transform {
 		final Transform t = new Transform(new Mat4x4(1, 0, 0, p.x, 0, 1, 0, p.y, 0, 0, 1, p.z, 0, 0, 0, 1), new Mat4x4(1, 0, 0, -p.x, 0, 1,
 				0, -p.y, 0, 0, 1, -p.z, 0, 0, 0, 1));
 
-		return new Transform(m.mul(t.m), i.mul(t.i));
+		return new Transform(m.mul(t.m), t.i.mul(i));
 	}
 
 	// _________________________________________________________________________________
@@ -44,7 +44,7 @@ public class Transform {
 
 		new Mat4x4(1.0 / x, 0, 0, 0, 0, 1.0 / y, 0, 0, 0, 0, 1.0 / z, 0, 0, 0, 0, 1));
 
-		return new Transform(m.mul(t.m), i.mul(t.i));
+		return new Transform(m.mul(t.m), t.i.mul(i));
 	}
 
 	// _________________________________________________________________________________
@@ -58,7 +58,7 @@ public class Transform {
 				Math.cos(angle), 0, 0, 0, 0, 1), new Mat4x4(1, 0, 0, 0, 0, Math.cos(angle), Math.sin(angle), 0, 0, -Math.sin(angle),
 				Math.cos(angle), 0, 0, 0, 0, 1));
 
-		return new Transform(m.mul(t.m), i.mul(t.i));
+		return new Transform(m.mul(t.m), t.i.mul(i));
 	}
 
 	// _________________________________________________________________________________
@@ -71,7 +71,7 @@ public class Transform {
 		final Transform t = new Transform(new Mat4x4(Math.cos(angle), 0, Math.sin(angle), 0, 0, 1, 0, 0, -Math.sin(angle), 0,
 				Math.cos(angle), 0, 0, 0, 0, 1), new Mat4x4(Math.cos(angle), 0, -Math.sin(angle), 0, 0, 1, 0, 0, Math.sin(angle), 0,
 				Math.cos(angle), 0, 0, 0, 0, 1));
-		return new Transform(m.mul(t.m), i.mul(t.i));
+		return new Transform(m.mul(t.m), t.i.mul(i));
 	}
 
 	// _________________________________________________________________________________
@@ -85,13 +85,13 @@ public class Transform {
 				1, 0, 0, 0, 0, 1), new Mat4x4(Math.cos(angle), Math.sin(angle), 0, 0, -Math.sin(angle), Math.cos(angle), 0, 0, 0, 0, 1, 0,
 				0, 0, 0, 1));
 
-		return new Transform(m.mul(t.m), i.mul(t.i));
+		return new Transform(m.mul(t.m), t.i.mul(i));
 	}
 
 	// _________________________________________________________________________________
 	// Transformation der Normalen
 	public Normal3 mul(Normal3 n) {
-		return i.transposed().mul(new Vector3(n.x, n.y, n.z)).normalized().asNormal();
+		return i.transposed().mul(new Vector3(n.x, n.y, n.z).normalized()).asNormal();
 	}
 
 	// _________________________________________________________________________________

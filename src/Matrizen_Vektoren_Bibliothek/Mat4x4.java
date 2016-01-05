@@ -47,8 +47,8 @@ public class Mat4x4 {
 	// _________________________________________________________________________________
 
 	public Vector3 mul(Vector3 v) {
-		return new Vector3(v.x * this.m11 + v.y * this.m12 + v.z * this.m13, v.x * this.m21 + v.y * this.m22 + v.z * this.m23, v.x
-				* this.m31 + v.y * this.m32 + v.z * this.m33);
+		return new Vector3(v.x * this.m11 + v.y * this.m12 + v.z * this.m13 + m14, v.x * this.m21 + v.y * this.m22 + v.z * this.m23 + m24,
+				v.x * this.m31 + v.y * this.m32 + v.z * this.m33 + m34);
 	}
 
 	// _________________________________________________________________________________
