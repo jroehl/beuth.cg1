@@ -1,8 +1,9 @@
 package application;
 
-import geometries.AxisAlignedBox;
 import geometries.Geometry;
 import geometries.Node;
+import geometries.Sphere;
+import geometries.TrianglePyramid;
 
 import java.io.File;
 import java.io.IOException;
@@ -115,9 +116,14 @@ public class RaytracerOhneGui extends Application {
 		// ________________________________________________________________________________________________________________________
 		// .rotateX(0.5).rotateZ(-0.6).scale(2, -0.3, 2)
 
-		final Node no = new Node(new Transform(), new ArrayList<Geometry>());
-		no.geos.add(new AxisAlignedBox(new PhongMaterial(new Color(1, 0, 0), new Color(1, 1, 1), 64)));
+		final Node no = new Node(new Transform().scale(1, 3, 1).translate(new Point3(0, -2, 0)), new ArrayList<Geometry>());
+		final Node no2 = new Node(new Transform().translate(new Point3(1.95, 2.8, -0.8)).scale(0.7, 0.7, 0.7), new ArrayList<Geometry>());
+		// no.geos.add(new AxisAlignedBox(new PhongMaterial(new Color(1, 0, 0),
+		// new Color(1, 1, 1), 64)));
+		no2.geos.add(new Sphere(new PhongMaterial(new Color(1, 0, 0), new Color(1, 1, 1), 64)));
+		no.geos.add(new TrianglePyramid(new PhongMaterial(new Color(1, 0, 0), new Color(1, 1, 1), 64)));
 		geometries.add(no);
+		geometries.add(no2);
 		camera = new PerspectiveCamera(new Point3(8, 8, 8), new Vector3(-1, -1, -1), new Vector3(0, 1, 0), Math.PI / 4);
 		lights.add(new DirectionalLight(new Color(1, 1, 1), new Vector3(-8, -8, -8), true));
 
