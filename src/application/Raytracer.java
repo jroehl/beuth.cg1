@@ -225,10 +225,10 @@ public class Raytracer extends Application {
 					new Point3(3, 0, 0), new Point3(1.5, 3, -1.5)));
 
 			// Node mit Sphere darin
-			final Node no = new Node(new Transform(), new ArrayList<Geometry>());
-			// no.geos.add(new Sphere(new PhongMaterial(new Color(1, 0, 0), new
-			// Color(1, 1, 1), 64)));
-			no.geos.add(new AxisAlignedBox(new LambertMaterial(new Color(1, 0.5, 0.6))));
+			final Node no = new Node(new Transform().translate(new Point3(0.1, 0.5, 0.3)).scale(1.6, 1, 1), new ArrayList<Geometry>());
+			no.geos.add(new Sphere(new PhongMaterial(new Color(1, 0, 0), new Color(1, 1, 1), 64)));
+			// no.geos.add(new AxisAlignedBox(new LambertMaterial(new Color(1,
+			// 0.5, 0.6))));
 			initializeNode(primaryStage, node, no);
 		}
 

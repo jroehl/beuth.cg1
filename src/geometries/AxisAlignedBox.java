@@ -22,11 +22,11 @@ public class AxisAlignedBox extends Geometry {
 	/**
 	 * LeftBottomFar - linker unterer entfernter Punkt
 	 */
-	private final Point3 lbf;
+	private final Point3 lbf = new Point3(-0.5, -0.5, -0.5);
 	/**
 	 * RightUpperNarrow - rechter oberer näherer Punkt
 	 */
-	private final Point3 run;
+	private final Point3 run = new Point3(0.5, 0.5, 0.5);
 
 	private final Node left;
 	private final Node right;
@@ -52,20 +52,17 @@ public class AxisAlignedBox extends Geometry {
 	public AxisAlignedBox(Material material) throws IllegalArgumentException {
 		super(material);
 
-		this.lbf = new Point3(-0.5, -0.5, -0.5);
-		this.run = new Point3(0.5, 0.5, 0.5);
-
 		final ArrayList<Geometry> geos = new ArrayList<Geometry>();
 		geos.add(new Plane(material));
 
-		left = new Node(new Transform().translate(this.lbf).rotateZ(Math.PI / 2), geos);
-		right = new Node(new Transform().translate(this.run).rotateZ(-Math.PI / 2), geos);
+		left = new Node(new Transform().translate(this.lbf).rotateZ(-Math.PI / 2), geos);
+		right = new Node(new Transform().translate(this.run).rotateZ(Math.PI / 2), geos);
 
-		top = new Node(new Transform().translate(this.run), geos);
-		bottom = new Node(new Transform().translate(this.lbf).rotateX(Math.PI), geos);
+		top = new Node(new Transform().translate(this.run).rotateX(Math.PI), geos);
+		bottom = new Node(new Transform().translate(this.lbf), geos);
 
-		front = new Node(new Transform().translate(this.run).rotateZ(Math.PI).rotateX(Math.PI / 2), geos);
-		far = new Node(new Transform().translate(this.lbf).rotateZ(Math.PI).rotateX(-Math.PI / 2), geos);
+		front = new Node(new Transform().translate(this.run).rotateX(-Math.PI / 2), geos);
+		far = new Node(new Transform().translate(this.lbf).rotateX(Math.PI / 2), geos);
 
 	}
 
@@ -121,7 +118,7 @@ public class AxisAlignedBox extends Geometry {
 
 		for (final Hit h : hits) {
 
-			if (h != null && h.t < t && t > 0.0 && h.t > 0.00001) {
+			if (h != null && h.t < t && t > 0.00001 && h.t > 0.00001) {
 				t = h.t;
 				returnHit = h;
 			}
