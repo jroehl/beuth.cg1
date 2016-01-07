@@ -27,6 +27,9 @@ public class Sphere extends Geometry {
 	 */
 	private final double radius;
 
+	private final double count = 0.0;
+	private final boolean up = true;
+
 	/**
 	 * Konstruktor: Sphere
 	 *
@@ -63,13 +66,17 @@ public class Sphere extends Geometry {
 		}
 
 		final double a = ray.direction.dot(ray.direction);
+
 		final double b = ray.direction.dot(ray.origin.sub(center).mul(2));
+
+		// System.out.println(b);
 		final double c = (ray.origin.sub(center).dot(ray.origin.sub(center))) - (this.radius * this.radius);
 
 		// unter der wurzel
 		final double d = (b * b) - (4 * a * c);
 
 		if (d > 0.0001) {
+
 			final double t1 = (-b + Math.sqrt(d)) / (2 * a);
 			final double t2 = (-b - Math.sqrt(d)) / (2 * a);
 			final double minT = Math.min(t1, t2);
