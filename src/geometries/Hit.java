@@ -32,7 +32,7 @@ public class Hit {
 	 */
 	public final Normal3 n;
 
-	final TexCoord2 tex;
+	public final TexCoord2 tex;
 
 	// public final Normal3 normSP;
 

@@ -3,6 +3,7 @@ package geometries;
 import material.Material;
 import material.SingleColorMaterial;
 import ray.Ray;
+import textures.SingleColorTexture;
 import color.Color;
 
 /**
@@ -26,7 +27,7 @@ public abstract class Geometry {
 
 	public Geometry() throws IllegalArgumentException {
 
-		this.material = new SingleColorMaterial(new Color(1, 0, 0));
+		this.material = new SingleColorMaterial(new SingleColorTexture(new Color(1, 0, 0)));
 	}
 
 	/**
@@ -57,7 +58,7 @@ public abstract class Geometry {
 	public abstract Hit hit(Ray ray) throws IllegalArgumentException;
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 
@@ -73,7 +74,7 @@ public abstract class Geometry {
 	}
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 
@@ -92,7 +93,7 @@ public abstract class Geometry {
 	}
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 

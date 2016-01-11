@@ -8,6 +8,7 @@ import material.PhongMaterial;
 import material.ReflectiveMaterial;
 import material.SingleColorMaterial;
 import ray.Ray;
+import textures.SingleColorTexture;
 import Matrizen_Vektoren_Bibliothek.Normal3;
 import Matrizen_Vektoren_Bibliothek.Point3;
 import Matrizen_Vektoren_Bibliothek.Vector3;
@@ -65,21 +66,6 @@ public class TrianglePyramid extends Geometry {
 		final Triangle bottom2 = new Triangle(mat6, eckeB, eckeC, eckeD, new Normal3(0, -1, 0), new Normal3(0, -1, 0),
 				new Normal3(0, -1, 0));
 
-		// final Triangle a = new Triangle(mat1, eckeA, eckeB, top, new
-		// Normal3(0, 1, 1), new Normal3(0, 1, 1), new Normal3(0, 1, 1));
-		// final Triangle b = new Triangle(mat2, eckeB, eckeC, top, new
-		// Normal3(1, 1, 0), new Normal3(1, 1, 0), new Normal3(1, 1, 0));
-		// final Triangle c = new Triangle(mat3, eckeC, eckeD, top, new
-		// Normal3(0, 1, -1), new Normal3(0, 1, -1), new Normal3(0, 1, 1));
-		// final Triangle d = new Triangle(mat4, eckeD, eckeA, top, new
-		// Normal3(-1, 1, 0), new Normal3(-1, 1, 0), new Normal3(-1, 1, 0));
-		// final Triangle bottom1 = new Triangle(mat5, eckeA, eckeB, eckeD, new
-		// Normal3(0, -1, 0), new Normal3(0, -1, 0),
-		// new Normal3(0, -1, 0));
-		// final Triangle bottom2 = new Triangle(mat6, eckeB, eckeC, eckeD, new
-		// Normal3(0, -1, 0), new Normal3(0, -1, 0),
-		// new Normal3(0, -1, 0));
-
 		final Triangle[] triangles = {a, b, c, d, bottom1, bottom2};
 		Hit h = null;
 
@@ -98,20 +84,21 @@ public class TrianglePyramid extends Geometry {
 
 	public final Material switchColor(final Material material) {
 		if (material instanceof SingleColorMaterial) {
-			return new SingleColorMaterial(new Color(r.nextDouble(), r.nextDouble(), r.nextDouble()));
+			return new SingleColorMaterial(new SingleColorTexture(new Color(r.nextDouble(), r.nextDouble(), r.nextDouble())));
 		}
 
 		if (this.material instanceof LambertMaterial) {
-			return new LambertMaterial(new Color(r.nextDouble(), r.nextDouble(), r.nextDouble()));
+			return new LambertMaterial(new SingleColorTexture(new Color(r.nextDouble(), r.nextDouble(), r.nextDouble())));
 		}
 
 		if (this.material instanceof PhongMaterial) {
-			return new PhongMaterial(new Color(r.nextDouble(), r.nextDouble(), r.nextDouble()), new Color(r.nextDouble(), r.nextDouble(),
-					r.nextDouble()), 64);
+			return new PhongMaterial(new SingleColorTexture(new Color(r.nextDouble(), r.nextDouble(), r.nextDouble())),
+					new SingleColorTexture(new Color(r.nextDouble(), r.nextDouble(), r.nextDouble())), 64);
 		}
 		if (this.material instanceof ReflectiveMaterial) {
-			return new ReflectiveMaterial(new Color(r.nextDouble(), r.nextDouble(), r.nextDouble()), new Color(r.nextDouble(),
-					r.nextDouble(), r.nextDouble()), new Color(r.nextDouble(), r.nextDouble(), r.nextDouble()), 64);
+			return new ReflectiveMaterial(new SingleColorTexture(new Color(r.nextDouble(), r.nextDouble(), r.nextDouble())),
+					new SingleColorTexture(new Color(r.nextDouble(), r.nextDouble(), r.nextDouble())), new SingleColorTexture(new Color(
+							r.nextDouble(), r.nextDouble(), r.nextDouble())), 64);
 		}
 		return null;
 	}

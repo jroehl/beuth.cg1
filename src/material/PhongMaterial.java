@@ -3,6 +3,7 @@ package material;
 import geometries.Hit;
 import light.Light;
 import ray.World;
+import textures.Texture;
 import Matrizen_Vektoren_Bibliothek.Point3;
 import Matrizen_Vektoren_Bibliothek.Vector3;
 import application.Tracer;
@@ -20,8 +21,8 @@ import color.Color;
  */
 
 public class PhongMaterial extends Material {
-	private final Color diffuse;
-	private final Color specular;
+	private final Texture diffuse;
+	private final Texture specular;
 	private final int exponent;
 
 	/**
@@ -37,7 +38,7 @@ public class PhongMaterial extends Material {
 	 * @throws IllegalArgumentException
 	 */
 
-	public PhongMaterial(Color diffuse, Color specular, int exponent) throws IllegalArgumentException {
+	public PhongMaterial(Texture diffuse, Texture specular, int exponent) throws IllegalArgumentException {
 		this.diffuse = diffuse;
 		this.specular = specular;
 		this.exponent = exponent;
@@ -60,7 +61,7 @@ public class PhongMaterial extends Material {
 	@Override
 	public Color colorFor(Hit hit, World world, Tracer tracer) {
 
-		final Color returnColor = diffuse.mul(world.ambient);
+		final Color returnColor = diffuse.colorFor(hit.tex.u, hit.tex.v).mul(world.ambient);
 		final Vector3 e = (hit.ray.direction.mul(-1.0)).normalized();
 		final Point3 hitPoint = hit.ray.at(hit.t);
 		Color lightColor = new Color(0, 0, 0);
@@ -94,7 +95,8 @@ public class PhongMaterial extends Material {
 				final double max = Math.max(0.0, lightVector.dot(hit.n));
 				final double maxSP = Math.pow(Math.max(0.0, reflectedVector.dot(e)), this.exponent);
 
-				lightColor = returnColor.add(light.color.mul(diffuse).mul(max)).add(light.color.mul(specular).mul(maxSP));
+				lightColor = returnColor.add(light.color.mul(diffuse.colorFor(1, 1)).mul(max)).add(
+						light.color.mul(specular.colorFor(1, 1)).mul(maxSP));
 				// returnColor = returnColor.add(light.color.mul(this.diffuse));
 				// returnColor =
 				// returnColor.mul(max).add(light.color.mul(this.specular).mul(maxSP));
@@ -102,7 +104,6 @@ public class PhongMaterial extends Material {
 		}
 		return returnColor.add(lightColor);
 	}
-
 	/*
 	 * (non-Javadoc)
 	 *

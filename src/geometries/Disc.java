@@ -14,7 +14,7 @@ import color.TexCoord2;
  *         Die von Geometry abgeleitete Klasse Plane implementiert die Methode
  *         hit entsprechend der Formeln und Algorithmen zur Schnittberechnung.
  */
-public class Plane extends Geometry {
+public class Disc extends Geometry {
 
 	/**
 	 * a - Point3 Objekt der Ebene
@@ -36,7 +36,7 @@ public class Plane extends Geometry {
 	 *            Normal3 Objekt der Ebene
 	 * @throws IllegalArgumentException
 	 */
-	public Plane(Material material) throws IllegalArgumentException {
+	public Disc(Material material) throws IllegalArgumentException {
 		super(material);
 
 		this.a = new Point3(0, 0, 0);
@@ -44,7 +44,7 @@ public class Plane extends Geometry {
 
 	}
 
-	public Plane(Material material, Point3 p, Normal3 n) throws IllegalArgumentException {
+	public Disc(Material material, Point3 p, Normal3 n) throws IllegalArgumentException {
 		super(material);
 
 		this.a = p;
@@ -78,8 +78,9 @@ public class Plane extends Geometry {
 
 				final Point3 p = ray.at(t);
 
-				return new Hit(t, ray, this, this.n, new TexCoord2(p.x, -p.z));
-
+				if (Math.pow(p.sub(new Point3(0, 0, 0)).magnitude, 2) < 1) {
+					return new Hit(t, ray, this, this.n, new TexCoord2(p.x, -p.z));
+				}
 			}
 		}
 		return null;
@@ -91,32 +92,18 @@ public class Plane extends Geometry {
 	 *            Objekt das mit der Matrix verglichen wird
 	 * @return true | false
 	 */
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
 
-		final Plane plane = (Plane) o;
-
-		if (a != null ? !a.equals(plane.a) : plane.a != null)
-			return false;
-		return !(n != null ? !n.equals(plane.n) : plane.n != null);
-
-	}
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see java.lang.Object#toString()
+	 */
 
 	/**
 	 * Ueberschriebene hashCode-Methode
 	 *
 	 * @return int hashcode
 	 */
-	@Override
-	public int hashCode() {
-		int result = a != null ? a.hashCode() : 0;
-		result = 31 * result + (n != null ? n.hashCode() : 0);
-		return result;
-	}
 
 	/**
 	 * Ueberschriebene toString-Methode
@@ -125,6 +112,6 @@ public class Plane extends Geometry {
 	 */
 	@Override
 	public String toString() {
-		return "Plane{" + "a=" + a + ", n=" + n + '}';
+		return "Disc [a=" + a + ", n=" + n + "]";
 	}
 }

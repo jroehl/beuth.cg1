@@ -6,6 +6,7 @@ import Matrizen_Vektoren_Bibliothek.Mat3x3;
 import Matrizen_Vektoren_Bibliothek.Normal3;
 import Matrizen_Vektoren_Bibliothek.Point3;
 import Matrizen_Vektoren_Bibliothek.Vector3;
+import color.TexCoord2;
 
 /**
  * Triangle
@@ -30,6 +31,12 @@ public class Triangle extends Geometry {
 	 * c - Point3 Objekt des Triangle
 	 */
 	private final Point3 c;
+
+	public final TexCoord2 texCoordA;
+
+	public final TexCoord2 texCoordB;
+
+	public final TexCoord2 texCoordC;
 
 	private Normal3 na;
 	private Normal3 nb;
@@ -64,6 +71,9 @@ public class Triangle extends Geometry {
 		this.nb = n0;
 		this.nc = n0;
 
+		this.texCoordA = new TexCoord2(na.x, -na.z);
+		this.texCoordB = new TexCoord2(nb.x, -nb.z);
+		this.texCoordC = new TexCoord2(nc.x, -nc.z);
 	}
 
 	/**
@@ -79,7 +89,8 @@ public class Triangle extends Geometry {
 	 *            Point3 Objekt des Triangle
 	 * @throws IllegalArgumentException
 	 */
-	public Triangle(Material material, Point3 a, Point3 b, Point3 c, Normal3 na, Normal3 nb, Normal3 nc) throws IllegalArgumentException {
+	public Triangle(Material material, Point3 a, Point3 b, Point3 c, Normal3 na, Normal3 nb, Normal3 nc, final TexCoord2 texCoordA,
+			final TexCoord2 texCoordB, final TexCoord2 texCoordC) throws IllegalArgumentException {
 		this(material, a, b, c);
 		this.na = na;
 		this.nb = nb;
@@ -116,7 +127,8 @@ public class Triangle extends Geometry {
 		final double t = matA.changeCol3(vec).determinant / matA.determinant;
 
 		if ((beta > 0.0 && gamma > 0.0) && (beta + gamma) <= 1) {
-			return new Hit(t, ray, this, createNormalToPoint());
+			final TexCoord2 texCoord = texCoordA.mul(alpha).add(texCoordB).mul(beta).add(texCoordC).mul(gamma);
+			return new Hit(t, ray, this, createNormalToPoint(), texCoord);
 		}
 		return null;
 	}

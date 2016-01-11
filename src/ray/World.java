@@ -81,7 +81,7 @@ public class World {
 		}
 
 		if (hit != null) {
-			return hit.geo.material.colorFor(hit, this, new Tracer(this, 5));// ,ray
+			return hit.geo.material.colorFor(hit, this, new Tracer(this, 5));
 		}
 
 		return backgroundColor;

@@ -36,7 +36,7 @@ public class Node extends Geometry {
 		}
 		if (hitLow != null) {
 
-			return new Hit(hitLow.t, ray, hitLow.geo, trans.mul(hitLow.n));
+			return new Hit(hitLow.t, ray, hitLow.geo, trans.mul(hitLow.n), hitLow.tex);
 		}
 		return null;
 	}

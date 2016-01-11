@@ -4,6 +4,7 @@ import material.Material;
 import ray.Ray;
 import Matrizen_Vektoren_Bibliothek.Normal3;
 import Matrizen_Vektoren_Bibliothek.Point3;
+import color.TexCoord2;
 
 /**
  * Sphere
@@ -81,13 +82,13 @@ public class Sphere extends Geometry {
 			final double t2 = (-b - Math.sqrt(d)) / (2 * a);
 			final double minT = Math.min(t1, t2);
 
-			return new Hit(minT, ray, this, createNormalToPoint(ray, minT));
+			return new Hit(minT, ray, this, createNormalToPoint(ray, minT), texFor(ray.at(minT)));
 
 		} else if (d == 0.0) {
 
 			final double t = -b / (2 * a);
 			n = createNormalToPoint(ray, t);
-			return new Hit(t, ray, this, n);
+			return new Hit(t, ray, this, n, texFor(ray.at(t)));
 
 		}
 
@@ -102,6 +103,17 @@ public class Sphere extends Geometry {
 
 	}
 
+	public TexCoord2 texFor(final Point3 point) {
+		if (point == null) {
+			throw new IllegalArgumentException("The Point cannot be null!");
+		}
+
+		final double teta = Math.acos(point.y);
+		final double phi = Math.atan2(point.x, point.z);
+
+		return new TexCoord2(phi / (Math.PI * 2), -teta / Math.PI);
+	}
+
 	/**
 	 * Ueberschriebene equals-Methode
 	 *
@@ -109,43 +121,17 @@ public class Sphere extends Geometry {
 	 *            Objekt das mit der Matrix verglichen wird
 	 * @return true | false
 	 */
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
-
-		final Sphere sphere = (Sphere) o;
-
-		if (Double.compare(sphere.radius, radius) != 0)
-			return false;
-		return !(center != null ? !center.equals(sphere.center) : sphere.center != null);
-
-	}
 
 	/**
 	 * Ueberschriebene hashCode-Methode
 	 *
 	 * @return int hashcode
 	 */
-	@Override
-	public int hashCode() {
-		int result;
-		long temp;
-		result = center != null ? center.hashCode() : 0;
-		temp = Double.doubleToLongBits(radius);
-		result = 31 * result + (int) (temp ^ (temp >>> 32));
-		return result;
-	}
 
 	/**
 	 * Ueberschriebene toString-Methode
 	 *
 	 * @return String Sphere Werte
 	 */
-	@Override
-	public String toString() {
-		return "Sphere{" + "center=" + center + ", radius=" + radius + '}';
-	}
+
 }

@@ -1,10 +1,11 @@
 package material;
 
-import application.Tracer;
 import geometries.Hit;
 import light.Light;
 import ray.World;
+import textures.Texture;
 import Matrizen_Vektoren_Bibliothek.Vector3;
+import application.Tracer;
 import color.Color;
 
 /**
@@ -18,100 +19,78 @@ import color.Color;
 
 public class LambertMaterial extends Material {
 
-    private final Color cd;
+	private final Texture tex;
 
-    /**
-     * Konstruktor: LambertMaterial
-     *
-     * @param cd einzige farbe des Materials
-     * @throws IllegalArgumentException
-     */
-    public LambertMaterial(Color cd) throws IllegalArgumentException {
-        if (cd == null) {
-            throw new IllegalArgumentException();
-        }
-        this.cd = cd;
-    }
+	/**
+	 * Konstruktor: LambertMaterial
+	 *
+	 * @param cd
+	 *            einzige farbe des Materials
+	 * @throws IllegalArgumentException
+	 */
+	public LambertMaterial(Texture tex) throws IllegalArgumentException {
+		if (tex == null) {
+			throw new IllegalArgumentException();
+		}
+		this.tex = tex;
+	}
 
-    /**
-     * Method: colorFor(Color)
-     *
-     * @param hit    : übergebenes hit - Objekt
-     * @param world  : übergebenes world - Objekt
-     * @param tracer : übergebenes tracer - Objekt
-     * @return color - für jeden Pixel wird, falls er von der Lichtquelle
-     * angeleuchtet wird, die Farbe errechnet und zurück gegeben
-     * @throws IllegalArgumentException
-     */
-    @Override
-    public Color colorFor(Hit hit, World world, Tracer tracer) throws IllegalArgumentException {
-        if (hit == null) {
-            throw new IllegalArgumentException("hit cannot be null!");
-        }
-        if (world == null) {
-            throw new IllegalArgumentException("world cannot be null!");
-        }
+	/**
+	 * Method: colorFor(Color)
+	 *
+	 * @param hit
+	 *            : übergebenes hit - Objekt
+	 * @param world
+	 *            : übergebenes world - Objekt
+	 * @param tracer
+	 *            : übergebenes tracer - Objekt
+	 * @return color - für jeden Pixel wird, falls er von der Lichtquelle
+	 *         angeleuchtet wird, die Farbe errechnet und zurück gegeben
+	 * @throws IllegalArgumentException
+	 */
+	@Override
+	public Color colorFor(Hit hit, World world, Tracer tracer) throws IllegalArgumentException {
+		if (hit == null) {
+			throw new IllegalArgumentException("hit cannot be null!");
+		}
+		if (world == null) {
+			throw new IllegalArgumentException("world cannot be null!");
+		}
 
-        Color returnColor = cd.mul(world.ambient);
+		Color returnColor = tex.colorFor(hit.tex.u, hit.tex.v).mul(world.ambient);
 
-        for (final Light light : world.lights) {
+		for (final Light light : world.lights) {
 
-            if (light.illuminates(hit.ray.at(hit.t), world)) {
-                final Color lightColor = light.color;
-                final Vector3 lightVector = light.directionFrom(hit.ray.at(hit.t)).normalized();
-                final double max = Math.max(0.0, lightVector.dot(hit.n));
+			if (light.illuminates(hit.ray.at(hit.t), world)) {
+				final Color lightColor = light.color;
+				final Vector3 lightVector = light.directionFrom(hit.ray.at(hit.t)).normalized();
+				final double max = Math.max(0.0, lightVector.dot(hit.n));
 
-                returnColor = returnColor.add(cd.mul(lightColor).mul(max));
-            }
-        }
-        return returnColor;
-    }
+				returnColor = returnColor.add(tex.colorFor(hit.tex.u, hit.tex.v).mul(lightColor).mul(max));
 
-    /**
-     * Ueberschriebene toString-Methode
-     *
-     * @return String LambertMaterial Werte
-     */
-    @Override
-    public String toString() {
-        return "LambertMaterial [cd=" + cd + ", toString()=" + super.toString() + ", getClass()=" + getClass() + ", hashCode()="
-                + hashCode() + "]";
-    }
+			}
+		}
+		return returnColor;
+	}
 
-    /**
-     * Ueberschriebene hashCode-Methode
-     *
-     * @return int hashcode
-     */
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((cd == null) ? 0 : cd.hashCode());
-        return result;
-    }
+	/**
+	 * Ueberschriebene toString-Methode
+	 *
+	 * @return String LambertMaterial Werte
+	 */
 
-    /**
-     * Ueberschriebene equals-Methode
-     *
-     * @param obj Objekt das mit der Matrix verglichen wird
-     * @return true | false
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        final LambertMaterial other = (LambertMaterial) obj;
-        if (cd == null) {
-            if (other.cd != null)
-                return false;
-        } else if (!cd.equals(other.cd))
-            return false;
-        return true;
-    }
+	/**
+	 * Ueberschriebene hashCode-Methode
+	 *
+	 * @return int hashcode
+	 */
+
+	/**
+	 * Ueberschriebene equals-Methode
+	 *
+	 * @param obj
+	 *            Objekt das mit der Matrix verglichen wird
+	 * @return true | false
+	 */
 
 }

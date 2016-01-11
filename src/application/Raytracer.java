@@ -5,7 +5,6 @@ import geometries.Geometry;
 import geometries.Node;
 import geometries.Plane;
 import geometries.Sphere;
-import geometries.Triangle;
 import geometries.TrianglePyramid;
 
 import java.io.File;
@@ -48,6 +47,7 @@ import material.SingleColorMaterial;
 import ray.Ray;
 import ray.Transform;
 import ray.World;
+import textures.SingleColorTexture;
 import Matrizen_Vektoren_Bibliothek.Point3;
 import Matrizen_Vektoren_Bibliothek.Vector3;
 import camera.Camera;
@@ -208,21 +208,24 @@ public class Raytracer extends Application {
 		// Menu - Graphics
 		{
 			// AlignBox
-			initializeGeometries(primaryStage, axisAlignedBox, new AxisAlignedBox(new LambertMaterial(new Color(0, 0, 1))));
+			initializeGeometries(primaryStage, axisAlignedBox, new AxisAlignedBox(new LambertMaterial(new SingleColorTexture(new Color(0,
+					0, 1)))));
 			// Pyramid
-			initializeGeometries(primaryStage, pyramid, new TrianglePyramid(new LambertMaterial(new Color(0, 0, 1))));
+			initializeGeometries(primaryStage, pyramid,
+					new TrianglePyramid(new LambertMaterial(new SingleColorTexture(new Color(0, 0, 1)))));
 
 			// Plane
-			initializeGeometries(primaryStage, plane, new Plane(new LambertMaterial(new Color(0, 1, 0))));
+			initializeGeometries(primaryStage, plane, new Plane(new LambertMaterial(new SingleColorTexture(new Color(0, 1, 0)))));
 
 			// Spheren
-			initializeGeometries(primaryStage, sphere0, new Sphere(new LambertMaterial(new Color(1, 0, 0))));
-			initializeGeometries(primaryStage, sphere1, new Sphere(new LambertMaterial(new Color(1, 0, 0))));
-			initializeGeometries(primaryStage, sphere2, new Sphere(new LambertMaterial(new Color(1, 0, 0))));
+			initializeGeometries(primaryStage, sphere0, new Sphere(new LambertMaterial(new SingleColorTexture(new Color(1, 0, 0)))));
+			initializeGeometries(primaryStage, sphere1, new Sphere(new LambertMaterial(new SingleColorTexture(new Color(1, 0, 0)))));
+			initializeGeometries(primaryStage, sphere2, new Sphere(new LambertMaterial(new SingleColorTexture(new Color(1, 0, 0)))));
 
 			// Triangle
-			initializeGeometries(primaryStage, triangle, new Triangle(new LambertMaterial(new Color(1, 0, 1)), new Point3(0, 0, 0),
-					new Point3(3, 0, 0), new Point3(1.5, 3, -1.5)));
+			// initializeGeometries(primaryStage, triangle, new Triangle(new
+			// LambertMaterial(new Color(1, 0, 1)), new Point3(0, 0, 0),
+			// new Point3(3, 0, 0), new Point3(1.5, 3, -1.5)));
 
 			// Node mit Sphere darin
 			final Node no = new Node(new Transform().rotateX(0.5).rotateZ(-0.6).scale(2, -0.3, 2), new ArrayList<Geometry>());
@@ -391,7 +394,7 @@ public class Raytracer extends Application {
 				final ArrayList<Object> properties = showDialog(0);
 
 				if (!properties.isEmpty()) {
-					geometry.material = new LambertMaterial((Color) properties.get(0));
+					geometry.material = new LambertMaterial(new SingleColorTexture((Color) properties.get(0)));
 					geometries.add(geometry);
 
 					singleColorMaterial.setSelected(false);
@@ -471,7 +474,6 @@ public class Raytracer extends Application {
 		});
 
 	}
-
 	/**
 	 * Hilsmethode welche dem User die Möglichkeit gibt die Farben über das
 	 * angezeigte Fenster selbst zu wählen.
