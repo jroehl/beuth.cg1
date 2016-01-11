@@ -34,12 +34,9 @@ public class Sphere extends Geometry {
 	/**
 	 * Konstruktor: Sphere
 	 *
-	 * @param color
-	 *            color Objekt der Geometrie
-	 * @param center
-	 *            Point3 Objekt der Ebene
-	 * @param radius
-	 *            double wert der Sphere
+	 * @param material
+	 *            Material des Objekts (enthält Textur, welche
+	 *            Color-Informationen enthält)
 	 * @throws IllegalArgumentException
 	 */
 	public Sphere(Material material) throws IllegalArgumentException {
@@ -122,16 +119,78 @@ public class Sphere extends Geometry {
 	 * @return true | false
 	 */
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final Sphere other = (Sphere) obj;
+		if (center == null) {
+			if (other.center != null)
+				return false;
+		} else if (!center.equals(other.center))
+			return false;
+		if (Double.doubleToLongBits(count) != Double.doubleToLongBits(other.count))
+			return false;
+		if (n == null) {
+			if (other.n != null)
+				return false;
+		} else if (!n.equals(other.n))
+			return false;
+		if (Double.doubleToLongBits(radius) != Double.doubleToLongBits(other.radius))
+			return false;
+		if (up != other.up)
+			return false;
+		return true;
+	}
+
 	/**
 	 * Ueberschriebene hashCode-Methode
 	 *
 	 * @return int hashcode
 	 */
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((center == null) ? 0 : center.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(count);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((n == null) ? 0 : n.hashCode());
+		temp = Double.doubleToLongBits(radius);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + (up ? 1231 : 1237);
+		return result;
+	}
+
 	/**
 	 * Ueberschriebene toString-Methode
 	 *
 	 * @return String Sphere Werte
 	 */
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Sphere [n=" + n + ", center=" + center + ", radius=" + radius + ", count=" + count + ", up=" + up + "]";
+	}
 
 }

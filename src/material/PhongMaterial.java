@@ -29,9 +29,9 @@ public class PhongMaterial extends Material {
 	 * Konstruktor: PhongMaterial
 	 *
 	 * @param diffuse
-	 *            Farbe der diffusen Reflektion
+	 *            Textur der diffusen Reflektion
 	 * @param specular
-	 *            Farbe des Reflektionspunktes
+	 *            Textur des Reflektionspunktes
 	 * @param exponent
 	 *            der Exponent bestimmt die größe des errechneten
 	 *            Reflektionspunktes
@@ -106,7 +106,7 @@ public class PhongMaterial extends Material {
 	}
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -117,7 +117,7 @@ public class PhongMaterial extends Material {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -132,7 +132,7 @@ public class PhongMaterial extends Material {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override

@@ -45,6 +45,20 @@ public class Triangle extends Geometry {
 	private double beta;
 	private double gamma;
 
+	/**
+	 * Konstruktor: Triangle
+	 *
+	 * @param material
+	 *            Material des Objekts (enthält Textur, welche
+	 *            Color-Informationen enthält)
+	 * @param a
+	 *            Point3 Objekt des Triangle
+	 * @param b
+	 *            Point3 Objekt des Triangle
+	 * @param c
+	 *            Point3 Objekt des Triangle
+	 * @throws IllegalArgumentException
+	 */
 	// Konstruktor ohne übergebene Normalen - es wird die Normale zur
 	// Dreiecksoberfläche errechnet und diese dann für die drei Eck-Normalen
 	// eingesetzt - wir bekommen ein ebenes Dreieck
@@ -79,14 +93,27 @@ public class Triangle extends Geometry {
 	/**
 	 * Konstruktor: Triangle
 	 *
-	 * @param color
-	 *            color Objekt der Geometrie
+	 * @param material
+	 *            Material des Objekts (enthält Textur, welche
+	 *            Color-Informationen enthält)
 	 * @param a
 	 *            Point3 Objekt des Triangle
 	 * @param b
 	 *            Point3 Objekt des Triangle
 	 * @param c
 	 *            Point3 Objekt des Triangle
+	 * @param na
+	 *            Normal3 zur Ecke a
+	 * @param nb
+	 *            Normal3 zur Ecke b
+	 * @param nc
+	 *            Normal3 zur Ecke c
+	 * @param texCoordA
+	 *            TexturKoordinate zur Ecke a
+	 * @param texCoordB
+	 *            TexturKoordinate zur Ecke b
+	 * @param texCoordC
+	 *            TexturKoordinate zur Ecke c
 	 * @throws IllegalArgumentException
 	 */
 	public Triangle(Material material, Point3 a, Point3 b, Point3 c, Normal3 na, Normal3 nb, Normal3 nc, final TexCoord2 texCoordA,

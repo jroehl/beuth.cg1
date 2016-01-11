@@ -28,12 +28,9 @@ public class Plane extends Geometry {
 	/**
 	 * Konstruktor: Plane
 	 *
-	 * @param color
-	 *            color Objekt der Geometrie
-	 * @param a
-	 *            Point3 Objekt der Ebene
-	 * @param n
-	 *            Normal3 Objekt der Ebene
+	 * @param material
+	 *            Material des Objekts (enthält Textur, welche
+	 *            Color-Informationen enthält)
 	 * @throws IllegalArgumentException
 	 */
 	public Plane(Material material) throws IllegalArgumentException {

@@ -1,5 +1,6 @@
 package application;
 
+import geometries.AxisAlignedBox;
 import geometries.Geometry;
 import geometries.Node;
 import geometries.Sphere;
@@ -26,6 +27,7 @@ import javax.imageio.ImageIO;
 import light.Light;
 import light.PointLight;
 import material.LambertMaterial;
+import material.ReflectiveMaterial;
 import ray.Ray;
 import ray.Transform;
 import ray.World;
@@ -178,7 +180,7 @@ public class RaytracerOhneGui extends Application {
 		// no9.geos.add(new Sphere(new LambertMaterial(new
 		// ImageTexture("/Users/bodowissemann/Desktop/earth.jpg"))));
 		// geometries.add(no9);
-
+		//
 		// // Sonne
 		// final Node no10 = new Node(new Transform().scale(4, 4,
 		// 4).translate(new Point3(1.1, 0, 0)).rotateY(19.2222),
@@ -188,19 +190,17 @@ public class RaytracerOhneGui extends Application {
 		// geometries.add(no10);
 
 		// Scene 1
-		// final Node boxNode = new Node(new
-		// Transform().rotateY(-0.4).rotateX(-0.3).scale(1, 1, 4), new
-		// ArrayList<Geometry>());
-		// boxNode.geos.add(new AxisAlignedBox(new LambertMaterial(new
-		// SingleColorTexture(new Color(0, 0, 1)))));
-		// geometries.add(boxNode);
+		final Node boxNode = new Node(new Transform().rotateY(-0.4).rotateX(-0.3).scale(1, 1, 4), new ArrayList<Geometry>());
+		boxNode.geos.add(new AxisAlignedBox(new LambertMaterial(new SingleColorTexture(new Color(0, 0, 1)))));
+		geometries.add(boxNode);
 
 		// Scene 2
-		final Node sphereNode = new Node(new Transform().rotateY(-0.9).rotateX(-0.3).scale(1.3, 1.0, 1.3), new ArrayList<Geometry>());
-		sphereNode.geos.add(new Sphere(new LambertMaterial(new SingleColorTexture(new Color(1, 0, 0)))));
+		final Node sphereNode = new Node(new Transform().rotateY(-0.9).rotateX(-0.3).scale(2.6, 1, 1.1), new ArrayList<Geometry>());
+		sphereNode.geos.add(new Sphere(new ReflectiveMaterial(new SingleColorTexture(new Color(1, 0, 0)), new SingleColorTexture(new Color(
+				1, 1, 1)), new SingleColorTexture(new Color(0.8, 0.4, 0)), 64)));
 		geometries.add(sphereNode);
 
-		camera = new PerspectiveCamera(new Point3(0, 0, -8), new Vector3(0, 0, 1), new Vector3(0, 1, 0), Math.PI / 4);
+		camera = new PerspectiveCamera(new Point3(-0.5, 3.3, -8), new Vector3(0, -0.4, 1), new Vector3(0, 1, 0), Math.PI / 4);
 		// lights.add(new PointLight(new Color(1, 1, 1), new Point3(4, 3, 2),
 		// true));
 		// lights.add(new DirectionalLight(new Color(0, 5, -5), new Vector3(0,

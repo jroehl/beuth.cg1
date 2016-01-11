@@ -19,13 +19,17 @@ import color.Color;
 
 public class LambertMaterial extends Material {
 
+	/**
+	 * Textur des Materials(enthällt Info über die Fraben der jeweiligen Pixel
+	 * auf der Oberfläche der geometrien)
+	 */
 	private final Texture tex;
 
 	/**
 	 * Konstruktor: LambertMaterial
 	 *
-	 * @param cd
-	 *            einzige farbe des Materials
+	 * @param tex
+	 *            Einzige textur des Materials
 	 * @throws IllegalArgumentException
 	 */
 	public LambertMaterial(Texture tex) throws IllegalArgumentException {

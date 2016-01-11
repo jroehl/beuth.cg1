@@ -30,14 +30,14 @@ public class ReflectiveMaterial extends Material {
 	 * Konstruktor: ReflectiveMaterial
 	 *
 	 * @param diffuse
-	 *            Farbe der diffusen Reflektion
+	 *            Textur der diffusen Reflektion
 	 * @param specular
-	 *            Farbe des Reflektionspunktes
+	 *            Textur des Reflektionspunktes
+	 * @param reflectionColor
+	 *            Textur des Reflektionspunktes
 	 * @param exponent
 	 *            der Exponent bestimmt die größe des errechneten
 	 *            Reflektionspunktes
-	 * @param reflectionColor
-	 *            die reflektierte Farbe
 	 * @throws IllegalArgumentException
 	 */
 	public ReflectiveMaterial(Texture diffuse, Texture specular, Texture reflectionColor, int exponent) {
@@ -96,7 +96,7 @@ public class ReflectiveMaterial extends Material {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -107,7 +107,7 @@ public class ReflectiveMaterial extends Material {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -131,7 +131,7 @@ public class ReflectiveMaterial extends Material {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override

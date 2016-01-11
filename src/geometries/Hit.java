@@ -45,6 +45,11 @@ public class Hit {
 	 *            Ray Objekt
 	 * @param geo
 	 *            Geometry Objekt
+	 * @param n
+	 *            die Normale zum jeweiligen Hit-Punkt
+	 * @param Tex
+	 *            Textur-Koordinate zum jeweigen Hit-Punkt
+	 *
 	 * @throws IllegalArgumentException
 	 */
 	public Hit(final double t, final Ray ray, final Geometry geo, final Normal3 n, TexCoord2 tex) throws IllegalArgumentException {
@@ -70,7 +75,7 @@ public class Hit {
 	 */
 	@Override
 	public String toString() {
-		return "Hit [t=" + t + ", ray=" + ray + ", geo=" + geo + "]";
+		return "Hit [t=" + t + ", ray=" + ray + ", geo=" + geo + ", n=" + n + ", tex=" + tex + "]";
 	}
 
 	/**
@@ -83,10 +88,12 @@ public class Hit {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((geo == null) ? 0 : geo.hashCode());
+		result = prime * result + ((n == null) ? 0 : n.hashCode());
 		result = prime * result + ((ray == null) ? 0 : ray.hashCode());
 		long temp;
 		temp = Double.doubleToLongBits(t);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((tex == null) ? 0 : tex.hashCode());
 		return result;
 	}
 
@@ -111,12 +118,22 @@ public class Hit {
 				return false;
 		} else if (!geo.equals(other.geo))
 			return false;
+		if (n == null) {
+			if (other.n != null)
+				return false;
+		} else if (!n.equals(other.n))
+			return false;
 		if (ray == null) {
 			if (other.ray != null)
 				return false;
 		} else if (!ray.equals(other.ray))
 			return false;
 		if (Double.doubleToLongBits(t) != Double.doubleToLongBits(other.t))
+			return false;
+		if (tex == null) {
+			if (other.tex != null)
+				return false;
+		} else if (!tex.equals(other.tex))
 			return false;
 		return true;
 	}

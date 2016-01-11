@@ -28,6 +28,26 @@ public class AxisAlignedBox extends Geometry {
 	 */
 	private final Point3 run = new Point3(0.5, 0.5, 0.5);
 
+	/**
+	 * left - Node, welches eine Plane enthällt, die so transformiert wurde,
+	 * dass sie die linke Seite der Box darstellt
+	 *
+	 * right - Node, welches eine Plane enthällt, die so transformiert wurde,
+	 * dass sie die rechte Seite der Box darstellt
+	 *
+	 * top - Node, welches eine Plane enthällt, die so transformiert wurde, dass
+	 * sie die obere Seite der Box darstellt
+	 *
+	 * bottom - Node, welches eine Plane enthällt, die so transformiert wurde,
+	 * dass sie die untere Seite der Box darstelltde containing plane translated
+	 * to be placed on the bottom side of the box
+	 *
+	 * front - Node, welches eine Plane enthällt, die so transformiert wurde,
+	 * dass sie die vordere Seite der Box darstellt
+	 *
+	 * far - Node, welches eine Plane enthällt, die so transformiert wurde, dass
+	 * sie die hintere Seite der Box darstellt
+	 */
 	private final Node left;
 	private final Node right;
 
@@ -40,8 +60,9 @@ public class AxisAlignedBox extends Geometry {
 	/**
 	 * Konstruktor: AxisAlignedBox
 	 *
-	 * @param color
-	 *            RGB Color der Geometrie
+	 * @param material
+	 *            Material enthällt Textur (diese enthällt Color-Objekte oder
+	 *            Image-Textur)
 	 * @param lbf
 	 *            linker unterer entfernter Punkt
 	 * @param run
@@ -126,6 +147,13 @@ public class AxisAlignedBox extends Geometry {
 		}
 		return returnHit;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+
 	// ________________________________________________________________________________________________________________________________________
 
 	/**
@@ -135,8 +163,21 @@ public class AxisAlignedBox extends Geometry {
 	 */
 	@Override
 	public String toString() {
-		return "AxisAlignedBox{" + "lbf=" + lbf + ", run=" + run + '}';
+		return "AxisAlignedBox [lbf=" + lbf + ", run=" + run + ", left=" + left + ", right=" + right + ", top=" + top + ", bottom="
+				+ bottom + ", front=" + front + ", far=" + far + "]";
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 
 	/**
 	 * Ueberschriebene equals-Methode
@@ -145,21 +186,57 @@ public class AxisAlignedBox extends Geometry {
 	 *            Objekt das mit der Matrix verglichen wird
 	 * @return true | false
 	 */
+
 	@Override
-	public boolean equals(Object o) {
-		if (this == o)
+	public boolean equals(Object obj) {
+		if (this == obj)
 			return true;
-		if (o == null || getClass() != o.getClass())
+		if (!super.equals(obj))
 			return false;
-		if (!super.equals(o))
+		if (getClass() != obj.getClass())
 			return false;
-
-		final AxisAlignedBox that = (AxisAlignedBox) o;
-
-		if (lbf != null ? !lbf.equals(that.lbf) : that.lbf != null)
+		final AxisAlignedBox other = (AxisAlignedBox) obj;
+		if (bottom == null) {
+			if (other.bottom != null)
+				return false;
+		} else if (!bottom.equals(other.bottom))
 			return false;
-		return !(run != null ? !run.equals(that.run) : that.run != null);
-
+		if (far == null) {
+			if (other.far != null)
+				return false;
+		} else if (!far.equals(other.far))
+			return false;
+		if (front == null) {
+			if (other.front != null)
+				return false;
+		} else if (!front.equals(other.front))
+			return false;
+		if (lbf == null) {
+			if (other.lbf != null)
+				return false;
+		} else if (!lbf.equals(other.lbf))
+			return false;
+		if (left == null) {
+			if (other.left != null)
+				return false;
+		} else if (!left.equals(other.left))
+			return false;
+		if (right == null) {
+			if (other.right != null)
+				return false;
+		} else if (!right.equals(other.right))
+			return false;
+		if (run == null) {
+			if (other.run != null)
+				return false;
+		} else if (!run.equals(other.run))
+			return false;
+		if (top == null) {
+			if (other.top != null)
+				return false;
+		} else if (!top.equals(other.top))
+			return false;
+		return true;
 	}
 
 	/**
@@ -169,9 +246,16 @@ public class AxisAlignedBox extends Geometry {
 	 */
 	@Override
 	public int hashCode() {
+		final int prime = 31;
 		int result = super.hashCode();
-		result = 31 * result + (lbf != null ? lbf.hashCode() : 0);
-		result = 31 * result + (run != null ? run.hashCode() : 0);
+		result = prime * result + ((bottom == null) ? 0 : bottom.hashCode());
+		result = prime * result + ((far == null) ? 0 : far.hashCode());
+		result = prime * result + ((front == null) ? 0 : front.hashCode());
+		result = prime * result + ((lbf == null) ? 0 : lbf.hashCode());
+		result = prime * result + ((left == null) ? 0 : left.hashCode());
+		result = prime * result + ((right == null) ? 0 : right.hashCode());
+		result = prime * result + ((run == null) ? 0 : run.hashCode());
+		result = prime * result + ((top == null) ? 0 : top.hashCode());
 		return result;
 	}
 }

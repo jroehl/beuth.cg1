@@ -26,7 +26,7 @@ public class Disc extends Geometry {
 	public final Normal3 n;
 
 	/**
-	 * Konstruktor: Plane
+	 * Konstruktor: Disc
 	 *
 	 * @param color
 	 *            color Objekt der Geometrie
@@ -95,7 +95,7 @@ public class Disc extends Geometry {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 

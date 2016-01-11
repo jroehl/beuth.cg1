@@ -21,7 +21,8 @@ import color.Color;
 public abstract class Geometry {
 
 	/**
-	 * Color - color Objekt der Geometrie
+	 * material - das übergebene Materiel enthällt die Textur, welche entweder
+	 * Color-Objekte oder Farbinformationen aus einem Bild enthällt
 	 */
 	public Material material;
 
@@ -34,7 +35,7 @@ public abstract class Geometry {
 	 * Konstruktor: Geometry
 	 *
 	 * @param material
-	 *            RGB Color der Geometrie
+	 *            Materiel der Geometrie
 	 * @throws IllegalArgumentException
 	 */
 	public Geometry(Material material) throws IllegalArgumentException {
@@ -56,11 +57,6 @@ public abstract class Geometry {
 	 * @throws IllegalArgumentException
 	 */
 	public abstract Hit hit(Ray ray) throws IllegalArgumentException;
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
 
 	/**
 	 * Ueberschriebene toString-Methode
@@ -72,18 +68,12 @@ public abstract class Geometry {
 	public String toString() {
 		return "Geometry [material=" + material + "]";
 	}
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
 
 	/**
 	 * Ueberschriebene hashCode-Methode
 	 *
 	 * @return int hashcode
 	 */
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -91,11 +81,6 @@ public abstract class Geometry {
 		result = prime * result + ((material == null) ? 0 : material.hashCode());
 		return result;
 	}
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 
 	/**
 	 * Ueberschriebene equals-Methode
@@ -103,6 +88,11 @@ public abstract class Geometry {
 	 * @param obj
 	 *            Objekt das mit der Matrix verglichen wird
 	 * @return true | false
+	 */
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
 	public boolean equals(Object obj) {

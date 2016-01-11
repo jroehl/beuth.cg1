@@ -23,7 +23,7 @@ public class SingleColorMaterial extends Material {
 	 * Konstruktor: SingleColorMaterial
 	 *
 	 * @param tex
-	 *            einzige farbe des Materials
+	 *            textur für die einzige farbe des Materials
 	 * @throws IllegalArgumentException
 	 */
 
@@ -60,19 +60,19 @@ public class SingleColorMaterial extends Material {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 
