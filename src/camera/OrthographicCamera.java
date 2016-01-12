@@ -27,9 +27,8 @@ public class OrthographicCamera extends Camera {
 	 *            repräsentiert den up-Vektor (vector3(0,1,0))
 	 * @param s
 	 */
-	public OrthographicCamera(final Point3 e, final Vector3 g, final Vector3 t,
-			final double s) {
-		super(e, g, t);
+	public OrthographicCamera(final Point3 e, final Vector3 g, final Vector3 t, final double s, final SamplingPattern p) {
+		super(e, g, t, p);
 		this.s = s;
 
 	}
@@ -52,8 +51,7 @@ public class OrthographicCamera extends Camera {
 		final double a = (double) w / h;
 		final double doub1 = (double) ((x - (w - 1) / 2)) / (w - 1);
 		final double doub2 = (double) ((y - (h - 1) / 2)) / (h - 1);
-		final Point3 o = e.add((u.mul(doub1).mul(a).mul(s)).add(v.mul(doub2)
-				.mul(s)));
+		final Point3 o = e.add((u.mul(doub1).mul(a).mul(s)).add(v.mul(doub2).mul(s)));
 		return new Ray(o, super.w.mul(-1.0)); // vector d = vector w * (-1)
 
 	}
@@ -70,7 +68,7 @@ public class OrthographicCamera extends Camera {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -85,7 +83,7 @@ public class OrthographicCamera extends Camera {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override

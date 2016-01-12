@@ -21,8 +21,17 @@ import color.Color;
  */
 
 public class PhongMaterial extends Material {
+	/**
+	 * diffuse - textur für die diffuse Farbe des Onjektes
+	 */
 	private final Texture diffuse;
+	/**
+	 * specular - textur für die diffuse Farbe des Onjektes
+	 */
 	private final Texture specular;
+	/**
+	 * exponent - textur für die diffuse Farbe des Onjektes
+	 */
 	private final int exponent;
 
 	/**
@@ -106,7 +115,7 @@ public class PhongMaterial extends Material {
 	}
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -117,7 +126,7 @@ public class PhongMaterial extends Material {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -132,7 +141,7 @@ public class PhongMaterial extends Material {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override

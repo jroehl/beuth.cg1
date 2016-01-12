@@ -21,6 +21,7 @@ public abstract class Camera {
 	public final Vector3 u;
 	public final Vector3 v;
 	public final Vector3 w;
+	private final SamplingPattern p;
 
 	/**
 	 * Konstruktor: Camera
@@ -33,7 +34,7 @@ public abstract class Camera {
 	 *            Vector3 der Kamera
 	 * @throws IllegalArgumentException
 	 */
-	public Camera(final Point3 e, final Vector3 g, final Vector3 t) throws IllegalArgumentException {
+	public Camera(final Point3 e, final Vector3 g, final Vector3 t, SamplingPattern p) throws IllegalArgumentException {
 
 		if (e == null) {
 			throw new IllegalArgumentException("The Point  e cannot be null!");
@@ -48,6 +49,7 @@ public abstract class Camera {
 		this.e = e;
 		this.g = g;
 		this.t = t;
+		this.p = p;
 
 		this.w = g.normalized().mul(-1);
 		this.u = ((t.x(w)).mul((t.x(w)).magnitude)).normalized();

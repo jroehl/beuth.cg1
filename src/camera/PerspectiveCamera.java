@@ -28,8 +28,8 @@ public class PerspectiveCamera extends Camera {
 	 * @param angle
 	 *            repräsentiert den Winkel
 	 */
-	public PerspectiveCamera(Point3 e, Vector3 g, Vector3 t, double angle) {
-		super(e, g, t);
+	public PerspectiveCamera(Point3 e, Vector3 g, Vector3 t, double angle, SamplingPattern p) {
+		super(e, g, t, p);
 		this.angle = angle;
 
 	}
@@ -59,7 +59,7 @@ public class PerspectiveCamera extends Camera {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -74,7 +74,7 @@ public class PerspectiveCamera extends Camera {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -93,7 +93,7 @@ public class PerspectiveCamera extends Camera {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
