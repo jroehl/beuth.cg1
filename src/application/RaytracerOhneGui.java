@@ -2,7 +2,7 @@ package application;
 
 import geometries.Geometry;
 import geometries.Node;
-import geometries.Sphere;
+import geometries.TrianglePyramid;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,10 +30,12 @@ import ray.Ray;
 import ray.Transform;
 import ray.World;
 import textures.SingleColorTexture;
+import Matrizen_Vektoren_Bibliothek.Point2;
 import Matrizen_Vektoren_Bibliothek.Point3;
 import Matrizen_Vektoren_Bibliothek.Vector3;
 import camera.Camera;
 import camera.PerspectiveCamera;
+import camera.SamplingPattern;
 import color.Color;
 
 public class RaytracerOhneGui extends Application {
@@ -165,26 +167,24 @@ public class RaytracerOhneGui extends Application {
 		// geometries.add(no6);
 
 		// // node 7
-		// final Node no7 = new Node(new Transform().scale(2.2, 2.2,
-		// 2.2).translate(new Point3(-0.5, 2.3, 0.8)).rotateX(0.3),
-		// new ArrayList<Geometry>());
-		// no7.geos.add(new DynamicSphere(new ReflectiveMaterial(new Color(1, 0,
-		// 0.5), new Color(1, 1, 1), new Color(0.5, 0, 0.5), 64)));
-		// geometries.add(no7);
+		final Node no7 = new Node(new Transform().rotateX(3).rotateY(12).rotateZ(0.4), new ArrayList<Geometry>());
+		no7.geos.add(new TrianglePyramid(new ReflectiveMaterial(new SingleColorTexture(new Color(1, 0, 0.5)), new SingleColorTexture(
+				new Color(1, 0, 0.5)), new SingleColorTexture(new Color(1, 1, 1)), 64)));
+		geometries.add(no7);
 
-		// // Erde
+		// // // Erde
 		// final Node no9 = new Node(new Transform().scale(0.5, 0.5,
-		// 0.5).translate(new Point3(-1.9, 0, 0)), new ArrayList<Geometry>());
+		// 0.5).translate(new Point3(0, 0, 0)), new ArrayList<Geometry>());
 		// no9.geos.add(new Sphere(new LambertMaterial(new
 		// ImageTexture("/Users/bodowissemann/Desktop/earth.jpg"))));
 		// geometries.add(no9);
 		//
-		// // Sonne
-		// final Node no10 = new Node(new Transform().scale(4, 4,
-		// 4).translate(new Point3(1.1, 0, 0)).rotateY(19.2222),
-		// new ArrayList<Geometry>());
-		// no10.geos.add(new Sphere(new LambertMaterial(new
-		// InterpolatedTexture("/Users/bodowissemann/Desktop/texture_sun_prev.jpg"))));
+		// // // Sonne
+		// final Node no10 = new Node(new Transform().translate(new Point3(-1,
+		// 0, 0)).rotateY(19.2222), new ArrayList<Geometry>());
+		// no10.geos.add(new Triangle(new LambertMaterial(new
+		// InterpolatedTexture("/Users/bodowissemann/Desktop/texture_sun_prev.jpg")),
+		// new Point3(0, 0, 0), new Point3(1, 1, 0), new Point3(2, 0, 0)));
 		// geometries.add(no10);
 
 		// // Scene 1
@@ -194,18 +194,23 @@ public class RaytracerOhneGui extends Application {
 		// boxNode.geos.add(new AxisAlignedBox(new LambertMaterial(new
 		// SingleColorTexture(new Color(0.7, 0.7, 0)))));
 		// geometries.add(boxNode);
-		// lights.add(new PointLight(new Color(1, 1, 1), new Point3(0, 3, -4),
+		lights.add(new PointLight(new Color(1, 1, 1), new Point3(0, 3, -4), true));
+
+		// // Scene 2
+		// final Node sphereNode = new Node(new
+		// Transform().rotateY(-1.1).rotateX(-0.4).rotateZ(0.2).scale(2.6, 0.3,
+		// 1.1),
+		// new ArrayList<Geometry>());
+		// sphereNode.geos.add(new Sphere(new ReflectiveMaterial(new
+		// SingleColorTexture(new Color(1, 0, 0)), new SingleColorTexture(new
+		// Color(
+		// 1, 1, 1)), new SingleColorTexture(new Color(0.8, 0.4, 0)), 64)));
+		// geometries.add(sphereNode);
+		// lights.add(new PointLight(new Color(1, 1, 1), new Point3(11, 0, -2),
 		// true));
 
-		// Scene 2
-		final Node sphereNode = new Node(new Transform().rotateY(-1.1).rotateX(-0.4).rotateZ(0.2).scale(2.6, 0.3, 1.1),
-				new ArrayList<Geometry>());
-		sphereNode.geos.add(new Sphere(new ReflectiveMaterial(new SingleColorTexture(new Color(1, 0, 0)), new SingleColorTexture(new Color(
-				1, 1, 1)), new SingleColorTexture(new Color(0.8, 0.4, 0)), 64)));
-		geometries.add(sphereNode);
-		lights.add(new PointLight(new Color(1, 1, 1), new Point3(11, 0, -2), true));
-
-		camera = new PerspectiveCamera(new Point3(0, 3.3, -8), new Vector3(0, -0.4, 1), new Vector3(0, 1, 0), Math.PI / 4);
+		camera = new PerspectiveCamera(new Point3(0.7, 3.3, -8), new Vector3(0, -0.4, 1), new Vector3(0, 1, 0), Math.PI / 4,
+				new SamplingPattern(new ArrayList<Point2>(), 9));
 		// lights.add(new PointLight(new Color(1, 1, 1), new Point3(4, 3, 2),
 		// true));
 		// lights.add(new DirectionalLight(new Color(0, 5, -5), new Vector3(0,

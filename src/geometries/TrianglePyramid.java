@@ -57,29 +57,63 @@ public class TrianglePyramid extends Geometry {
 			throw new IllegalArgumentException("The Ray cannot be null!");
 		}
 
-		final Triangle a = new Triangle(mat1, eckeA, eckeB, top, new Normal3(-1, 1, 1), new Normal3(1, 1, 1), new Normal3(0, 1, 0));
-		final Triangle b = new Triangle(mat2, eckeB, eckeC, top, new Normal3(1, 1, 1), new Normal3(1, 1, -1), new Normal3(0, 1, 0));
-		final Triangle c = new Triangle(mat3, eckeC, eckeD, top, new Normal3(1, 1, -1), new Normal3(-1, 1, -1), new Normal3(0, 1, 0));
-		final Triangle d = new Triangle(mat4, eckeD, eckeA, top, new Normal3(-1, 1, -1), new Normal3(-1, 1, 1), new Normal3(0, 1, 0));
+		// final Triangle a = new Triangle(mat1, eckeA, eckeB, top, new
+		// Normal3(-1, 1, 1), new Normal3(1, 1, 1), new Normal3(0, 1, 0),
+		// new TexCoord2(eckeA.x, -eckeA.z), new TexCoord2(eckeB.x, -eckeB.z),
+		// new TexCoord2(top.x, -top.z));
+		// final Triangle b = new Triangle(mat2, eckeB, eckeC, top, new
+		// Normal3(1, 1, 1), new Normal3(1, 1, -1), new Normal3(0, 1, 0),
+		// new TexCoord2(eckeB.x, -eckeB.z), new TexCoord2(eckeC.x, -eckeC.z),
+		// new TexCoord2(top.x, -top.z));
+		// final Triangle c = new Triangle(mat3, eckeC, eckeD, top, new
+		// Normal3(1, 1, -1), new Normal3(-1, 1, -1), new Normal3(0, 1, 0),
+		// new TexCoord2(eckeC.x, -eckeC.z), new TexCoord2(eckeD.x, -eckeD.z),
+		// new TexCoord2(top.x, -top.z));
+		//
+		// final Triangle d = new Triangle(mat4, eckeD, eckeA, top, new
+		// Normal3(-1, 1, -1), new Normal3(-1, 1, 1), new Normal3(0, 1, 0),
+		// new TexCoord2(eckeD.x, -eckeD.z), new TexCoord2(eckeA.x, -eckeA.z),
+		// new TexCoord2(top.x, -top.z));
+		//
+		// final Triangle bottom1 = new Triangle(mat5, eckeA, eckeB, eckeD, new
+		// Normal3(0, -1, 0), new Normal3(0, -1, 0),
+		// new Normal3(0, -1, 0), new TexCoord2(eckeA.x, -eckeA.z), new
+		// TexCoord2(eckeB.x, -eckeB.z), new TexCoord2(eckeD.x, -eckeD.z));
+		//
+		// final Triangle bottom2 = new Triangle(mat6, eckeB, eckeC, eckeD, new
+		// Normal3(0, -1, 0), new Normal3(0, -1, 0),
+		// new Normal3(0, -1, 0), new TexCoord2(eckeB.x, -eckeB.z), new
+		// TexCoord2(eckeC.x, -eckeC.z), new TexCoord2(eckeD.x, -eckeD.z));
+
+		final Triangle a = new Triangle(mat1, eckeA, eckeB, top);
+		final Triangle b = new Triangle(mat2, eckeB, eckeC, top);
+		final Triangle c = new Triangle(mat3, eckeC, eckeD, top);
+
+		final Triangle d = new Triangle(mat4, eckeD, eckeA, top);
+
 		final Triangle bottom1 = new Triangle(mat5, eckeA, eckeB, eckeD, new Normal3(0, -1, 0), new Normal3(0, -1, 0),
 				new Normal3(0, -1, 0));
+
 		final Triangle bottom2 = new Triangle(mat6, eckeB, eckeC, eckeD, new Normal3(0, -1, 0), new Normal3(0, -1, 0),
 				new Normal3(0, -1, 0));
 
 		final Triangle[] triangles = {a, b, c, d, bottom1, bottom2};
+
 		Hit h = null;
+		// double t = Double.MAX_VALUE;
 
 		for (final Triangle tri : triangles) {
 			final Hit h2 = tri.hit(ray);
 			if (h2 != null) {
-				if (h2.t > 0.0000001 && (h == null || h.t < h2.t)) {
+				if (h2.t > 0.0001 && (h == null || h2.t < h.t)) {
 					h = h2;
+
 				}
-				return h;
+
 			}
 		}
 
-		return null;
+		return h;
 	}
 
 	public final Material switchColor(final Material material) {

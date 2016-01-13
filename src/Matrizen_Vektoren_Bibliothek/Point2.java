@@ -10,12 +10,12 @@ public class Point2 {
 	/**
 	 * x-Wert des Punktes
 	 */
-	public final double x;
+	public double x;
 
 	/**
 	 * y-Wert des Punktes
 	 */
-	public final double y;
+	public double y;
 
 	/**
 	 * Konstruktor.
@@ -27,7 +27,7 @@ public class Point2 {
 	 * @param z
 	 *            setzt den double z-Wert
 	 */
-	public Point2(final double x, final double y, final double z) {
+	public Point2(final double x, final double y) {
 		this.x = x;
 		this.y = y;
 

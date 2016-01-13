@@ -90,6 +90,32 @@ public class Triangle extends Geometry {
 		this.texCoordC = new TexCoord2(nc.x, -nc.z);
 	}
 
+	public Triangle(Material material, Point3 a, Point3 b, Point3 c, Normal3 n, Normal3 n2, Normal3 n3) throws IllegalArgumentException {
+		super(material);
+
+		if (a == null) {
+			throw new IllegalArgumentException("The a cannot be null!");
+		}
+		if (b == null) {
+			throw new IllegalArgumentException("The b cannot be null!");
+		}
+		if (c == null) {
+			throw new IllegalArgumentException("The c cannot be null!");
+		}
+
+		this.a = a;
+		this.b = b;
+		this.c = c;
+
+		this.na = n;
+		this.nb = n2;
+		this.nc = n3;
+
+		this.texCoordA = new TexCoord2(na.x, -na.z);
+		this.texCoordB = new TexCoord2(nb.x, -nb.z);
+		this.texCoordC = new TexCoord2(nc.x, -nc.z);
+	}
+
 	/**
 	 * Konstruktor: Triangle
 	 *
