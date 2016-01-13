@@ -167,7 +167,7 @@ public class RaytracerOhneGui extends Application {
 		// geometries.add(no6);
 
 		// // node 7
-		final Node no7 = new Node(new Transform().rotateX(3).rotateY(12).rotateZ(0.4), new ArrayList<Geometry>());
+		final Node no7 = new Node(new Transform(), new ArrayList<Geometry>());
 		no7.geos.add(new TrianglePyramid(new ReflectiveMaterial(new SingleColorTexture(new Color(1, 0, 0.5)), new SingleColorTexture(
 				new Color(1, 0, 0.5)), new SingleColorTexture(new Color(1, 1, 1)), 64)));
 		geometries.add(no7);
@@ -209,7 +209,7 @@ public class RaytracerOhneGui extends Application {
 		// lights.add(new PointLight(new Color(1, 1, 1), new Point3(11, 0, -2),
 		// true));
 
-		camera = new PerspectiveCamera(new Point3(0.7, 3.3, -8), new Vector3(0, -0.4, 1), new Vector3(0, 1, 0), Math.PI / 4,
+		camera = new PerspectiveCamera(new Point3(1, 5.3, -8), new Vector3(0, -0.8, 1), new Vector3(0, 1, 0), Math.PI / 4,
 				new SamplingPattern(new ArrayList<Point2>(), 9));
 		// lights.add(new PointLight(new Color(1, 1, 1), new Point3(4, 3, 2),
 		// true));

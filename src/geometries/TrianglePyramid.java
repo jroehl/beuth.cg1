@@ -38,7 +38,7 @@ public class TrianglePyramid extends Geometry {
 		eckeC = new Point3(eckeA.x + 3, eckeA.y, eckeA.z - 3);
 		eckeD = new Point3(eckeA.x, eckeA.y, eckeA.z - 3);
 		final Vector3 bottomMiddle = ((eckeB.sub(eckeA)).add(eckeC.sub(eckeB))).mul(0.5);
-		top = new Point3(bottomMiddle.x, bottomMiddle.y + 3, bottomMiddle.z);
+		top = new Point3(bottomMiddle.x, bottomMiddle.y + 2.7, bottomMiddle.z);
 
 		mat1 = switchColor(material);
 		mat2 = switchColor(material);
@@ -47,43 +47,12 @@ public class TrianglePyramid extends Geometry {
 		mat5 = switchColor(material);
 		mat6 = switchColor(material);
 
-		// System.out.println("A: " + eckeA.x + "," + eckeA.y + "," + eckeA.z);
-		// System.out.println("B: " + eckeB.x + "," + eckeB.y + "," + eckeB.z);
-		// System.out.println("B: " + top.x + "," + top.y + "," + top.z);
 	}
 	@Override
 	public Hit hit(Ray ray) throws IllegalArgumentException {
 		if (ray == null) {
 			throw new IllegalArgumentException("The Ray cannot be null!");
 		}
-
-		// final Triangle a = new Triangle(mat1, eckeA, eckeB, top, new
-		// Normal3(-1, 1, 1), new Normal3(1, 1, 1), new Normal3(0, 1, 0),
-		// new TexCoord2(eckeA.x, -eckeA.z), new TexCoord2(eckeB.x, -eckeB.z),
-		// new TexCoord2(top.x, -top.z));
-		// final Triangle b = new Triangle(mat2, eckeB, eckeC, top, new
-		// Normal3(1, 1, 1), new Normal3(1, 1, -1), new Normal3(0, 1, 0),
-		// new TexCoord2(eckeB.x, -eckeB.z), new TexCoord2(eckeC.x, -eckeC.z),
-		// new TexCoord2(top.x, -top.z));
-		// final Triangle c = new Triangle(mat3, eckeC, eckeD, top, new
-		// Normal3(1, 1, -1), new Normal3(-1, 1, -1), new Normal3(0, 1, 0),
-		// new TexCoord2(eckeC.x, -eckeC.z), new TexCoord2(eckeD.x, -eckeD.z),
-		// new TexCoord2(top.x, -top.z));
-		//
-		// final Triangle d = new Triangle(mat4, eckeD, eckeA, top, new
-		// Normal3(-1, 1, -1), new Normal3(-1, 1, 1), new Normal3(0, 1, 0),
-		// new TexCoord2(eckeD.x, -eckeD.z), new TexCoord2(eckeA.x, -eckeA.z),
-		// new TexCoord2(top.x, -top.z));
-		//
-		// final Triangle bottom1 = new Triangle(mat5, eckeA, eckeB, eckeD, new
-		// Normal3(0, -1, 0), new Normal3(0, -1, 0),
-		// new Normal3(0, -1, 0), new TexCoord2(eckeA.x, -eckeA.z), new
-		// TexCoord2(eckeB.x, -eckeB.z), new TexCoord2(eckeD.x, -eckeD.z));
-		//
-		// final Triangle bottom2 = new Triangle(mat6, eckeB, eckeC, eckeD, new
-		// Normal3(0, -1, 0), new Normal3(0, -1, 0),
-		// new Normal3(0, -1, 0), new TexCoord2(eckeB.x, -eckeB.z), new
-		// TexCoord2(eckeC.x, -eckeC.z), new TexCoord2(eckeD.x, -eckeD.z));
 
 		final Triangle a = new Triangle(mat1, eckeA, eckeB, top);
 		final Triangle b = new Triangle(mat2, eckeB, eckeC, top);
