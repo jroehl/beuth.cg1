@@ -70,7 +70,7 @@ public class World {
 		}
 
 		Hit hit = null;
-		System.out.println(rays.size());
+
 		for (int i = 0; i < rays.size(); i++) {
 
 			for (final Geometry obj : objs) {
