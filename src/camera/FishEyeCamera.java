@@ -1,9 +1,6 @@
 package camera;
 
-import java.util.ArrayList;
-
 import ray.Ray;
-import Matrizen_Vektoren_Bibliothek.Point2;
 import Matrizen_Vektoren_Bibliothek.Point3;
 import Matrizen_Vektoren_Bibliothek.Vector3;
 
@@ -12,7 +9,7 @@ import Matrizen_Vektoren_Bibliothek.Vector3;
  * perspektivische und orthographische Kamera dar. Die perspektivische Kamera
  * hat als weiteren Parameter den Öffnungswinkel.
  */
-public class PerspectiveCamera extends Camera {
+public class FishEyeCamera extends Camera {
 
 	/**
 	 * angle - Blickwinkel
@@ -31,7 +28,7 @@ public class PerspectiveCamera extends Camera {
 	 * @param angle
 	 *            repräsentiert den Winkel
 	 */
-	public PerspectiveCamera(Point3 e, Vector3 g, Vector3 t, double angle, SamplingPattern p) {
+	public FishEyeCamera(Point3 e, Vector3 g, Vector3 t, double angle, SamplingPattern p) {
 		super(e, g, t, p);
 		this.angle = angle;
 
@@ -51,23 +48,41 @@ public class PerspectiveCamera extends Camera {
 	 * @return null
 	 */
 	@Override
-	public ArrayList<Ray> rayFor(int w, int h, int x, int y, SamplingPattern sp) {
-		final ArrayList<Ray> raySet = new ArrayList<Ray>();
-		final ArrayList<Point2> points = sp.generateSamples(new ArrayList<Point2>(), 9);
-		for (int i = 0; i < points.size(); i++) {
+	public Ray rayFor(int w, int h, int x, int y) {
 
-			final Vector3 ux = u.mul(x - ((w - 1) / 2));
-			final Vector3 vy = v.mul(y - ((h - 1) / 2));
-			final Vector3 r = this.w.mul(-1).mul((h / 2) / Math.tan(angle / 2)).add(ux.add(vy));
-			final Ray ray = new Ray(e, r.normalized());;
+		final float px = 1.0f * (x - 0.5f * w);
+		final float py = 1.0f * (y - 0.5f * h);
+		Vector3 direction = null;
+		final float x2 = 2.0f / ((w * h) * h) * px;
+		final float y2 = 2.0f / ((w * h) * w) * py;
+		final float rSquared = (float) Math.pow(x2, 2) + (float) Math.pow(y2, 2);
+		if (rSquared <= 1) {
 
-			raySet.add(ray);
+			final float r2 = (float) Math.sqrt(rSquared);
+			final float psi = r2 * 1.0f * ((float) (Math.PI / 180));
+			final float sinPsi = (float) Math.sin(psi);
+			final float cosPsi = (float) Math.cos(psi);
+			final float sinAlpha = y / r2;
+			final float cosAlpha = x / r2;
+			direction = new Vector3((sinPsi * cosAlpha), (sinPsi * sinAlpha), cosPsi);
+			System.out.println(direction);
+		} else {
+
+			direction = new Vector3(0, 0, 0);
 		}
-		return raySet;
+
+		return new Ray(e, direction.normalized());
+
+		// final Vector3 ux = u.mul(x - ((w - 1) / 2));
+		// final Vector3 vy = v.mul(y - ((h - 1) / 2));
+		// final Vector3 r = this.w.mul(-1).mul((h / 2) / Math.tan(angle /
+		// 2)).add(ux.add(vy));
+		//
+		// return new Ray(e, r.normalized());
 	}
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -82,7 +97,7 @@ public class PerspectiveCamera extends Camera {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -93,7 +108,7 @@ public class PerspectiveCamera extends Camera {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		final PerspectiveCamera other = (PerspectiveCamera) obj;
+		final FishEyeCamera other = (FishEyeCamera) obj;
 		if (Double.doubleToLongBits(angle) != Double.doubleToLongBits(other.angle))
 			return false;
 		return true;
@@ -101,7 +116,7 @@ public class PerspectiveCamera extends Camera {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#toString()
 	 */
 	@Override

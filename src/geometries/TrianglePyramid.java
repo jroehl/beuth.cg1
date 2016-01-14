@@ -69,7 +69,6 @@ public class TrianglePyramid extends Geometry {
 		final Triangle[] triangles = {a, b, c, d, bottom1, bottom2};
 
 		Hit h = null;
-		// double t = Double.MAX_VALUE;
 
 		for (final Triangle tri : triangles) {
 			final Hit h2 = tri.hit(ray);

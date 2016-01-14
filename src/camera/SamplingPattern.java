@@ -15,10 +15,10 @@ public class SamplingPattern {
 		this.numSamples = numSamples;
 	}
 
-	public void generateSamples(ArrayList<Point2> points, int numSamples) {
+	public ArrayList<Point2> generateSamples(ArrayList<Point2> points, int numSamples) {
 
-		final int n = (int) Math.sqrt(numSamples);
-		final float partWidth = 1.0f / (numSamples);
+		final int n = (int) Math.sqrt(this.numSamples);
+		final float partWidth = 1.0f / (this.numSamples);
 
 		for (int i = 0; i < numSamples; i++)
 			points.add(new Point2(0, 0));
@@ -45,7 +45,10 @@ public class SamplingPattern {
 				points.get(i * n + k).y = t;
 			}
 
+		return points;
+
 	}
+
 	public int rndInt(int min, int max) {
 		final int range = max - min;
 		if (range == 0)

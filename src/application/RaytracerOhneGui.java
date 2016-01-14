@@ -167,7 +167,7 @@ public class RaytracerOhneGui extends Application {
 		// geometries.add(no6);
 
 		// // node 7
-		final Node no7 = new Node(new Transform(), new ArrayList<Geometry>());
+		final Node no7 = new Node(new Transform().scale(1, 0.3, 1), new ArrayList<Geometry>());
 		no7.geos.add(new TrianglePyramid(new ReflectiveMaterial(new SingleColorTexture(new Color(1, 0, 0.5)), new SingleColorTexture(
 				new Color(1, 0, 0.5)), new SingleColorTexture(new Color(1, 1, 1)), 64)));
 		geometries.add(no7);
@@ -297,8 +297,9 @@ public class RaytracerOhneGui extends Application {
 
 		for (int y = 0; y < iheight; y++) {
 			for (int x = 0; x < iwidth; x++) {
-				final Ray ray = camera.rayFor(iwidth, iheight, x, iheight - 1 - y);
-				final Color c = world.hit(ray);
+				final ArrayList<Ray> rays = camera.rayFor(iwidth, iheight, x, iheight - 1 - y, new SamplingPattern(new ArrayList<Point2>(),
+						9));
+				final Color c = world.hit(rays);
 				final javafx.scene.paint.Color javaColor = new javafx.scene.paint.Color(c.r, c.g, c.b, 1);
 				wrImg.getPixelWriter().setColor(x, y, javaColor);
 

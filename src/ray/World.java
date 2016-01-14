@@ -62,28 +62,43 @@ public class World {
 	 * @return Schnittpunkt mit dem kleinsten positiven t
 	 * @throws IllegalArgumentException
 	 */
-	public Color hit(Ray ray) throws IllegalArgumentException {
-
-		if (ray == null) {
+	public Color hit(ArrayList<Ray> rays) throws IllegalArgumentException {
+		Color retCol = null;
+		double counter = 0.0;
+		if (rays == null) {
 			throw new IllegalArgumentException("The Ray cannot be null!");
 		}
 
 		Hit hit = null;
+		System.out.println(rays.size());
+		for (int i = 0; i < rays.size(); i++) {
 
-		for (final Geometry obj : objs) {
-			final Hit objHit = obj.hit(ray);
+			for (final Geometry obj : objs) {
+				final Hit objHit = obj.hit(rays.get(i));
 
-			if (objHit != null) {
-				if (hit == null || objHit.t < hit.t) {
-					hit = objHit;
+				if (objHit != null) {
+					if (hit == null || objHit.t < hit.t) {
+						hit = objHit;
+					}
 				}
 			}
-		}
 
-		if (hit != null) {
-			return hit.geo.material.colorFor(hit, this, new Tracer(this, 5));
-		}
+			if (hit != null) {
 
+				final Color c = hit.geo.material.colorFor(hit, this, new Tracer(this, 5));
+				if (retCol == null) {
+
+					retCol = c;
+				}
+				retCol = retCol.add(c);
+				counter++;
+			}
+		}
+		final Color retCol2 = retCol.mul(1 / counter); // Zwischenwert
+														// ausrechnen...???
+		if (!retCol.equals(backgroundColor)) {
+			return retCol2;
+		}
 		return backgroundColor;
 
 	}

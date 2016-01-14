@@ -1,6 +1,9 @@
 package camera;
 
+import java.util.ArrayList;
+
 import ray.Ray;
+import Matrizen_Vektoren_Bibliothek.Point2;
 import Matrizen_Vektoren_Bibliothek.Point3;
 import Matrizen_Vektoren_Bibliothek.Vector3;
 
@@ -47,15 +50,21 @@ public class OrthographicCamera extends Camera {
 	 * @return null
 	 */
 	@Override
-	public Ray rayFor(final int w, final int h, final int x, final int y) {
-		final double a = (double) w / h;
-		final double doub1 = (double) ((x - (w - 1) / 2)) / (w - 1);
-		final double doub2 = (double) ((y - (h - 1) / 2)) / (h - 1);
-		final Point3 o = e.add((u.mul(doub1).mul(a).mul(s)).add(v.mul(doub2).mul(s)));
-		return new Ray(o, super.w.mul(-1.0)); // vector d = vector w * (-1)
+	public ArrayList<Ray> rayFor(final int w, final int h, final int x, final int y, SamplingPattern sp) {
+		final ArrayList<Ray> raySet = new ArrayList<Ray>();
+		final ArrayList<Point2> points = sp.generateSamples(new ArrayList<Point2>(), 9);
+		for (int i = 0; i < points.size(); i++) {
+			final double a = (double) w / h;
+			final double doub1 = (double) ((x - (w - 1) / 2)) / (w - 1);
+			final double doub2 = (double) ((y - (h - 1) / 2)) / (h - 1);
+			final Point3 o = e.add((u.mul(doub1).mul(a).mul(s)).add(v.mul(doub2).mul(s)));
+			final Ray ray = new Ray(o, super.w.mul(-1.0)); // vector d = vector
+															// w * (-1)
+			raySet.add(ray);
+		}
+		return raySet;
 
 	}
-
 	/**
 	 * Ueberschriebene toString-Methode
 	 *
