@@ -56,8 +56,8 @@ public class PerspectiveCamera extends Camera {
 		final ArrayList<Point2> points = sp.generateSamples(new ArrayList<Point2>(), 9);
 		for (int i = 0; i < points.size(); i++) {
 
-			final Vector3 ux = u.mul(x - ((w - 1) / 2));
-			final Vector3 vy = v.mul(y - ((h - 1) / 2));
+			final Vector3 ux = u.mul(x + points.get(i).x - ((w - 1) / 2));
+			final Vector3 vy = v.mul(y + points.get(i).y - ((h - 1) / 2));
 			final Vector3 r = this.w.mul(-1).mul((h / 2) / Math.tan(angle / 2)).add(ux.add(vy));
 			final Ray ray = new Ray(e, r.normalized());;
 
@@ -67,7 +67,7 @@ public class PerspectiveCamera extends Camera {
 	}
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -82,7 +82,7 @@ public class PerspectiveCamera extends Camera {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -101,7 +101,7 @@ public class PerspectiveCamera extends Camera {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
