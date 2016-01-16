@@ -55,7 +55,12 @@ public class OrthographicCamera extends Camera {
 		final ArrayList<Point2> points = sp.generateSamples(new ArrayList<Point2>(), 9);
 		for (int i = 0; i < points.size(); i++) {
 			final double a = (double) w / h;
-			final double doub1 = ((x + points.get(i).x - (w - 1) / 2)) / (w - 1);
+			final double doub1 = ((x + points.get(i).x - (w - 1) / 2)) / (w - 1); // Point2.x
+																					// &
+																					// y
+																					// hinzu
+																					// addieren
+																					// richtig??
 			final double doub2 = ((y + points.get(i).y - (h - 1) / 2)) / (h - 1);
 			final Point3 o = e.add((u.mul(doub1).mul(a).mul(s)).add(v.mul(doub2).mul(s)));
 			final Ray ray = new Ray(o, super.w.mul(-1.0)); // vector d = vector
@@ -77,7 +82,7 @@ public class OrthographicCamera extends Camera {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -92,7 +97,7 @@ public class OrthographicCamera extends Camera {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
