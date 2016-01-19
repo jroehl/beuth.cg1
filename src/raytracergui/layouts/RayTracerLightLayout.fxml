@@ -27,9 +27,9 @@
                         <Insets right="5.0" />
                     </VBox.margin>
                 </ChoiceBox>
-                <Group fx:id="lightsGroup">
+                <Group fx:id="lightsGroup" visible="false">
                     <children>
-                        <VBox prefHeight="0.0" prefWidth="290.0" visible="false">
+                        <VBox prefHeight="0.0" prefWidth="290.0">
                             <children>
                                 <Label text="Name *">
                                     <VBox.margin>

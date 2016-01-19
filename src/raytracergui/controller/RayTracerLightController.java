@@ -66,7 +66,6 @@ public class RayTracerLightController {
         activeLightNames = FXCollections.observableArrayList(mainController.lightMap.keySet());
 
         lightChoice.setOnAction((event) -> {
-            g.getChildren().clear();
             lightsGroup.setVisible(true);
             selectedLight = (Light) lightChoice.getSelectionModel().getSelectedItem();
             lightContainer = new LightContainer(selectedLight);
@@ -96,18 +95,21 @@ public class RayTracerLightController {
     }
 
     private void setupSpotControls() {
+        g.getChildren().clear();
         loadPartial("../layouts/partials/spotLightControls.fxml");
         setupSliders();
         setupDifControls(true);
     }
 
     private void setupPointControls() {
+        g.getChildren().clear();
         loadPartial("../layouts/partials/pointLightControls.fxml");
         setupSliders();
         setupDifControls(false);
     }
 
     private void setupDirectionalControls() {
+        g.getChildren().clear();
         loadPartial("../layouts/partials/directionalLightControls.fxml");
         setupSliders();
         setupDifControls(false);
