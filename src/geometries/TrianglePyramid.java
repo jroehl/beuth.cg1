@@ -1,18 +1,13 @@
 package geometries;
 
-import java.util.Random;
-
-import material.LambertMaterial;
-import material.Material;
-import material.PhongMaterial;
-import material.ReflectiveMaterial;
-import material.SingleColorMaterial;
-import ray.Ray;
-import textures.SingleColorTexture;
-import Matrizen_Vektoren_Bibliothek.Normal3;
 import Matrizen_Vektoren_Bibliothek.Point3;
 import Matrizen_Vektoren_Bibliothek.Vector3;
 import color.Color;
+import material.*;
+import ray.Ray;
+import textures.SingleColorTexture;
+
+import java.util.Random;
 
 public class TrianglePyramid extends Geometry {
 
@@ -57,27 +52,27 @@ public class TrianglePyramid extends Geometry {
 			throw new IllegalArgumentException("The Ray cannot be null!");
 		}
 
-		final Triangle a = new Triangle(mat1, eckeA, eckeB, top, new Normal3(-1, 1, 1), new Normal3(1, 1, 1), new Normal3(0, 1, 0));
-		final Triangle b = new Triangle(mat2, eckeB, eckeC, top, new Normal3(1, 1, 1), new Normal3(1, 1, -1), new Normal3(0, 1, 0));
-		final Triangle c = new Triangle(mat3, eckeC, eckeD, top, new Normal3(1, 1, -1), new Normal3(-1, 1, -1), new Normal3(0, 1, 0));
-		final Triangle d = new Triangle(mat4, eckeD, eckeA, top, new Normal3(-1, 1, -1), new Normal3(-1, 1, 1), new Normal3(0, 1, 0));
-		final Triangle bottom1 = new Triangle(mat5, eckeA, eckeB, eckeD, new Normal3(0, -1, 0), new Normal3(0, -1, 0),
-				new Normal3(0, -1, 0));
-		final Triangle bottom2 = new Triangle(mat6, eckeB, eckeC, eckeD, new Normal3(0, -1, 0), new Normal3(0, -1, 0),
-				new Normal3(0, -1, 0));
-
-		final Triangle[] triangles = {a, b, c, d, bottom1, bottom2};
-		Hit h = null;
-
-		for (final Triangle tri : triangles) {
-			final Hit h2 = tri.hit(ray);
-			if (h2 != null) {
-				if (h2.t > 0.0000001 && (h == null || h.t < h2.t)) {
-					h = h2;
-				}
-				return h;
-			}
-		}
+//		final Triangle a = new Triangle(mat1, eckeA, eckeB, top, new Normal3(-1, 1, 1), new Normal3(1, 1, 1), new Normal3(0, 1, 0));
+//		final Triangle b = new Triangle(mat2, eckeB, eckeC, top, new Normal3(1, 1, 1), new Normal3(1, 1, -1), new Normal3(0, 1, 0));
+//		final Triangle c = new Triangle(mat3, eckeC, eckeD, top, new Normal3(1, 1, -1), new Normal3(-1, 1, -1), new Normal3(0, 1, 0));
+//		final Triangle d = new Triangle(mat4, eckeD, eckeA, top, new Normal3(-1, 1, -1), new Normal3(-1, 1, 1), new Normal3(0, 1, 0));
+//		final Triangle bottom1 = new Triangle(mat5, eckeA, eckeB, eckeD, new Normal3(0, -1, 0), new Normal3(0, -1, 0),
+//				new Normal3(0, -1, 0));
+//		final Triangle bottom2 = new Triangle(mat6, eckeB, eckeC, eckeD, new Normal3(0, -1, 0), new Normal3(0, -1, 0),
+//				new Normal3(0, -1, 0));
+//
+//		final Triangle[] triangles = {a, b, c, d, bottom1, bottom2};
+//		Hit h = null;
+//
+//		for (final Triangle tri : triangles) {
+//			final Hit h2 = tri.hit(ray);
+//			if (h2 != null) {
+//				if (h2.t > 0.0000001 && (h == null || h.t < h2.t)) {
+//					h = h2;
+//				}
+//				return h;
+//			}
+//		}
 
 		return null;
 	}

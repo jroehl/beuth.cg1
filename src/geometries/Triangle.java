@@ -90,6 +90,10 @@ public class Triangle extends Geometry {
 		this.texCoordC = new TexCoord2(nc.x, -nc.z);
 	}
 
+	public Triangle(Material material) throws IllegalArgumentException {
+		this(material, new Point3(0,0,0), new Point3(0,0,0), new Point3(0,0,0));
+	}
+
 	/**
 	 * Konstruktor: Triangle
 	 *

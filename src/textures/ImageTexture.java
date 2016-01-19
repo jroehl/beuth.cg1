@@ -1,21 +1,22 @@
 package textures;
 
+import color.Color;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import javax.imageio.ImageIO;
-
-import color.Color;
-
 public class ImageTexture implements Texture {
 
 	private final String path;
+	private final File file;
 	private BufferedImage img;
 
 	public ImageTexture(String path) {
 
 		this.path = path;
+		this.file = null;
 		img = null;
 		// Users/bodowissemann/Documents/GIT/Waschmaschine_CG_1/src
 		try {
@@ -31,6 +32,25 @@ public class ImageTexture implements Texture {
 			System.out.println(e.getMessage());
 		}
 	}
+
+	public ImageTexture(File file) {
+
+		this.file = file;
+		this.path = null;
+		img = null;
+		// Users/bodowissemann/Documents/GIT/Waschmaschine_CG_1/src
+		try {
+			// final String pathAct = System.getProperty("user.dir") +
+			// "/Texturen/" + path;
+
+			img = ImageIO.read(this.file);
+			// System.out.println(img);
+
+		} catch (final IOException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
 	@Override
 	public Color colorFor(double n, double u) {
 		final double xCoord = ImageTexture.getRelativeCoord(n);

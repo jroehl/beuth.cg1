@@ -16,4 +16,10 @@ public class SingleColorTexture implements Texture {
 		return this.c;
 	}
 
+	@Override
+	public String toString() {
+		return "SingleColorTexture{" +
+				"c=" + c +
+				'}';
+	}
 }

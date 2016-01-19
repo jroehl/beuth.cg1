@@ -1,14 +1,14 @@
 package application;
 
+import Matrizen_Vektoren_Bibliothek.Point3;
+import Matrizen_Vektoren_Bibliothek.Vector3;
+import camera.Camera;
+import camera.PerspectiveCamera;
+import color.Color;
 import geometries.AxisAlignedBox;
 import geometries.Geometry;
 import geometries.Node;
 import geometries.Sphere;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Group;
@@ -21,9 +21,6 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
-import javax.imageio.ImageIO;
-
 import light.Light;
 import light.PointLight;
 import material.LambertMaterial;
@@ -32,11 +29,11 @@ import ray.Ray;
 import ray.Transform;
 import ray.World;
 import textures.SingleColorTexture;
-import Matrizen_Vektoren_Bibliothek.Point3;
-import Matrizen_Vektoren_Bibliothek.Vector3;
-import camera.Camera;
-import camera.PerspectiveCamera;
-import color.Color;
+
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class RaytracerOhneGui extends Application {
 
@@ -142,13 +139,13 @@ public class RaytracerOhneGui extends Application {
 		// geometries.add(no3);
 
 		// node 4
-		// final Node no4 = new Node(new Transform().translate(new Point3(11,
-		// -1.3, 3.3)).rotateY(0.6), new ArrayList<Geometry>());
-		// no4.geos.add(new Cylinder(new ReflectiveMaterial(new
-		// SingleColorTexture(new Color(1, 0.5, 0)), new SingleColorTexture(new
-		// Color(1,
-		// 1, 1)), new SingleColorTexture(new Color(0.5, 0, 0.5)), 64)));
-		// geometries.add(no4);
+//		 final Node no4 = new Node(new Transform().translate(new Point3(11,
+//		 -1.3, 3.3)).rotateY(0.6), new ArrayList<Geometry>());
+//		 no4.geos.add(new Cylinder(new ReflectiveMaterial(new
+//		 SingleColorTexture(new Color(1, 0.5, 0)), new SingleColorTexture(new
+//		 Color(1,
+//		 1, 1)), new SingleColorTexture(new Color(0.5, 0, 0.5)), 64)));
+//		 geometries.add(no4);
 
 		// node 5
 		// final Node no5 = new Node(new Transform().scale(1, 0.1, 1), new

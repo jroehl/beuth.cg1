@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import org.controlsfx.control.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.*?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.*?>
+
+<AnchorPane fx:id="anchorPaneGeometry" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="raytracergui.controller.RayTracerGeometryController">
+    <children>
+        <VBox fx:id="geometryWindowVbox" prefHeight="366.0" prefWidth="300.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <Label text="Choose geometry type">
+                    <VBox.margin>
+                        <Insets right="5.0" />
+                    </VBox.margin>
+                </Label>
+                <ChoiceBox fx:id="geoChoice" minWidth="280.0" prefWidth="280.0">
+                    <VBox.margin>
+                        <Insets right="5.0" />
+                    </VBox.margin>
+                </ChoiceBox>
+                <Group fx:id="materialGroup" visible="false">
+                    <children>
+                        <VBox prefHeight="0.0" prefWidth="290.0">
+                            <children>
+                                <Label text="Name *">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin></Label>
+                                <TextField fx:id="geoName">
+                           <VBox.margin>
+                              <Insets right="10.0" />
+                           </VBox.margin></TextField>
+                                <Label text="Choose material">
+                                    <VBox.margin>
+                                        <Insets right="5.0" />
+                                    </VBox.margin>
+                                </Label>
+                                <ChoiceBox fx:id="materialChoice" minWidth="271.0" prefHeight="27.0" prefWidth="276.0">
+                                    <VBox.margin>
+                                        <Insets />
+                                    </VBox.margin>
+                                </ChoiceBox>
+                            </children>
+                        </VBox>
+                    </children>
+               <VBox.margin>
+                  <Insets right="10.0" />
+               </VBox.margin>
+                </Group>
+            </children>
+        </VBox>
+        <HBox alignment="CENTER_RIGHT" layoutX="-14.0" layoutY="336.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="310.0">
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </padding>
+            <children>
+                <ButtonBar prefHeight="40.0" prefWidth="200.0" HBox.hgrow="NEVER">
+                    <buttons>
+                        <Button fx:id="okBtn" mnemonicParsing="false" onAction="#createGeometry" text="add" />
+                    </buttons>
+                    <HBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                    </HBox.margin>
+                </ButtonBar>
+            </children>
+        </HBox>
+        <VBox layoutX="328.0" layoutY="64.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </padding>
+            <children>
+                <Label text="Current geometries" />
+                <ButtonBar prefHeight="40.0" prefWidth="200.0">
+                    <buttons>
+                        <Button fx:id="delBtn" mnemonicParsing="false" onAction="#deleteGeometry" text="delete" />
+                    </buttons>
+                </ButtonBar>
+                <CheckListView fx:id="geometryChecklist">
+                    <VBox.margin>
+                        <Insets top="5.0" />
+                    </VBox.margin>
+                </CheckListView>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

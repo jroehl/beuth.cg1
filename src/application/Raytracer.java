@@ -1,17 +1,12 @@
 package application;
 
-import geometries.AxisAlignedBox;
-import geometries.Geometry;
-import geometries.Node;
-import geometries.Plane;
-import geometries.Sphere;
-import geometries.TrianglePyramid;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Optional;
-
+import Matrizen_Vektoren_Bibliothek.Point3;
+import Matrizen_Vektoren_Bibliothek.Vector3;
+import camera.Camera;
+import camera.OrthographicCamera;
+import camera.PerspectiveCamera;
+import color.Color;
+import geometries.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
@@ -19,41 +14,27 @@ import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.RadioMenuItem;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
-import javax.imageio.ImageIO;
-
 import light.DirectionalLight;
 import light.Light;
 import light.PointLight;
 import light.SpotLight;
 import material.LambertMaterial;
-import material.PhongMaterial;
-import material.ReflectiveMaterial;
-import material.SingleColorMaterial;
 import ray.Ray;
-import ray.Transform;
 import ray.World;
 import textures.SingleColorTexture;
-import Matrizen_Vektoren_Bibliothek.Point3;
-import Matrizen_Vektoren_Bibliothek.Vector3;
-import camera.Camera;
-import camera.OrthographicCamera;
-import camera.PerspectiveCamera;
-import color.Color;
+
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Optional;
 
 public class Raytracer extends Application {
 
@@ -228,11 +209,11 @@ public class Raytracer extends Application {
 			// new Point3(3, 0, 0), new Point3(1.5, 3, -1.5)));
 
 			// Node mit Sphere darin
-			final Node no = new Node(new Transform().rotateX(0.5).rotateZ(-0.6).scale(2, -0.3, 2), new ArrayList<Geometry>());
-			no.geos.add(new Sphere(new PhongMaterial(new Color(1, 0, 0), new Color(1, 1, 1), 64)));
+//			final Node no = new Node(new Transform().rotateX(0.5).rotateZ(-0.6).scale(2, -0.3, 2), new ArrayList<Geometry>());
+//			no.geos.add(new Sphere(new PhongMaterial(new Color(1, 0, 0), new Color(1, 1, 1), 64)));
 			// no.geos.add(new AxisAlignedBox(new LambertMaterial(new Color(1,
 			// 0, 0))));
-			initializeNode(primaryStage, node, no);
+//			initializeNode(primaryStage, node, no);
 		}
 
 		// Menu - Camera
@@ -366,8 +347,8 @@ public class Raytracer extends Application {
 				final ArrayList<Object> properties = showDialog(0);
 
 				if (!properties.isEmpty()) {
-					geometry.material = new SingleColorMaterial((Color) properties.get(0));
-					geometries.add(geometry);
+//					geometry.material = new SingleColorMaterial((Color) properties.get(0));
+//					geometries.add(geometry);
 
 					singleColorMaterial.setSelected(true);
 					lambertMaterial.setSelected(false);
@@ -422,8 +403,8 @@ public class Raytracer extends Application {
 				final ArrayList<Object> properties = showDialog(1);
 
 				if (!properties.isEmpty()) {
-					geometry.material = new PhongMaterial((Color) properties.get(0), (Color) properties.get(1), (int) properties.get(3));
-					geometries.add(geometry);
+//					geometry.material = new PhongMaterial((Color) properties.get(0), (Color) properties.get(1), (int) properties.get(3));
+//					geometries.add(geometry);
 
 					singleColorMaterial.setSelected(false);
 					lambertMaterial.setSelected(false);
@@ -450,8 +431,8 @@ public class Raytracer extends Application {
 				final ArrayList<Object> properties = showDialog(2);
 
 				if (!properties.isEmpty()) {
-					geometry.material = new ReflectiveMaterial((Color) properties.get(0), (Color) properties.get(1), (Color) properties
-							.get(2), (int) properties.get(3));
+//					geometry.material = new ReflectiveMaterial((Color) properties.get(0), (Color) properties.get(1), (Color) properties
+//							.get(2), (int) properties.get(3));
 					geometries.add(geometry);
 
 					singleColorMaterial.setSelected(false);
