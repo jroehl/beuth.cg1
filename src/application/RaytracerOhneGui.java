@@ -2,11 +2,13 @@ package application;
 
 import geometries.Geometry;
 import geometries.Node;
-import geometries.TrianglePyramid;
+import geometries.Sphere;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
@@ -167,10 +169,13 @@ public class RaytracerOhneGui extends Application {
 		// geometries.add(no6);
 
 		// // node 7
-		final Node no7 = new Node(new Transform().scale(1, 0.3, 1), new ArrayList<Geometry>());
-		no7.geos.add(new TrianglePyramid(new ReflectiveMaterial(new SingleColorTexture(new Color(1, 0, 0.5)), new SingleColorTexture(
-				new Color(1, 0, 0.5)), new SingleColorTexture(new Color(1, 1, 1)), 64)));
-		geometries.add(no7);
+		// final Node no7 = new Node(new Transform().scale(1, 0.3, 1), new
+		// ArrayList<Geometry>());
+		// no7.geos.add(new TrianglePyramid(new ReflectiveMaterial(new
+		// SingleColorTexture(new Color(1, 0, 0.5)), new SingleColorTexture(
+		// new Color(1, 0, 0.5)), new SingleColorTexture(new Color(1, 1, 1)),
+		// 64)));
+		// geometries.add(no7);
 
 		// // // Erde
 		// final Node no9 = new Node(new Transform().scale(0.5, 0.5,
@@ -197,22 +202,19 @@ public class RaytracerOhneGui extends Application {
 		lights.add(new PointLight(new Color(1, 1, 1), new Point3(0, 3, -4), true));
 
 		// // Scene 2
-		// final Node sphereNode = new Node(new
-		// Transform().rotateY(-1.1).rotateX(-0.4).rotateZ(0.2).scale(2.6, 0.3,
-		// 1.1),
-		// new ArrayList<Geometry>());
-		// sphereNode.geos.add(new Sphere(new ReflectiveMaterial(new
-		// SingleColorTexture(new Color(1, 0, 0)), new SingleColorTexture(new
-		// Color(
-		// 1, 1, 1)), new SingleColorTexture(new Color(0.8, 0.4, 0)), 64)));
-		// geometries.add(sphereNode);
-		// lights.add(new PointLight(new Color(1, 1, 1), new Point3(11, 0, -2),
+		final Node sphereNode = new Node(new Transform().rotateY(-1.1).rotateX(-0.4).rotateZ(0.2).scale(2.6, 0.3, 1.1),
+				new ArrayList<Geometry>());
+		sphereNode.geos.add(new Sphere(new ReflectiveMaterial(new SingleColorTexture(new Color(1, 0, 0)), new SingleColorTexture(new Color(
+				1, 1, 1)), new SingleColorTexture(new Color(0.8, 0.4, 0)), 64)));
+		geometries.add(sphereNode);
+		lights.add(new PointLight(new Color(1, 1, 1), new Point3(11, 0, -2), true));
+
+		// lights.add(new PointLight(new Color(1, 1, 1), new Point3(4, 3, 2),
 		// true));
 
 		camera = new PerspectiveCamera(new Point3(1, 5.3, -8), new Vector3(0, -0.8, 1), new Vector3(0, 1, 0), Math.PI / 4,
-				new SamplingPattern(new ArrayList<Point2>(), 9));
-		// lights.add(new PointLight(new Color(1, 1, 1), new Point3(4, 3, 2),
-		// true));
+				new SamplingPattern(new HashSet<Point2>(), 5));
+
 		// lights.add(new DirectionalLight(new Color(0, 5, -5), new Vector3(0,
 		// 0, -3), true));
 		lights.add(new PointLight(new Color(1, 1, 1), new Point3(-11, 5, -28), true));
@@ -297,8 +299,7 @@ public class RaytracerOhneGui extends Application {
 
 		for (int y = 0; y < iheight; y++) {
 			for (int x = 0; x < iwidth; x++) {
-				final ArrayList<Ray> rays = camera.rayFor(iwidth, iheight, x, iheight - 1 - y, new SamplingPattern(new ArrayList<Point2>(),
-						9));
+				final Set<Ray> rays = camera.rayFor(iwidth, iheight, x, iheight - 1 - y);
 				final Color c = world.hit(rays);
 				final javafx.scene.paint.Color javaColor = new javafx.scene.paint.Color(c.r, c.g, c.b, 1);
 				wrImg.getPixelWriter().setColor(x, y, javaColor);

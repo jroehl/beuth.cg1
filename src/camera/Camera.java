@@ -1,6 +1,6 @@
 package camera;
 
-import java.util.ArrayList;
+import java.util.Set;
 
 import ray.Ray;
 import Matrizen_Vektoren_Bibliothek.Point3;
@@ -72,7 +72,7 @@ public abstract class Camera {
 	 *            int der Kamera
 	 * @return null
 	 */
-	public ArrayList<Ray> rayFor(final int w, final int h, final int x, final int y, SamplingPattern p) {
+	public Set<Ray> rayFor(final int w, final int h, final int x, final int y) {
 		return null;
 	}
 

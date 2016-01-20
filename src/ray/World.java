@@ -4,6 +4,7 @@ import geometries.Geometry;
 import geometries.Hit;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import light.Light;
 import application.Tracer;
@@ -62,7 +63,7 @@ public class World {
 	 * @return Schnittpunkt mit dem kleinsten positiven t
 	 * @throws IllegalArgumentException
 	 */
-	public Color hit(ArrayList<Ray> rays) throws IllegalArgumentException {
+	public Color hit(Set<Ray> rays) throws IllegalArgumentException {
 		Color retCol = new Color(0, 0, 0);
 		double counter = 0.0;
 		if (rays == null) {
@@ -71,10 +72,10 @@ public class World {
 
 		Hit hit = null;
 
-		for (int i = 0; i < rays.size(); i++) {
+		for (final Ray r : rays) {
 
 			for (final Geometry obj : objs) {
-				final Hit objHit = obj.hit(rays.get(i));
+				final Hit objHit = obj.hit(r);
 
 				if (objHit != null) {
 					if (hit == null || objHit.t < hit.t) {

@@ -1,6 +1,7 @@
 package camera;
 
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import ray.Ray;
 import Matrizen_Vektoren_Bibliothek.Point2;
@@ -18,6 +19,7 @@ public class OrthographicCamera extends Camera {
 	 * s - double
 	 */
 	public final double s;
+	final SamplingPattern p;
 
 	/**
 	 * Konstruktor: OrthographicCamera
@@ -33,6 +35,7 @@ public class OrthographicCamera extends Camera {
 	public OrthographicCamera(final Point3 e, final Vector3 g, final Vector3 t, final double s, final SamplingPattern p) {
 		super(e, g, t, p);
 		this.s = s;
+		this.p = p;
 
 	}
 
@@ -50,15 +53,15 @@ public class OrthographicCamera extends Camera {
 	 * @return null
 	 */
 	@Override
-	public ArrayList<Ray> rayFor(final int w, final int h, final int x, final int y, SamplingPattern sp) {
-		final ArrayList<Ray> raySet = new ArrayList<Ray>();
-		final ArrayList<Point2> points = sp.generateSamples(new ArrayList<Point2>(), 9);
-		for (int i = 0; i < points.size(); i++) {
+	public Set<Ray> rayFor(final int w, final int h, final int x, final int y) {
+		final Set<Ray> raySet = new HashSet<Ray>();
+		final Set<Point2> points = this.p.generateSamples();
+		for (final Point2 po : points) {
 			final double a = (double) w / h;
 			// zu den x - y- Werten des jeweiligen Pixels werden die x-&y-Werte
 			// des jeweiligen Point2 addiert (diese liegen immer zw -0.5 und 0.5
-			final double doub1 = ((x + points.get(i).x - (w - 1) / 2)) / (w - 1);
-			final double doub2 = ((y + points.get(i).y - (h - 1) / 2)) / (h - 1);
+			final double doub1 = ((x + po.x - (w - 1) / 2)) / (w - 1);
+			final double doub2 = ((y + po.y - (h - 1) / 2)) / (h - 1);
 			final Point3 o = e.add((u.mul(doub1).mul(a).mul(s)).add(v.mul(doub2).mul(s)));
 			final Ray ray = new Ray(o, super.w.mul(-1.0)); // vector d = vector
 															// w * (-1)

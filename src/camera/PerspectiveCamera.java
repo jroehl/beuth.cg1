@@ -1,6 +1,7 @@
 package camera;
 
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import ray.Ray;
 import Matrizen_Vektoren_Bibliothek.Point2;
@@ -18,6 +19,7 @@ public class PerspectiveCamera extends Camera {
 	 * angle - Blickwinkel
 	 */
 	public final double angle;
+	SamplingPattern p;
 
 	/**
 	 * Konstruktor: PerspectiveCamera
@@ -34,7 +36,7 @@ public class PerspectiveCamera extends Camera {
 	public PerspectiveCamera(Point3 e, Vector3 g, Vector3 t, double angle, SamplingPattern p) {
 		super(e, g, t, p);
 		this.angle = angle;
-
+		this.p = p;
 	}
 
 	/**
@@ -51,14 +53,15 @@ public class PerspectiveCamera extends Camera {
 	 * @return null
 	 */
 	@Override
-	public ArrayList<Ray> rayFor(int w, int h, int x, int y, SamplingPattern sp) {
-		final ArrayList<Ray> raySet = new ArrayList<Ray>();
-		final ArrayList<Point2> points = sp.generateSamples(new ArrayList<Point2>(), 9);
-		for (int i = 0; i < points.size(); i++) {
+	public Set<Ray> rayFor(int w, int h, int x, int y) {
+		final Set<Ray> raySet = new HashSet<Ray>();
+		final Set<Point2> points = this.p.generateSamples();
+		// System.out.println(points.get(1).x);
+		for (final Point2 po : points) {
 
-			final Vector3 ux = u.mul(x + points.get(i).x - ((w - 1) / 2));
-
-			final Vector3 vy = v.mul(y + points.get(i).y - ((h - 1) / 2));
+			final Vector3 ux = u.mul(x + po.x - ((w - 1) / 2));
+			// System.out.println(ux.x);
+			final Vector3 vy = v.mul(y + po.y - ((h - 1) / 2));
 			final Vector3 r = this.w.mul(-1).mul((h / 2) / Math.tan(angle / 2)).add(ux.add(vy));
 			final Ray ray = new Ray(e, r.normalized());;
 
@@ -68,7 +71,7 @@ public class PerspectiveCamera extends Camera {
 	}
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -83,7 +86,7 @@ public class PerspectiveCamera extends Camera {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -102,7 +105,7 @@ public class PerspectiveCamera extends Camera {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
