@@ -55,12 +55,9 @@ public class OrthographicCamera extends Camera {
 		final ArrayList<Point2> points = sp.generateSamples(new ArrayList<Point2>(), 9);
 		for (int i = 0; i < points.size(); i++) {
 			final double a = (double) w / h;
-			final double doub1 = ((x + points.get(i).x - (w - 1) / 2)) / (w - 1); // Point2.x
-																					// &
-																					// y
-																					// hinzu
-																					// addieren
-																					// richtig??
+			// zu den x - y- Werten des jeweiligen Pixels werden die x-&y-Werte
+			// des jeweiligen Point2 addiert (diese liegen immer zw -0.5 und 0.5
+			final double doub1 = ((x + points.get(i).x - (w - 1) / 2)) / (w - 1);
 			final double doub2 = ((y + points.get(i).y - (h - 1) / 2)) / (h - 1);
 			final Point3 o = e.add((u.mul(doub1).mul(a).mul(s)).add(v.mul(doub2).mul(s)));
 			final Ray ray = new Ray(o, super.w.mul(-1.0)); // vector d = vector
