@@ -5,12 +5,12 @@ import java.util.Random;
 
 import Matrizen_Vektoren_Bibliothek.Point2;
 
-public class SamplingPattern {
+public class StaticSamplingPattern {
 	Random rand = new Random();
 	final ArrayList<Point2> points;
 	final int numSamples;
 
-	public SamplingPattern(ArrayList<Point2> points, int numSamples) {
+	public StaticSamplingPattern(ArrayList<Point2> points, int numSamples) {
 		this.points = points;
 		this.numSamples = numSamples;
 	}
@@ -27,19 +27,13 @@ public class SamplingPattern {
 
 		final ArrayList<Double> werte = new ArrayList<Double>();
 		final double growValue = 1 / numSamples;
-		double startValue = 0.0;
-		// erster Punkt ist 0,0.. dann nach positiv und nach negativ jeweils den
-		// Faktor (1/Anzahl gewünschter Samples) verrechnen
-		for (int k = 0; k < numSamples / 2; k++) {
-			werte.add(k, startValue);
-			startValue = startValue - growValue;
-		}
+		double startValue = -0.5;
 
-		for (int j = 0; j < numSamples / 2; j++) {
+		for (int j = 0; j < numSamples; j++) {
 			werte.add(j, startValue);
 			startValue = startValue + growValue;
-		}
 
+		}
 		for (int i = 0; i < numSamples; i++) {
 			final int w = rand.nextInt(werte.size());
 
