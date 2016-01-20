@@ -12,17 +12,17 @@ public class Color {
 	/**
 	 * Rot-Wert der Color-Klasse
 	 */
-	public final double r;
+	public double r;
 
 	/**
 	 * Gruen-Wert der Color-Klasse
 	 */
-	public final double g;
+	public double g;
 
 	/**
 	 * Blau-Wert der Color-Klasse
 	 */
-	public final double b;
+	public double b;
 
 	/**
 	 * @param r
@@ -36,27 +36,27 @@ public class Color {
 
 		// TODO: Keiner der Werte soll größer 1 sein, daher die
 		// Fallunterscheidung.
-		if (r > 1) {
-			this.r = 1;
-		} else if (r < 0) {
-			this.r = 0;
-		} else {
-			this.r = r;
-		}
-		if (g > 1) {
-			this.g = 1;
-		} else if (g < 0) {
-			this.g = 0;
-		} else {
-			this.g = g;
-		}
-		if (b > 1) {
-			this.b = 1;
-		} else if (b < 0) {
-			this.b = 0;
-		} else {
-			this.b = b;
-		}
+		// if (r > 1) {
+		// this.r = 1;
+		// } else if (r < 0) {
+		// this.r = 0;
+		// } else {
+		this.r = r;
+		// }
+		// if (g > 1) {
+		// this.g = 1;
+		// } else if (g < 0) {
+		// this.g = 0;
+		// } else {
+		this.g = g;
+		// }
+		// if (b > 1) {
+		// this.b = 1;
+		// } else if (b < 0) {
+		// this.b = 0;
+		// } else {
+		this.b = b;
+		// }
 	}
 
 	/**

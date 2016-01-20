@@ -8,7 +8,7 @@ import Matrizen_Vektoren_Bibliothek.Point2;
 public class SamplingPattern {
 	Random rand = new Random();
 	final ArrayList<Point2> points;
-	private final int numSamples;
+	final int numSamples;
 
 	public SamplingPattern(ArrayList<Point2> points, int numSamples) {
 		this.points = points;
@@ -26,10 +26,10 @@ public class SamplingPattern {
 		// dann löschen.. das ganze wiederholen, bis werte leer ist
 
 		final ArrayList<Double> werte = new ArrayList<Double>();
-		double index = (-numSamples / 2) / 10;
+		double pointInPixel = (-numSamples / 2) / 10;
 		for (int j = 0; j < numSamples; j++) {
-			werte.add(j, index);
-			index = index + 0.1;
+			werte.add(j, pointInPixel);
+			pointInPixel = pointInPixel + 0.1;
 
 		}
 		for (int i = 0; i < numSamples; i++) {

@@ -63,7 +63,7 @@ public class World {
 	 * @throws IllegalArgumentException
 	 */
 	public Color hit(ArrayList<Ray> rays) throws IllegalArgumentException {
-		Color retCol = null;
+		Color retCol = new Color(0, 0, 0);
 		double counter = 0.0;
 		if (rays == null) {
 			throw new IllegalArgumentException("The Ray cannot be null!");
@@ -94,8 +94,31 @@ public class World {
 				counter++;
 			}
 		}
-		final Color retCol2 = retCol.mul(1 / counter); // Zwischenwert
-														// ausrechnen...???
+
+		// nun sorgt nicht mehr der Konstruktor der Color-Klasse dafür, dass
+		// Werte nicht mehr über eins wachsen können, sondern die
+		// Sampling-Pattern-Methode. Jedes Sampling-Pattern muss (!!!!) das
+		// leisten
+
+		final Color retCol2 = retCol.mul(1 / counter);
+		if (retCol2.r > 1) {
+			retCol2.r = 1;
+		} else if (retCol2.r < 0) {
+			retCol2.r = 0;
+		}
+
+		if (retCol2.g > 1) {
+			retCol2.g = 1;
+		} else if (retCol2.g < 0) {
+			retCol2.g = 0;
+		}
+
+		if (retCol2.b > 1) {
+			retCol2.b = 1;
+		} else if (retCol2.b < 0) {
+			retCol2.b = 0;
+		}
+
 		if (!retCol.equals(backgroundColor)) {
 			return retCol2;
 		}
