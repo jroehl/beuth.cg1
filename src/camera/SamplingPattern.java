@@ -55,19 +55,21 @@ public class SamplingPattern {
 
 		}
 
+		// zufällige Zahl aus den Werten holen
+		// mit dieser Zahl einen neuen Point2 erzeugen
+		// die entnommene zahl durch die letzte der Liste ersetzen
+		// letzte Zahl löschen
+
 		for (int i = 0; i < numSamples; i++) {
 
 			final int w = rand.nextInt(werte.size());
-			// zufällige Zahl aus den Werten holen
-			points.add(new Point2(werte.get(w), werte.get(w)));
-			// mit dieser Zahl einen neuen Point2 erzeugen
-			if (w != werte.size() - 1) {
 
-				// die entnommene zahl durch die letzte der Liste ersetzen
-				werte.set(w, werte.get(werte.size() - 1));
-				// letzte Zahl löschen
-				werte.remove(werte.size() - 1);
-			}
+			points.add(new Point2(werte.get(w), werte.get(w)));
+
+			werte.set(w, werte.get(werte.size() - 1));
+
+			werte.remove(werte.size() - 1);
+
 		}
 
 		return points;

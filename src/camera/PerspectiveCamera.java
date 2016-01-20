@@ -19,7 +19,7 @@ public class PerspectiveCamera extends Camera {
 	 * angle - Blickwinkel
 	 */
 	public final double angle;
-	SamplingPattern p;
+	SamplingPatternAbstract p;
 
 	/**
 	 * Konstruktor: PerspectiveCamera
@@ -33,7 +33,7 @@ public class PerspectiveCamera extends Camera {
 	 * @param angle
 	 *            repräsentiert den Winkel
 	 */
-	public PerspectiveCamera(Point3 e, Vector3 g, Vector3 t, double angle, SamplingPattern p) {
+	public PerspectiveCamera(Point3 e, Vector3 g, Vector3 t, double angle, SamplingPatternAbstract p) {
 		super(e, g, t, p);
 		this.angle = angle;
 		this.p = p;
@@ -56,6 +56,7 @@ public class PerspectiveCamera extends Camera {
 	public Set<Ray> rayFor(int w, int h, int x, int y) {
 		final Set<Ray> raySet = new HashSet<Ray>();
 		final Set<Point2> points = this.p.generateSamples();
+
 		// System.out.println(points.get(1).x);
 		for (final Point2 po : points) {
 

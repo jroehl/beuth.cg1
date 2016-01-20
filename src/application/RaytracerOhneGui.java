@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;
 
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
@@ -28,7 +27,6 @@ import javax.imageio.ImageIO;
 import light.Light;
 import light.PointLight;
 import material.ReflectiveMaterial;
-import ray.Ray;
 import ray.Transform;
 import ray.World;
 import textures.SingleColorTexture;
@@ -37,7 +35,7 @@ import Matrizen_Vektoren_Bibliothek.Point3;
 import Matrizen_Vektoren_Bibliothek.Vector3;
 import camera.Camera;
 import camera.PerspectiveCamera;
-import camera.SamplingPattern;
+import camera.StaticSamplingPattern;
 import color.Color;
 
 public class RaytracerOhneGui extends Application {
@@ -213,7 +211,7 @@ public class RaytracerOhneGui extends Application {
 		// true));
 
 		camera = new PerspectiveCamera(new Point3(1, 5.3, -8), new Vector3(0, -0.8, 1), new Vector3(0, 1, 0), Math.PI / 4,
-				new SamplingPattern(new HashSet<Point2>(), 5));
+				new StaticSamplingPattern(new HashSet<Point2>(), 5));
 
 		// lights.add(new DirectionalLight(new Color(0, 5, -5), new Vector3(0,
 		// 0, -3), true));
@@ -299,8 +297,9 @@ public class RaytracerOhneGui extends Application {
 
 		for (int y = 0; y < iheight; y++) {
 			for (int x = 0; x < iwidth; x++) {
-				final Set<Ray> rays = camera.rayFor(iwidth, iheight, x, iheight - 1 - y);
-				final Color c = world.hit(rays);
+
+				final Color c = world.hit(camera.rayFor(iwidth, iheight, x, iheight - 1 - y));
+
 				final javafx.scene.paint.Color javaColor = new javafx.scene.paint.Color(c.r, c.g, c.b, 1);
 				wrImg.getPixelWriter().setColor(x, y, javaColor);
 
