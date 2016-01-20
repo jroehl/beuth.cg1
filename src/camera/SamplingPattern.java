@@ -18,34 +18,45 @@ public class SamplingPattern {
 	public ArrayList<Point2> generateSamples(ArrayList<Point2> points, int numSamples) {
 		// zufälliges vertauschen der Zeilen/Spalten
 
-		// 1. werte-Liste von der negativen Hälfte von numSamples geteilt durch
-		// 10 an auffüllen und immer um 0.1 erhöhen
-		// sp 11: int -(11/2)/10 = -0.5... also -0.5, -0.4, -0.3, ... 0.5
-		// dann den Wert an einem zufällige Index herausziehen, ihn durch den
-		// letzten in der Liste befindlichen Wert ersetzen und den letzten Wert
-		// dann löschen.. das ganze wiederholen, bis werte leer ist
-
+		// bei ungerader Sampleanzahl: numSamples - 1, numSamples/2 - eine der
+		int numSamplesJust;
 		final ArrayList<Double> werte = new ArrayList<Double>();
-		final double growValue = 1 / numSamples;
+		if (numSamples % 2 != 0) {
+			numSamplesJust = numSamples - 1;
+		} else {
+			numSamplesJust = numSamples;
+		}
+
+		final double growValue = 1.0 / numSamples;
+
 		double startValue = 0.0;
 		// erster Punkt ist 0,0.. dann nach positiv und nach negativ jeweils den
 		// Faktor (1/Anzahl gewünschter Samples) verrechnen
-		for (int k = 0; k < numSamples / 2; k++) {
+		for (int k = 0; k < numSamplesJust / 2; k++) {
 			werte.add(k, startValue);
 			startValue = startValue - growValue;
+
 		}
 
-		for (int j = 0; j < numSamples / 2; j++) {
+		for (int j = 0; j < (numSamples + 1) / 2; j++) {
 			werte.add(j, startValue);
 			startValue = startValue + growValue;
+
 		}
 
 		for (int i = 0; i < numSamples; i++) {
-			final int w = rand.nextInt(werte.size());
 
+			final int w = rand.nextInt(werte.size());
+			// zufällige Zahl aus den Werten holen
 			points.add(new Point2(werte.get(w), werte.get(w)));
-			werte.set(w, werte.get(werte.size() - 1));
-			werte.remove(werte.size() - 1);
+			// mit dieser Zahl einen neuen Point2 erzeugen
+			if (w != werte.size() - 1) {
+
+				// die entnommene zahl durch die letzte der Liste ersetzen
+				werte.set(w, werte.get(werte.size() - 1));
+				// letzte Zahl löschen
+				werte.remove(werte.size() - 1);
+			}
 		}
 		return points;
 	}
