@@ -27,8 +27,8 @@ import javax.imageio.ImageIO;
 
 import light.Light;
 import light.PointLight;
+import material.LambertMaterial;
 import material.PhongMaterial;
-import material.ReflectiveMaterial;
 import ray.Transform;
 import ray.World;
 import textures.SingleColorTexture;
@@ -122,8 +122,7 @@ public class RaytracerOhneGui extends Application {
 
 		// node 1
 		final Node no = new Node(new Transform().translate(new Point3(0, -3, 0)), new ArrayList<Geometry>());
-		no.geos.add(new Plane(new ReflectiveMaterial(new SingleColorTexture(new Color(0.6, 0.6, 0.5)), new SingleColorTexture(new Color(1,
-				0, 0.5)), new SingleColorTexture(new Color(1, 1, 1)), 64)));
+		no.geos.add(new Plane(new LambertMaterial(new SingleColorTexture(new Color(0.6, 0.6, 0.5)))));
 		geometries.add(no);
 
 		// node 2
@@ -209,8 +208,8 @@ public class RaytracerOhneGui extends Application {
 		// lights.add(new PointLight(new Color(1, 1, 1), new Point3(4, 3, 2),
 		// true));
 
-		camera = new PerspectiveCamera(new Point3(1, 5.3, -8), new Vector3(0, -0.8, 1), new Vector3(0, 1, 0), Math.PI / 4,
-				new RandomRowsSamplingPattern(50));
+		camera = new PerspectiveCamera(new Point3(1, 5.3, -8), new Vector3(0, -0.8, 1), new Vector3(0, 1, 0), Math.PI / 6,
+				new RandomRowsSamplingPattern(20));
 
 		// lights.add(new DirectionalLight(new Color(0, 5, -5), new Vector3(0,
 		// 0, -3), true));

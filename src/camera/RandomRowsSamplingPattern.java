@@ -1,6 +1,7 @@
 package camera;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -32,7 +33,7 @@ public class RandomRowsSamplingPattern extends SamplingPattern {
 
 		}
 
-		// Collections.shuffle(werte);
+		Collections.shuffle(werte);
 
 		final int wSize = werte.size();
 		// System.out.println("x & y des jeweiligen Punktes");
