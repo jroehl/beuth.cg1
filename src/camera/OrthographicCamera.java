@@ -19,7 +19,7 @@ public class OrthographicCamera extends Camera {
 	 * s - double
 	 */
 	public final double s;
-	final SamplingPatternAbstract p;
+	final SamplingPattern p;
 
 	/**
 	 * Konstruktor: OrthographicCamera
@@ -32,7 +32,7 @@ public class OrthographicCamera extends Camera {
 	 *            repräsentiert den up-Vektor (vector3(0,1,0))
 	 * @param s
 	 */
-	public OrthographicCamera(final Point3 e, final Vector3 g, final Vector3 t, final double s, final SamplingPatternAbstract p) {
+	public OrthographicCamera(final Point3 e, final Vector3 g, final Vector3 t, final double s, final SamplingPattern p) {
 		super(e, g, t, p);
 		this.s = s;
 		this.p = p;

@@ -1,13 +1,14 @@
 package application;
 
+import geometries.Cylinder;
 import geometries.Geometry;
 import geometries.Node;
+import geometries.Plane;
 import geometries.Sphere;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
@@ -26,16 +27,16 @@ import javax.imageio.ImageIO;
 
 import light.Light;
 import light.PointLight;
+import material.PhongMaterial;
 import material.ReflectiveMaterial;
 import ray.Transform;
 import ray.World;
 import textures.SingleColorTexture;
-import Matrizen_Vektoren_Bibliothek.Point2;
 import Matrizen_Vektoren_Bibliothek.Point3;
 import Matrizen_Vektoren_Bibliothek.Vector3;
 import camera.Camera;
 import camera.PerspectiveCamera;
-import camera.StaticSamplingPattern;
+import camera.RandomRowsSamplingPattern;
 import color.Color;
 
 public class RaytracerOhneGui extends Application {
@@ -120,11 +121,10 @@ public class RaytracerOhneGui extends Application {
 		// ________________________________________________________________________________________________________________________
 
 		// node 1
-		// final Node no = new Node(new Transform().translate(new Point3(0, 2,
-		// 0)), new ArrayList<Geometry>());
-		// no.geos.add(new Disc(new LambertMaterial(new
-		// ImageTexture("/Users/bodowissemann/Desktop/img-thing.jpeg"))));
-		// geometries.add(no);
+		final Node no = new Node(new Transform().translate(new Point3(0, -3, 0)), new ArrayList<Geometry>());
+		no.geos.add(new Plane(new ReflectiveMaterial(new SingleColorTexture(new Color(0.6, 0.6, 0.5)), new SingleColorTexture(new Color(1,
+				0, 0.5)), new SingleColorTexture(new Color(1, 1, 1)), 64)));
+		geometries.add(no);
 
 		// node 2
 		// final Node no2 = new Node(new Transform().translate(new Point3(0,
@@ -142,13 +142,11 @@ public class RaytracerOhneGui extends Application {
 		// geometries.add(no3);
 
 		// node 4
-		// final Node no4 = new Node(new Transform().translate(new Point3(11,
-		// -1.3, 3.3)).rotateY(0.6), new ArrayList<Geometry>());
-		// no4.geos.add(new Cylinder(new ReflectiveMaterial(new
-		// SingleColorTexture(new Color(1, 0.5, 0)), new SingleColorTexture(new
-		// Color(1,
-		// 1, 1)), new SingleColorTexture(new Color(0.5, 0, 0.5)), 64)));
-		// geometries.add(no4);
+		final Node no4 = new Node(new Transform().translate(new Point3(1, -1.3, 3.3)).rotateY(3.5).rotateX(7).rotateZ(0.9)
+				.scale(1.5, 1.5, 0.5), new ArrayList<Geometry>());
+		no4.geos.add(new Cylinder(new PhongMaterial(new SingleColorTexture(new Color(0.5, 0.5, 0.5)), new SingleColorTexture(new Color(1,
+				1, 1)), 64), new ArrayList<Geometry>()));
+		geometries.add(no4);
 
 		// node 5
 		// final Node no5 = new Node(new Transform().scale(1, 0.1, 1), new
@@ -167,12 +165,12 @@ public class RaytracerOhneGui extends Application {
 		// geometries.add(no6);
 
 		// // node 7
-		// final Node no7 = new Node(new Transform().scale(1, 0.3, 1), new
-		// ArrayList<Geometry>());
-		// no7.geos.add(new TrianglePyramid(new ReflectiveMaterial(new
-		// SingleColorTexture(new Color(1, 0, 0.5)), new SingleColorTexture(
-		// new Color(1, 0, 0.5)), new SingleColorTexture(new Color(1, 1, 1)),
-		// 64)));
+		// final Node no7 = new Node(new Transform().scale(-1, 0.3,
+		// 1).rotateY(0.4), new ArrayList<Geometry>());
+		// no7.geos.add(new TrianglePyramid(new PhongMaterial(new
+		// SingleColorTexture(new Color(1, 0, 0.5)), new SingleColorTexture(new
+		// Color(
+		// 1, 1, 1)), 64)));
 		// geometries.add(no7);
 
 		// // // Erde
@@ -197,21 +195,22 @@ public class RaytracerOhneGui extends Application {
 		// boxNode.geos.add(new AxisAlignedBox(new LambertMaterial(new
 		// SingleColorTexture(new Color(0.7, 0.7, 0)))));
 		// geometries.add(boxNode);
-		lights.add(new PointLight(new Color(1, 1, 1), new Point3(0, 3, -4), true));
+		// lights.add(new PointLight(new Color(1, 1, 1), new Point3(0, 3, -4),
+		// true));
 
 		// // Scene 2
-		final Node sphereNode = new Node(new Transform().rotateY(-1.1).rotateX(-0.4).rotateZ(0.2).scale(2.6, 0.3, 1.1),
-				new ArrayList<Geometry>());
-		sphereNode.geos.add(new Sphere(new ReflectiveMaterial(new SingleColorTexture(new Color(1, 0, 0)), new SingleColorTexture(new Color(
-				1, 1, 1)), new SingleColorTexture(new Color(0.8, 0.4, 0)), 64)));
+		final Node sphereNode = new Node(new Transform().translate(new Point3(4, 0, 0)).rotateX(0.05), new ArrayList<Geometry>());
+		sphereNode.geos.add(new Sphere(new PhongMaterial(new SingleColorTexture(new Color(1, 0, 0)), new SingleColorTexture(new Color(1, 1,
+				1)), 64)));
 		geometries.add(sphereNode);
-		lights.add(new PointLight(new Color(1, 1, 1), new Point3(11, 0, -2), true));
+		// lights.add(new PointLight(new Color(1, 1, 1), new Point3(11, 0, -2),
+		// true));
 
 		// lights.add(new PointLight(new Color(1, 1, 1), new Point3(4, 3, 2),
 		// true));
 
 		camera = new PerspectiveCamera(new Point3(1, 5.3, -8), new Vector3(0, -0.8, 1), new Vector3(0, 1, 0), Math.PI / 4,
-				new StaticSamplingPattern(new HashSet<Point2>(), 5));
+				new RandomRowsSamplingPattern(50));
 
 		// lights.add(new DirectionalLight(new Color(0, 5, -5), new Vector3(0,
 		// 0, -3), true));

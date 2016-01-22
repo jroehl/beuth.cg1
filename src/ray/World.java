@@ -65,7 +65,7 @@ public class World {
 	 */
 	public Color hit(Set<Ray> rays) throws IllegalArgumentException {
 		Color retCol = new Color(0, 0, 0);
-		double counter = 0.0;
+
 		if (rays == null) {
 			throw new IllegalArgumentException("The Ray cannot be null!");
 		}
@@ -87,12 +87,14 @@ public class World {
 			if (hit != null) {
 
 				final Color c = hit.geo.material.colorFor(hit, this, new Tracer(this, 5));
-				if (retCol == null) {
 
-					retCol = c;
-				}
 				retCol = retCol.add(c);
-				counter++;
+				// System.out.println(retCol.r);
+
+			}
+
+			if (hit == null) {
+				retCol = retCol.add(this.backgroundColor);
 			}
 		}
 
@@ -101,7 +103,7 @@ public class World {
 		// Sampling-Pattern-Methode. Jedes Sampling-Pattern muss (!!!!) das
 		// leisten
 
-		final Color retCol2 = retCol.mul(1 / counter);
+		final Color retCol2 = retCol.mul(1.0 / rays.size());
 		if (retCol2.r > 1) {
 			retCol2.r = 1;
 		} else if (retCol2.r < 0) {
@@ -120,10 +122,7 @@ public class World {
 			retCol2.b = 0;
 		}
 
-		if (!retCol.equals(backgroundColor)) {
-			return retCol2;
-		}
-		return backgroundColor;
+		return retCol2;
 
 	}
 

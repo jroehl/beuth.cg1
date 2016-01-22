@@ -23,7 +23,7 @@ public abstract class Camera {
 	public final Vector3 u;
 	public final Vector3 v;
 	public final Vector3 w;
-	private final SamplingPatternAbstract p;
+	final SamplingPattern p;
 
 	/**
 	 * Konstruktor: Camera
@@ -36,7 +36,7 @@ public abstract class Camera {
 	 *            Vector3 der Kamera
 	 * @throws IllegalArgumentException
 	 */
-	public Camera(final Point3 e, final Vector3 g, final Vector3 t, SamplingPatternAbstract p2) throws IllegalArgumentException {
+	public Camera(final Point3 e, final Vector3 g, final Vector3 t, SamplingPattern p2) throws IllegalArgumentException {
 
 		if (e == null) {
 			throw new IllegalArgumentException("The Point  e cannot be null!");

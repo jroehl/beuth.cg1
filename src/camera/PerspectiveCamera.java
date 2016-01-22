@@ -19,7 +19,7 @@ public class PerspectiveCamera extends Camera {
 	 * angle - Blickwinkel
 	 */
 	public final double angle;
-	SamplingPatternAbstract p;
+	SamplingPattern p;
 
 	/**
 	 * Konstruktor: PerspectiveCamera
@@ -33,7 +33,7 @@ public class PerspectiveCamera extends Camera {
 	 * @param angle
 	 *            repräsentiert den Winkel
 	 */
-	public PerspectiveCamera(Point3 e, Vector3 g, Vector3 t, double angle, SamplingPatternAbstract p) {
+	public PerspectiveCamera(Point3 e, Vector3 g, Vector3 t, double angle, SamplingPattern p) {
 		super(e, g, t, p);
 		this.angle = angle;
 		this.p = p;
@@ -56,23 +56,29 @@ public class PerspectiveCamera extends Camera {
 	public Set<Ray> rayFor(int w, int h, int x, int y) {
 		final Set<Ray> raySet = new HashSet<Ray>();
 		final Set<Point2> points = this.p.generateSamples();
-
-		// System.out.println(points.get(1).x);
+		// int a = 0;
+		// System.out.println(points.size());
 		for (final Point2 po : points) {
+			final double x1 = x + po.x;
+			final double y1 = y + po.y;
+			// System.out.println("x1: " + x1);
+			final Vector3 ux = u.mul(x1 - ((w - 1.0) / 2.0));
 
-			final Vector3 ux = u.mul(x + po.x - ((w - 1) / 2));
-			// System.out.println(ux.x);
-			final Vector3 vy = v.mul(y + po.y - ((h - 1) / 2));
-			final Vector3 r = this.w.mul(-1).mul((h / 2) / Math.tan(angle / 2)).add(ux.add(vy));
-			final Ray ray = new Ray(e, r.normalized());;
-
+			final Vector3 vy = v.mul(y1 - ((h - 1.0) / 2.0));
+			final Vector3 r = this.w.mul(-1.0).mul((h / 2.0) / Math.tan(angle / 2.0)).add(ux.add(vy));
+			final Ray ray = new Ray(e, r.normalized());
+			// a++;
 			raySet.add(ray);
+			// System.out.println(Arrays.toString(raySet.toArray()));
+
 		}
+		// System.out.println(a + "\n");
+		// System.out.println(raySet.size());
 		return raySet;
 	}
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -87,7 +93,7 @@ public class PerspectiveCamera extends Camera {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -106,7 +112,7 @@ public class PerspectiveCamera extends Camera {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
