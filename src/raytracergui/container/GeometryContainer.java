@@ -21,6 +21,7 @@ public class GeometryContainer {
     private Object texture_3extra;
     private int exponent = 0;
     private String name;
+    private geometries.Geometry fixedGeometry = null;
 
     public String getName() {
         return this.name;
@@ -32,6 +33,10 @@ public class GeometryContainer {
 
     public void addGeometry(Geometry geometry) {
         this.geometry = geometry;
+    }
+
+    public void addGeometry(geometries.Geometry geometry) {
+        this.fixedGeometry = geometry;
     }
 
     public void addTextures(HashMap<String, Object[]> textures) {
@@ -60,17 +65,21 @@ public class GeometryContainer {
     }
 
     public geometries.Geometry getGeometry() {
-//        printValues();
-        switch (material) {
-            case SINGLECOLOR:
-            case LAMBERT:
-                return (geometry.getGeometry(material.getMaterial(this.exponent, this.texture_1.getTexture(this.texture_1extra))));
-            case PHONG:
-                return (geometry.getGeometry(material.getMaterial(this.exponent, this.texture_1.getTexture(this.texture_1extra), this.texture_2.getTexture(this.texture_2extra))));
-            case REFLECTIVE:
-                return (geometry.getGeometry(material.getMaterial(this.exponent, this.texture_1.getTexture(this.texture_1extra), this.texture_2.getTexture(this.texture_2extra), this.texture_3.getTexture(this.texture_3extra))));
-            default:
-                return null;
+        if (fixedGeometry != null) {
+            return fixedGeometry;
+        } else {
+            printValues();
+            switch (material) {
+                case SINGLECOLOR:
+                case LAMBERT:
+                    return (geometry.getGeometry(material.getMaterial(this.exponent, this.texture_1.getTexture(this.texture_1extra))));
+                case PHONG:
+                    return (geometry.getGeometry(material.getMaterial(this.exponent, this.texture_1.getTexture(this.texture_1extra), this.texture_2.getTexture(this.texture_2extra))));
+                case REFLECTIVE:
+                    return (geometry.getGeometry(material.getMaterial(this.exponent, this.texture_1.getTexture(this.texture_1extra), this.texture_2.getTexture(this.texture_2extra), this.texture_3.getTexture(this.texture_3extra))));
+                default:
+                    return null;
+            }
         }
     }
 

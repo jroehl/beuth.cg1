@@ -1,46 +1,64 @@
 package raytracergui.controller;
 
+import Matrizen_Vektoren_Bibliothek.Point3;
 import camera.Camera;
 import color.Color;
+import com.sun.javafx.geom.Vec3d;
+import geometries.Geometry;
+import geometries.Node;
+import geometries.Sphere;
 import javafx.beans.binding.StringBinding;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.MapChangeListener;
-import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
+import javafx.collections.*;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Point3D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import material.ReflectiveMaterial;
 import org.controlsfx.control.PlusMinusSlider;
+import org.controlsfx.control.PopOver;
 import org.controlsfx.control.StatusBar;
+import org.controlsfx.glyphfont.Glyph;
+import ray.Transform;
 import ray.World;
 import raytracergui.RenderThread;
+import raytracergui.container.GeometryContainer;
 import raytracergui.container.LightContainer;
 import raytracergui.container.NodeContainer;
+import raytracergui.dataclasses.TreeViewWithItems;
+import textures.SingleColorTexture;
 
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.concurrent.*;
+
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toList;
 
 public class RayTracerMainController {
     @FXML
     private AnchorPane apMain;
     @FXML
     private ChoiceBox cameraChoice;
+    @FXML
+    private ChoiceBox nodeChoice;
     @FXML
     private HBox mainViewer;
     @FXML
@@ -132,9 +150,16 @@ public class RayTracerMainController {
     @FXML
     private Label labelTranslateZ;
     @FXML
-    private ListView nodeListView;
-    @FXML
     private ColorPicker backgroundColorPicker;
+    @FXML
+    private Accordion nodeAccordion;
+    @FXML
+    private TitledPane nodeSettingsPane;
+    @FXML
+    private VBox nodeListView;
+    @FXML
+    private Button editBtn;
+
 
     /**
      * View für die Erzeugung des Images
@@ -160,8 +185,6 @@ public class RayTracerMainController {
 
     private Stage stage;
 
-    private ToggleGroup group = new ToggleGroup();
-
     private PlusMinusSlider[] cameraSliders;
     private Label[] cameraLabels;
     private PlusMinusSlider[] nodeSliders;
@@ -175,16 +198,30 @@ public class RayTracerMainController {
 
     public ObservableMap<String, LightContainer> lightMap = FXCollections.observableHashMap();
     public NodeContainer selectedNode;
-    public HashMap<String, NodeContainer> nodeMap = new HashMap<>();
 
-    private ObservableList<String> nodeNames = FXCollections.observableArrayList();
+    private ObservableList<NodeContainer> nodes = FXCollections.observableArrayList();
+    private ObservableList<NodeContainer> selectedItems = FXCollections.observableArrayList();
+
     private raytracergui.enums.Camera selectedCamera;
     private boolean lightWindowOpen;
 
-    private Color backgroundColor = new Color(0,0,0);
+    private Color backgroundColor = new Color(0, 0, 0);
+    private double mouseOldY;
+    private double mouseOldX;
+    private double mousePosX;
+    private double mousePosY;
+    private double mouseDeltaX;
+    private double mouseDeltaY;
+    private Vec3d vecPos;
+
+    private TreeViewWithItems treeView;
+    private TreeItem<NodeContainer> root;
+
 
     @FXML
     public void initialize() {
+
+        nodeAccordion.setExpandedPane(nodeSettingsPane);
 
         cameraChoice.setItems(cameraNames);
         for (Enum c : cameraNames) {
@@ -194,8 +231,20 @@ public class RayTracerMainController {
         cameraChoice.getSelectionModel().selectLast();
         selectedCamera = cameraMap.get(cameraChoice.getSelectionModel().getSelectedItem().toString());
         createNode();
-        nodeListView.setItems(nodeNames);
-        nodeListView.setCellFactory(param -> new RadioListCell());
+
+        root = new CheckBoxTreeItem<>();
+
+        treeView = new TreeViewWithItems(root);
+        treeView.setShowRoot(false);
+        nodeListView.setMargin(treeView, new Insets(10, 0, 0, 0));
+        nodeListView.getChildren().add(treeView);
+
+        treeView.setItems(nodes);
+        treeView.refreshList(root);
+
+        nodeChoice.setItems(treeView.allEntries);
+        nodeChoice.getSelectionModel().select(selectedNode);
+
         setCameraValues();
         initializeListeners();
         initializeViewer();
@@ -220,7 +269,6 @@ public class RayTracerMainController {
 
         apMain.sceneProperty().addListener((ChangeListener) -> {
             scene = apMain.getScene();
-            System.out.println(scene);
             if (scene != null) {
                 setupResizeListener();
             }
@@ -265,22 +313,15 @@ public class RayTracerMainController {
 
         );
 
-        group.selectedToggleProperty().
 
-                addListener((ChangeListener)
+        treeView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-                                ->
-
-                        {
-                            RadioButton chk = (RadioButton) group.getSelectedToggle(); // Cast object to radio button
-                            String selected = chk.getText();
-                            selectedNodeName = selected;
-                            selectedNode = nodeMap.get(selected);
-                            bindNodeLabels();
-                        }
-
-                );
-
+        treeView.getSelectionModel().getSelectedItems().addListener((ListChangeListener<TreeItem<NodeContainer>>) c -> {
+            selectedItems = (ObservableList<NodeContainer>) treeView.getSelectionModel().getSelectedItems().stream().map(item -> {
+                TreeItem<NodeContainer> tempItem = (TreeItem<NodeContainer>) item;
+                return tempItem.getValue();
+            }).collect(collectingAndThen(toList(), l -> FXCollections.observableArrayList(l)));
+        });
 
         lightMap.addListener((MapChangeListener) change -> {
             if (checkAutorender.isSelected()) {
@@ -288,6 +329,7 @@ public class RayTracerMainController {
             }
         });
     }
+
 
     private void setupResizeListener() {
 //        scene.widthProperty().addListener((ChangeListener) -> {
@@ -316,7 +358,7 @@ public class RayTracerMainController {
 
     private void changeNodeValues(double value, Label l) {
         String id = l.getId();
-        selectedNode = nodeMap.get(selectedNodeName);
+        selectedNode = getNodeContainer(selectedNodeName);
         selectedNode.setValue(id, selectedNode.getValue(id) + value);
 
         if (checkAutorender.isSelected()) {
@@ -326,7 +368,7 @@ public class RayTracerMainController {
     }
 
     private void setNodeValues() {
-        nodeMap.put(selectedNodeName, selectedNode);
+        overwriteNodeContainer(selectedNodeName);
     }
 
     private void changeCameraValues(double value, Label l) {
@@ -394,7 +436,8 @@ public class RayTracerMainController {
         for (LightContainer l : lightMap.values()) {
             world.addLight(l.getLight());
         }
-        for (NodeContainer n : nodeMap.values()) {
+
+        for (NodeContainer n : nodes) {
             world.addGeometry(n.getNode());
         }
     }
@@ -467,13 +510,8 @@ public class RayTracerMainController {
                 ReadOnlyBooleanProperty o = (ReadOnlyBooleanProperty) ov;
                 Stage s = (Stage) o.getBean();
                 selectedNodeName = (String) s.getUserData();
-                selectedNode = nodeMap.get(selectedNodeName);
-                nodeListView.getSelectionModel().select(nodeNames.indexOf(selectedNodeName));
-                for (Toggle toggle : group.getToggles()) {
-                    if (toggle.getUserData().equals(selectedNodeName)) {
-                        group.selectToggle(toggle);
-                    }
-                }
+                selectedNode = getNodeContainer(selectedNodeName);
+                nodeChoice.getSelectionModel().select(treeView.allEntries.indexOf(selectedNode));
                 bindNodeLabels();
             });
             stage.setTitle("Geometries of: " + selectedNodeName);
@@ -500,9 +538,49 @@ public class RayTracerMainController {
         nodeIndex += 1;
         String newNodeName = "node_" + nodeIndex;
         selectedNodeName = newNodeName;
-        nodeMap.put(newNodeName, new NodeContainer(newNodeName));
-        selectedNode = nodeMap.get(newNodeName);
-        nodeNames.add(newNodeName);
+        selectedNode = new NodeContainer(newNodeName);
+
+        final Node sphereNode = new Node(new Transform().translate(new Point3(3, 4, 6)).rotateY(-4).rotateX(-5).scale(1, 1, 1), new ArrayList<Geometry>());
+        sphereNode.geos.add(new Sphere(new ReflectiveMaterial(new SingleColorTexture(new Color(1, 0, 0)), new SingleColorTexture(new Color(
+                1, 1, 1)), new SingleColorTexture(new Color(0.8, 0.4, 0)), 64)));
+
+        GeometryContainer geometryContainer = new GeometryContainer();
+        geometryContainer.addGeometry(sphereNode);
+        geometryContainer.setName("TEST");
+
+        NodeContainer sphere = new NodeContainer("Sphere");
+
+        sphere.addGeometry(geometryContainer);
+        selectedNode.addChild(sphere);
+
+        nodes.add(selectedNode);
+        treeView.refreshList(root);
+    }
+
+    public NodeContainer getNodeContainer(String key) {
+        for (NodeContainer n : nodes) {
+            if (key.equals(n.getName())) {
+                return n;
+            }
+        }
+        return null;
+    }
+
+
+    private void overwriteNodeContainer(String key) {
+        if (getNodeContainer(selectedNodeName) == null) {
+            nodes.add(selectedNode);
+        } else {
+            for (NodeContainer n : nodes) {
+                if (key.equals(n.getName())) {
+                    int index = nodes.indexOf(n);
+                    if (index != -1) {
+                        nodes.remove(index);
+                        nodes.add(index, selectedNode);
+                    }
+                }
+            }
+        }
     }
 
 //    @FXML
@@ -538,23 +616,59 @@ public class RayTracerMainController {
         stage.close();
     }
 
-    private class RadioListCell extends ListCell<String> {
+    public void getMouseDrag(Event event) {
+        if (event instanceof MouseEvent) {
+            MouseEvent me = (MouseEvent) event;
 
-        @Override
-        public void updateItem(String obj, boolean empty) {
-            super.updateItem(obj, empty);
-            if (empty) {
-                setText(null);
-                setGraphic(null);
-            } else {
-                RadioButton radioButton = new RadioButton(obj);
-                radioButton.setSelected(true);
-                radioButton.setToggleGroup(group);
-                radioButton.setUserData(obj);
-                // Add Listeners if any
-                setGraphic(radioButton);
-            }
+            Point3D coords = me.getPickResult().getIntersectedPoint();
+
+            double x = coords.getX();
+            double y = coords.getY();
+            double z = coords.getZ();
+
+            System.out.println(x);
+            System.out.println(y);
+            System.out.println(z);
+
         }
     }
+
+    @FXML
+    public void deleteNode(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    public void editNodes(ActionEvent actionEvent) {
+        PopOver popOver = new PopOver();
+
+        VBox vBox = new VBox();
+        vBox.setPadding(new Insets(10,10,10,10));
+        int size = selectedItems.size();
+        Label label;
+        ChoiceBox<NodeContainer> subNodeChoice = new ChoiceBox<>();
+        Button submitBtn = new Button("", new Glyph("FontAwesome","CHECK"));
+        if (size == 0) {
+            label = new Label("No items selected!");
+            subNodeChoice.setDisable(true);
+            submitBtn.setDisable(true);
+        } else {
+            label = new Label("Move "+size+" items to node:");
+        }
+        label.setPadding(new Insets(0,0,5,0));
+
+        System.out.println(selectedItems);
+        System.out.println(treeView.allEntries.get(0));
+
+        subNodeChoice.setItems(treeView.allEntries.filtered((NodeContainer) -> !selectedItems.contains(NodeContainer)));
+
+
+        HBox hBox = new HBox(subNodeChoice, submitBtn);
+        hBox.setMargin(submitBtn, new Insets(0,0,0,5));
+
+        vBox.getChildren().addAll(label, hBox);
+        popOver.setContentNode(vBox);
+        popOver.show(editBtn);
+    }
+
 
 }

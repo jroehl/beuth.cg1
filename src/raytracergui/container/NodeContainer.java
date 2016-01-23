@@ -5,16 +5,32 @@ import geometries.Geometry;
 import geometries.Node;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import ray.Transform;
 import raytracergui.CalcHelper;
+import raytracergui.dataclasses.HierarchyData;
 
 import java.util.*;
 
 /**
  * Created by jroehl on 13.01.16.
  */
-public class NodeContainer {
+public class NodeContainer implements HierarchyData<NodeContainer> {
+
+    public NodeContainer(String name) {
+        this.name = name;
+        this.nodeValues = FXCollections.observableHashMap();
+        for (String key : KEYS) {
+            this.nodeValues.put(key, new SimpleDoubleProperty());
+        }
+        this.geometries = new HashMap<>();
+        this.setScale(0.0, 0.0, 0.0);
+        this.setTranslate(0.0, 0.0, 0.0);
+        this.setTransformX(0.0);
+        this.setTransformY(0.0);
+        this.setTransformZ(0.0);
+    }
 
     private final String LABELTRANSX = "labelTransX";
     private final String LABELTRANSY = "labelTransY";
@@ -33,20 +49,16 @@ public class NodeContainer {
     private final String[] KEYS = {LABELTRANSX, LABELTRANSY, LABELTRANSZ, LABELSCALEX, LABELSCALEY, LABELSCALEZ, LABELTRANSLATEX, LABELTRANSLATEY, LABELTRANSLATEZ};
     private ObservableMap<String, SimpleDoubleProperty> nodeValues;
 
+    private ObservableList<NodeContainer> children = FXCollections.observableArrayList();
+
     private HashMap<String, GeometryContainer> geometries;
 
-    public NodeContainer(String name) {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
         this.name = name;
-        this.nodeValues = FXCollections.observableHashMap();
-        for (String key : KEYS) {
-            this.nodeValues.put(key, new SimpleDoubleProperty());
-        }
-        this.geometries = new HashMap<>();
-        this.setScale(0.0, 0.0, 0.0);
-        this.setTranslate(0.0, 0.0, 0.0);
-        this.setTransformX(0.0);
-        this.setTransformY(0.0);
-        this.setTransformZ(0.0);
     }
 
     public GeometryContainer getGeometry(String key) {
@@ -73,6 +85,10 @@ public class NodeContainer {
                 }
             }
         }
+        for (NodeContainer n : this.children) {
+            geos.add(n.getNode());
+        }
+
         return geos;
     }
 
@@ -166,19 +182,31 @@ public class NodeContainer {
 
     @Override
     public String toString() {
-        return "NodeContainer{" +
-                "name='" + name + '\'' +
-                ", LABELTRANSX='" + LABELTRANSX + '\'' +
-                ", LABELTRANSY='" + LABELTRANSY + '\'' +
-                ", LABELTRANSY='" + LABELTRANSZ + '\'' +
-                ", LABELSCALEX='" + LABELSCALEX + '\'' +
-                ", LABELSCALEY='" + LABELSCALEY + '\'' +
-                ", LABELSCALEZ='" + LABELSCALEZ + '\'' +
-                ", KEYS=" + Arrays.toString(KEYS) +
-                ", nodeValues=" + nodeValues +
-                ", geometries=" + geometries +
-                '}';
+        return name;
+//        return "NodeContainer{" +
+//                "name='" + name + '\'' +
+//                ", LABELTRANSX='" + LABELTRANSX + '\'' +
+//                ", LABELTRANSY='" + LABELTRANSY + '\'' +
+//                ", LABELTRANSY='" + LABELTRANSZ + '\'' +
+//                ", LABELSCALEX='" + LABELSCALEX + '\'' +
+//                ", LABELSCALEY='" + LABELSCALEY + '\'' +
+//                ", LABELSCALEZ='" + LABELSCALEZ + '\'' +
+//                ", KEYS=" + Arrays.toString(KEYS) +
+//                ", nodeValues=" + nodeValues +
+//                ", geometries=" + geometries +
+//                '}';
     }
+
+    @Override
+    public ObservableList<NodeContainer> getChildren() {
+        return this.children;
+    }
+
+    @Override
+    public void addChild(NodeContainer n) {
+        this.children.add(n);
+    }
+
 }
 
 
