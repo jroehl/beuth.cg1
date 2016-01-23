@@ -31,7 +31,6 @@
                   <CheckMenuItem fx:id="checkAutorender" mnemonicParsing="false" onAction="#toggleButton" selected="true" text="autorender" />
             </items>
           </Menu>
-            <Menu fx:id="refreshBtn" mnemonicParsing="false" onAction="#rerender" text="Refresh" visible="false" />
         </menus>
       </MenuBar>
       <Accordion fx:id="nodeAccordion" prefHeight="521.0" prefWidth="202.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="29.0">
@@ -42,6 +41,7 @@
                      <children>
                           <VBox minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                               <children>
+                              <Label text="Nodes" />
                                     <ChoiceBox fx:id="nodeChoice" prefHeight="27.0" prefWidth="140.0">
                                        <HBox.margin>
                                           <Insets right="5.0" />
@@ -167,6 +167,9 @@
                                     <Insets bottom="10.0" top="5.0" />
                                  </VBox.margin>
                               </PlusMinusSlider>
+                                  <Button fx:id="refreshBtn" mnemonicParsing="false" onAction="#rerender" visible="false" >
+                                      <graphic><Glyph fontFamily="FontAwesome" icon="REFRESH" /></graphic>
+                                  </Button>
                               </children>
                           </VBox>
                      </children>
@@ -193,20 +196,20 @@
                                              <Insets right="10.0" />
                                          </HBox.margin>
                                      </Button>
+                                     <Button mnemonicParsing="false" onAction="#duplicateNode">
+                                         <graphic><Glyph fontFamily="FontAwesome" icon="COPY" /></graphic>
+                                         <HBox.margin>
+                                             <Insets right="10.0" />
+                                         </HBox.margin>
+                                     </Button>
                                      <Button fx:id="editBtn" mnemonicParsing="false" onAction="#editNodes">
                                          <graphic><Glyph fontFamily="FontAwesome" icon="WRENCH" /></graphic>
                                          <HBox.margin>
                                              <Insets right="10.0" />
                                          </HBox.margin>
                                      </Button>
-                                    <!--<Button mnemonicParsing="false" onAction="#deleteNode" text="delete" />-->
                                  </children>
                               </HBox>
-                              <!--<CheckTreeView fx:id="nodeListView">-->
-                                 <!--<VBox.margin>-->
-                                    <!--<Insets top="10.0" />-->
-                                 <!--</VBox.margin>-->
-                              <!--</CheckTreeView>-->
                            </children>
                         </VBox>
                      </children>
@@ -215,7 +218,7 @@
           </TitledPane>
         </panes>
       </Accordion>
-        <HBox fx:id="mainViewer" minHeight="-Infinity" minWidth="-Infinity" onMouseDragged="#getMouseDrag" prefHeight="480.0" prefWidth="640.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="29.0" />
+        <HBox fx:id="mainViewer" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="29.0" />
         <StatusBar fx:id="statusBar" layoutX="212.0" layoutY="471.0" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" />
         <VBox id="vbox" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0">
             <children>

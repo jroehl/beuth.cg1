@@ -240,7 +240,7 @@ public class RayTracerGeometryController {
                 geoCont = new GeometryContainer();
                 activeGeometryNames = FXCollections.observableArrayList(mainController.selectedNode.getGeometryMap().keySet());
                 geometryChecklist.setItems(activeGeometryNames);
-                mainController.addGeometries();
+                mainController.rerender();
             } else {
                 Notifications.create()
                         .position(Pos.TOP_RIGHT)

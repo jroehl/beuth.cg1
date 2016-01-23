@@ -12,7 +12,6 @@ import javafx.collections.ObservableList;
 import javafx.collections.WeakListChangeListener;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import raytracergui.container.NodeContainer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,8 +32,7 @@ public class TreeViewWithItems<T extends HierarchyData<T>> extends TreeView {
     private final Map<TreeItem<T>, WeakListChangeListener<T>> weakListeners = new HashMap<>();
 
     private ObjectProperty<ObservableList<? extends T>> items = new SimpleObjectProperty<>(this, "items");
-
-    public ObservableList<NodeContainer> allEntries = FXCollections.observableArrayList();
+//    public ObservableList<NodeContainer> allEntries;
 
     public TreeViewWithItems() {
         super();
@@ -214,15 +212,16 @@ public class TreeViewWithItems<T extends HierarchyData<T>> extends TreeView {
         this.items.set(items);
     }
 
-    public void refreshList(TreeItem<NodeContainer> root) {
-        if (root.getValue() != null)
-            allEntries.add(root.getValue());
-        for (TreeItem<NodeContainer> child : root.getChildren()) {
-            if (child.getChildren().isEmpty()) {
-                allEntries.add(child.getValue());
-            } else {
-                refreshList(child);
-            }
-        }
-    }
+//    public void refreshList(TreeItem<NodeContainer> root) {
+//        allEntries = FXCollections.observableArrayList();
+//        if (root.getValue() != null)
+//            allEntries.add(root.getValue());
+//        for (TreeItem<NodeContainer> child : root.getChildren()) {
+//            if (child.getChildren().isEmpty()) {
+//                allEntries.add(child.getValue());
+//            } else {
+//                refreshList(child);
+//            }
+//        }
+//    }
 }

@@ -16,7 +16,9 @@ import java.util.*;
 /**
  * Created by jroehl on 13.01.16.
  */
-public class NodeContainer implements HierarchyData<NodeContainer> {
+public class NodeContainer implements HierarchyData<NodeContainer>, Cloneable {
+
+    private NodeContainer parent = null;
 
     public NodeContainer(String name) {
         this.name = name;
@@ -30,6 +32,19 @@ public class NodeContainer implements HierarchyData<NodeContainer> {
         this.setTransformX(0.0);
         this.setTransformY(0.0);
         this.setTransformZ(0.0);
+    }
+
+    public NodeContainer(NodeContainer n) {
+        this.name = n.getName();
+        this.nodeValues = FXCollections.observableHashMap();
+        for (String key : KEYS) {
+            this.nodeValues.put(key, new SimpleDoubleProperty(n.get(key).getValue()));
+        }
+        this.geometries = new HashMap<>();
+        for (GeometryContainer geometryContainer : n.getGeometryMap().values()) {
+            GeometryContainer clone = new GeometryContainer(geometryContainer);
+            this.geometries.put(clone.getName(), clone);
+        }
     }
 
     private final String LABELTRANSX = "labelTransX";
@@ -207,6 +222,23 @@ public class NodeContainer implements HierarchyData<NodeContainer> {
         this.children.add(n);
     }
 
+    public void removeChild(NodeContainer n) {
+        for (NodeContainer x: this.children) {
+            if (x.equals(n)) {
+                this.children.remove(x);
+            }
+        }
+    }
+
+    public NodeContainer getParent() {
+        return this.parent;
+    }
+
+    public void setParent(NodeContainer parent) {
+        this.parent = parent;
+    }
+
 }
+
 
 

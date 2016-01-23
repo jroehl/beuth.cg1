@@ -23,6 +23,24 @@ public class GeometryContainer {
     private String name;
     private geometries.Geometry fixedGeometry = null;
 
+    public GeometryContainer() {
+
+    }
+
+    public GeometryContainer(GeometryContainer geometryContainer) {
+        this.name = geometryContainer.name;
+        this.material = geometryContainer.material;
+        this.geometry = geometryContainer.geometry;
+        this.texture_1 = geometryContainer.texture_1;
+        this.texture_2 = geometryContainer.texture_2;
+        this.texture_3 = geometryContainer.texture_3;
+        this.texture_1extra = geometryContainer.texture_1extra;
+        this.texture_2extra = geometryContainer.texture_2extra;
+        this.texture_3extra = geometryContainer.texture_3extra;
+        this.exponent = geometryContainer.exponent;
+        this.fixedGeometry = geometryContainer.fixedGeometry;
+    }
+
     public String getName() {
         return this.name;
     }
@@ -68,7 +86,7 @@ public class GeometryContainer {
         if (fixedGeometry != null) {
             return fixedGeometry;
         } else {
-            printValues();
+//            printValues();
             switch (material) {
                 case SINGLECOLOR:
                 case LAMBERT:

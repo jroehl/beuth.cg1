@@ -1,52 +1,41 @@
 package raytracergui.controller;
 
-import Matrizen_Vektoren_Bibliothek.Point3;
 import camera.Camera;
 import color.Color;
-import com.sun.javafx.geom.Vec3d;
-import geometries.Geometry;
-import geometries.Node;
-import geometries.Sphere;
 import javafx.beans.binding.StringBinding;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.*;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.geometry.Point3D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import material.ReflectiveMaterial;
 import org.controlsfx.control.PlusMinusSlider;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.StatusBar;
 import org.controlsfx.glyphfont.Glyph;
-import ray.Transform;
 import ray.World;
 import raytracergui.RenderThread;
-import raytracergui.container.GeometryContainer;
 import raytracergui.container.LightContainer;
 import raytracergui.container.NodeContainer;
 import raytracergui.dataclasses.TreeViewWithItems;
-import textures.SingleColorTexture;
 
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.concurrent.*;
 
 import static java.util.stream.Collectors.collectingAndThen;
@@ -110,7 +99,7 @@ public class RayTracerMainController {
     @FXML
     private CheckMenuItem openLightBtn;
     @FXML
-    private Menu refreshBtn;
+    private Button refreshBtn;
     @FXML
     private StatusBar statusBar;
     @FXML
@@ -194,29 +183,22 @@ public class RayTracerMainController {
     private ObservableMap<String, raytracergui.enums.Camera> cameraMap = FXCollections.observableHashMap();
 
     private int nodeIndex = 0;
-    private String selectedNodeName;
+    private int selectedNodeIndex;
+    private int selectedRootNodeIndex;
 
     public ObservableMap<String, LightContainer> lightMap = FXCollections.observableHashMap();
     public NodeContainer selectedNode;
 
-    private ObservableList<NodeContainer> nodes = FXCollections.observableArrayList();
-    private ObservableList<NodeContainer> selectedItems = FXCollections.observableArrayList();
+    private ObservableList<NodeContainer> rootNodes = FXCollections.observableArrayList();
+    private ObservableList<NodeContainer> allNodes = FXCollections.observableArrayList();
+    private ObservableList<NodeContainer> selectedNodes = FXCollections.observableArrayList();
 
     private raytracergui.enums.Camera selectedCamera;
     private boolean lightWindowOpen;
 
     private Color backgroundColor = new Color(0, 0, 0);
-    private double mouseOldY;
-    private double mouseOldX;
-    private double mousePosX;
-    private double mousePosY;
-    private double mouseDeltaX;
-    private double mouseDeltaY;
-    private Vec3d vecPos;
 
     private TreeViewWithItems treeView;
-    private TreeItem<NodeContainer> root;
-
 
     @FXML
     public void initialize() {
@@ -230,20 +212,16 @@ public class RayTracerMainController {
         }
         cameraChoice.getSelectionModel().selectLast();
         selectedCamera = cameraMap.get(cameraChoice.getSelectionModel().getSelectedItem().toString());
+
+        treeView = new TreeViewWithItems(new TreeItem<>());
+        treeView.setShowRoot(false);
+
         createNode();
 
-        root = new CheckBoxTreeItem<>();
-
-        treeView = new TreeViewWithItems(root);
-        treeView.setShowRoot(false);
         nodeListView.setMargin(treeView, new Insets(10, 0, 0, 0));
         nodeListView.getChildren().add(treeView);
 
-        treeView.setItems(nodes);
-        treeView.refreshList(root);
-
-        nodeChoice.setItems(treeView.allEntries);
-        nodeChoice.getSelectionModel().select(selectedNode);
+        treeView.setItems(rootNodes);
 
         setCameraValues();
         initializeListeners();
@@ -310,17 +288,30 @@ public class RayTracerMainController {
                         rerender();
                     }
                 }
-
         );
 
 
         treeView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         treeView.getSelectionModel().getSelectedItems().addListener((ListChangeListener<TreeItem<NodeContainer>>) c -> {
-            selectedItems = (ObservableList<NodeContainer>) treeView.getSelectionModel().getSelectedItems().stream().map(item -> {
-                TreeItem<NodeContainer> tempItem = (TreeItem<NodeContainer>) item;
-                return tempItem.getValue();
-            }).collect(collectingAndThen(toList(), l -> FXCollections.observableArrayList(l)));
+            selectedNodes.clear();
+            try {
+                selectedNodes = (ObservableList<NodeContainer>) treeView.getSelectionModel().getSelectedItems().stream().map(item -> {
+                    TreeItem<NodeContainer> tempItem = (TreeItem<NodeContainer>) item;
+                    return tempItem.getValue();
+                }).collect(collectingAndThen(toList(), l -> FXCollections.observableArrayList(l)));
+            } catch (NullPointerException e) {
+                treeView.getSelectionModel().clearSelection();
+            }
+        });
+
+        nodeChoice.setOnAction((event) -> {
+            int index = nodeChoice.getSelectionModel().getSelectedIndex();
+            if (index != -1) {
+                selectedNode = allNodes.get(index);
+                selectedNodeIndex = index;
+                bindNodeLabels();
+            }
         });
 
         lightMap.addListener((MapChangeListener) change -> {
@@ -328,20 +319,81 @@ public class RayTracerMainController {
                 rerender();
             }
         });
+
+        rootNodes.addListener((ListChangeListener<? super NodeContainer>) (ListChangeListener) -> {
+            allNodes.clear();
+            getChildren(rootNodes);
+        });
+
+        treeView.setOnMouseClicked(mouseEvent -> {
+            if (mouseEvent.getClickCount() == 2) {
+                TreeItem<NodeContainer> item = (TreeItem<NodeContainer>) treeView.getSelectionModel().getSelectedItem();
+                PopOver popOver = new PopOver();
+
+                Button submitBtn = new Button("", new Glyph("FontAwesome", "CHECK"));
+                TextField textField = new TextField(item.getValue().getName());
+
+                submitBtn.setOnAction(event -> {
+                    item.getValue().setName(textField.getText());
+                    allNodes.clear();
+                    getChildren(rootNodes);
+                    nodeChoice.setItems(allNodes);
+                    treeView.refresh();
+                    popOver.hide();
+                });
+
+                HBox hBox = new HBox(textField, submitBtn);
+                hBox.setPadding(new Insets(10, 10, 0, 10));
+                hBox.setMargin(submitBtn, new Insets(0, 0, 0, 5));
+
+                popOver.setContentNode(hBox);
+                popOver.show(apMain, mouseEvent.getScreenX(), mouseEvent.getScreenY());
+            }
+        });
+    }
+
+    private void getChildren(ObservableList<NodeContainer> rootNodes) {
+        for (NodeContainer nodeContainer : rootNodes) {
+            allNodes.add(nodeContainer);
+            for (NodeContainer child : nodeContainer.getChildren()) {
+                if (child.getChildren().isEmpty()) {
+                    allNodes.add(child);
+                } else {
+                    getChildren(child.getChildren());
+                }
+            }
+        }
+    }
+
+    private int getIndexByName(ObservableList<NodeContainer> items, String name) {
+        for (int i = 0; i < items.size(); i++) {
+            if (name.equals(items.get(i).getName())) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private void removeByName(ObservableList<NodeContainer> items, String name) {
+        for (int i = 0; i < items.size(); i++) {
+            if (name.equals(items.get(i).getName())) {
+                items.remove(i);
+            }
+        }
     }
 
 
     private void setupResizeListener() {
-//        scene.widthProperty().addListener((ChangeListener) -> {
-//            if (checkAutorender.isSelected()) {
-//                rerender();
-//            }
-//        });
-//        scene.heightProperty().addListener((ChangeListener) -> {
-//            if (checkAutorender.isSelected()) {
-//                rerender();
-//            }
-//        });
+        scene.widthProperty().addListener((ChangeListener) -> {
+            if (checkAutorender.isSelected() && scene.getWidth() > 0) {
+                rerender();
+            }
+        });
+        scene.heightProperty().addListener((ChangeListener) -> {
+            if (checkAutorender.isSelected() && scene.getHeight() > 0) {
+                rerender();
+            }
+        });
     }
 
     private void bindCameraLabels() {
@@ -358,17 +410,12 @@ public class RayTracerMainController {
 
     private void changeNodeValues(double value, Label l) {
         String id = l.getId();
-        selectedNode = getNodeContainer(selectedNodeName);
+        selectedNode = allNodes.get(selectedNodeIndex);
         selectedNode.setValue(id, selectedNode.getValue(id) + value);
 
         if (checkAutorender.isSelected()) {
-            setNodeValues();
             rerender();
         }
-    }
-
-    private void setNodeValues() {
-        overwriteNodeContainer(selectedNodeName);
     }
 
     private void changeCameraValues(double value, Label l) {
@@ -426,7 +473,8 @@ public class RayTracerMainController {
     public void rerender() {
         setCameraValues();
         createWorld();
-        startRenderingThreads((int) mainViewer.getWidth(), (int) mainViewer.getHeight());
+        if (mainViewer.getWidth() > 0 && mainViewer.getHeight() > 0)
+            startRenderingThreads((int) mainViewer.getWidth(), (int) mainViewer.getHeight());
     }
 
     public void createWorld() {
@@ -437,7 +485,7 @@ public class RayTracerMainController {
             world.addLight(l.getLight());
         }
 
-        for (NodeContainer n : nodes) {
+        for (NodeContainer n : rootNodes) {
             world.addGeometry(n.getNode());
         }
     }
@@ -477,11 +525,6 @@ public class RayTracerMainController {
         imgView.setImage(wrImg);
     }
 
-    public void addGeometries() {
-        setNodeValues();
-        rerender();
-    }
-
     @FXML
     private void newGeometryWindow(ActionEvent actionEvent) throws IOException {
         generateStage("../layouts/RayTracerGeometryLayout.fxml", 500, 350);
@@ -505,16 +548,16 @@ public class RayTracerMainController {
             controller.setMainController(this);
             controller.setStage(this.stage);
             controller.initialization();
-            stage.setUserData(selectedNodeName);
+            stage.setUserData(selectedNodeIndex);
             stage.focusedProperty().addListener((ov, t, t1) -> {
                 ReadOnlyBooleanProperty o = (ReadOnlyBooleanProperty) ov;
                 Stage s = (Stage) o.getBean();
-                selectedNodeName = (String) s.getUserData();
-                selectedNode = getNodeContainer(selectedNodeName);
-                nodeChoice.getSelectionModel().select(treeView.allEntries.indexOf(selectedNode));
+                selectedNodeIndex = (int) s.getUserData();
+                selectedNode = allNodes.get(selectedNodeIndex);
+                nodeChoice.getSelectionModel().select(selectedNodeIndex);
                 bindNodeLabels();
             });
-            stage.setTitle("Geometries of: " + selectedNodeName);
+            stage.setTitle("Geometries of: " + selectedNode.getName());
         } else {
             RayTracerLightController controller = loader.getController();
             controller.setMainController(this);
@@ -537,60 +580,40 @@ public class RayTracerMainController {
     public void createNode() {
         nodeIndex += 1;
         String newNodeName = "node_" + nodeIndex;
-        selectedNodeName = newNodeName;
         selectedNode = new NodeContainer(newNodeName);
-
-        final Node sphereNode = new Node(new Transform().translate(new Point3(3, 4, 6)).rotateY(-4).rotateX(-5).scale(1, 1, 1), new ArrayList<Geometry>());
-        sphereNode.geos.add(new Sphere(new ReflectiveMaterial(new SingleColorTexture(new Color(1, 0, 0)), new SingleColorTexture(new Color(
-                1, 1, 1)), new SingleColorTexture(new Color(0.8, 0.4, 0)), 64)));
-
-        GeometryContainer geometryContainer = new GeometryContainer();
-        geometryContainer.addGeometry(sphereNode);
-        geometryContainer.setName("TEST");
-
-        NodeContainer sphere = new NodeContainer("Sphere");
-
-        sphere.addGeometry(geometryContainer);
-        selectedNode.addChild(sphere);
-
-        nodes.add(selectedNode);
-        treeView.refreshList(root);
+        rootNodes.add(selectedNode);
+        allNodes.clear();
+        getChildren(rootNodes);
+        selectedNodeIndex = getIndexByName(allNodes, selectedNode.getName());
+        selectedRootNodeIndex = getIndexByName(rootNodes, selectedNode.getName());
+        nodeChoice.setItems(allNodes);
+        nodeChoice.getSelectionModel().select(selectedNodeIndex);
     }
 
-    public NodeContainer getNodeContainer(String key) {
-        for (NodeContainer n : nodes) {
-            if (key.equals(n.getName())) {
-                return n;
-            }
+    @FXML
+    public void deleteNode(ActionEvent actionEvent) {
+        try {
+            removeRecursive(selectedNodes);
+        } catch (ConcurrentModificationException e) {
+            System.out.println(e);
         }
-        return null;
     }
 
-
-    private void overwriteNodeContainer(String key) {
-        if (getNodeContainer(selectedNodeName) == null) {
-            nodes.add(selectedNode);
-        } else {
-            for (NodeContainer n : nodes) {
-                if (key.equals(n.getName())) {
-                    int index = nodes.indexOf(n);
-                    if (index != -1) {
-                        nodes.remove(index);
-                        nodes.add(index, selectedNode);
+    public void removeRecursive(ObservableList<NodeContainer> selectedNodes) {
+        for (NodeContainer nodeContainer : selectedNodes) {
+            rootNodes.remove(nodeContainer);
+            for (NodeContainer n : rootNodes) {
+                n.removeChild(nodeContainer);
+                for (NodeContainer child : n.getChildren()) {
+                    System.out.println(child);
+                    child.removeChild(nodeContainer);
+                    if (!child.getChildren().isEmpty()) {
+                        getChildren(child.getChildren());
                     }
                 }
             }
         }
     }
-
-//    @FXML
-//    public void deleteNode(ActionEvent actionEvent) {
-//        nodeMap.remove(selectedNodeName);
-//
-//        if (checkAutorender.isSelected()) {
-//            rerender();
-//        }
-//    }
 
     @FXML
     public void saveImageAs(ActionEvent actionEvent) {
@@ -616,59 +639,83 @@ public class RayTracerMainController {
         stage.close();
     }
 
-    public void getMouseDrag(Event event) {
-        if (event instanceof MouseEvent) {
-            MouseEvent me = (MouseEvent) event;
-
-            Point3D coords = me.getPickResult().getIntersectedPoint();
-
-            double x = coords.getX();
-            double y = coords.getY();
-            double z = coords.getZ();
-
-            System.out.println(x);
-            System.out.println(y);
-            System.out.println(z);
-
-        }
-    }
-
-    @FXML
-    public void deleteNode(ActionEvent actionEvent) {
-    }
-
     @FXML
     public void editNodes(ActionEvent actionEvent) {
         PopOver popOver = new PopOver();
 
         VBox vBox = new VBox();
-        vBox.setPadding(new Insets(10,10,10,10));
-        int size = selectedItems.size();
+        vBox.setPadding(new Insets(10, 10, 10, 10));
+        int size = selectedNodes.size();
         Label label;
         ChoiceBox<NodeContainer> subNodeChoice = new ChoiceBox<>();
-        Button submitBtn = new Button("", new Glyph("FontAwesome","CHECK"));
+        Button submitBtn = new Button("", new Glyph("FontAwesome", "CHECK"));
+
+        submitBtn.setOnAction(event -> {
+            NodeContainer selectedNode = subNodeChoice.getSelectionModel().getSelectedItem();
+            if (selectedNode.getName().equals("root")) {
+
+                try {
+                    for (NodeContainer n : selectedNodes) {
+                        NodeContainer parent = n.getParent();
+                        if (parent != null) {
+                            parent.removeChild(n);
+                            n.setParent(null);
+                        }
+                        rootNodes.add(n);
+                    }
+                } catch (ConcurrentModificationException e) {
+                    System.out.println(e);
+                }
+
+            } else if (selectedNode != null) {
+                try {
+                    for (NodeContainer n : selectedNodes) {
+                        selectedNode.addChild(n);
+                        NodeContainer parent = n.getParent();
+                        if (n.getParent() != null) {
+                            parent.removeChild(n);
+                        } else {
+                            rootNodes.remove(n);
+                        }
+                        n.setParent(selectedNode);
+                    }
+                } catch (ConcurrentModificationException e) {
+                    System.out.println(e);
+                }
+            }
+            removeByName(allNodes, "root");
+            popOver.hide();
+        });
+
         if (size == 0) {
             label = new Label("No items selected!");
             subNodeChoice.setDisable(true);
             submitBtn.setDisable(true);
         } else {
-            label = new Label("Move "+size+" items to node:");
+            label = new Label("Move " + size + " items to node:");
         }
-        label.setPadding(new Insets(0,0,5,0));
+        label.setPadding(new Insets(0, 0, 5, 0));
 
-        System.out.println(selectedItems);
-        System.out.println(treeView.allEntries.get(0));
-
-        subNodeChoice.setItems(treeView.allEntries.filtered((NodeContainer) -> !selectedItems.contains(NodeContainer)));
-
+        if (getIndexByName(allNodes, "root") == -1) {
+            allNodes.add(new NodeContainer("root"));
+        }
+        subNodeChoice.setItems(allNodes.filtered((NodeContainer) -> !selectedNodes.contains(NodeContainer)));
 
         HBox hBox = new HBox(subNodeChoice, submitBtn);
-        hBox.setMargin(submitBtn, new Insets(0,0,0,5));
+        hBox.setMargin(submitBtn, new Insets(0, 0, 0, 5));
 
         vBox.getChildren().addAll(label, hBox);
         popOver.setContentNode(vBox);
         popOver.show(editBtn);
+
     }
 
-
+    @FXML
+    public void duplicateNode(ActionEvent actionEvent) {
+        for (NodeContainer n : selectedNodes) {
+            NodeContainer clone = new NodeContainer(n);
+            clone.setName(n.getName().concat("DUPL"));
+            rootNodes.add(clone);
+        }
+    }
 }
