@@ -98,3 +98,7 @@ src/out/production/Beuth_CGI/test_Matrizen_Vektoren_Bibliothek/Mat3x3Test.class
 src/out/production/Beuth_CGI/test_Matrizen_Vektoren_Bibliothek/Normal3Test.class
 src/out/production/Beuth_CGI/test_Matrizen_Vektoren_Bibliothek/Point3Test.class
 src/out/production/Beuth_CGI/test_Matrizen_Vektoren_Bibliothek/Vector3Test.class
+.idea/uiDesigner.xml
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/libraries/com_guigarage_flatter_0_7.xml

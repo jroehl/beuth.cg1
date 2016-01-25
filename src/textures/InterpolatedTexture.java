@@ -1,21 +1,22 @@
 package textures;
 
+import color.Color;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import javax.imageio.ImageIO;
-
-import color.Color;
-
 public class InterpolatedTexture implements Texture {
 
 	private final String path;
+	private final File file;
 	private BufferedImage img;
 
 	public InterpolatedTexture(String path) {
 
 		this.path = path;
+		this.file = null;
 		img = null;
 		// Users/bodowissemann/Documents/GIT/Waschmaschine_CG_1/src
 		try {
@@ -31,6 +32,19 @@ public class InterpolatedTexture implements Texture {
 			System.out.println(e.getMessage());
 		}
 	}
+
+	public InterpolatedTexture(File file) {
+
+		this.file = file;
+		this.path = null;
+		img = null;
+		try {
+			img = ImageIO.read(this.file);
+		} catch (final IOException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
 	@Override
 	public Color colorFor(double n, double u) {
 		final double xCoord = ImageTexture.getRelativeCoord(n);

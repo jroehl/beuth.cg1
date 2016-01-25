@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.scene.shape.*?>
+<?import org.controlsfx.glyphfont.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Rectangle?>
+<?import org.controlsfx.control.*?>
+<?import org.controlsfx.glyphfont.Glyph?>
+<?import java.lang.String?>
+<?import java.net.URL?>
+
+<AnchorPane fx:id="apMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="480.0" minWidth="940.0" prefHeight="529.0" prefWidth="1040.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="raytracergui.controller.RayTracerMainController">
+    <children>
+      <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+                    <MenuItem mnemonicParsing="false" onAction="#saveImageAs" text="Save image as" />
+                  <MenuItem mnemonicParsing="false" onAction="#quit" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Options">
+            <items>
+                  <CheckMenuItem fx:id="openLightBtn" mnemonicParsing="false" onAction="#newLightWindow" text="Open light dialog" />
+                  <MenuItem mnemonicParsing="false" onAction="#newGeometryWindow" text="Open geometry dialog" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <CheckMenuItem fx:id="checkAutorender" mnemonicParsing="false" onAction="#toggleButton" selected="true" text="autorender" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <Accordion fx:id="nodeAccordion" prefHeight="521.0" prefWidth="202.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="29.0">
+        <panes>
+          <TitledPane fx:id="nodeSettingsPane" animated="false" expanded="true" text="Node settings">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                          <VBox minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <children>
+                              <Label text="Nodes" />
+                                    <ChoiceBox fx:id="nodeChoice" prefHeight="27.0" prefWidth="140.0">
+                                       <HBox.margin>
+                                          <Insets right="5.0" />
+                                       </HBox.margin>
+                                    </ChoiceBox>
+                                  <GridPane>
+                                      <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                                          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                                          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                      <children>
+                                          <Label text="Transf XYZ" />
+                                          <Label fx:id="labelTransX" text="0.0" GridPane.columnIndex="1" />
+                                          <Label fx:id="labelTransY" text="0.0" GridPane.columnIndex="2" />
+                                    <Label fx:id="labelTransZ" text="0.0" GridPane.columnIndex="3" />
+                                      </children>
+                                      <VBox.margin>
+                                          <Insets right="5.0" top="10.0" />
+                                      </VBox.margin>
+                                  </GridPane>
+                                  <PlusMinusSlider fx:id="transX">
+                                      <VBox.margin>
+                                          <Insets />
+                                      </VBox.margin>
+                                  </PlusMinusSlider>
+                                  <PlusMinusSlider fx:id="transY">
+                                      <VBox.margin>
+                                          <Insets top="5.0" />
+                                      </VBox.margin>
+                                  </PlusMinusSlider>
+                              <PlusMinusSlider fx:id="transZ">
+                                 <VBox.margin>
+                                    <Insets top="5.0" />
+                                 </VBox.margin>
+                              </PlusMinusSlider>
+                                  <GridPane>
+                                      <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                                          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                                          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                      <children>
+                                          <Label text="Translate" />
+                                          <Label fx:id="labelTranslateX" text="0.0" GridPane.columnIndex="1" />
+                                          <Label fx:id="labelTranslateY" text="0.0" GridPane.columnIndex="2" />
+                                          <Label fx:id="labelTranslateZ" text="0.0" GridPane.columnIndex="3" />
+                                      </children>
+                                      <VBox.margin>
+                                          <Insets left="10.0" right="15.0" top="10.0" />
+                                      </VBox.margin>
+                                  </GridPane>
+                                  <PlusMinusSlider fx:id="translateX">
+                                      <VBox.margin>
+                                          <Insets />
+                                      </VBox.margin>
+                                  </PlusMinusSlider>
+                                  <PlusMinusSlider fx:id="translateY">
+                                      <VBox.margin>
+                                          <Insets top="5.0" />
+                                      </VBox.margin>
+                                  </PlusMinusSlider>
+                                  <PlusMinusSlider fx:id="translateZ">
+                                      <VBox.margin>
+                                          <Insets top="5.0" />
+                                      </VBox.margin>
+                                  </PlusMinusSlider>
+                              <GridPane>
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                                    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                                    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Label text="Scale" />
+                                    <Label fx:id="labelScaleX" text="0.0" GridPane.columnIndex="1" />
+                                    <Label fx:id="labelScaleY" text="0.0" GridPane.columnIndex="2" />
+                                    <Label fx:id="labelScaleZ" text="0.0" GridPane.columnIndex="3" />
+                                 </children>
+                                 <opaqueInsets>
+                                    <Insets left="10.0" right="10.0" />
+                                 </opaqueInsets>
+                                 <padding>
+                                    <Insets left="10.0" right="10.0" />
+                                 </padding>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </GridPane>
+                              <PlusMinusSlider fx:id="scaleX">
+                                 <opaqueInsets>
+                                    <Insets left="10.0" right="10.0" />
+                                 </opaqueInsets>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </PlusMinusSlider>
+                              <PlusMinusSlider fx:id="scaleY">
+                                 <opaqueInsets>
+                                    <Insets left="10.0" right="10.0" />
+                                 </opaqueInsets>
+                                 <VBox.margin>
+                                    <Insets top="5.0" />
+                                 </VBox.margin>
+                              </PlusMinusSlider>
+                              <PlusMinusSlider fx:id="scaleZ">
+                                 <opaqueInsets>
+                                    <Insets left="10.0" right="10.0" />
+                                 </opaqueInsets>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" top="5.0" />
+                                 </VBox.margin>
+                              </PlusMinusSlider>
+                                  <Button fx:id="refreshBtn" mnemonicParsing="false" onAction="#rerender" visible="false" >
+                                      <graphic><Glyph fontFamily="FontAwesome" icon="REFRESH" /></graphic>
+                                  </Button>
+                              </children>
+                          </VBox>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </TitledPane>
+          <TitledPane animated="false" text="Nodes">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <VBox fx:id="nodeListView" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <HBox prefHeight="30.0" prefWidth="200.0">
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#createNode">
+                                        <graphic><Glyph fontFamily="FontAwesome" icon="PLUS" /></graphic>
+                                        <HBox.margin>
+                                          <Insets right="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                     <Button mnemonicParsing="false" onAction="#deleteNode">
+                                         <graphic><Glyph fontFamily="FontAwesome" icon="MINUS" /></graphic>
+                                         <HBox.margin>
+                                             <Insets right="10.0" />
+                                         </HBox.margin>
+                                     </Button>
+                                     <Button mnemonicParsing="false" onAction="#duplicateNode">
+                                         <graphic><Glyph fontFamily="FontAwesome" icon="COPY" /></graphic>
+                                         <HBox.margin>
+                                             <Insets right="10.0" />
+                                         </HBox.margin>
+                                     </Button>
+                                     <Button fx:id="editBtn" mnemonicParsing="false" onAction="#editNodes">
+                                         <graphic><Glyph fontFamily="FontAwesome" icon="WRENCH" /></graphic>
+                                         <HBox.margin>
+                                             <Insets right="10.0" />
+                                         </HBox.margin>
+                                     </Button>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </TitledPane>
+        </panes>
+      </Accordion>
+        <HBox fx:id="mainViewer" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="29.0" />
+        <StatusBar fx:id="statusBar" layoutX="212.0" layoutY="471.0" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" />
+        <VBox id="vbox" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0">
+            <children>
+            <Label text="Background color">
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" top="5.0" />
+               </VBox.margin>
+            </Label>
+            <ColorPicker fx:id="backgroundColorPicker" promptText="Background color">
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </VBox.margin>
+            </ColorPicker>
+                <Separator prefWidth="200.0">
+                    <VBox.margin>
+                        <Insets left="5.0" right="5.0" top="10.0" />
+                    </VBox.margin>
+                </Separator>
+                <Label text="Choose camera">
+                    <VBox.margin>
+                        <Insets left="10.0" right="10.0" top="5.0" />
+                    </VBox.margin>
+                </Label>
+                <ChoiceBox fx:id="cameraChoice" minWidth="180.0" prefWidth="180.0">
+                    <VBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                    </VBox.margin>
+                    <value>
+                        <String fx:value="orthographic camera" />
+                    </value>
+                </ChoiceBox>
+                <GridPane>
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Label text="Eyeview" />
+                        <Label fx:id="labelEx" text="0.0" GridPane.columnIndex="1" />
+                        <Label fx:id="labelEy" text="0.0" GridPane.columnIndex="2" />
+                        <Label fx:id="labelEz" text="0.0" GridPane.columnIndex="3" />
+                    </children>
+                    <VBox.margin>
+                        <Insets left="10.0" right="15.0" top="5.0" />
+                    </VBox.margin>
+                </GridPane>
+                <PlusMinusSlider fx:id="eX">
+                    <VBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                    </VBox.margin>
+                </PlusMinusSlider>
+                <PlusMinusSlider fx:id="eY">
+                    <VBox.margin>
+                        <Insets left="10.0" right="10.0" top="5.0" />
+                    </VBox.margin>
+                </PlusMinusSlider>
+                <PlusMinusSlider fx:id="eZ">
+                    <VBox.margin>
+                        <Insets left="10.0" right="10.0" top="5.0" />
+                    </VBox.margin>
+                </PlusMinusSlider>
+                <GridPane>
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Label text="Gaze direction" />
+                        <Label fx:id="labelGx" text="0.0" GridPane.columnIndex="1" />
+                        <Label fx:id="labelGy" text="0.0" GridPane.columnIndex="2" />
+                        <Label fx:id="labelGz" text="0.0" GridPane.columnIndex="3" />
+                    </children>
+                    <VBox.margin>
+                        <Insets left="10.0" right="15.0" top="10.0" />
+                    </VBox.margin>
+                </GridPane>
+                <PlusMinusSlider fx:id="gX">
+                    <VBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                    </VBox.margin>
+                </PlusMinusSlider>
+                <PlusMinusSlider fx:id="gY">
+                    <VBox.margin>
+                        <Insets left="10.0" right="10.0" top="5.0" />
+                    </VBox.margin>
+                </PlusMinusSlider>
+                <PlusMinusSlider fx:id="gZ">
+                    <VBox.margin>
+                        <Insets left="10.0" right="10.0" top="5.0" />
+                    </VBox.margin>
+                </PlusMinusSlider>
+                <GridPane>
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Label text="Up vector" />
+                        <Label fx:id="labelUx" text="0.0" GridPane.columnIndex="1" />
+                        <Label fx:id="labelUy" text="0.0" GridPane.columnIndex="2" />
+                        <Label fx:id="labelUz" text="0.0" GridPane.columnIndex="3" />
+                    </children>
+                    <VBox.margin>
+                        <Insets left="10.0" right="15.0" top="10.0" />
+                    </VBox.margin>
+                </GridPane>
+                <PlusMinusSlider fx:id="uX">
+                    <VBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                    </VBox.margin>
+                </PlusMinusSlider>
+                <PlusMinusSlider fx:id="uY">
+                    <VBox.margin>
+                        <Insets left="10.0" right="10.0" top="5.0" />
+                    </VBox.margin>
+                </PlusMinusSlider>
+                <PlusMinusSlider fx:id="uZ">
+                    <VBox.margin>
+                        <Insets left="10.0" right="10.0" top="5.0" />
+                    </VBox.margin>
+                </PlusMinusSlider>
+                <GridPane>
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Label fx:id="labelTextExtra" text="Scale factor" />
+                        <Label fx:id="labelPersp" text="π /" visible="false" GridPane.columnIndex="2" />
+                        <Label fx:id="labelValExtra" text="0.0" GridPane.columnIndex="3" />
+                    </children>
+                    <VBox.margin>
+                        <Insets left="10.0" right="15.0" top="10.0" />
+                    </VBox.margin>
+                </GridPane>
+                <PlusMinusSlider fx:id="extra">
+                    <VBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                    </VBox.margin>
+                </PlusMinusSlider>
+            </children>
+        </VBox>
+    </children>
+    <stylesheets>
+        <URL value="@../css/application.css" />
+    </stylesheets>
+</AnchorPane>
