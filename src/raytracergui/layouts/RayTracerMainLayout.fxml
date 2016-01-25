@@ -13,27 +13,9 @@
 <?import java.lang.String?>
 <?import java.net.URL?>
 
-<AnchorPane fx:id="apMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="480.0" minWidth="940.0" prefHeight="529.0" prefWidth="1040.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="raytracergui.controller.RayTracerMainController">
+<AnchorPane fx:id="apMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="480.0" minWidth="940.0" prefHeight="500.0" prefWidth="1040.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="raytracergui.controller.RayTracerMainController">
     <children>
-      <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <menus>
-          <Menu mnemonicParsing="false" text="File">
-            <items>
-                    <MenuItem mnemonicParsing="false" onAction="#saveImageAs" text="Save image as" />
-                  <MenuItem mnemonicParsing="false" onAction="#quit" text="Close" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Options">
-            <items>
-                  <CheckMenuItem fx:id="openLightBtn" mnemonicParsing="false" onAction="#newLightWindow" text="Open light dialog" />
-                  <MenuItem mnemonicParsing="false" onAction="#newGeometryWindow" text="Open geometry dialog" />
-                  <SeparatorMenuItem mnemonicParsing="false" />
-                  <CheckMenuItem fx:id="checkAutorender" mnemonicParsing="false" onAction="#toggleButton" selected="true" text="autorender" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-      <Accordion fx:id="nodeAccordion" prefHeight="521.0" prefWidth="202.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="29.0">
+      <Accordion fx:id="nodeAccordion" prefHeight="521.0" prefWidth="202.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
         <panes>
           <TitledPane fx:id="nodeSettingsPane" animated="false" expanded="true" text="Node settings">
             <content>
@@ -46,7 +28,16 @@
                                        <HBox.margin>
                                           <Insets right="5.0" />
                                        </HBox.margin>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
                                     </ChoiceBox>
+                              <Button mnemonicParsing="false" onAction="#newGeometryWindow" text="new Geometry window">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <Separator prefWidth="200.0" />
                                   <GridPane>
                                       <columnConstraints>
                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -64,7 +55,7 @@
                                     <Label fx:id="labelTransZ" text="0.0" GridPane.columnIndex="3" />
                                       </children>
                                       <VBox.margin>
-                                          <Insets right="5.0" top="10.0" />
+                                          <Insets right="5.0" />
                                       </VBox.margin>
                                   </GridPane>
                                   <PlusMinusSlider fx:id="transX">
@@ -167,9 +158,6 @@
                                     <Insets bottom="10.0" top="5.0" />
                                  </VBox.margin>
                               </PlusMinusSlider>
-                                  <Button fx:id="refreshBtn" mnemonicParsing="false" onAction="#rerender" visible="false" >
-                                      <graphic><Glyph fontFamily="FontAwesome" icon="REFRESH" /></graphic>
-                                  </Button>
                               </children>
                           </VBox>
                      </children>
@@ -216,27 +204,59 @@
                   </AnchorPane>
             </content>
           </TitledPane>
+            <TitledPane animated="false" text="Various settings">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <VBox layoutX="30.4" layoutY="30.4" prefHeight="331.0" prefWidth="158.0" AnchorPane.bottomAnchor="29.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <Label text="Background color">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Label>
+                              <ColorPicker fx:id="backgroundColorPicker" promptText="Background color">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </ColorPicker>
+                                  <Separator prefWidth="200.0">
+                                      <VBox.margin>
+                                          <Insets bottom="10.0" top="10.0" />
+                                      </VBox.margin>
+                                  </Separator>
+                              <HBox prefHeight="30.0" prefWidth="200.0">
+                                 <children>
+                                    <Button fx:id="openLightBtn" mnemonicParsing="false" onAction="#newLightWindow" text="open light window" />
+                                 </children>
+                              </HBox>
+                              <Separator prefWidth="200.0">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" top="10.0" />
+                                 </VBox.margin>
+                              </Separator>
+                              <Button mnemonicParsing="false" onAction="#saveImageAs">
+                                  <graphic><Glyph fontFamily="FontAwesome" icon="SAVE" /></graphic>
+                              </Button>
+                           </children>
+                        </VBox>
+                        <HBox layoutY="388.0" prefHeight="29.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#quit">
+                                  <graphic><Glyph fontFamily="FontAwesome" icon="TIMES" /></graphic>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </TitledPane>
         </panes>
       </Accordion>
-        <HBox fx:id="mainViewer" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="29.0" />
-        <StatusBar fx:id="statusBar" layoutX="212.0" layoutY="471.0" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" />
-        <VBox id="vbox" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0">
+        <HBox fx:id="mainViewer" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="0.0" />
+        <StatusBar fx:id="statusBar" layoutX="212.0" layoutY="471.0" maxHeight="29.0" minHeight="20.0" prefHeight="30.0" prefWidth="320.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="400.0" />
+        <VBox id="vbox" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-            <Label text="Background color">
-               <VBox.margin>
-                  <Insets left="10.0" right="10.0" top="5.0" />
-               </VBox.margin>
-            </Label>
-            <ColorPicker fx:id="backgroundColorPicker" promptText="Background color">
-               <VBox.margin>
-                  <Insets left="10.0" right="10.0" />
-               </VBox.margin>
-            </ColorPicker>
-                <Separator prefWidth="200.0">
-                    <VBox.margin>
-                        <Insets left="5.0" right="5.0" top="10.0" />
-                    </VBox.margin>
-                </Separator>
                 <Label text="Choose camera">
                     <VBox.margin>
                         <Insets left="10.0" right="10.0" top="5.0" />
@@ -379,8 +399,42 @@
                         <Insets left="10.0" right="10.0" />
                     </VBox.margin>
                 </PlusMinusSlider>
+            <Separator prefWidth="200.0">
+               <VBox.margin>
+                  <Insets left="5.0" right="5.0" top="10.0" />
+               </VBox.margin>
+            </Separator>
+            <Label text="Sampling pattern">
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+            <HBox prefHeight="5.0" prefWidth="180.0">
+               <children>
+                  <ChoiceBox fx:id="samplingChoice" prefHeight="27.0" prefWidth="104.0" />
+                  <Spinner fx:id="numSamples" prefHeight="27.0" prefWidth="63.0">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Spinner>
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </VBox.margin>
+            </HBox>
             </children>
         </VBox>
+      <ToolBar layoutX="470.0" layoutY="466.0" minHeight="30.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="30.0" prefWidth="151.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="640.0" AnchorPane.rightAnchor="200.0">
+         <items>
+                <Button fx:id="refreshBtn" mnemonicParsing="false" onAction="#btnRerender">
+                    <graphic>
+                  <Glyph fontFamily="FontAwesome" icon="REFRESH" />
+               </graphic>
+                </Button>
+            <Separator orientation="VERTICAL" prefHeight="200.0" />
+            <CheckBox fx:id="checkAutorender" mnemonicParsing="false" selected="true" text="autorender" />
+         </items>
+      </ToolBar>
     </children>
     <stylesheets>
         <URL value="@../css/application.css" />

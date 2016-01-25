@@ -1,7 +1,6 @@
 package raytracergui.controller;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,7 +12,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import org.controlsfx.control.CheckListView;
 import org.controlsfx.control.Notifications;
 import org.controlsfx.control.PlusMinusSlider;
@@ -43,15 +41,10 @@ public class RayTracerLightController {
 
     private Light selectedLight;
     private LightContainer lightContainer;
-    private Stage stage;
     private ObservableList<Object> activeLightNames = FXCollections.observableArrayList();
     private ObservableList<Enum> lightNames = FXCollections.observableArrayList(Light.values());
 
     private RayTracerMainController mainController;
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
 
     public void setMainController(RayTracerMainController controller) {
         this.mainController = controller;
@@ -86,10 +79,6 @@ public class RayTracerLightController {
         lightChoice.setItems(lightNames);
 
         lightsChecklist.setItems(activeLightNames);
-        lightsChecklist.getCheckModel().getCheckedItems().addListener((ListChangeListener<String>) c1 -> {
-            bindLabels();
-            System.out.println(lightsChecklist.getCheckModel().getCheckedItems());
-        });
 
         lightsWindowVbox.getChildren().add(g);
     }
@@ -219,7 +208,7 @@ public class RayTracerLightController {
                 if (index >= 0) {
                     activeLightNames.remove(index);
                     mainController.lightMap.remove(n);
-                    mainController.rerender();
+                    mainController.rerender(false);
                 }
             }
         }

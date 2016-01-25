@@ -29,9 +29,13 @@ public enum Camera {
     private final String UPVECTORZ = "labelUz";
     private final String EXTRA = "labelValExtra";
 
+    private SamplingPattern samplingPattern = SamplingPattern.ONERAY;
+    private int numSamples = 0;
+
     private final CalcHelper calcHelper = new CalcHelper();
     private final String[] array = {EYEVIEWX, EYEVIEWY, EYEVIEWZ, GAZEVIEWX, GAZEVIEWY, GAZEVIEWZ, UPVECTORX, UPVECTORY, UPVECTORZ, EXTRA};
     private final Double[] initialValues = {calcHelper.getMultipliedValue(-0.5), calcHelper.getMultipliedValue(3.3), calcHelper.getMultipliedValue(-8.0), calcHelper.getMultipliedValue(0.0), calcHelper.getMultipliedValue(-0.4), calcHelper.getMultipliedValue(1.0), calcHelper.getMultipliedValue(0.0), calcHelper.getMultipliedValue(1.0), calcHelper.getMultipliedValue(0.0), calcHelper.getMultipliedValue(4.0)};
+
 
     private ObservableMap<String, SimpleDoubleProperty> cameraValues;
 
@@ -46,9 +50,9 @@ public enum Camera {
     public camera.Camera getCamera() {
         switch (this) {
             case ORTHOGRAPHIC:
-                return new OrthographicCamera(this.getEyeView(), this.getGazeView(), this.getUpVector(), this.getExtra());
+                return new OrthographicCamera(this.getEyeView(), this.getGazeView(), this.getUpVector(), this.getExtra(), samplingPattern.getSamplingPattern(this.getNumSamples()));
             case PERSPECTIVE:
-                return new PerspectiveCamera(this.getEyeView(), this.getGazeView(), this.getUpVector(), Math.PI / this.getExtra());
+                return new PerspectiveCamera(this.getEyeView(), this.getGazeView(), this.getUpVector(), Math.PI / this.getExtra(), samplingPattern.getSamplingPattern(this.getNumSamples()));
             default:
                 return null;
         }
@@ -60,6 +64,14 @@ public enum Camera {
 
     public String getName() {
         return this.name;
+    }
+
+    public void setSamplingPaterns(SamplingPattern samplingPattern) {
+        this.samplingPattern = samplingPattern;
+    }
+
+    public SamplingPattern getSamplingPattern() {
+        return this.samplingPattern;
     }
 
     public SimpleDoubleProperty get(String key) {
@@ -93,6 +105,15 @@ public enum Camera {
     public Double getExtra() {
         return this.getCorrectedValue(EXTRA);
     }
+
+    public int getNumSamples() {
+        return numSamples;
+    }
+
+    public void setNumSamples(int numSamples) {
+        this.numSamples = numSamples;
+    }
+
 
 }
 

@@ -30,6 +30,7 @@ import raytracergui.RenderThread;
 import raytracergui.container.LightContainer;
 import raytracergui.container.NodeContainer;
 import raytracergui.dataclasses.TreeViewWithItems;
+import raytracergui.enums.SamplingPattern;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -95,9 +96,9 @@ public class RayTracerMainController {
     @FXML
     private Label labelPersp;
     @FXML
-    private CheckMenuItem checkAutorender;
+    private CheckBox checkAutorender;
     @FXML
-    private CheckMenuItem openLightBtn;
+    private Button openLightBtn;
     @FXML
     private Button refreshBtn;
     @FXML
@@ -148,6 +149,10 @@ public class RayTracerMainController {
     private VBox nodeListView;
     @FXML
     private Button editBtn;
+    @FXML
+    private Spinner numSamples;
+    @FXML
+    private ChoiceBox<SamplingPattern> samplingChoice;
 
 
     /**
@@ -180,6 +185,7 @@ public class RayTracerMainController {
     private Label[] nodeLabels;
 
     private ObservableList<raytracergui.enums.Camera> cameraNames = FXCollections.observableArrayList(raytracergui.enums.Camera.values());
+    private ObservableList<SamplingPattern> samplingPatterns = FXCollections.observableArrayList(SamplingPattern.values());
     private ObservableMap<String, raytracergui.enums.Camera> cameraMap = FXCollections.observableHashMap();
 
     private int nodeIndex = 0;
@@ -213,6 +219,9 @@ public class RayTracerMainController {
         cameraChoice.getSelectionModel().selectLast();
         selectedCamera = cameraMap.get(cameraChoice.getSelectionModel().getSelectedItem().toString());
 
+        samplingChoice.setItems(samplingPatterns);
+        samplingChoice.getSelectionModel().select(SamplingPattern.ONERAY);
+
         treeView = new TreeViewWithItems(new TreeItem<>());
         treeView.setShowRoot(false);
 
@@ -240,9 +249,7 @@ public class RayTracerMainController {
         backgroundColorPicker.valueProperty().set(javafx.scene.paint.Color.BLACK);
         backgroundColorPicker.valueProperty().addListener((ChangeListener) -> {
             backgroundColor = generateColor(backgroundColorPicker.getValue());
-            if (checkAutorender.isSelected()) {
-                rerender();
-            }
+            rerender(false);
         });
 
         apMain.sceneProperty().addListener((ChangeListener) -> {
@@ -272,6 +279,8 @@ public class RayTracerMainController {
 
                 {
                     selectedCamera = (raytracergui.enums.Camera) cameraChoice.getSelectionModel().getSelectedItem();
+                    numSamples.getValueFactory().setValue(selectedCamera.getNumSamples());
+                    samplingChoice.getSelectionModel().select(selectedCamera.getSamplingPattern());
                     setCameraValues();
                     bindCameraLabels();
                     switch (selectedCamera) {
@@ -284,9 +293,7 @@ public class RayTracerMainController {
                             labelPersp.setVisible(true);
                             break;
                     }
-                    if (checkAutorender.isSelected()) {
-                        rerender();
-                    }
+                    rerender(false);
                 }
         );
 
@@ -315,9 +322,7 @@ public class RayTracerMainController {
         });
 
         lightMap.addListener((MapChangeListener) change -> {
-            if (checkAutorender.isSelected()) {
-                rerender();
-            }
+            rerender(false);
         });
 
         rootNodes.addListener((ListChangeListener<? super NodeContainer>) (ListChangeListener) -> {
@@ -349,6 +354,19 @@ public class RayTracerMainController {
                 popOver.setContentNode(hBox);
                 popOver.show(apMain, mouseEvent.getScreenX(), mouseEvent.getScreenY());
             }
+        });
+
+        numSamples.setEditable(true);
+        numSamples.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000));
+
+        numSamples.valueProperty().addListener((ChangeListener) -> {
+            selectedCamera.setNumSamples((int) numSamples.getValue());
+            rerender(false);
+        });
+
+        samplingChoice.setOnAction((event) -> {
+            selectedCamera.setSamplingPaterns(samplingChoice.getSelectionModel().getSelectedItem());
+            rerender(false);
         });
     }
 
@@ -385,13 +403,13 @@ public class RayTracerMainController {
 
     private void setupResizeListener() {
         scene.widthProperty().addListener((ChangeListener) -> {
-            if (checkAutorender.isSelected() && scene.getWidth() > 0) {
-                rerender();
+            if (scene.getWidth() > 0) {
+                rerender(false);
             }
         });
         scene.heightProperty().addListener((ChangeListener) -> {
-            if (checkAutorender.isSelected() && scene.getHeight() > 0) {
-                rerender();
+            if (scene.getHeight() > 0) {
+                rerender(false);
             }
         });
     }
@@ -412,32 +430,18 @@ public class RayTracerMainController {
         String id = l.getId();
         selectedNode = allNodes.get(selectedNodeIndex);
         selectedNode.setValue(id, selectedNode.getValue(id) + value);
-
-        if (checkAutorender.isSelected()) {
-            rerender();
-        }
+        rerender(false);
     }
 
     private void changeCameraValues(double value, Label l) {
         String id = l.getId();
         selectedCamera.setValue(id, selectedCamera.getValue(id) + value);
-        if (checkAutorender.isSelected()) {
-            rerender();
-        }
+        rerender(false);
     }
 
     @FXML
     private void setCameraValues() {
         camera = selectedCamera.getCamera();
-    }
-
-    @FXML
-    private void toggleButton() {
-        if (checkAutorender.isSelected()) {
-            refreshBtn.setVisible(false);
-        } else {
-            refreshBtn.setVisible(true);
-        }
     }
 
     private void initializeViewer() {
@@ -470,11 +474,18 @@ public class RayTracerMainController {
      * und anschließend das Bild neu gezeichnet wird
      */
     @FXML
-    public void rerender() {
-        setCameraValues();
-        createWorld();
-        if (mainViewer.getWidth() > 0 && mainViewer.getHeight() > 0)
-            startRenderingThreads((int) mainViewer.getWidth(), (int) mainViewer.getHeight());
+    public void rerender(boolean clicked) {
+        if (clicked || checkAutorender.isSelected()) {
+            setCameraValues();
+            createWorld();
+            if (mainViewer.getWidth() > 0 && mainViewer.getHeight() > 0)
+                startRenderingThreads((int) mainViewer.getWidth(), (int) mainViewer.getHeight());
+        }
+    }
+
+    @FXML
+    private void btnRerender() {
+        rerender(true);
     }
 
     public void createWorld() {
@@ -515,6 +526,7 @@ public class RayTracerMainController {
             }
         }
         service.shutdown();
+
         try {
             service.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
         } catch (InterruptedException e) {
@@ -527,7 +539,8 @@ public class RayTracerMainController {
 
     @FXML
     private void newGeometryWindow(ActionEvent actionEvent) throws IOException {
-        generateStage("../layouts/RayTracerGeometryLayout.fxml", 500, 350);
+        if (allNodes.size() > 0)
+            generateStage("../layouts/RayTracerGeometryLayout.fxml", 500, 350);
     }
 
     @FXML
@@ -561,7 +574,6 @@ public class RayTracerMainController {
         } else {
             RayTracerLightController controller = loader.getController();
             controller.setMainController(this);
-            controller.setStage(this.stage);
             controller.initialization();
             stage.setTitle("Lights");
             openLightBtn.setDisable(true);
@@ -569,7 +581,6 @@ public class RayTracerMainController {
             stage.setOnCloseRequest(we -> {
                         lightWindowOpen = false;
                         openLightBtn.setDisable(false);
-                        openLightBtn.setSelected(false);
                     }
             );
         }
@@ -597,6 +608,7 @@ public class RayTracerMainController {
         } catch (ConcurrentModificationException e) {
             System.out.println(e);
         }
+        rerender(false);
     }
 
     public void removeRecursive(ObservableList<NodeContainer> selectedNodes) {

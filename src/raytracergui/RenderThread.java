@@ -3,7 +3,6 @@ package raytracergui;
 import camera.Camera;
 import color.Color;
 import javafx.scene.image.WritableImage;
-import ray.Ray;
 import ray.World;
 
 import java.util.concurrent.Callable;
@@ -43,8 +42,7 @@ public class RenderThread implements Callable {
         for (int y = 0; y < height; y++) {
             if ((y + moduloValue) % cores == 0) {
                 for (int x = 0; x < width; x++) {
-                    final Ray ray = camera.rayFor(width, height, x, height - 1 - y);
-                    final Color c = world.hit(ray);
+                    final Color c = world.hit(camera.rayFor(width, height, x, height - 1 - y));
                     final javafx.scene.paint.Color javaColor = new javafx.scene.paint.Color(c.r, c.g, c.b, 1);
                     wrImg.getPixelWriter().setColor(x, y, javaColor);
                 }

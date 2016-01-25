@@ -1,11 +1,11 @@
 package geometries;
 
-import java.util.ArrayList;
-
+import Matrizen_Vektoren_Bibliothek.Point3;
 import material.Material;
 import ray.Ray;
 import ray.Transform;
-import Matrizen_Vektoren_Bibliothek.Point3;
+
+import java.util.ArrayList;
 
 public class Cylinder extends Geometry {
 
@@ -15,6 +15,22 @@ public class Cylinder extends Geometry {
 	public Cylinder(Material material, ArrayList<Geometry> cylinderParts) {
 		this.material = material;
 		this.cylinderParts = cylinderParts;
+		// final CylinderBody body = ;
+
+		cylinderParts.add(new CylinderBody(this.material));
+
+		final ArrayList<Geometry> geos = new ArrayList<Geometry>();
+		geos.add(new Disc(this.material));
+		final Node top = new Node(new Transform().translate(new Point3(0, 2, 0)), geos);
+		final Node bottom = new Node(new Transform().translate(new Point3(0, -2, 0)).rotateX(Math.PI), geos);
+		cylinderParts.add(top);
+		cylinderParts.add(bottom);
+
+	}
+
+	public Cylinder(Material material) {
+		this.material = material;
+		this.cylinderParts = new ArrayList<>();
 		// final CylinderBody body = ;
 
 		cylinderParts.add(new CylinderBody(this.material));

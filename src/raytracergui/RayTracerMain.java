@@ -12,7 +12,7 @@ public class RayTracerMain extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("layouts/RayTracerMainLayout.fxml"));
         primaryStage.setTitle("Waschmaschine - Raytracer");
-        Scene scene = new Scene(root, 1040, 529);
+        Scene scene = new Scene(root, 1040, 500);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

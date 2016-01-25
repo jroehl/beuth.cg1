@@ -240,7 +240,7 @@ public class RayTracerGeometryController {
                 geoCont = new GeometryContainer();
                 activeGeometryNames = FXCollections.observableArrayList(mainController.selectedNode.getGeometryMap().keySet());
                 geometryChecklist.setItems(activeGeometryNames);
-                mainController.rerender();
+                mainController.rerender(false);
             } else {
                 Notifications.create()
                         .position(Pos.TOP_RIGHT)
@@ -263,7 +263,7 @@ public class RayTracerGeometryController {
                 if (index >= 0) {
                     activeGeometryNames.remove(index);
                     mainController.selectedNode.removeGeometry(n);
-                    mainController.rerender();
+                    mainController.rerender(false);
                 }
             }
         }
