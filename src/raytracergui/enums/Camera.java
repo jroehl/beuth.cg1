@@ -7,7 +7,7 @@ import camera.PerspectiveCamera;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
-import raytracergui.CalcHelper;
+import raytracergui.helpers.CalcHelper;
 
 /**
  * Created by jroehl on 15.01.16.

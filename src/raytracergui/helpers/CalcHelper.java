@@ -1,4 +1,4 @@
-package raytracergui;
+package raytracergui.helpers;
 
 /**
  * Created by jroehl on 17.01.16.

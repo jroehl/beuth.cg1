@@ -254,7 +254,7 @@
         </panes>
       </Accordion>
         <HBox fx:id="mainViewer" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="0.0" />
-        <StatusBar fx:id="statusBar" layoutX="212.0" layoutY="471.0" maxHeight="29.0" minHeight="20.0" prefHeight="30.0" prefWidth="320.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="400.0" />
+        <StatusBar fx:id="statusBar" layoutX="212.0" layoutY="471.0" maxHeight="29.0" minHeight="20.0" prefHeight="30.0" prefWidth="320.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" />
         <VBox id="vbox" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <Label text="Choose camera">
@@ -424,17 +424,6 @@
             </HBox>
             </children>
         </VBox>
-      <ToolBar layoutX="470.0" layoutY="466.0" minHeight="30.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="30.0" prefWidth="151.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="640.0" AnchorPane.rightAnchor="200.0">
-         <items>
-                <Button fx:id="refreshBtn" mnemonicParsing="false" onAction="#btnRerender">
-                    <graphic>
-                  <Glyph fontFamily="FontAwesome" icon="REFRESH" />
-               </graphic>
-                </Button>
-            <Separator orientation="VERTICAL" prefHeight="200.0" />
-            <CheckBox fx:id="checkAutorender" mnemonicParsing="false" selected="true" text="autorender" />
-         </items>
-      </ToolBar>
     </children>
     <stylesheets>
         <URL value="@../css/application.css" />

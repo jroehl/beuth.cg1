@@ -1,4 +1,4 @@
-package raytracergui;
+package raytracergui.threads;
 
 import camera.Camera;
 import color.Color;
@@ -6,6 +6,7 @@ import javafx.scene.image.WritableImage;
 import ray.World;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by jroehl on 13.01.16.
@@ -57,7 +58,13 @@ public class RenderThread implements Callable {
     @Override
     public Long call() throws Exception {
         drawImage();
-        return timeTaken;
+        try {
+            TimeUnit.SECONDS.sleep(2);
+            return timeTaken;
+        } catch (InterruptedException e) {
+            throw new IllegalStateException("task interrupted", e);
+        }
+
     }
 }
 

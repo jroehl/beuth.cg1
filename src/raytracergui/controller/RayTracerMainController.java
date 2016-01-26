@@ -2,19 +2,21 @@ package raytracergui.controller;
 
 import camera.Camera;
 import color.Color;
+import javafx.application.Platform;
 import javafx.beans.binding.StringBinding;
-import javafx.beans.property.ReadOnlyBooleanProperty;
-import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.*;
 import javafx.collections.*;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -26,21 +28,27 @@ import org.controlsfx.control.PopOver;
 import org.controlsfx.control.StatusBar;
 import org.controlsfx.glyphfont.Glyph;
 import ray.World;
-import raytracergui.RenderThread;
 import raytracergui.container.LightContainer;
 import raytracergui.container.NodeContainer;
 import raytracergui.dataclasses.TreeViewWithItems;
 import raytracergui.enums.SamplingPattern;
+import raytracergui.threads.RenderTaskRandom;
 
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
-import java.util.concurrent.*;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
+
+//import javafx.scene.image.ImageView;
 
 public class RayTracerMainController {
     @FXML
@@ -96,11 +104,7 @@ public class RayTracerMainController {
     @FXML
     private Label labelPersp;
     @FXML
-    private CheckBox checkAutorender;
-    @FXML
     private Button openLightBtn;
-    @FXML
-    private Button refreshBtn;
     @FXML
     private StatusBar statusBar;
     @FXML
@@ -158,7 +162,7 @@ public class RayTracerMainController {
     /**
      * View für die Erzeugung des Images
      */
-    private ImageView imgView;
+    public ImageView imgView;
 
     /**
      * world - Welt Objekt
@@ -168,7 +172,7 @@ public class RayTracerMainController {
     /**
      * wrImg - WritableImage Objekt
      */
-    private WritableImage wrImg;
+    public WritableImage wrImg;
 
     /**
      * camera - Kamera Objekt
@@ -184,13 +188,15 @@ public class RayTracerMainController {
     private PlusMinusSlider[] nodeSliders;
     private Label[] nodeLabels;
 
+    private Button refreshBtn;
+    private CheckBox checkAutorender;
+
     private ObservableList<raytracergui.enums.Camera> cameraNames = FXCollections.observableArrayList(raytracergui.enums.Camera.values());
     private ObservableList<SamplingPattern> samplingPatterns = FXCollections.observableArrayList(SamplingPattern.values());
     private ObservableMap<String, raytracergui.enums.Camera> cameraMap = FXCollections.observableHashMap();
 
     private int nodeIndex = 0;
     private int selectedNodeIndex;
-    private int selectedRootNodeIndex;
 
     public ObservableMap<String, LightContainer> lightMap = FXCollections.observableHashMap();
     public NodeContainer selectedNode;
@@ -205,6 +211,11 @@ public class RayTracerMainController {
     private Color backgroundColor = new Color(0, 0, 0);
 
     private TreeViewWithItems treeView;
+
+    private final int cores = Runtime.getRuntime().availableProcessors() / 2;
+
+    public ExecutorService service;
+    private SimpleStringProperty messageProperty = new SimpleStringProperty("OK");
 
     @FXML
     public void initialize() {
@@ -224,6 +235,23 @@ public class RayTracerMainController {
 
         treeView = new TreeViewWithItems(new TreeItem<>());
         treeView.setShowRoot(false);
+
+        HBox hBox = new HBox();
+
+        Separator separator = new Separator(Orientation.VERTICAL);
+        separator.setPadding(new Insets(0, 0, 0, 5));
+
+        refreshBtn = new Button("", new Glyph("FontAwesome", "REFRESH"));
+        refreshBtn.setOnAction((event -> btnRerender()));
+
+        checkAutorender = new CheckBox("autorender (beta)");
+        checkAutorender.setSelected(false);
+        checkAutorender.setPadding(new Insets(0, 5, 0, 0));
+
+        hBox.setMargin(checkAutorender, new Insets(4, 0, 0, 0));
+
+        hBox.getChildren().addAll(separator, checkAutorender, refreshBtn);
+        statusBar.getRightItems().add(hBox);
 
         createNode();
 
@@ -357,7 +385,7 @@ public class RayTracerMainController {
         });
 
         numSamples.setEditable(true);
-        numSamples.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000));
+        numSamples.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000));
 
         numSamples.valueProperty().addListener((ChangeListener) -> {
             selectedCamera.setNumSamples((int) numSamples.getValue());
@@ -368,6 +396,8 @@ public class RayTracerMainController {
             selectedCamera.setSamplingPaterns(samplingChoice.getSelectionModel().getSelectedItem());
             rerender(false);
         });
+
+
     }
 
     private void getChildren(ObservableList<NodeContainer> rootNodes) {
@@ -446,7 +476,7 @@ public class RayTracerMainController {
 
     private void initializeViewer() {
         imgView = new ImageView();
-        mainViewer.getChildren().add(imgView);
+        mainViewer.getChildren().addAll(imgView);
         createWorld();
         startRenderingThreads(640, 480);
     }
@@ -501,40 +531,79 @@ public class RayTracerMainController {
         }
     }
 
+    static void shuffleList(List<int[]> li) {
+        Random rnd = ThreadLocalRandom.current();
+        for (int i = li.size() - 1; i > 0; i--) {
+            int index = rnd.nextInt(i + 1);
+            int[] l = li.get(index);
+            li.set(index, li.get(i));
+            li.set(i, l);
+        }
+    }
+
     private void startRenderingThreads(int width, int height) {
 
-        final ExecutorService service;
-        final int cores = Runtime.getRuntime().availableProcessors() / 2;
+        if (service != null) {
+            service.shutdownNow();
+        }
+
+        messageProperty.set("RENDERING");
 
         wrImg = new WritableImage(width, height);
-        service = Executors.newFixedThreadPool(cores);
+        PixelWriter pixelWriter = wrImg.getPixelWriter();
+        imgView.setImage(wrImg);
 
-        ArrayList<Future> tasks = new ArrayList<>();
-        for (int i = 0; i < cores; i++) {
-            tasks.add(service.submit(new RenderThread(cores, i, width, height, wrImg, camera, world)));
-        }
 
-        long sumTimeTaken = 0;
-        for (Future<Long> t : tasks) {
-            try {
-                sumTimeTaken += t.get();
-            } catch (InterruptedException e) {
-                System.out.println(e);
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-                System.out.println(e);
+        ArrayList<int[]> coordinates = new ArrayList<>();
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                coordinates.add(new int[]{x, y});
             }
         }
-        service.shutdown();
 
-        try {
-            service.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
-        } catch (InterruptedException e) {
-            System.out.println(e);
+        shuffleList(coordinates);
+
+        service = Executors.newFixedThreadPool(cores);
+
+        ArrayList<ReadOnlyDoubleProperty> progress = new ArrayList<>();
+        ArrayList<ReadOnlyStringProperty> messages = new ArrayList<>();
+        ArrayList<ReadOnlyObjectProperty> timeValues = new ArrayList<>();
+        for (int i = 0; i < cores; i++) {
+            RenderTaskRandom renderTaskRandom = new RenderTaskRandom("Thread_" + (i + 1), coordinates, cores, i, width, height, camera, world, pixelWriter);
+            progress.add(renderTaskRandom.progressProperty());
+            messages.add(renderTaskRandom.messageProperty());
+            timeValues.add(renderTaskRandom.valueProperty());
+            service.submit(renderTaskRandom);
         }
 
-        statusBar.setText(" Rendering Time: " + (((sumTimeTaken) / 1000000000.0F)) / cores);
-        imgView.setImage(wrImg);
+        SimpleDoubleProperty progressProperty = new SimpleDoubleProperty();
+        SimpleLongProperty totalTimeProperty = new SimpleLongProperty(0);
+
+        for (int i = 0; i < progress.size(); i++) {
+            ReadOnlyDoubleProperty r = progress.get(i);
+            r.addListener((ChangeListener) -> {
+                if (progressProperty.get() <= r.get()) {
+                    progressProperty.set(r.get());
+                }
+            });
+            ReadOnlyStringProperty s = messages.get(i);
+            s.addListener((ChangeListener) -> {
+                messageProperty.set(s.get());
+            });
+            ReadOnlyObjectProperty o = timeValues.get(i);
+            o.addListener((ChangeListener) -> {
+                try {
+                    totalTimeProperty.set(totalTimeProperty.get() + (Long) o.getValue());
+                } catch (Exception e) {
+                }
+                messageProperty.set("Rendering Time: " + (((totalTimeProperty.get()) / 1000000000.0F)) / cores);
+            });
+        }
+
+        statusBar.textProperty().bind(messageProperty);
+
+        statusBar.progressProperty().bind(progressProperty);
+        service.shutdown();
     }
 
     @FXML
@@ -596,7 +665,6 @@ public class RayTracerMainController {
         allNodes.clear();
         getChildren(rootNodes);
         selectedNodeIndex = getIndexByName(allNodes, selectedNode.getName());
-        selectedRootNodeIndex = getIndexByName(rootNodes, selectedNode.getName());
         nodeChoice.setItems(allNodes);
         nodeChoice.getSelectionModel().select(selectedNodeIndex);
     }
@@ -730,4 +798,15 @@ public class RayTracerMainController {
             rootNodes.add(clone);
         }
     }
+
+    public static class PlatformHelper {
+
+        public static void run(Runnable treatment) {
+            if (treatment == null) throw new IllegalArgumentException("The treatment to perform can not be null");
+            if (Platform.isFxApplicationThread()) treatment.run();
+            else Platform.runLater(treatment);
+        }
+    }
+
+
 }
