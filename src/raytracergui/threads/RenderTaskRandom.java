@@ -7,7 +7,9 @@ import javafx.scene.image.PixelWriter;
 import ray.World;
 import raytracergui.controller.RayTracerMainController;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by jroehl on 13.01.16.
@@ -27,6 +29,7 @@ public class RenderTaskRandom extends Task {
     private Camera camera;
     private World world;
     private PixelWriter pixelWriter;
+    private ArrayList<Object[]> batch;
 
 
     public RenderTaskRandom(String name, List<int[]> coordinates, int cores, int moduloValue, int width, int height, Camera camera, World world, PixelWriter pixelWriter) {
@@ -42,6 +45,8 @@ public class RenderTaskRandom extends Task {
         this.coordinatesAmount = coordinates.size();
         this.progress = 0;
         this.progressTotal = this.coordinatesAmount / (moduloValue + 1);
+        this.batch = new ArrayList<>();
+
     }
 
 
@@ -66,44 +71,41 @@ public class RenderTaskRandom extends Task {
                 final Color c = world.hit(camera.rayFor(width, height, coordinate[0], height - 1 - coordinate[1]));
                 final javafx.scene.paint.Color javaColor = new javafx.scene.paint.Color(c.r, c.g, c.b, 1);
                 final long end = System.nanoTime();
+
+                Object[] obj = new Object[2];
+                obj[0] = coordinate;
+                obj[1] = javaColor;
+
+                batch.add(obj);
+
                 timeTaken = end - start;
                 totalTime += timeTaken;
                 updateProgress(progress, progressTotal);
                 updateValue(totalTime);
-                if (timeTaken < 15000) {
-                    if (progress % 150 == 0) {
-                        try {
-                            Thread.sleep(25);
-                        } catch (InterruptedException e) {
-                            Thread.currentThread().interrupt();
-                        }
-                    }
-                    RayTracerMainController.PlatformHelper.run(() -> pixelWriter.setColor(coordinate[0], coordinate[1], javaColor));
-                } else if (timeTaken < 30000) {
-                    if (progress % 150 == 0) {
-                        try {
-                            Thread.sleep(15);
-                        } catch (InterruptedException e) {
-                            Thread.currentThread().interrupt();
-                        }
-                    }
-                    RayTracerMainController.PlatformHelper.run(() -> pixelWriter.setColor(coordinate[0], coordinate[1], javaColor));
-                } else {
-                    if (progress % 300 == 0) {
-                        try {
-                            Thread.sleep(10);
-                        } catch (InterruptedException e) {
-                            Thread.currentThread().interrupt();
-                        }
-                    }
-                    RayTracerMainController.PlatformHelper.run(() -> pixelWriter.setColor(coordinate[0], coordinate[1], javaColor));
+
+                if (progress % 200 == 0) {
+                    ArrayList<Object[]> clone = cloneList(batch);
+                    batch.clear();
+                    RayTracerMainController.PlatformHelper.run(() -> paintBatch(clone));
 
                 }
             }
         }
 
         updateMessage(name + " took ~" + totalTime / progress + " nanoseconds for each ray");
+    }
 
+    private static ArrayList<Object[]> cloneList(List<Object[]> list) {
+        ArrayList<Object[]> clone = new ArrayList<>(list.size());
+        clone.addAll(list.stream().map(Object[]::clone).collect(Collectors.toList()));
+        return clone;
+    }
+
+    private void paintBatch(ArrayList<Object[]> objects) {
+        for (Object[] obj : objects) {
+            int[] coordinate = (int[]) obj[0];
+            pixelWriter.setColor(coordinate[0], coordinate[1], (javafx.scene.paint.Color) obj[1]);
+        }
     }
 
     @Override

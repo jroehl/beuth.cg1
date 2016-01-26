@@ -189,6 +189,7 @@ public class RayTracerMainController {
     private Label[] nodeLabels;
 
     private Button refreshBtn;
+    private Button stopBtn;
     private CheckBox checkAutorender;
 
     private ObservableList<raytracergui.enums.Camera> cameraNames = FXCollections.observableArrayList(raytracergui.enums.Camera.values());
@@ -216,6 +217,8 @@ public class RayTracerMainController {
 
     public ExecutorService service;
     private SimpleStringProperty messageProperty = new SimpleStringProperty("OK");
+    private int previousHeight;
+    private int previousWidth;
 
     @FXML
     public void initialize() {
@@ -244,13 +247,16 @@ public class RayTracerMainController {
         refreshBtn = new Button("", new Glyph("FontAwesome", "REFRESH"));
         refreshBtn.setOnAction((event -> btnRerender()));
 
+        stopBtn = new Button("", new Glyph("FontAwesome", "STOP"));
+        stopBtn.setOnAction((event -> stopRendering()));
+
         checkAutorender = new CheckBox("autorender (beta)");
         checkAutorender.setSelected(false);
         checkAutorender.setPadding(new Insets(0, 5, 0, 0));
 
         hBox.setMargin(checkAutorender, new Insets(4, 0, 0, 0));
 
-        hBox.getChildren().addAll(separator, checkAutorender, refreshBtn);
+        hBox.getChildren().addAll(separator, checkAutorender, refreshBtn, stopBtn);
         statusBar.getRightItems().add(hBox);
 
         createNode();
@@ -498,6 +504,10 @@ public class RayTracerMainController {
         return new color.Color(value.getRed(), value.getGreen(), value.getBlue());
     }
 
+    private javafx.scene.paint.Color generateColor(Color value) {
+        return new javafx.scene.paint.Color((double) value.r, (double) value.g, (double) value.b, 1);
+    }
+
 
     /**
      * Rendert das Bild einmal komplett neu indem eine neue World erzeugt wird
@@ -549,14 +559,22 @@ public class RayTracerMainController {
 
         messageProperty.set("RENDERING");
 
-        wrImg = new WritableImage(width, height);
+        if (previousHeight != height || previousWidth != width) {
+            wrImg = new WritableImage(width, height);
+        }
+
+        previousHeight = height;
+        previousWidth = width;
+
         PixelWriter pixelWriter = wrImg.getPixelWriter();
         imgView.setImage(wrImg);
-
 
         ArrayList<int[]> coordinates = new ArrayList<>();
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
+                if (previousHeight != height || previousWidth != width) {
+                    pixelWriter.setColor(x, y, generateColor(backgroundColor));
+                }
                 coordinates.add(new int[]{x, y});
             }
         }
@@ -616,6 +634,10 @@ public class RayTracerMainController {
     public void newLightWindow(ActionEvent actionEvent) throws IOException {
         if (!lightWindowOpen)
             generateStage("../layouts/RayTracerLightLayout.fxml", 500, 400);
+    }
+
+    public void stopRendering() {
+        service.shutdownNow();
     }
 
     public void generateStage(String path, int width, int height) throws IOException {

@@ -170,6 +170,11 @@ public class ObjLoader {
         while (scanner.hasNext()) {
             floats.add(scanner.nextFloat());
         }
-        vertexPoints().add(new Point3(floats.get(0), floats.get(1), floats.get(2)));
+        try {
+            vertexPoints().add(new Point3(floats.get(0), floats.get(1), floats.get(2)));
+        } catch (ArrayIndexOutOfBoundsException e) {
+            e.printStackTrace();
+            vertexPoints().add(new Point3(floats.get(0), floats.get(1), 0.0));
+        }
     }
 }
