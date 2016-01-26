@@ -53,10 +53,14 @@ public class RenderTaskRandom extends Task {
         long totalTime = 0;
 
         for (int i = 0; i < coordinatesAmount; i++) {
-            if (Thread.currentThread().isInterrupted()) { break; }
+            if (Thread.currentThread().isInterrupted()) {
+                break;
+            }
             if ((i + moduloValue) % cores == 0) {
-                if (Thread.currentThread().isInterrupted()) { break; }
-                progress ++;
+                if (Thread.currentThread().isInterrupted()) {
+                    break;
+                }
+                progress++;
                 final long start = System.nanoTime();
                 int[] coordinate = coordinates.get(i);
                 final Color c = world.hit(camera.rayFor(width, height, coordinate[0], height - 1 - coordinate[1]));
@@ -65,14 +69,35 @@ public class RenderTaskRandom extends Task {
                 timeTaken = end - start;
                 totalTime += timeTaken;
                 updateProgress(progress, progressTotal);
-                if (timeTaken < 2500 && progress % 200 == 0) {
+                if (timeTaken < 15000) {
+                    if (progress % 150 == 0) {
                         try {
-                            Thread.sleep(100);
+                            Thread.sleep(25);
                         } catch (InterruptedException e) {
                             Thread.currentThread().interrupt();
                         }
                     }
-                RayTracerMainController.PlatformHelper.run(() -> pixelWriter.setColor(coordinate[0], coordinate[1], javaColor));
+                    RayTracerMainController.PlatformHelper.run(() -> pixelWriter.setColor(coordinate[0], coordinate[1], javaColor));
+                } else if (timeTaken < 30000) {
+                    if (progress % 150 == 0) {
+                        try {
+                            Thread.sleep(15);
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                        }
+                    }
+                    RayTracerMainController.PlatformHelper.run(() -> pixelWriter.setColor(coordinate[0], coordinate[1], javaColor));
+                } else {
+                    if (progress % 300 == 0) {
+                        try {
+                            Thread.sleep(10);
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                        }
+                    }
+                    RayTracerMainController.PlatformHelper.run(() -> pixelWriter.setColor(coordinate[0], coordinate[1], javaColor));
+
+                }
             }
         }
 
@@ -82,9 +107,9 @@ public class RenderTaskRandom extends Task {
     }
 
     @Override
-    public Object call() throws Exception {
+    public Boolean call() throws Exception {
         drawImage();
-        return null;
+        return true;
     }
 }
 

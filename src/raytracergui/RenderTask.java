@@ -80,15 +80,15 @@ public class RenderTask extends Task {
                     final int finX = x, finY = y;
 //                    updateMessage("Iteration " + progress);
 //                    updateProgress(progress, progressTotal);
-//                    pixelWriter.setColor(finX, finY, javaColor);
-                    if (timeTaken < 2000 && progress % 100 == 0) {
-                        try {
-                            Thread.sleep(100);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                        RayTracerMainController.PlatformHelper.run(() -> pixelWriter.setColor(finX, finY, javaColor));
+                    pixelWriter.setColor(finX, finY, javaColor);
+//                    if (timeTaken < 2000 && progress % 100 == 0) {
+//                        try {
+//                            Thread.sleep(100);
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                        RayTracerMainController.PlatformHelper.run(() -> pixelWriter.setColor(finX, finY, javaColor));
 
 //                    if (progress % 100 == 0) {
 //                        RayTracerMainController.PlatformHelper.run(() -> rayTracerMainController.imgView.setImage(rayTracerMainController.wrImg));
@@ -103,9 +103,9 @@ public class RenderTask extends Task {
     }
 
     @Override
-    public Object call() throws Exception {
+    public Boolean call() throws Exception {
         drawImage();
-        return null;
+        return true;
     }
 }
 

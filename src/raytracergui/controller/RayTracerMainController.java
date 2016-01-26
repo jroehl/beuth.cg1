@@ -41,9 +41,7 @@ import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.*;
 
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
@@ -245,7 +243,7 @@ public class RayTracerMainController {
         refreshBtn.setOnAction((event -> btnRerender()));
 
         checkAutorender = new CheckBox("autorender");
-        checkAutorender.setSelected(true);
+        checkAutorender.setSelected(false);
         checkAutorender.setPadding(new Insets(0, 5, 0, 0));
 
         hBox.setMargin(checkAutorender, new Insets(4, 0, 0, 0));
@@ -385,7 +383,7 @@ public class RayTracerMainController {
         });
 
         numSamples.setEditable(true);
-        numSamples.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000));
+        numSamples.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000));
 
         numSamples.valueProperty().addListener((ChangeListener) -> {
             selectedCamera.setNumSamples((int) numSamples.getValue());
@@ -553,6 +551,7 @@ public class RayTracerMainController {
         PixelWriter pixelWriter = wrImg.getPixelWriter();
         imgView.setImage(wrImg);
 
+
         ArrayList<int[]> coordinates = new ArrayList<>();
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
@@ -603,8 +602,44 @@ public class RayTracerMainController {
 
         statusBar.progressProperty().bind(progressProperty);
         service.shutdown();
-
     }
+
+//    private void startRenderingThreads(int width, int height) {
+//
+//        final ExecutorService service;
+//        final int cores = Runtime.getRuntime().availableProcessors() / 2;
+//
+//        wrImg = new WritableImage(width, height);
+//        service = Executors.newFixedThreadPool(cores);
+//
+//        ArrayList<Future> tasks = new ArrayList<>();
+//        for (int i = 0; i < cores; i++) {
+//            tasks.add(service.submit(new RenderThread(cores, i, width, height, wrImg, camera, world)));
+//        }
+//
+//        long sumTimeTaken = 0;
+//        for (Future<Long> t : tasks) {
+//            try {
+//                sumTimeTaken += t.get();
+//            } catch (InterruptedException e) {
+//                System.out.println(e);
+//            } catch (ExecutionException e) {
+//                e.printStackTrace();
+//                System.out.println(e);
+//            }
+//        }
+//        service.shutdown();
+//
+//        try {
+//            service.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+//        } catch (InterruptedException e) {
+//            System.out.println(e);
+//        }
+//
+//        statusBar.setText(" Rendering Time: " + (((sumTimeTaken) / 1000000000.0F)) / cores);
+//        imgView.setImage(wrImg);
+//    }
+
 
     @FXML
     private void newGeometryWindow(ActionEvent actionEvent) throws IOException {

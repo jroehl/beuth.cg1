@@ -18,7 +18,9 @@ public class RayTracerMain extends Application {
         primaryStage.setScene(scene);
         primaryStage.setOnCloseRequest((event -> {
             RayTracerMainController controller = loader.getController();
-            controller.service.shutdownNow();
+            if (controller.service != null) {
+                controller.service.shutdownNow();
+            }
         }));
         primaryStage.show();
     }
