@@ -2,13 +2,14 @@ package raytracergui.enums;
 
 import camera.OneRaySamplingPattern;
 import camera.RandomRowsSamplingPattern;
+import camera.StaticSamplingPatternJulian;
 import camera.StatticSamplingPattern;
 
 /**
  * Created by jroehl on 15.01.16.
  */
 public enum SamplingPattern {
-    ONERAY, RANDOMROWS, STATIC;
+    ONERAY, RANDOMROWS, STATIC, STATICSAMPLINGJULIAN;
 
     public camera.SamplingPattern getSamplingPattern(int numSamples) {
 
@@ -19,6 +20,8 @@ public enum SamplingPattern {
                 return new RandomRowsSamplingPattern(numSamples);
             case STATIC:
                 return new StatticSamplingPattern(numSamples);
+            case STATICSAMPLINGJULIAN:
+                return new StaticSamplingPatternJulian(numSamples);
             default:
                 return null;
         }
