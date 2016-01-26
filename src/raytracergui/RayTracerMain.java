@@ -5,15 +5,21 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import raytracergui.controller.RayTracerMainController;
 
 public class RayTracerMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("layouts/RayTracerMainLayout.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("layouts/RayTracerMainLayout.fxml"));
+        Parent root = loader.load();
         primaryStage.setTitle("Waschmaschine - Raytracer");
         Scene scene = new Scene(root, 1040, 500);
         primaryStage.setScene(scene);
+        primaryStage.setOnCloseRequest((event -> {
+            RayTracerMainController controller = loader.getController();
+            controller.service.shutdownNow();
+        }));
         primaryStage.show();
     }
 
