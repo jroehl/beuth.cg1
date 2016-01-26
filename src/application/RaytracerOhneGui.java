@@ -309,7 +309,6 @@ public class RaytracerOhneGui extends Application {
 		final long end = System.nanoTime();
 		renderingTime.setText((" Rendering Time: " + (end - start) / 1000000000.0F));
 	}
-
 	/**
 	 * Rendert das Bild einmal komplett neu indem eine neue World erzeugt wird
 	 * und anschließend das Bild neu gezeichnet wird
