@@ -28,11 +28,11 @@ import org.controlsfx.control.PopOver;
 import org.controlsfx.control.StatusBar;
 import org.controlsfx.glyphfont.Glyph;
 import ray.World;
-import raytracergui.RenderTaskRandom;
 import raytracergui.container.LightContainer;
 import raytracergui.container.NodeContainer;
 import raytracergui.dataclasses.TreeViewWithItems;
 import raytracergui.enums.SamplingPattern;
+import raytracergui.threads.RenderTaskRandom;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -41,7 +41,9 @@ import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
@@ -242,7 +244,7 @@ public class RayTracerMainController {
         refreshBtn = new Button("", new Glyph("FontAwesome", "REFRESH"));
         refreshBtn.setOnAction((event -> btnRerender()));
 
-        checkAutorender = new CheckBox("autorender");
+        checkAutorender = new CheckBox("autorender (beta)");
         checkAutorender.setSelected(false);
         checkAutorender.setPadding(new Insets(0, 5, 0, 0));
 
@@ -604,43 +606,6 @@ public class RayTracerMainController {
         service.shutdown();
     }
 
-//    private void startRenderingThreads(int width, int height) {
-//
-//        final ExecutorService service;
-//        final int cores = Runtime.getRuntime().availableProcessors() / 2;
-//
-//        wrImg = new WritableImage(width, height);
-//        service = Executors.newFixedThreadPool(cores);
-//
-//        ArrayList<Future> tasks = new ArrayList<>();
-//        for (int i = 0; i < cores; i++) {
-//            tasks.add(service.submit(new RenderThread(cores, i, width, height, wrImg, camera, world)));
-//        }
-//
-//        long sumTimeTaken = 0;
-//        for (Future<Long> t : tasks) {
-//            try {
-//                sumTimeTaken += t.get();
-//            } catch (InterruptedException e) {
-//                System.out.println(e);
-//            } catch (ExecutionException e) {
-//                e.printStackTrace();
-//                System.out.println(e);
-//            }
-//        }
-//        service.shutdown();
-//
-//        try {
-//            service.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
-//        } catch (InterruptedException e) {
-//            System.out.println(e);
-//        }
-//
-//        statusBar.setText(" Rendering Time: " + (((sumTimeTaken) / 1000000000.0F)) / cores);
-//        imgView.setImage(wrImg);
-//    }
-
-
     @FXML
     private void newGeometryWindow(ActionEvent actionEvent) throws IOException {
         if (allNodes.size() > 0)
@@ -842,5 +807,6 @@ public class RayTracerMainController {
             else Platform.runLater(treatment);
         }
     }
+
 
 }

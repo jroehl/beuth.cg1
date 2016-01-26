@@ -1,4 +1,4 @@
-package raytracergui;
+package raytracergui.threads;
 
 import camera.Camera;
 import color.Color;
@@ -69,6 +69,7 @@ public class RenderTaskRandom extends Task {
                 timeTaken = end - start;
                 totalTime += timeTaken;
                 updateProgress(progress, progressTotal);
+                updateValue(totalTime);
                 if (timeTaken < 15000) {
                     if (progress % 150 == 0) {
                         try {
@@ -101,7 +102,6 @@ public class RenderTaskRandom extends Task {
             }
         }
 
-        updateValue(totalTime);
         updateMessage(name + " took ~" + totalTime / progress + " nanoseconds for each ray");
 
     }

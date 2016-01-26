@@ -4,6 +4,7 @@ import raytracergui.enums.Geometry;
 import raytracergui.enums.Material;
 import raytracergui.enums.Texture;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -22,6 +23,7 @@ public class GeometryContainer {
     private int exponent = 0;
     private String name;
     private geometries.Geometry fixedGeometry = null;
+    private HashMap<String, ArrayList> objectValues;
 
     public GeometryContainer() {
 
@@ -85,7 +87,20 @@ public class GeometryContainer {
     public geometries.Geometry getGeometry() {
         if (fixedGeometry != null) {
             return fixedGeometry;
-        } else {
+        } else if (geometry == Geometry.OBJECTFILE) {
+            switch (material) {
+                case SINGLECOLOR:
+                case LAMBERT:
+                    return (geometry.getGeometry(material.getMaterial(this.exponent, this.texture_1.getTexture(this.texture_1extra)), objectValues));
+                case PHONG:
+                    return (geometry.getGeometry(material.getMaterial(this.exponent, this.texture_1.getTexture(this.texture_1extra), this.texture_2.getTexture(this.texture_2extra)), objectValues));
+                case REFLECTIVE:
+                    return (geometry.getGeometry(material.getMaterial(this.exponent, this.texture_1.getTexture(this.texture_1extra), this.texture_2.getTexture(this.texture_2extra), this.texture_3.getTexture(this.texture_3extra)), objectValues));
+                default:
+                    return null;
+            }
+        }
+        else {
 //            printValues();
             switch (material) {
                 case SINGLECOLOR:
@@ -113,4 +128,7 @@ public class GeometryContainer {
         return new color.Color(value.getRed(), value.getGreen(), value.getBlue());
     }
 
+    public void addLoadedValues(HashMap<String, ArrayList> objectValues) {
+        this.objectValues = objectValues;
+    }
 }

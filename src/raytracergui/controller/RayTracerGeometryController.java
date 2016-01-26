@@ -15,12 +15,14 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.controlsfx.control.CheckListView;
 import org.controlsfx.control.Notifications;
+import raytracergui.helpers.ObjLoader;
 import raytracergui.container.GeometryContainer;
 import raytracergui.enums.Geometry;
 import raytracergui.enums.Material;
 import raytracergui.enums.Texture;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -61,10 +63,12 @@ public class RayTracerGeometryController {
     private Material selectedMaterial;
     private Texture selectedTexture;
 
+    private HashMap<String, ArrayList> objectValues;
+
     private Scene scene;
     private File file;
 
-    private final String[] textureLabels = new String[] {"Diffuse", "Specular", "Reflection"};
+    private final String[] textureLabels = new String[]{"Diffuse", "Specular", "Reflection"};
 
     @FXML
     public void initialization() {
@@ -89,7 +93,6 @@ public class RayTracerGeometryController {
                 g.getChildren().clear();
                 g.getRowConstraints().clear();
             } catch (NullPointerException e) {
-                System.out.println(e);
             }
             g = new GridPane();
             ColumnConstraints column1 = new ColumnConstraints(200);
@@ -99,8 +102,7 @@ public class RayTracerGeometryController {
             for (int i = 0; i < 4; i++) {
                 g.getRowConstraints().add(new RowConstraints(40));
             }
-            texMap = new HashMap<String, Object[]>();
-
+            texMap = new HashMap<>();
             switch (selectedMaterial) {
                 case SINGLECOLOR:
                 case LAMBERT:
@@ -174,6 +176,22 @@ public class RayTracerGeometryController {
             g.add(exponentLabel, 0, lastRow);
             g.add(exponentSpinner, 1, lastRow);
         }
+        if (selectedGeometry == Geometry.OBJECTFILE) {
+
+            Button button = new Button("load obj");
+
+            button.setOnAction((buttonEvent) -> {
+                File file;
+                FileChooser fileChooser = new FileChooser();
+                file = fileChooser.showOpenDialog(stage);
+                if (file != null) {
+                    ObjLoader objLoader = new ObjLoader(file);
+                    objectValues = objLoader.readFile();
+                }
+            });
+
+            g.add(button, 1, lastRow+1);
+        }
     }
 
     private void initializeButton(GridPane g, int row) {
@@ -218,6 +236,7 @@ public class RayTracerGeometryController {
             if (mainController.selectedNode.getGeometryMap().get(geoName.getText()) == null) {
                 geoCont.setName(geoName.getText());
                 geoCont.addGeometry(selectedGeometry);
+                geoCont.addLoadedValues(objectValues);
                 geoCont.addTextures(texMap);
                 int exponent = 0;
                 try {
@@ -229,6 +248,8 @@ public class RayTracerGeometryController {
                 try {
                     geoCont.getGeometry();
                 } catch (Exception e) {
+                    System.out.println("FOOOOOOOOOOOOOO");
+                    e.printStackTrace();
                     Notifications.create()
                             .position(Pos.TOP_RIGHT)
                             .title("Creation failed")
@@ -250,6 +271,7 @@ public class RayTracerGeometryController {
                 throw new Exception("name of geometry exists");
             }
         } catch (Exception e) {
+            System.out.println("BARARRRARARRRRR");
             System.out.println(e);
         }
     }

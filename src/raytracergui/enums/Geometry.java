@@ -4,11 +4,14 @@ import Matrizen_Vektoren_Bibliothek.Point3;
 import geometries.*;
 import material.Material;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 /**
  * Created by jroehl on 15.01.16.
  */
 public enum Geometry {
-    AXISALIGNEDBOX, BH, CYLINDER, CYLINDERBODY, DISC, PLANE, SPHERE, DYNAMICSPHERE, TRIANGLE, TRIANGLEPYRAMID;
+    AXISALIGNEDBOX, BH, CYLINDER, CYLINDERBODY, DISC, PLANE, SPHERE, DYNAMICSPHERE, TRIANGLE, TRIANGLEPYRAMID, OBJECTFILE;
 
     public geometries.Geometry getGeometry(Material material) {
         switch (this) {
@@ -35,6 +38,10 @@ public enum Geometry {
             default:
                 return null;
         }
+    }
+
+    public geometries.Geometry getGeometry(Material material, HashMap<String, ArrayList> values) {
+        return new ObjectFile(material, values).getObj();
     }
 
 //    @Override

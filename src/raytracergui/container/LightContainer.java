@@ -10,7 +10,7 @@ import javafx.collections.ObservableMap;
 import light.DirectionalLight;
 import light.PointLight;
 import light.SpotLight;
-import raytracergui.CalcHelper;
+import raytracergui.helpers.CalcHelper;
 import raytracergui.enums.Light;
 
 /**

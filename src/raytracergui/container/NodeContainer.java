@@ -8,7 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import ray.Transform;
-import raytracergui.CalcHelper;
+import raytracergui.helpers.CalcHelper;
 import raytracergui.dataclasses.HierarchyData;
 
 import java.util.*;

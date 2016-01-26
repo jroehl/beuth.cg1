@@ -1,4 +1,4 @@
-package raytracergui;
+package raytracergui.threads;
 
 import camera.Camera;
 import color.Color;
