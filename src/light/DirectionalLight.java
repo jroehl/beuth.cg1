@@ -99,19 +99,9 @@ public class DirectionalLight extends Light {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#toString()
 	 */
-
-	/**
-	 * Ueberschriebene toString-Methode
-	 *
-	 * @return String DirectionalLight Werte
-	 */
-	@Override
-	public String toString() {
-		return "DirectionalLight [direction=" + direction + "]";
-	}
 
 	/**
 	 * Ueberschriebene equals-Methode
@@ -135,6 +125,16 @@ public class DirectionalLight extends Light {
 		} else if (!direction.equals(other.direction))
 			return false;
 		return true;
+	}
+
+	/**
+	 * Ueberschriebene toString-Methode
+	 *
+	 * @return String DirectionalLight Werte
+	 */
+	@Override
+	public String toString() {
+		return "DirectionalLight [direction=" + direction + ", color=" + color + ", castsShadows=" + castsShadows + "]";
 	}
 
 	/**
