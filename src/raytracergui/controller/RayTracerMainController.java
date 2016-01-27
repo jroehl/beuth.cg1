@@ -220,6 +220,9 @@ public class RayTracerMainController {
     private int previousHeight;
     private int previousWidth;
 
+    private ArrayList<int[]> coordinates;
+    private PixelWriter pixelWriter;
+
     @FXML
     public void initialize() {
 
@@ -561,23 +564,24 @@ public class RayTracerMainController {
 
         if (previousHeight != height || previousWidth != width) {
             wrImg = new WritableImage(width, height);
+
+            pixelWriter = wrImg.getPixelWriter();
+            imgView.setImage(wrImg);
+
+            coordinates = new ArrayList<>();
+            for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
+                    if (previousHeight != height || previousWidth != width) {
+                        pixelWriter.setColor(x, y, generateColor(backgroundColor));
+                    }
+                    coordinates.add(new int[]{x, y});
+                }
+            }
+
         }
 
         previousHeight = height;
         previousWidth = width;
-
-        PixelWriter pixelWriter = wrImg.getPixelWriter();
-        imgView.setImage(wrImg);
-
-        ArrayList<int[]> coordinates = new ArrayList<>();
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                if (previousHeight != height || previousWidth != width) {
-                    pixelWriter.setColor(x, y, generateColor(backgroundColor));
-                }
-                coordinates.add(new int[]{x, y});
-            }
-        }
 
         shuffleList(coordinates);
 
