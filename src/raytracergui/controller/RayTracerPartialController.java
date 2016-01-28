@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.TextField;
 import org.controlsfx.control.PlusMinusSlider;
 import org.controlsfx.control.ToggleSwitch;
 
@@ -19,11 +20,11 @@ public class RayTracerPartialController {
     @FXML
     public Label labelPos;
     @FXML
-    public Label labelPosX;
+    public TextField labelPosX;
     @FXML
-    public Label labelPosY;
+    public TextField labelPosY;
     @FXML
-    public Label labelPosZ;
+    public TextField labelPosZ;
     @FXML
     public PlusMinusSlider sliderPosX;
     @FXML
@@ -33,11 +34,11 @@ public class RayTracerPartialController {
     @FXML
     public Label labelDir;
     @FXML
-    public Label labelDirX;
+    public TextField labelDirX;
     @FXML
-    public Label labelDirY;
+    public TextField labelDirY;
     @FXML
-    public Label labelDirZ;
+    public TextField labelDirZ;
     @FXML
     public PlusMinusSlider sliderDirX;
     @FXML

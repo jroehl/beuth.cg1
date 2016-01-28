@@ -7,7 +7,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -15,11 +14,11 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.controlsfx.control.CheckListView;
 import org.controlsfx.control.Notifications;
-import raytracergui.helpers.ObjLoader;
 import raytracergui.container.GeometryContainer;
 import raytracergui.enums.Geometry;
 import raytracergui.enums.Material;
 import raytracergui.enums.Texture;
+import raytracergui.helpers.ObjLoader;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -65,10 +64,10 @@ public class RayTracerGeometryController {
 
     private HashMap<String, ArrayList> objectValues;
 
-    private Scene scene;
     private File file;
 
     private final String[] textureLabels = new String[]{"Diffuse", "Specular", "Reflection"};
+    private Spinner<Double> refractionIndexSpinner;
 
     @FXML
     public void initialization() {
@@ -77,8 +76,6 @@ public class RayTracerGeometryController {
         materialChoice.setItems(materialNames);
 
         activeGeometryNames = FXCollections.observableArrayList(mainController.selectedNode.getGeometryMap().keySet());
-
-        scene = anchorPaneGeometry.getScene();
 
         geoChoice.setOnAction((event) -> {
             geoCont = new GeometryContainer();
@@ -114,15 +111,45 @@ public class RayTracerGeometryController {
                 case REFLECTIVE:
                     initializeRows(g, 3, true);
                     break;
+                case REFRACTIVE:
+                    initializeRefractionSpinner(g);
+                    break;
             }
             geometryWindowVbox.getChildren().add(g);
         });
-
         geometryChecklist.setItems(activeGeometryNames);
-
         geometryChecklist.getCheckModel().getCheckedItems().addListener((ListChangeListener<String>) c1 -> {
             System.out.println(geometryChecklist.getCheckModel().getCheckedItems());
         });
+    }
+
+    private void initializeRefractionSpinner(GridPane g) {
+        refractionIndexSpinner = new Spinner<>();
+        refractionIndexSpinner.setEditable(true);
+        refractionIndexSpinner.setPrefWidth(80);
+        refractionIndexSpinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.0, 100.0));
+        refractionIndexSpinner.getValueFactory().setValue(1.0);
+        g.add(new Label("Refraction index"), 0, 0);
+        g.add(refractionIndexSpinner, 1, 0);
+        initializeObjectLoadBtn(g, 0, 1);
+    }
+
+    private void initializeObjectLoadBtn(GridPane g, int column, int row) {
+        if (selectedGeometry == Geometry.OBJECTFILE) {
+
+            Button button = new Button("load obj");
+
+            button.setOnAction((buttonEvent) -> {
+                File file;
+                FileChooser fileChooser = new FileChooser();
+                file = fileChooser.showOpenDialog(stage);
+                if (file != null) {
+                    ObjLoader objLoader = new ObjLoader(file);
+                    objectValues = objLoader.readFile();
+                }
+            });
+            g.add(button, column, row);
+        }
     }
 
     public void setStage(Stage stage) {
@@ -168,30 +195,16 @@ public class RayTracerGeometryController {
             g.add(vBox, 0, row);
         }
         if (needsExponent) {
-            Label exponentLabel = new Label("Exponent");
             exponentSpinner = new Spinner();
             exponentSpinner.setEditable(true);
             exponentSpinner.setPrefWidth(80);
             exponentSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000));
-            g.add(exponentLabel, 0, lastRow);
+            exponentSpinner.getValueFactory().setValue(64);
+            g.add(new Label("Exponent"), 0, lastRow);
             g.add(exponentSpinner, 1, lastRow);
         }
-        if (selectedGeometry == Geometry.OBJECTFILE) {
 
-            Button button = new Button("load obj");
-
-            button.setOnAction((buttonEvent) -> {
-                File file;
-                FileChooser fileChooser = new FileChooser();
-                file = fileChooser.showOpenDialog(stage);
-                if (file != null) {
-                    ObjLoader objLoader = new ObjLoader(file);
-                    objectValues = objLoader.readFile();
-                }
-            });
-
-            g.add(button, 1, lastRow+1);
-        }
+        initializeObjectLoadBtn(g, 0, lastRow+1);
     }
 
     private void initializeButton(GridPane g, int row) {
@@ -222,9 +235,10 @@ public class RayTracerGeometryController {
 
     private void initializeColorPicker(GridPane g, int row) {
         ColorPicker cPicker = new ColorPicker();
-        cPicker.setValue(Color.TURQUOISE);
+        cPicker.setEditable(true);
         String key = "texture_" + row;
         cPicker.setOnAction((picked) -> texMap.put(key, new Object[]{Texture.SINGLECOLOR, cPicker.getValue()}));
+        cPicker.setValue(Color.WHITE);
         VBox vBox = new VBox();
         vBox.getChildren().addAll(new Label(" "), cPicker);
         g.add(vBox, 1, row);
@@ -240,11 +254,17 @@ public class RayTracerGeometryController {
                 geoCont.addTextures(texMap);
                 int exponent = 0;
                 try {
-                    exponent = ((int) exponentSpinner.getValue());
+                    exponent = (int) exponentSpinner.getValue();
                 } catch (Exception e) {
                     System.out.println(e);
                 }
-                geoCont.addMaterial(selectedMaterial, exponent);
+                double refractionIndex = 0.0;
+                try {
+                    refractionIndex = refractionIndexSpinner.getValue();
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+                geoCont.addMaterial(selectedMaterial, exponent, refractionIndex);
                 try {
                     geoCont.getGeometry();
                 } catch (Exception e) {
@@ -272,7 +292,7 @@ public class RayTracerGeometryController {
             }
         } catch (Exception e) {
             System.out.println("BARARRRARARRRRR");
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 

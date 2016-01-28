@@ -1,15 +1,12 @@
 package application;
 
-import geometries.Cylinder;
-import geometries.Geometry;
-import geometries.Node;
-import geometries.Plane;
-import geometries.Sphere;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-
+import Matrizen_Vektoren_Bibliothek.Point3;
+import Matrizen_Vektoren_Bibliothek.Vector3;
+import camera.Camera;
+import camera.PerspectiveCamera;
+import camera.RandomRowsSamplingPattern;
+import color.Color;
+import geometries.*;
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Group;
@@ -22,9 +19,6 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
-import javax.imageio.ImageIO;
-
 import light.Light;
 import light.PointLight;
 import material.LambertMaterial;
@@ -32,12 +26,11 @@ import material.PhongMaterial;
 import ray.Transform;
 import ray.World;
 import textures.SingleColorTexture;
-import Matrizen_Vektoren_Bibliothek.Point3;
-import Matrizen_Vektoren_Bibliothek.Vector3;
-import camera.Camera;
-import camera.PerspectiveCamera;
-import camera.RandomRowsSamplingPattern;
-import color.Color;
+
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class RaytracerOhneGui extends Application {
 
@@ -260,8 +253,7 @@ public class RaytracerOhneGui extends Application {
 	}
 	public void createWorld() {
 
-		final Color backgroundColor = new Color(0, 0, 0);
-		world = new World(backgroundColor);
+		world = new World();
 
 		if (!lights.isEmpty()) {
 			for (final Light light : lights) {

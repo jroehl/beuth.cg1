@@ -8,7 +8,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
@@ -17,6 +16,7 @@ import org.controlsfx.control.Notifications;
 import org.controlsfx.control.PlusMinusSlider;
 import raytracergui.container.LightContainer;
 import raytracergui.enums.Light;
+import raytracergui.helpers.Helper;
 
 import java.io.IOException;
 
@@ -51,12 +51,13 @@ public class RayTracerLightController {
     }
 
     private PlusMinusSlider[] plusMinusSliders;
-    private Label[] labels;
+    private TextField[] labels;
 
     @FXML
     public void initialization() {
 
         activeLightNames = FXCollections.observableArrayList(mainController.lightMap.keySet());
+
 
         lightChoice.setOnAction((event) -> {
             lightsGroup.setVisible(true);
@@ -105,14 +106,14 @@ public class RayTracerLightController {
     }
 
     private void setupSliders() {
-        plusMinusSliders = new PlusMinusSlider[] {pC.sliderDirX, pC.sliderDirY, pC.sliderDirZ, pC.sliderPosX, pC.sliderPosY, pC.sliderPosZ};
-        labels = new Label[] {pC.labelDirX, pC.labelDirY, pC.labelDirZ, pC.labelPosX, pC.labelPosY, pC.labelPosZ};
+        plusMinusSliders = new PlusMinusSlider[]{pC.sliderDirX, pC.sliderDirY, pC.sliderDirZ, pC.sliderPosX, pC.sliderPosY, pC.sliderPosZ};
+        labels = new TextField[]{pC.labelDirX, pC.labelDirY, pC.labelDirZ, pC.labelPosX, pC.labelPosY, pC.labelPosZ};
 
         bindLabels();
 
         for (int i = 0; i < plusMinusSliders.length; i++) {
             if (plusMinusSliders[i] != null) {
-                Label l = labels[i];
+                TextField l = labels[i];
                 PlusMinusSlider p = plusMinusSliders[i];
                 p.setOnValueChanged(e -> changeSliderValues(e.getValue(), l));
             }
@@ -120,20 +121,36 @@ public class RayTracerLightController {
     }
 
     private void bindLabels() {
-        for (Label l: labels) {
+        for (TextField l : labels) {
             if (l != null) {
-                l.textProperty().bind(mainController.createBinding(lightContainer.getDoubleValue(l.getId())));
+                l.setText(String.valueOf(lightContainer.getDoubleValue(l.getId()).getValue()));
+                l.setOnKeyReleased((keyEvent) -> {
+                    try {
+                        lightContainer.getDoubleValue(l.getId()).set(Double.parseDouble(l.getText()));
+                        mainController.rerender(false);
+                    } catch (NumberFormatException e) {
+                        Notifications.create()
+                                .position(Pos.TOP_RIGHT)
+                                .title("Value not accepted")
+                                .text(String.valueOf(e))
+                                .showError();
+                    }
+                });
+                lightContainer.getDoubleValue(l.getId()).addListener((ChangeListener) -> {
+                    l.setText(String.valueOf(lightContainer.getDoubleValue(l.getId()).getValue()));
+                });
             }
         }
     }
 
-    private void changeSliderValues(double value, Label l) {
+    private void changeSliderValues(double value, TextField l) {
         bindLabels();
         String id = l.getId();
-        lightContainer.setValue(id, lightContainer.getValue(id) + value);
+        lightContainer.setValue(id, Helper.sliderVal(lightContainer.getValue(id), value));
     }
 
     private void setupDifControls(boolean angleControl) {
+        pC.colorPicker.setValue(javafx.scene.paint.Color.WHITE);
         pC.colorPicker.setOnAction((event) -> {
             lightContainer.setColor(pC.colorPicker.getValue());
         });

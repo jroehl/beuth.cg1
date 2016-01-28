@@ -8,7 +8,7 @@ import light.DirectionalLight;
 import light.PointLight;
 import light.SpotLight;
 import raytracergui.enums.Light;
-import raytracergui.helpers.CalcHelper;
+import raytracergui.helpers.Helper;
 import Matrizen_Vektoren_Bibliothek.Point3;
 import Matrizen_Vektoren_Bibliothek.Vector3;
 import color.Color;
@@ -32,11 +32,11 @@ public class LightContainer {
 
 	private final ObservableMap<Object, Object> lightValues;
 
-	private final CalcHelper calcHelper;
+	private final Helper helper;
 
 	public LightContainer(Light type) {
 		this.type = type;
-		this.calcHelper = new CalcHelper();
+		this.helper = new Helper();
 		this.lightValues = FXCollections.observableHashMap();
 		this.lightValues.put(DIRECTIONX, new SimpleDoubleProperty(0.0));
 		this.lightValues.put(DIRECTIONY, new SimpleDoubleProperty(0.0));
@@ -87,10 +87,6 @@ public class LightContainer {
 		}
 	}
 
-	public double getCorrectedValue(String key) {
-		return calcHelper.getDividedValue(this.getDoubleValue(key).getValue());
-	}
-
 	public Color getColor() {
 		return (Color) this.lightValues.get(COLOR);
 	}
@@ -104,11 +100,11 @@ public class LightContainer {
 	}
 
 	public Vector3 getDirection() {
-		return new Vector3(this.getCorrectedValue(DIRECTIONX), this.getCorrectedValue(DIRECTIONY), this.getCorrectedValue(DIRECTIONZ));
+		return new Vector3(this.getValue(DIRECTIONX), this.getValue(DIRECTIONY), this.getValue(DIRECTIONZ));
 	}
 
 	public Point3 getPosition() {
-		return new Point3(this.getCorrectedValue(POSITIONX), this.getCorrectedValue(POSITIONY), this.getCorrectedValue(POSITIONZ));
+		return new Point3(this.getValue(POSITIONX), this.getValue(POSITIONY), this.getValue(POSITIONZ));
 	}
 
 	public boolean getCastsShadow() {
@@ -121,7 +117,7 @@ public class LightContainer {
 	}
 
 	public double getHalfAngle() {
-		return this.getCorrectedValue(HALFANGLE);
+		return this.getValue(HALFANGLE);
 	}
 
 	public void setCastsShadow(boolean selected) {
@@ -133,7 +129,7 @@ public class LightContainer {
 	}
 
 	public light.Light getLight() {
-		// printValues();
+//		 printValues();
 		switch (type) {
 			case DIRECTIONAL :
 				return new DirectionalLight(this.getColor(), this.getDirection(), this.getCastsShadow());

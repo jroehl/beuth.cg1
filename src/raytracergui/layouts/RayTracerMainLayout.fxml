@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import org.controlsfx.control.textfield.*?>
 <?import java.lang.*?>
 <?import java.net.*?>
 <?import javafx.scene.shape.*?>
@@ -41,21 +42,21 @@
                                   <GridPane>
                                       <columnConstraints>
                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
-                                          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
-                                          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                                          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="65.0" />
+                                          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="65.0" />
+                                          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="65.0" />
                                       </columnConstraints>
                                       <rowConstraints>
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                       </rowConstraints>
                                       <children>
                                           <Label text="Transf XYZ" />
-                                          <Label fx:id="labelTransX" text="0.0" GridPane.columnIndex="1" />
-                                          <Label fx:id="labelTransY" text="0.0" GridPane.columnIndex="2" />
-                                    <Label fx:id="labelTransZ" text="0.0" GridPane.columnIndex="3" />
+                                          <TextField fx:id="labelTransX" style="-fx-background-color: transparent;" text="0.0" GridPane.columnIndex="1" />
+                                          <TextField fx:id="labelTransY" style="-fx-background-color: transparent;" text="0.0" GridPane.columnIndex="2" />
+                                          <TextField fx:id="labelTransZ" style="-fx-background-color: transparent;" text="0.0" GridPane.columnIndex="3" />
                                       </children>
                                       <VBox.margin>
-                                          <Insets right="5.0" />
+                                          <Insets />
                                       </VBox.margin>
                                   </GridPane>
                                   <PlusMinusSlider fx:id="transX">
@@ -76,21 +77,21 @@
                                   <GridPane>
                                       <columnConstraints>
                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
-                                          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
-                                          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                                          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="65.0" />
+                                          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="65.0" />
+                                          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="65.0" />
                                       </columnConstraints>
                                       <rowConstraints>
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                       </rowConstraints>
                                       <children>
                                           <Label text="Translate" />
-                                          <Label fx:id="labelTranslateX" text="0.0" GridPane.columnIndex="1" />
-                                          <Label fx:id="labelTranslateY" text="0.0" GridPane.columnIndex="2" />
-                                          <Label fx:id="labelTranslateZ" text="0.0" GridPane.columnIndex="3" />
+                                          <TextField fx:id="labelTranslateX" style="-fx-background-color: transparent;" text="0.0" GridPane.columnIndex="1" />
+                                          <TextField fx:id="labelTranslateY" style="-fx-background-color: transparent;" text="0.0" GridPane.columnIndex="2" />
+                                          <TextField fx:id="labelTranslateZ" style="-fx-background-color: transparent;" text="0.0" GridPane.columnIndex="3" />
                                       </children>
                                       <VBox.margin>
-                                          <Insets left="10.0" right="15.0" top="10.0" />
+                                          <Insets top="10.0" />
                                       </VBox.margin>
                                   </GridPane>
                                   <PlusMinusSlider fx:id="translateX">
@@ -111,25 +112,22 @@
                               <GridPane>
                                  <columnConstraints>
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
-                                    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
-                                    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                                    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="65.0" />
+                                    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="65.0" />
+                                    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="65.0" />
                                  </columnConstraints>
                                  <rowConstraints>
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
                                     <Label text="Scale" />
-                                    <Label fx:id="labelScaleX" text="0.0" GridPane.columnIndex="1" />
-                                    <Label fx:id="labelScaleY" text="0.0" GridPane.columnIndex="2" />
-                                    <Label fx:id="labelScaleZ" text="0.0" GridPane.columnIndex="3" />
+                                    <TextField fx:id="labelScaleX" style="-fx-background-color: transparent;" text="0.0" GridPane.columnIndex="1" />
+                                    <TextField fx:id="labelScaleY" style="-fx-background-color: transparent;" text="0.0" GridPane.columnIndex="2" />
+                                    <TextField fx:id="labelScaleZ" style="-fx-background-color: transparent;" text="0.0" GridPane.columnIndex="3" />
                                  </children>
                                  <opaqueInsets>
                                     <Insets left="10.0" right="10.0" />
                                  </opaqueInsets>
-                                 <padding>
-                                    <Insets left="10.0" right="10.0" />
-                                 </padding>
                                  <VBox.margin>
                                     <Insets top="10.0" />
                                  </VBox.margin>
@@ -215,11 +213,23 @@
                                     <Insets />
                                  </VBox.margin>
                               </Label>
-                              <ColorPicker fx:id="backgroundColorPicker" promptText="Background color">
+                              <ColorPicker fx:id="backgroundColorPicker" editable="true" promptText="">
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
                               </ColorPicker>
+                              <Label text="Ambient color">
+                                 <VBox.margin>
+                                    <Insets top="5.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <ColorPicker fx:id="ambientColorPicker" editable="true" />
+                              <Label text="World refraction Index">
+                                 <padding>
+                                    <Insets top="5.0" />
+                                 </padding>
+                              </Label>
+                              <Spinner fx:id="refractionIndexSpinner" />
                                   <Separator prefWidth="200.0">
                                       <VBox.margin>
                                           <Insets bottom="10.0" top="10.0" />
@@ -273,21 +283,21 @@
                 <GridPane>
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
-                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
-                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="65.0" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="65.0" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="65.0" />
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
                         <Label text="Eyeview" />
-                        <Label fx:id="labelEx" text="0.0" GridPane.columnIndex="1" />
-                        <Label fx:id="labelEy" text="0.0" GridPane.columnIndex="2" />
-                        <Label fx:id="labelEz" text="0.0" GridPane.columnIndex="3" />
+                        <TextField fx:id="labelEx" style="-fx-background-color: transparent;" text="0.0" GridPane.columnIndex="1" />
+                        <TextField fx:id="labelEy" style="-fx-background-color: transparent;" text="0.0" GridPane.columnIndex="2" />
+                        <TextField fx:id="labelEz" style="-fx-background-color: transparent;" text="0.0" GridPane.columnIndex="3" />
                     </children>
                     <VBox.margin>
-                        <Insets left="10.0" right="15.0" top="5.0" />
+                        <Insets left="10.0" right="5.0" top="5.0" />
                     </VBox.margin>
                 </GridPane>
                 <PlusMinusSlider fx:id="eX">
@@ -308,21 +318,21 @@
                 <GridPane>
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
-                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
-                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="65.0" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="65.0" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="65.0" />
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
                         <Label text="Gaze direction" />
-                        <Label fx:id="labelGx" text="0.0" GridPane.columnIndex="1" />
-                        <Label fx:id="labelGy" text="0.0" GridPane.columnIndex="2" />
-                        <Label fx:id="labelGz" text="0.0" GridPane.columnIndex="3" />
+                        <TextField fx:id="labelGx" style="-fx-background-color: transparent;" text="0.0" GridPane.columnIndex="1" />
+                        <TextField fx:id="labelGy" style="-fx-background-color: transparent;" text="0.0" GridPane.columnIndex="2" />
+                        <TextField fx:id="labelGz" style="-fx-background-color: transparent;" text="0.0" GridPane.columnIndex="3" />
                     </children>
                     <VBox.margin>
-                        <Insets left="10.0" right="15.0" top="10.0" />
+                        <Insets left="10.0" right="5.0" top="10.0" />
                     </VBox.margin>
                 </GridPane>
                 <PlusMinusSlider fx:id="gX">
@@ -343,21 +353,21 @@
                 <GridPane>
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
-                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
-                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="65.0" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="65.0" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="65.0" />
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
                         <Label text="Up vector" />
-                        <Label fx:id="labelUx" text="0.0" GridPane.columnIndex="1" />
-                        <Label fx:id="labelUy" text="0.0" GridPane.columnIndex="2" />
-                        <Label fx:id="labelUz" text="0.0" GridPane.columnIndex="3" />
+                        <TextField fx:id="labelUx" style="-fx-background-color: transparent;" text="0.0" GridPane.columnIndex="1" />
+                        <TextField fx:id="labelUy" style="-fx-background-color: transparent;" text="0.0" GridPane.columnIndex="2" />
+                        <TextField fx:id="labelUz" style="-fx-background-color: transparent;" text="0.0" GridPane.columnIndex="3" />
                     </children>
                     <VBox.margin>
-                        <Insets left="10.0" right="15.0" top="10.0" />
+                        <Insets left="10.0" right="5.0" top="10.0" />
                     </VBox.margin>
                 </GridPane>
                 <PlusMinusSlider fx:id="uX">
@@ -380,7 +390,7 @@
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
                         <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
-                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="65.0" />
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -388,10 +398,10 @@
                     <children>
                         <Label fx:id="labelTextExtra" text="Scale factor" />
                         <Label fx:id="labelPersp" text="π /" visible="false" GridPane.columnIndex="2" />
-                        <Label fx:id="labelValExtra" text="0.0" GridPane.columnIndex="3" />
+                        <TextField fx:id="labelValExtra" style="-fx-background-color: transparent;" text="0.0" GridPane.columnIndex="3" />
                     </children>
                     <VBox.margin>
-                        <Insets left="10.0" right="15.0" top="10.0" />
+                        <Insets left="10.0" top="10.0" />
                     </VBox.margin>
                 </GridPane>
                 <PlusMinusSlider fx:id="extra">

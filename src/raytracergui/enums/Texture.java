@@ -1,10 +1,10 @@
 package raytracergui.enums;
 
-import java.io.File;
-
 import textures.ImageTexture;
 import textures.InterpolatedTexture;
 import textures.SingleColorTexture;
+
+import java.io.File;
 
 /**
  * Created by jroehl on 15.01.16.
@@ -14,7 +14,7 @@ public enum Texture {
 
 	public textures.Texture getTexture(Object object) {
 
-		printValue(object);
+//		printValue(object);
 
 		switch (this) {
 			case IMAGE :

@@ -1,18 +1,15 @@
 package raytracergui.enums;
 
-import material.LambertMaterial;
-import material.PhongMaterial;
-import material.ReflectiveMaterial;
-import material.SingleColorMaterial;
+import material.*;
 import textures.Texture;
 
 /**
  * Created by jroehl on 15.01.16.
  */
 public enum Material {
-    LAMBERT, PHONG, REFLECTIVE, SINGLECOLOR;
+    LAMBERT, PHONG, REFLECTIVE, SINGLECOLOR, REFRACTIVE;
 
-    public material.Material getMaterial(int exponent, Texture ... textures) {
+    public material.Material getMaterial(int exponent, double refractionIndex, Texture ... textures) {
 //        printValues(exponent);
         switch (this) {
             case SINGLECOLOR:
@@ -28,6 +25,12 @@ public enum Material {
             case REFLECTIVE:
                 try {
                     return new ReflectiveMaterial(textures[0], textures[1], textures[2], exponent);
+                } catch (Exception e) {
+                    return null;
+                }
+            case REFRACTIVE:
+                try {
+                    return new RefractiveMaterial(refractionIndex);
                 } catch (Exception e) {
                     return null;
                 }

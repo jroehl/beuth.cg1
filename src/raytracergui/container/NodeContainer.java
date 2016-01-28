@@ -1,21 +1,20 @@
 package raytracergui.container;
 
+import Matrizen_Vektoren_Bibliothek.Point3;
 import geometries.Geometry;
 import geometries.Node;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import ray.Transform;
 import raytracergui.dataclasses.HierarchyData;
-import raytracergui.helpers.CalcHelper;
-import Matrizen_Vektoren_Bibliothek.Point3;
+import raytracergui.helpers.Helper;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Created by jroehl on 13.01.16.
@@ -31,7 +30,7 @@ public class NodeContainer implements HierarchyData<NodeContainer>, Cloneable {
 			this.nodeValues.put(key, new SimpleDoubleProperty());
 		}
 		this.geometries = new HashMap<>();
-		this.setScale(calcHelper.getMultipliedValue(1.0), calcHelper.getMultipliedValue(1.0), calcHelper.getMultipliedValue(1.0));
+		this.setScale(1.0, 1.0, 1.0);
 		this.setTranslate(0.0, 0.0, 0.0);
 		this.setTransformX(0.0);
 		this.setTransformY(0.0);
@@ -61,7 +60,7 @@ public class NodeContainer implements HierarchyData<NodeContainer>, Cloneable {
 	private final String LABELTRANSLATEY = "labelTranslateY";
 	private final String LABELTRANSLATEZ = "labelTranslateZ";
 
-	private final CalcHelper calcHelper = new CalcHelper();
+	private final Helper helper = new Helper();
 
 	private String name;
 
@@ -137,20 +136,16 @@ public class NodeContainer implements HierarchyData<NodeContainer>, Cloneable {
 		this.nodeValues.get(key).set(value);
 	}
 
-	public double getCorrectedValue(String key) {
-		return calcHelper.getDividedValue(this.getValue(key));
-	}
-
 	public Double getTransformX() {
-		return this.getCorrectedValue(LABELTRANSX);
+		return this.getValue(LABELTRANSX);
 	}
 
 	public Double getTransformY() {
-		return this.getCorrectedValue(LABELTRANSY);
+		return this.getValue(LABELTRANSY);
 	}
 
 	public Double getTransformZ() {
-		return this.getCorrectedValue(LABELTRANSZ);
+		return this.getValue(LABELTRANSZ);
 	}
 
 	public void setTransformX(Double transformX) {
@@ -172,15 +167,15 @@ public class NodeContainer implements HierarchyData<NodeContainer>, Cloneable {
 	}
 
 	public Double getScaleX() {
-		return this.getCorrectedValue(LABELSCALEX);
+		return this.getValue(LABELSCALEX);
 	}
 
 	public Double getScaleY() {
-		return this.getCorrectedValue(LABELSCALEY);
+		return this.getValue(LABELSCALEY);
 	}
 
 	public Double getScaleZ() {
-		return this.getCorrectedValue(LABELSCALEZ);
+		return this.getValue(LABELSCALEZ);
 	}
 
 	public void setTranslate(double x, double y, double z) {
@@ -190,15 +185,15 @@ public class NodeContainer implements HierarchyData<NodeContainer>, Cloneable {
 	}
 
 	public Double getTranslateX() {
-		return this.getCorrectedValue(LABELTRANSLATEX);
+		return this.getValue(LABELTRANSLATEX);
 	}
 
 	public Double getTranslateY() {
-		return this.getCorrectedValue(LABELTRANSLATEY);
+		return this.getValue(LABELTRANSLATEY);
 	}
 
 	public Double getTranslateZ() {
-		return this.getCorrectedValue(LABELTRANSLATEZ);
+		return this.getValue(LABELTRANSLATEZ);
 	}
 
 	@Override

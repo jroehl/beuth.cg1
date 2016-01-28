@@ -22,7 +22,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES"/>
             </rowConstraints>
             <children>
-                <ColorPicker fx:id="colorPicker" prefHeight="27.0" prefWidth="134.0" GridPane.rowIndex="1">
+                <ColorPicker fx:id="colorPicker" editable="true" prefHeight="27.0" prefWidth="134.0" GridPane.rowIndex="1">
                     <GridPane.margin>
                         <Insets right="5.0"/>
                     </GridPane.margin>
@@ -49,9 +49,9 @@
             </rowConstraints>
             <children>
                 <Label fx:id="labelDir" text="Direction"/>
-                <Label fx:id="labelDirX" text="0.0" GridPane.columnIndex="1"/>
-                <Label fx:id="labelDirY" text="0.0" GridPane.columnIndex="2"/>
-                <Label fx:id="labelDirZ" text="0.0" GridPane.columnIndex="3"/>
+                <TextField fx:id="labelDirX" style="-fx-background-color: transparent;" text="0.0" GridPane.columnIndex="1"/>
+                <TextField fx:id="labelDirY" style="-fx-background-color: transparent;" text="0.0" GridPane.columnIndex="2"/>
+                <TextField fx:id="labelDirZ" style="-fx-background-color: transparent;" text="0.0" GridPane.columnIndex="3"/>
             </children>
         </GridPane>
         <PlusMinusSlider fx:id="sliderDirX"/>

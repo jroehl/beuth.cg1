@@ -21,12 +21,12 @@ public class GeometryContainer {
     private Object texture_2extra;
     private Object texture_3extra;
     private int exponent = 0;
+    private double refractionIndex = 0;
     private String name;
     private geometries.Geometry fixedGeometry = null;
     private HashMap<String, ArrayList> objectValues;
 
     public GeometryContainer() {
-
     }
 
     public GeometryContainer(GeometryContainer geometryContainer) {
@@ -40,6 +40,7 @@ public class GeometryContainer {
         this.texture_2extra = geometryContainer.texture_2extra;
         this.texture_3extra = geometryContainer.texture_3extra;
         this.exponent = geometryContainer.exponent;
+        this.refractionIndex = geometryContainer.refractionIndex;
         this.fixedGeometry = geometryContainer.fixedGeometry;
     }
 
@@ -79,9 +80,10 @@ public class GeometryContainer {
         }
     }
 
-    public void addMaterial(Material material, int exponent) {
+    public void addMaterial(Material material, int exponent, double refractionIndex) {
         this.material = material;
         this.exponent = exponent;
+        this.refractionIndex = refractionIndex;
     }
 
     public geometries.Geometry getGeometry() {
@@ -91,25 +93,28 @@ public class GeometryContainer {
             switch (material) {
                 case SINGLECOLOR:
                 case LAMBERT:
-                    return (geometry.getGeometry(material.getMaterial(this.exponent, this.texture_1.getTexture(this.texture_1extra)), objectValues));
+                    return (geometry.getGeometry(material.getMaterial(this.exponent, this.refractionIndex, this.texture_1.getTexture(this.texture_1extra)), objectValues));
                 case PHONG:
-                    return (geometry.getGeometry(material.getMaterial(this.exponent, this.texture_1.getTexture(this.texture_1extra), this.texture_2.getTexture(this.texture_2extra)), objectValues));
+                    return (geometry.getGeometry(material.getMaterial(this.exponent, this.refractionIndex, this.texture_1.getTexture(this.texture_1extra), this.texture_2.getTexture(this.texture_2extra)), objectValues));
                 case REFLECTIVE:
-                    return (geometry.getGeometry(material.getMaterial(this.exponent, this.texture_1.getTexture(this.texture_1extra), this.texture_2.getTexture(this.texture_2extra), this.texture_3.getTexture(this.texture_3extra)), objectValues));
+                    return (geometry.getGeometry(material.getMaterial(this.exponent, this.refractionIndex, this.texture_1.getTexture(this.texture_1extra), this.texture_2.getTexture(this.texture_2extra), this.texture_3.getTexture(this.texture_3extra)), objectValues));
+                case REFRACTIVE:
+                    return (geometry.getGeometry(material.getMaterial(this.exponent, this.refractionIndex), objectValues));
                 default:
                     return null;
             }
         }
         else {
-//            printValues();
             switch (material) {
                 case SINGLECOLOR:
                 case LAMBERT:
-                    return (geometry.getGeometry(material.getMaterial(this.exponent, this.texture_1.getTexture(this.texture_1extra))));
+                    return (geometry.getGeometry(material.getMaterial(this.exponent, this.refractionIndex, this.texture_1.getTexture(this.texture_1extra))));
                 case PHONG:
-                    return (geometry.getGeometry(material.getMaterial(this.exponent, this.texture_1.getTexture(this.texture_1extra), this.texture_2.getTexture(this.texture_2extra))));
+                    return (geometry.getGeometry(material.getMaterial(this.exponent, this.refractionIndex, this.texture_1.getTexture(this.texture_1extra), this.texture_2.getTexture(this.texture_2extra))));
                 case REFLECTIVE:
-                    return (geometry.getGeometry(material.getMaterial(this.exponent, this.texture_1.getTexture(this.texture_1extra), this.texture_2.getTexture(this.texture_2extra), this.texture_3.getTexture(this.texture_3extra))));
+                    return (geometry.getGeometry(material.getMaterial(this.exponent, this.refractionIndex, this.texture_1.getTexture(this.texture_1extra), this.texture_2.getTexture(this.texture_2extra), this.texture_3.getTexture(this.texture_3extra))));
+                case REFRACTIVE:
+                    return (geometry.getGeometry(material.getMaterial(this.exponent, this.refractionIndex)));
                 default:
                     return null;
             }

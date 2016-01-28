@@ -24,10 +24,11 @@ public class World {
 	 * Wird verwendet wenn ein Strahl keine Geometrie trifft
 	 */
 	public Color backgroundColor;
-	public Color ambient = new Color(0.25, 0.25, 0.25); // wird auf die ganze
+	public Color ambient; // wird auf die ganze
 	// Szene addiert, um
 	// alles heller zu
 	// machen
+	public double refractionIndex;
 
 	/**
 	 * Liste zum Speichern der Geometrischen Elemente.
@@ -42,16 +43,29 @@ public class World {
 	/**
 	 * Konstruktor
 	 *
-	 * @param backgroundColor
 	 * @throws IllegalArgumentException
 	 */
-	public World(Color backgroundColor) throws IllegalArgumentException {
+	public World() throws IllegalArgumentException {
+
+		this.ambient = new Color(0.25, 0.25, 0.25);
+		this.backgroundColor = new Color(0, 0, 0);;
+		this.refractionIndex = 0;
+	}
+
+	public World(Color backgroundColor, Color ambient, double refractionIndex) throws IllegalArgumentException {
 
 		if (backgroundColor == null) {
 			throw new IllegalArgumentException("The backgroundColor cannot be null!");
 		}
 
+		if (ambient == null) {
+			throw new IllegalArgumentException("The ambientColor cannot be null!");
+		}
+
+		this.ambient = ambient;
 		this.backgroundColor = backgroundColor;
+		this.refractionIndex = refractionIndex;
+
 	}
 
 	/**
