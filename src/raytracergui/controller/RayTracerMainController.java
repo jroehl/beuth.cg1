@@ -751,7 +751,6 @@ public class RayTracerMainController {
             for (final NodeContainer n : rootNodes) {
                 n.removeChild(nodeContainer);
                 for (final NodeContainer child : n.getChildren()) {
-                    System.out.println(child);
                     child.removeChild(nodeContainer);
                     if (!child.getChildren().isEmpty()) {
                         getChildren(child.getChildren());

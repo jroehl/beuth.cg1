@@ -15,7 +15,7 @@ public class RefractiveMaterial extends Material {
 
 
     private double indexOfRefraction;
-    final double u = 0.00001;
+    final double u = 0.000000001;
 
     public RefractiveMaterial(double indexOfRefraction) {
         this.indexOfRefraction = indexOfRefraction;

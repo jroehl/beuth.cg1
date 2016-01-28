@@ -32,11 +32,11 @@ public class Triangle extends Geometry {
 	 */
 	private final Point3 c;
 
-	public final TexCoord2 texCoordA;
+	public TexCoord2 texCoordA;
 
-	public final TexCoord2 texCoordB;
+	public TexCoord2 texCoordB;
 
-	public final TexCoord2 texCoordC;
+	public TexCoord2 texCoordC;
 
 	private Normal3 na;
 	private Normal3 nb;
@@ -144,10 +144,11 @@ public class Triangle extends Geometry {
 	 */
 	public Triangle(Material material, Point3 a, Point3 b, Point3 c, Normal3 na, Normal3 nb, Normal3 nc, final TexCoord2 texCoordA,
 			final TexCoord2 texCoordB, final TexCoord2 texCoordC) throws IllegalArgumentException {
-		this(material, a, b, c);
-		this.na = na;
-		this.nb = nb;
-		this.nc = nc;
+		this(material, a, b, c, na, nb, nc);
+
+		this.texCoordA = texCoordA;
+		this.texCoordB = texCoordB;
+		this.texCoordC = texCoordC;
 
 	}
 

@@ -65,7 +65,8 @@ public class ObjectFile extends Geometry {
             try {
                 normal = vertexNormals.get(vertexFacesNormal.get(i) - 1).mul(-1);
             } catch (final Exception e) {
-                normal = c.sub(a).x(b.sub(a)).normalized().asNormal();
+                normal = b.sub(a).x( c.sub(a)).normalized().asNormal();
+//                normal = c.sub(a).x(b.sub(a)).normalized().asNormal();
             }
             triangles.add(new Triangle(material, a, b, c, normal, normal, normal,new TexCoord2(0, 0),new TexCoord2(0, 0),new TexCoord2(0, 0)));
         }

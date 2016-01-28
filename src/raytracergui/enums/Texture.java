@@ -43,9 +43,6 @@ public enum Texture {
 	}
 
 	private color.Color generateColor(javafx.scene.paint.Color value) {
-		System.out.println(value.getRed());
-		System.out.println(value.getGreen());
-		System.out.println(value.getBlue());
 		return new color.Color(value.getRed(), value.getGreen(), value.getBlue());
 	}
 }
