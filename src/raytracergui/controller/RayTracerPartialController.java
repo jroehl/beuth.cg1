@@ -46,6 +46,6 @@ public class RayTracerPartialController {
     @FXML
     public PlusMinusSlider sliderDirZ;
     @FXML
-    public Spinner angleSpinner;
+    public Spinner<Double> angleSpinner;
 
 }

@@ -10,6 +10,7 @@ import javafx.scene.Group;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import org.controlsfx.control.CheckListView;
 import org.controlsfx.control.Notifications;
@@ -30,11 +31,11 @@ public class RayTracerLightController {
     @FXML
     private Group lightsGroup;
     @FXML
-    private ChoiceBox lightChoice;
+    private ChoiceBox<Light> lightChoice;
     @FXML
     private TextField lightName;
     @FXML
-    private CheckListView lightsChecklist;
+    private CheckListView<Object> lightsChecklist;
 
     private Group g = new Group();
     private RayTracerPartialController pC = new RayTracerPartialController();
@@ -42,7 +43,7 @@ public class RayTracerLightController {
     private Light selectedLight;
     private LightContainer lightContainer;
     private ObservableList<Object> activeLightNames = FXCollections.observableArrayList();
-    private ObservableList<Enum> lightNames = FXCollections.observableArrayList(Light.values());
+    private ObservableList<Light> lightNames = FXCollections.observableArrayList(Light.values());
 
     private RayTracerMainController mainController;
 
@@ -50,7 +51,6 @@ public class RayTracerLightController {
         this.mainController = controller;
     }
 
-    private PlusMinusSlider[] plusMinusSliders;
     private TextField[] labels;
 
     @FXML
@@ -58,10 +58,9 @@ public class RayTracerLightController {
 
         activeLightNames = FXCollections.observableArrayList(mainController.lightMap.keySet());
 
-
         lightChoice.setOnAction((event) -> {
             lightsGroup.setVisible(true);
-            selectedLight = (Light) lightChoice.getSelectionModel().getSelectedItem();
+            selectedLight = lightChoice.getSelectionModel().getSelectedItem();
             lightContainer = new LightContainer(selectedLight);
             lightName.setText(selectedLight.name());
             switch (selectedLight) {
@@ -106,7 +105,7 @@ public class RayTracerLightController {
     }
 
     private void setupSliders() {
-        plusMinusSliders = new PlusMinusSlider[]{pC.sliderDirX, pC.sliderDirY, pC.sliderDirZ, pC.sliderPosX, pC.sliderPosY, pC.sliderPosZ};
+        PlusMinusSlider[] plusMinusSliders = new PlusMinusSlider[]{pC.sliderDirX, pC.sliderDirY, pC.sliderDirZ, pC.sliderPosX, pC.sliderPosY, pC.sliderPosZ};
         labels = new TextField[]{pC.labelDirX, pC.labelDirY, pC.labelDirZ, pC.labelPosX, pC.labelPosY, pC.labelPosZ};
 
         bindLabels();
@@ -126,8 +125,10 @@ public class RayTracerLightController {
                 l.setText(String.valueOf(lightContainer.getDoubleValue(l.getId()).getValue()));
                 l.setOnKeyReleased((keyEvent) -> {
                     try {
-                        lightContainer.getDoubleValue(l.getId()).set(Double.parseDouble(l.getText()));
-                        mainController.rerender(false);
+                        if (keyEvent.getCode() == KeyCode.ENTER) {
+                            lightContainer.getDoubleValue(l.getId()).set(Double.parseDouble(l.getText()));
+                            mainController.rerender(false);
+                        }
                     } catch (NumberFormatException e) {
                         Notifications.create()
                                 .position(Pos.TOP_RIGHT)
@@ -151,9 +152,7 @@ public class RayTracerLightController {
 
     private void setupDifControls(boolean angleControl) {
         pC.colorPicker.setValue(javafx.scene.paint.Color.WHITE);
-        pC.colorPicker.setOnAction((event) -> {
-            lightContainer.setColor(pC.colorPicker.getValue());
-        });
+        pC.colorPicker.setOnAction((event) -> lightContainer.setColor(pC.colorPicker.getValue()));
         pC.castShadowSwitch.selectedProperty().addListener((event) -> {
             lightContainer.setCastsShadow(pC.castShadowSwitch.isSelected());
         });
@@ -163,10 +162,8 @@ public class RayTracerLightController {
             pC.angleSpinner.getValueFactory().setValue(0.0);
             pC.angleSpinner.valueProperty().addListener((event) -> {
                 try {
-                    lightContainer.setHalfAngle((double) pC.angleSpinner.getValue());
-                } catch (Exception e) {
-                    System.out.println("FOO");
-                    System.out.println(e);
+                    lightContainer.setHalfAngle(pC.angleSpinner.getValue());
+                } catch (Exception ignored) {
                 }
             });
         }
@@ -178,8 +175,7 @@ public class RayTracerLightController {
         loader.setController(pC);
         try {
             v = loader.load();
-        } catch (IOException e) {
-            System.out.println(e);
+        } catch (IOException ignored) {
         }
         g.getChildren().add(v);
     }
@@ -211,8 +207,7 @@ public class RayTracerLightController {
                         .showWarning();
                 throw new Exception("name of light exists");
             }
-        } catch (Exception e) {
-            System.out.println(e);
+        } catch (Exception ignored) {
         }
     }
 

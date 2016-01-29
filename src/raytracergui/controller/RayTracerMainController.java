@@ -18,6 +18,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -56,9 +57,9 @@ public class RayTracerMainController {
     @FXML
     private AnchorPane apMain;
     @FXML
-    private ChoiceBox cameraChoice;
+    private ChoiceBox<raytracergui.enums.Camera> cameraChoice;
     @FXML
-    private ChoiceBox nodeChoice;
+    private ChoiceBox<NodeContainer> nodeChoice;
     @FXML
     private HBox mainViewer;
     @FXML
@@ -158,7 +159,7 @@ public class RayTracerMainController {
     @FXML
     private Button editBtn;
     @FXML
-    private Spinner numSamples;
+    private Spinner<Integer> numSamples;
     @FXML
     private Spinner<Double> refractionIndexSpinner;
     @FXML
@@ -188,13 +189,9 @@ public class RayTracerMainController {
 
     private Stage stage;
 
-    private PlusMinusSlider[] cameraSliders;
     private TextField[] cameraLabels;
-    private PlusMinusSlider[] nodeSliders;
     private TextField[] nodeLabels;
 
-    private Button refreshBtn;
-    private Button stopBtn;
     private CheckBox checkAutorender;
 
     private final ObservableList<raytracergui.enums.Camera> cameraNames = FXCollections.observableArrayList(raytracergui.enums.Camera
@@ -207,18 +204,16 @@ public class RayTracerMainController {
 
     public ObservableMap<String, LightContainer> lightMap = FXCollections.observableHashMap();
     public NodeContainer selectedNode;
-    public NodeContainer previousNode;
 
     private final ObservableList<NodeContainer> rootNodes = FXCollections.observableArrayList();
     private final ObservableList<NodeContainer> allNodes = FXCollections.observableArrayList();
     private ObservableList<NodeContainer> selectedNodes = FXCollections.observableArrayList();
 
     private raytracergui.enums.Camera selectedCamera;
-    private raytracergui.enums.Camera previousCamera;
 
     private boolean lightWindowOpen;
 
-    private TreeViewWithItems treeView;
+    private TreeViewWithItems<NodeContainer> treeView;
 
     private final int cores = Runtime.getRuntime().availableProcessors() / 2;
 
@@ -249,7 +244,7 @@ public class RayTracerMainController {
         samplingChoice.setItems(samplingPatterns);
         samplingChoice.getSelectionModel().select(SamplingPattern.ONERAY);
 
-        treeView = new TreeViewWithItems(new TreeItem<>());
+        treeView = new TreeViewWithItems<>(new TreeItem<>());
         treeView.setShowRoot(false);
 
         final HBox hBox = new HBox();
@@ -257,10 +252,10 @@ public class RayTracerMainController {
         final Separator separator = new Separator(Orientation.VERTICAL);
         separator.setPadding(new Insets(0, 0, 0, 5));
 
-        refreshBtn = new Button("", new Glyph("FontAwesome", "REFRESH"));
+        Button refreshBtn = new Button("", new Glyph("FontAwesome", "REFRESH"));
         refreshBtn.setOnAction((event -> btnRerender()));
 
-        stopBtn = new Button("", new Glyph("FontAwesome", "STOP"));
+        Button stopBtn = new Button("", new Glyph("FontAwesome", "STOP"));
         stopBtn.setOnAction((event -> stopRendering()));
 
         checkAutorender = new CheckBox("autorender (beta)");
@@ -287,9 +282,9 @@ public class RayTracerMainController {
 
     private void initializeListeners() {
 
-        cameraSliders = new PlusMinusSlider[]{eX, eY, eZ, gX, gY, gZ, uX, uY, uZ, extra};
+        PlusMinusSlider[] cameraSliders = new PlusMinusSlider[]{eX, eY, eZ, gX, gY, gZ, uX, uY, uZ, extra};
         cameraLabels = new TextField[]{labelEx, labelEy, labelEz, labelGx, labelGy, labelGz, labelUx, labelUy, labelUz, labelValExtra};
-        nodeSliders = new PlusMinusSlider[]{transX, transY, transZ, scaleX, scaleY, scaleZ, translateX, translateY, translateZ};
+        PlusMinusSlider[] nodeSliders = new PlusMinusSlider[]{transX, transY, transZ, scaleX, scaleY, scaleZ, translateX, translateY, translateZ};
         nodeLabels = new TextField[]{labelTransX, labelTransY, labelTransZ, labelScaleX, labelScaleY, labelScaleZ, labelTranslateX,
                 labelTranslateY, labelTranslateZ};
 
@@ -331,8 +326,7 @@ public class RayTracerMainController {
         cameraChoice.setOnAction((event) ->
 
         {
-            previousCamera = selectedCamera;
-            selectedCamera = (raytracergui.enums.Camera) cameraChoice.getSelectionModel().getSelectedItem();
+            selectedCamera = cameraChoice.getSelectionModel().getSelectedItem();
 
             numSamples.getValueFactory().setValue(selectedCamera.getNumSamples());
             samplingChoice.getSelectionModel().select(selectedCamera.getSamplingPattern());
@@ -368,16 +362,13 @@ public class RayTracerMainController {
         nodeChoice.setOnAction((event) -> {
             final int index = nodeChoice.getSelectionModel().getSelectedIndex();
             if (index != -1) {
-                previousNode = selectedNode;
                 selectedNode = allNodes.get(index);
                 selectedNodeIndex = index;
                 bindNodeLabels();
             }
         });
 
-        lightMap.addListener((MapChangeListener) change -> {
-            rerender(false);
-        });
+        lightMap.addListener((MapChangeListener) change -> rerender(false));
 
         rootNodes.addListener((ListChangeListener<? super NodeContainer>) (ListChangeListener) -> {
             allNodes.clear();
@@ -423,7 +414,7 @@ public class RayTracerMainController {
         numSamples.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000));
 
         numSamples.valueProperty().addListener((ChangeListener) -> {
-            selectedCamera.setNumSamples((int) numSamples.getValue());
+            selectedCamera.setNumSamples(numSamples.getValue());
             rerender(false);
         });
 
@@ -482,8 +473,10 @@ public class RayTracerMainController {
             l.setText(String.valueOf(selectedCamera.get(l.getId()).getValue()));
             l.setOnKeyReleased((keyEvent) -> {
                 try {
-                    selectedCamera.get(l.getId()).set(Double.parseDouble(l.getText()));
-                    rerender(false);
+                    if (keyEvent.getCode() == KeyCode.ENTER) {
+                        selectedCamera.get(l.getId()).set(Double.parseDouble(l.getText()));
+                        rerender(false);
+                    }
                 } catch (NumberFormatException e) {
                     Notifications.create()
                             .position(Pos.TOP_RIGHT)
@@ -503,8 +496,10 @@ public class RayTracerMainController {
             l.setText(String.valueOf(selectedNode.get(l.getId()).getValue()));
             l.setOnKeyReleased((keyEvent) -> {
                 try {
-                    selectedNode.get(l.getId()).set(Double.parseDouble(l.getText()));
-                    rerender(false);
+                    if (keyEvent.getCode() == KeyCode.ENTER) {
+                        selectedNode.get(l.getId()).set(Double.parseDouble(l.getText()));
+                        rerender(false);
+                    }
                 } catch (NumberFormatException e) {
                     Notifications.create()
                             .position(Pos.TOP_RIGHT)
@@ -657,7 +652,7 @@ public class RayTracerMainController {
             o.addListener((ChangeListener) -> {
                 try {
                     totalTimeProperty.set(totalTimeProperty.get() + (Long) o.getValue());
-                } catch (final Exception e) {
+                } catch (final Exception ignored) {
                 }
                 messageProperty.set("Rendering Time: " + (((totalTimeProperty.get()) / 1000000000.0F)) / cores);
             });
@@ -739,8 +734,7 @@ public class RayTracerMainController {
     public void deleteNode(ActionEvent actionEvent) {
         try {
             removeRecursive(selectedNodes);
-        } catch (final ConcurrentModificationException e) {
-            System.out.println(e);
+        } catch (ConcurrentModificationException ignored) {
         }
         rerender(false);
     }
@@ -808,25 +802,21 @@ public class RayTracerMainController {
                         }
                         rootNodes.add(n);
                     }
-                } catch (final ConcurrentModificationException e) {
-                    System.out.println(e);
+                } catch (ConcurrentModificationException ignored) {
                 }
 
-            } else if (selectedNode != null) {
-                try {
-                    for (final NodeContainer n : selectedNodes) {
-                        selectedNode.addChild(n);
-                        final NodeContainer parent = n.getParent();
-                        if (n.getParent() != null) {
-                            parent.removeChild(n);
-                        } else {
-                            rootNodes.remove(n);
-                        }
-                        n.setParent(selectedNode);
+            } else try {
+                for (final NodeContainer n : selectedNodes) {
+                    selectedNode.addChild(n);
+                    final NodeContainer parent = n.getParent();
+                    if (n.getParent() != null) {
+                        parent.removeChild(n);
+                    } else {
+                        rootNodes.remove(n);
                     }
-                } catch (final ConcurrentModificationException e) {
-                    System.out.println(e);
+                    n.setParent(selectedNode);
                 }
+            } catch (final ConcurrentModificationException ignored) {
             }
             removeByName(allNodes, "root");
             popOver.hide();

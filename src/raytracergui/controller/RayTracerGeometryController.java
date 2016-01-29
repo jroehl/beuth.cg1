@@ -1,7 +1,6 @@
 package raytracergui.controller;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,21 +31,21 @@ public class RayTracerGeometryController {
     @FXML
     private VBox geometryWindowVbox;
     @FXML
-    private ChoiceBox geoChoice;
+    private ChoiceBox<Geometry> geoChoice;
     @FXML
     private Group materialGroup;
     @FXML
-    private ChoiceBox materialChoice;
+    private ChoiceBox<Material> materialChoice;
     @FXML
     private TextField geoName;
     @FXML
-    private CheckListView geometryChecklist;
+    private CheckListView<String> geometryChecklist;
     @FXML
     private AnchorPane anchorPaneGeometry;
 
     private Stage stage;
     private GridPane g;
-    private Spinner exponentSpinner;
+    private Spinner<Integer> exponentSpinner;
     private ObservableList<String> activeGeometryNames;
 
     private ObservableList<Geometry> geometryNames = FXCollections.observableArrayList(Geometry.values());
@@ -80,16 +79,16 @@ public class RayTracerGeometryController {
         geoChoice.setOnAction((event) -> {
             geoCont = new GeometryContainer();
             materialGroup.setVisible(true);
-            selectedGeometry = (Geometry) geoChoice.getSelectionModel().getSelectedItem();
+            selectedGeometry = geoChoice.getSelectionModel().getSelectedItem();
             geoName.setText(selectedGeometry.toString());
         });
 
         materialChoice.setOnAction((event) -> {
-            selectedMaterial = (Material) materialChoice.getSelectionModel().getSelectedItem();
+            selectedMaterial = materialChoice.getSelectionModel().getSelectedItem();
             try {
                 g.getChildren().clear();
                 g.getRowConstraints().clear();
-            } catch (NullPointerException e) {
+            } catch (NullPointerException ignored) {
             }
             g = new GridPane();
             ColumnConstraints column1 = new ColumnConstraints(200);
@@ -118,9 +117,7 @@ public class RayTracerGeometryController {
             geometryWindowVbox.getChildren().add(g);
         });
         geometryChecklist.setItems(activeGeometryNames);
-        geometryChecklist.getCheckModel().getCheckedItems().addListener((ListChangeListener<String>) c1 -> {
-            System.out.println(geometryChecklist.getCheckModel().getCheckedItems());
-        });
+//        geometryChecklist.getCheckModel().getCheckedItems().addListener((ListChangeListener<String>) c1 -> System.out.println(geometryChecklist.getCheckModel().getCheckedItems()));
     }
 
     private void initializeRefractionSpinner(GridPane g) {
@@ -165,11 +162,11 @@ public class RayTracerGeometryController {
         for (int i = 0; i < repeats; i++) {
             int row = i;
             lastRow = i + 1;
-            ChoiceBox textureChoice = new ChoiceBox();
+            ChoiceBox<Texture> textureChoice = new ChoiceBox<>();
             textureChoice.setPrefWidth(200);
             textureChoice.setItems(textureNames);
             textureChoice.setOnAction((e) -> {
-                selectedTexture = (Texture) textureChoice.getSelectionModel().getSelectedItem();
+                selectedTexture = textureChoice.getSelectionModel().getSelectedItem();
                 switch (selectedTexture) {
                     case IMAGE:
                         initializeButton(g, row);
@@ -195,7 +192,7 @@ public class RayTracerGeometryController {
             g.add(vBox, 0, row);
         }
         if (needsExponent) {
-            exponentSpinner = new Spinner();
+            exponentSpinner = new Spinner<>();
             exponentSpinner.setEditable(true);
             exponentSpinner.setPrefWidth(80);
             exponentSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000));
@@ -254,22 +251,18 @@ public class RayTracerGeometryController {
                 geoCont.addTextures(texMap);
                 int exponent = 0;
                 try {
-                    exponent = (int) exponentSpinner.getValue();
-                } catch (Exception e) {
-                    System.out.println(e);
+                    exponent = exponentSpinner.getValue();
+                } catch (NullPointerException ignored) {
                 }
                 double refractionIndex = 0.0;
                 try {
                     refractionIndex = refractionIndexSpinner.getValue();
-                } catch (Exception e) {
-                    System.out.println(e);
+                } catch (NullPointerException ignored) {
                 }
                 geoCont.addMaterial(selectedMaterial, exponent, refractionIndex);
                 try {
                     geoCont.getGeometry();
                 } catch (Exception e) {
-                    System.out.println("FOOOOOOOOOOOOOO");
-                    e.printStackTrace();
                     Notifications.create()
                             .position(Pos.TOP_RIGHT)
                             .title("Creation failed")
@@ -291,7 +284,6 @@ public class RayTracerGeometryController {
                 throw new Exception("name of geometry exists");
             }
         } catch (Exception e) {
-            System.out.println("BARARRRARARRRRR");
             e.printStackTrace();
         }
     }

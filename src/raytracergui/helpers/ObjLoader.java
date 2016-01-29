@@ -39,7 +39,6 @@ public class ObjLoader {
     public ObjLoader(File file) {
         this.file = file;
         this.returnValues = new HashMap<>();
-
         this.returnValues.put(VERTEXPOINTS, new ArrayList<Point3>());
         this.returnValues.put(VERTEXTEXTUREPOINTS, new ArrayList<Point3>());
         this.returnValues.put(VERTEXNORMALS, new ArrayList<Normal3>());
@@ -48,27 +47,27 @@ public class ObjLoader {
         this.returnValues.put(VERTEXFACESNORMAL, new ArrayList<Integer>());
     }
 
-    private static ArrayList vertexFaces() {
+    private static ArrayList<Point3> vertexFaces() {
         return returnValues.get(VERTEXFACES);
     }
 
-    private static ArrayList vertexFacesTexture() {
+    private static ArrayList<Point3> vertexFacesTexture() {
         return returnValues.get(VERTEXFACESTEXTURE);
     }
 
-    private static ArrayList vertexFacesNormal() {
+    private static ArrayList<Integer> vertexFacesNormal() {
         return returnValues.get(VERTEXFACESNORMAL);
     }
 
-    private static ArrayList vertexPoints() {
+    private static ArrayList<Point3> vertexPoints() {
         return returnValues.get(VERTEXPOINTS);
     }
 
-    private static ArrayList vertexTexturesPoints() {
+    private static ArrayList<Point3> vertexTexturesPoints() {
         return returnValues.get(VERTEXPOINTS);
     }
 
-    private static ArrayList vertexNormals() {
+    private static ArrayList<Normal3> vertexNormals() {
         return returnValues.get(VERTEXNORMALS);
     }
 
@@ -79,8 +78,6 @@ public class ObjLoader {
                 parseObjInfo(line.trim());
             }
             return returnValues;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
