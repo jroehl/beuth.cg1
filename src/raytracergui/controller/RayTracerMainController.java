@@ -244,7 +244,7 @@ public class RayTracerMainController {
         samplingChoice.setItems(samplingPatterns);
         samplingChoice.getSelectionModel().select(SamplingPattern.ONERAY);
 
-        treeView = new TreeViewWithItems<>(new TreeItem<>());
+        treeView = new TreeViewWithItems<>(new TreeItem());
         treeView.setShowRoot(false);
 
         final HBox hBox = new HBox();
