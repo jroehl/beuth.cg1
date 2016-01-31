@@ -1,12 +1,15 @@
 package application;
 
-import Matrizen_Vektoren_Bibliothek.Point3;
-import Matrizen_Vektoren_Bibliothek.Vector3;
-import camera.Camera;
-import camera.PerspectiveCamera;
-import camera.RandomRowsSamplingPattern;
-import color.Color;
-import geometries.*;
+import geometries.AxisAlignedBox;
+import geometries.Geometry;
+import geometries.Node;
+import geometries.Plane;
+import geometries.Sphere;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Group;
@@ -19,6 +22,9 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import javax.imageio.ImageIO;
+
 import light.Light;
 import light.PointLight;
 import material.LambertMaterial;
@@ -26,11 +32,12 @@ import material.PhongMaterial;
 import ray.Transform;
 import ray.World;
 import textures.SingleColorTexture;
-
-import javax.imageio.ImageIO;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
+import Matrizen_Vektoren_Bibliothek.Point3;
+import Matrizen_Vektoren_Bibliothek.Vector3;
+import camera.Camera;
+import camera.OneRaySamplingPattern;
+import camera.PerspectiveCamera;
+import color.Color;
 
 public class RaytracerOhneGui extends Application {
 
@@ -114,7 +121,7 @@ public class RaytracerOhneGui extends Application {
 		// ________________________________________________________________________________________________________________________
 
 		// node 1
-		final Node no = new Node(new Transform().translate(new Point3(0, -3, 0)), new ArrayList<Geometry>());
+		final Node no = new Node(new Transform().translate(new Point3(0, 0, 0)), new ArrayList<Geometry>());
 		no.geos.add(new Plane(new LambertMaterial(new SingleColorTexture(new Color(0.6, 0.6, 0.5)))));
 		geometries.add(no);
 
@@ -134,11 +141,14 @@ public class RaytracerOhneGui extends Application {
 		// geometries.add(no3);
 
 		// node 4
-		final Node no4 = new Node(new Transform().translate(new Point3(1, -1.3, 3.3)).rotateY(3.5).rotateX(7).rotateZ(0.9)
-				.scale(1.5, 1.5, 0.5), new ArrayList<Geometry>());
-		no4.geos.add(new Cylinder(new PhongMaterial(new SingleColorTexture(new Color(0.5, 0.5, 0.5)), new SingleColorTexture(new Color(1,
-				1, 1)), 64), new ArrayList<Geometry>()));
-		geometries.add(no4);
+		// final Node no4 = new Node(new Transform().translate(new Point3(1,
+		// -1.3, 3.3)).rotateY(3.5).rotateX(7).rotateZ(0.9)
+		// .scale(1.5, 1.5, 0.5), new ArrayList<Geometry>());
+		// no4.geos.add(new Cylinder(new PhongMaterial(new
+		// SingleColorTexture(new Color(0.5, 0.5, 0.5)), new
+		// SingleColorTexture(new Color(1,
+		// 1, 1)), 64), new ArrayList<Geometry>()));
+		// geometries.add(no4);
 
 		// node 5
 		// final Node no5 = new Node(new Transform().scale(1, 0.1, 1), new
@@ -181,17 +191,12 @@ public class RaytracerOhneGui extends Application {
 		// geometries.add(no10);
 
 		// // Scene 1
-		// final Node boxNode = new Node(new
-		// Transform().rotateY(-0.7).rotateX(0.3).rotateZ(0.5).scale(1, 0.3, 4),
-		// new ArrayList<Geometry>());
-		// boxNode.geos.add(new AxisAlignedBox(new LambertMaterial(new
-		// SingleColorTexture(new Color(0.7, 0.7, 0)))));
-		// geometries.add(boxNode);
-		// lights.add(new PointLight(new Color(1, 1, 1), new Point3(0, 3, -4),
-		// true));
+		final Node boxNode = new Node(new Transform().translate(new Point3(2, 1, 0)), new ArrayList<Geometry>());
+		boxNode.geos.add(new AxisAlignedBox(new LambertMaterial(new SingleColorTexture(new Color(0.7, 0.7, 0)))));
+		geometries.add(boxNode);
 
 		// // Scene 2
-		final Node sphereNode = new Node(new Transform().translate(new Point3(4, 0, 0)).rotateX(0.05), new ArrayList<Geometry>());
+		final Node sphereNode = new Node(new Transform().translate(new Point3(0, 1, 0)), new ArrayList<Geometry>());
 		sphereNode.geos.add(new Sphere(new PhongMaterial(new SingleColorTexture(new Color(1, 0, 0)), new SingleColorTexture(new Color(1, 1,
 				1)), 64)));
 		geometries.add(sphereNode);
@@ -201,12 +206,12 @@ public class RaytracerOhneGui extends Application {
 		// lights.add(new PointLight(new Color(1, 1, 1), new Point3(4, 3, 2),
 		// true));
 
-		camera = new PerspectiveCamera(new Point3(1, 5.3, -8), new Vector3(0, -0.8, 1), new Vector3(0, 1, 0), Math.PI / 6,
-				new RandomRowsSamplingPattern(20));
+		camera = new PerspectiveCamera(new Point3(0, 6, 6), new Vector3(0, -1, -1), new Vector3(0, 1, 0), Math.PI / 4,
+				new OneRaySamplingPattern(10));
 
 		// lights.add(new DirectionalLight(new Color(0, 5, -5), new Vector3(0,
 		// 0, -3), true));
-		lights.add(new PointLight(new Color(1, 1, 1), new Point3(-11, 5, -28), true));
+		lights.add(new PointLight(new Color(1, 1, 1), new Point3(5, 6, 8), true));
 
 		// ________________________________________________________________________________________________________________________
 		// ________________________________________________________________________________________________________________________
