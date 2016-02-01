@@ -50,7 +50,6 @@ public class Helper {
         try {
             return round(storedValue + calcVal);
         } catch (ParseException e) {
-            System.out.println(e);
             return storedValue + calcVal;
         }
     }

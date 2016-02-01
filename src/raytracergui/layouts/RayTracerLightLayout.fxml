@@ -72,11 +72,11 @@
                         <Button fx:id="delBtn" mnemonicParsing="false" onAction="#deleteLight"><graphic><Glyph fontFamily="FontAwesome" icon="MINUS"></Glyph></graphic></Button>
                     </buttons>
                 </ButtonBar>
-                <CheckListView fx:id="lightsChecklist">
+                <ListView fx:id="lightsChecklist">
                     <VBox.margin>
                         <Insets top="5.0" />
                     </VBox.margin>
-                </CheckListView>
+                </ListView>
             </children>
         </VBox>
     </children>

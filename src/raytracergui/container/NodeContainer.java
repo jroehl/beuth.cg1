@@ -89,7 +89,7 @@ public class NodeContainer implements HierarchyData<NodeContainer>, Cloneable {
 	}
 
 	public Node getNode() {
-		return new Node(new Transform().rotateY(this.getTransformX()).rotateX(this.getTransformY()).rotateZ(this.getTransformZ())
+		return new Node(new Transform().rotateX(this.getTransformX()).rotateY(this.getTransformY()).rotateZ(this.getTransformZ())
 				.scale(this.getScaleX(), this.getScaleY(), this.getScaleZ())
 				.translate(new Point3(this.getTranslateX(), this.getTranslateY(), this.getTranslateZ())), getGeometryList());
 	}

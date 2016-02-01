@@ -7,12 +7,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
-import org.controlsfx.control.CheckListView;
 import org.controlsfx.control.Notifications;
 import org.controlsfx.control.PlusMinusSlider;
 import raytracergui.container.LightContainer;
@@ -20,6 +17,7 @@ import raytracergui.enums.Light;
 import raytracergui.helpers.Helper;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 /**
  * Created by jroehl on 13.01.16.
@@ -35,14 +33,14 @@ public class RayTracerLightController {
     @FXML
     private TextField lightName;
     @FXML
-    private CheckListView<Object> lightsChecklist;
+    private ListView<String> lightsChecklist;
 
     private Group g = new Group();
-    private RayTracerPartialController pC = new RayTracerPartialController();
+    private RayTracerPartialController partialController = new RayTracerPartialController();
 
     private Light selectedLight;
     private LightContainer lightContainer;
-    private ObservableList<Object> activeLightNames = FXCollections.observableArrayList();
+    private ObservableList<String> activeLightNames = FXCollections.observableArrayList();
     private ObservableList<Light> lightNames = FXCollections.observableArrayList(Light.values());
 
     private RayTracerMainController mainController;
@@ -53,34 +51,57 @@ public class RayTracerLightController {
 
     private TextField[] labels;
 
+    private boolean newLight;
+
     @FXML
     public void initialization() {
 
         activeLightNames = FXCollections.observableArrayList(mainController.lightMap.keySet());
 
-        lightChoice.setOnAction((event) -> {
-            lightsGroup.setVisible(true);
-            selectedLight = lightChoice.getSelectionModel().getSelectedItem();
-            lightContainer = new LightContainer(selectedLight);
-            lightName.setText(selectedLight.name());
-            switch (selectedLight) {
-                case DIRECTIONAL:
-                    setupDirectionalControls();
-                    break;
-                case POINT:
-                    setupPointControls();
-                    break;
-                case SPOT:
-                    setupSpotControls();
-                    break;
-            }
-        });
-
+        lightChoice.setOnAction((event) -> setupLight(true));
         lightChoice.setItems(lightNames);
 
         lightsChecklist.setItems(activeLightNames);
-
+        lightsChecklist.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         lightsWindowVbox.getChildren().add(g);
+
+        lightsChecklist.getSelectionModel().selectedItemProperty().addListener((ChangeListener) -> {
+            try {
+                String selectedItem = lightsChecklist.getSelectionModel().getSelectedItem();
+                this.lightContainer = mainController.lightMap.get(selectedItem);
+                selectedLight = this.lightContainer.getType();
+                lightChoice.getSelectionModel().select(selectedLight);
+                setupLight(false);
+            } catch (NullPointerException ignored) {
+            }
+        });
+
+    }
+
+    private void setupLight(boolean newLight) {
+        lightsGroup.setVisible(true);
+        this.newLight = newLight;
+        if (newLight) {
+            selectedLight = lightChoice.getSelectionModel().getSelectedItem();
+            if (lightsChecklist != null) {
+                lightsChecklist.getSelectionModel().clearSelection();
+            }
+            lightContainer = new LightContainer(selectedLight);
+            lightContainer.setName(selectedLight.name());
+        }
+        lightName.setText(lightContainer.getName());
+        lightContainer.setType(selectedLight);
+        switch (selectedLight) {
+            case DIRECTIONAL:
+                setupDirectionalControls();
+                break;
+            case POINT:
+                setupPointControls();
+                break;
+            case SPOT:
+                setupSpotControls();
+                break;
+        }
     }
 
     private void setupSpotControls() {
@@ -105,8 +126,8 @@ public class RayTracerLightController {
     }
 
     private void setupSliders() {
-        PlusMinusSlider[] plusMinusSliders = new PlusMinusSlider[]{pC.sliderDirX, pC.sliderDirY, pC.sliderDirZ, pC.sliderPosX, pC.sliderPosY, pC.sliderPosZ};
-        labels = new TextField[]{pC.labelDirX, pC.labelDirY, pC.labelDirZ, pC.labelPosX, pC.labelPosY, pC.labelPosZ};
+        PlusMinusSlider[] plusMinusSliders = new PlusMinusSlider[]{partialController.sliderDirX, partialController.sliderDirY, partialController.sliderDirZ, partialController.sliderPosX, partialController.sliderPosY, partialController.sliderPosZ};
+        labels = new TextField[]{partialController.labelDirX, partialController.labelDirY, partialController.labelDirZ, partialController.labelPosX, partialController.labelPosY, partialController.labelPosZ};
 
         bindLabels();
 
@@ -122,12 +143,30 @@ public class RayTracerLightController {
     private void bindLabels() {
         for (TextField l : labels) {
             if (l != null) {
-                l.setText(String.valueOf(lightContainer.getDoubleValue(l.getId()).getValue()));
+                String id = l.getId();
+                l.setText(String.valueOf(lightContainer.getDoubleValue(id).getValue()));
                 l.setOnKeyReleased((keyEvent) -> {
                     try {
                         if (keyEvent.getCode() == KeyCode.ENTER) {
-                            lightContainer.getDoubleValue(l.getId()).set(Double.parseDouble(l.getText()));
+                            lightContainer.getDoubleValue(id).set(Double.parseDouble(l.getText()));
                             mainController.rerender(false);
+                            bindLabels();
+                        } else if (keyEvent.getCode() == KeyCode.UP) {
+                            if (keyEvent.isShiftDown()) {
+                                lightContainer.setValue(id, lightContainer.getValue(id) + 1);
+                            } else {
+                                lightContainer.setValue(id, lightContainer.getValue(id) + 0.1);
+                            }
+                            mainController.rerender(false);
+                            bindLabels();
+                        } else if (keyEvent.getCode() == KeyCode.DOWN) {
+                            if (keyEvent.isShiftDown()) {
+                                lightContainer.setValue(id, lightContainer.getValue(id) - 1);
+                            } else {
+                                lightContainer.setValue(id, lightContainer.getValue(id) - 0.1);
+                            }
+                            mainController.rerender(false);
+                            bindLabels();
                         }
                     } catch (NumberFormatException e) {
                         Notifications.create()
@@ -138,7 +177,10 @@ public class RayTracerLightController {
                     }
                 });
                 lightContainer.getDoubleValue(l.getId()).addListener((ChangeListener) -> {
-                    l.setText(String.valueOf(lightContainer.getDoubleValue(l.getId()).getValue()));
+                    try {
+                        l.setText(String.valueOf(Helper.round(lightContainer.getDoubleValue(l.getId()).getValue())));
+                    } catch (ParseException ignored) {
+                    }
                 });
             }
         }
@@ -148,21 +190,27 @@ public class RayTracerLightController {
         bindLabels();
         String id = l.getId();
         lightContainer.setValue(id, Helper.sliderVal(lightContainer.getValue(id), value));
+        mainController.rerender(false);
     }
 
     private void setupDifControls(boolean angleControl) {
-        pC.colorPicker.setValue(javafx.scene.paint.Color.WHITE);
-        pC.colorPicker.setOnAction((event) -> lightContainer.setColor(pC.colorPicker.getValue()));
-        pC.castShadowSwitch.selectedProperty().addListener((event) -> {
-            lightContainer.setCastsShadow(pC.castShadowSwitch.isSelected());
+        partialController.colorPicker.setValue(javafx.scene.paint.Color.WHITE);
+        partialController.colorPicker.setOnAction((event) -> {
+            lightContainer.setColor(partialController.colorPicker.getValue());
+            mainController.rerender(false);
+        });
+        partialController.castShadowSwitch.selectedProperty().addListener((event) -> {
+            lightContainer.setCastsShadow(partialController.castShadowSwitch.isSelected());
+            mainController.rerender(false);
         });
         if (angleControl) {
-            pC.angleSpinner.setEditable(true);
-            pC.angleSpinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.0, 1000.0));
-            pC.angleSpinner.getValueFactory().setValue(0.0);
-            pC.angleSpinner.valueProperty().addListener((event) -> {
+            partialController.angleSpinner.setEditable(true);
+            partialController.angleSpinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.0, 1000.0));
+            partialController.angleSpinner.getValueFactory().setValue(lightContainer.getHalfAngle());
+            partialController.angleSpinner.valueProperty().addListener((event) -> {
                 try {
-                    lightContainer.setHalfAngle(pC.angleSpinner.getValue());
+                    lightContainer.setHalfAngle(partialController.angleSpinner.getValue());
+                    mainController.rerender(false);
                 } catch (Exception ignored) {
                 }
             });
@@ -172,7 +220,7 @@ public class RayTracerLightController {
     private void loadPartial(String path) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
         VBox v = null;
-        loader.setController(pC);
+        loader.setController(partialController);
         try {
             v = loader.load();
         } catch (IOException ignored) {
@@ -183,7 +231,7 @@ public class RayTracerLightController {
     @FXML
     public void createLight(ActionEvent actionEvent) {
         try {
-            if (mainController.lightMap.get(lightName.getText()) == null) {
+            if (!newLight | mainController.lightMap.get(lightName.getText()) == null) {
                 lightContainer.setName(lightName.getText());
                 try {
                     lightContainer.getLight();
@@ -199,6 +247,7 @@ public class RayTracerLightController {
                 lightContainer = new LightContainer(selectedLight);
                 activeLightNames = FXCollections.observableArrayList(mainController.lightMap.keySet());
                 lightsChecklist.setItems(activeLightNames);
+                mainController.rerender(false);
             } else {
                 Notifications.create()
                         .position(Pos.TOP_RIGHT)
@@ -213,16 +262,11 @@ public class RayTracerLightController {
 
     @FXML
     public void deleteLight(ActionEvent actionEvent) {
-        for (Object name : lightsChecklist.getCheckModel().getCheckedItems()) {
-            if (name instanceof String) {
-                String n = (String) name;
-                int index = activeLightNames.indexOf(n);
-                if (index >= 0) {
-                    activeLightNames.remove(index);
-                    mainController.lightMap.remove(n);
-                    mainController.rerender(false);
-                }
-            }
-        }
+        mainController.lightMap.remove(lightsChecklist.getSelectionModel().getSelectedItem());
+        activeLightNames = FXCollections.observableArrayList(mainController.lightMap.keySet());
+        lightsChecklist.setItems(activeLightNames);
+        lightContainer = new LightContainer(selectedLight);
+        setupSliders();
+        mainController.rerender(false);
     }
 }

@@ -40,6 +40,7 @@ import raytracergui.threads.RenderTaskRandom;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
@@ -383,6 +384,12 @@ public class RayTracerMainController {
                 final Button submitBtn = new Button("", new Glyph("FontAwesome", "CHECK"));
                 final TextField textField = new TextField(item.getValue().getName());
 
+                textField.setOnKeyReleased((keyEvent) -> {
+                    if (keyEvent.getCode() == KeyCode.ENTER) {
+                        submitBtn.fire();
+                    }
+                });
+
                 submitBtn.setOnAction(event -> {
                     item.getValue().setName(textField.getText());
                     allNodes.clear();
@@ -470,11 +477,26 @@ public class RayTracerMainController {
 
     private void bindCameraLabels() {
         for (final TextField l : cameraLabels) {
-            l.setText(String.valueOf(selectedCamera.get(l.getId()).getValue()));
+            String id = l.getId();
+            l.setText(String.valueOf(selectedCamera.get(id).getValue()));
             l.setOnKeyReleased((keyEvent) -> {
                 try {
                     if (keyEvent.getCode() == KeyCode.ENTER) {
-                        selectedCamera.get(l.getId()).set(Double.parseDouble(l.getText()));
+                        selectedCamera.get(id).set(Double.parseDouble(l.getText()));
+                        rerender(false);
+                    } else if (keyEvent.getCode() == KeyCode.UP) {
+                        if (keyEvent.isShiftDown()) {
+                            selectedCamera.setValue(id, selectedCamera.getValue(id) + 1);
+                        } else {
+                            selectedCamera.setValue(id, selectedCamera.getValue(id) + 0.1);
+                        }
+                        rerender(false);
+                    } else if (keyEvent.getCode() == KeyCode.DOWN) {
+                        if (keyEvent.isShiftDown()) {
+                            selectedCamera.setValue(id, selectedCamera.getValue(id) - 1);
+                        } else {
+                            selectedCamera.setValue(id, selectedCamera.getValue(id) - 0.1);
+                        }
                         rerender(false);
                     }
                 } catch (NumberFormatException e) {
@@ -485,19 +507,37 @@ public class RayTracerMainController {
                             .showError();
                 }
             });
-            selectedCamera.get(l.getId()).addListener((ChangeListener) -> {
-                l.setText(String.valueOf(selectedCamera.get(l.getId()).getValue()));
+            selectedCamera.get(id).addListener((ChangeListener) -> {
+                try {
+                    l.setText(String.valueOf(Helper.round(selectedCamera.get(id).getValue())));
+                } catch (ParseException ignored) {
+                }
             });
         }
     }
 
     private void bindNodeLabels() {
         for (final TextField l : nodeLabels) {
-            l.setText(String.valueOf(selectedNode.get(l.getId()).getValue()));
+            String id = l.getId();
+            l.setText(String.valueOf(selectedNode.get(id).getValue()));
             l.setOnKeyReleased((keyEvent) -> {
                 try {
                     if (keyEvent.getCode() == KeyCode.ENTER) {
-                        selectedNode.get(l.getId()).set(Double.parseDouble(l.getText()));
+                        selectedNode.get(id).set(Double.parseDouble(l.getText()));
+                        rerender(false);
+                    } else if (keyEvent.getCode() == KeyCode.UP) {
+                        if (keyEvent.isShiftDown()) {
+                            selectedNode.setValue(id, selectedNode.getValue(id) + 1);
+                        } else {
+                            selectedNode.setValue(id, selectedNode.getValue(id) + 0.1);
+                        }
+                        rerender(false);
+                    } else if (keyEvent.getCode() == KeyCode.DOWN) {
+                        if (keyEvent.isShiftDown()) {
+                            selectedNode.setValue(id, selectedNode.getValue(id) - 1);
+                        } else {
+                            selectedNode.setValue(id, selectedNode.getValue(id) - 0.1);
+                        }
                         rerender(false);
                     }
                 } catch (NumberFormatException e) {
@@ -508,8 +548,11 @@ public class RayTracerMainController {
                             .showError();
                 }
             });
-            selectedNode.get(l.getId()).addListener((ChangeListener) -> {
-                l.setText(String.valueOf(selectedNode.get(l.getId()).getValue()));
+            selectedNode.get(id).addListener((ChangeListener) -> {
+                try {
+                    l.setText(String.valueOf(Helper.round(selectedNode.get(id).getValue())));
+                } catch (ParseException ignored) {
+                }
             });
         }
     }
@@ -534,6 +577,19 @@ public class RayTracerMainController {
 
     private void initializeViewer() {
         imgView = new ImageView();
+        imgView.setOnZoom((zoomEvent) -> {
+            selectedCamera.setValue(labelEz.getId(), selectedCamera.getValue(labelEz.getId()) / zoomEvent.getZoomFactor());
+            rerender(false);
+        });
+        imgView.setOnScroll((scrollEvent) -> {
+            selectedCamera.setValue(labelGx.getId(), selectedCamera.getValue(labelGx.getId()) + scrollEvent.getDeltaX() / 100);
+            selectedCamera.setValue(labelGy.getId(), selectedCamera.getValue(labelGy.getId()) + scrollEvent.getDeltaY() / 100);
+            rerender(false);
+        });
+        imgView.setOnRotate((rotateEvent) -> {
+            selectedCamera.setValue(labelUy.getId(), selectedCamera.getValue(labelUy.getId()) + rotateEvent.getAngle() / 100);
+            rerender(false);
+        });
         mainViewer.getChildren().addAll(imgView);
         createWorld();
         startRenderingThreads(640, 480);
