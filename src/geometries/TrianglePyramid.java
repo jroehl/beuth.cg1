@@ -11,7 +11,6 @@ import ray.Ray;
 import textures.SingleColorTexture;
 import Matrizen_Vektoren_Bibliothek.Normal3;
 import Matrizen_Vektoren_Bibliothek.Point3;
-import Matrizen_Vektoren_Bibliothek.Vector3;
 import color.Color;
 
 public class TrianglePyramid extends Geometry {
@@ -32,13 +31,13 @@ public class TrianglePyramid extends Geometry {
 
 	public TrianglePyramid(Material material) throws IllegalArgumentException {
 		super(material);
-		this.eckeA = new Point3(0, 0, 0);
-		eckeB = new Point3(eckeA.x + 3, eckeA.y, eckeA.z);
+		this.eckeA = new Point3(-0.5, -0.5, 0.5);
+		eckeB = new Point3(eckeA.x + 1, eckeA.y, eckeA.z);
 
-		eckeC = new Point3(eckeA.x + 3, eckeA.y, eckeA.z - 3);
-		eckeD = new Point3(eckeA.x, eckeA.y, eckeA.z - 3);
-		final Vector3 bottomMiddle = ((eckeB.sub(eckeA)).add(eckeC.sub(eckeB))).mul(0.5);
-		top = new Point3(bottomMiddle.x, bottomMiddle.y + 2.7, bottomMiddle.z);
+		eckeC = new Point3(eckeA.x + 1, eckeA.y, eckeA.z - 1);
+		eckeD = new Point3(eckeA.x, eckeA.y, eckeA.z - 1);
+
+		top = new Point3(0, 0.5, 0);
 
 		mat1 = switchColor(material);
 		mat2 = switchColor(material);

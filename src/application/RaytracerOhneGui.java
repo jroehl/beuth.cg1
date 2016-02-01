@@ -1,10 +1,8 @@
 package application;
 
-import geometries.AxisAlignedBox;
 import geometries.Geometry;
 import geometries.Node;
-import geometries.Plane;
-import geometries.Sphere;
+import geometries.TrianglePyramid;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,7 +26,6 @@ import javax.imageio.ImageIO;
 import light.Light;
 import light.PointLight;
 import material.LambertMaterial;
-import material.PhongMaterial;
 import ray.Transform;
 import ray.World;
 import textures.SingleColorTexture;
@@ -121,9 +118,11 @@ public class RaytracerOhneGui extends Application {
 		// ________________________________________________________________________________________________________________________
 
 		// node 1
-		final Node no = new Node(new Transform().translate(new Point3(0, 0, 0)), new ArrayList<Geometry>());
-		no.geos.add(new Plane(new LambertMaterial(new SingleColorTexture(new Color(0.6, 0.6, 0.5)))));
-		geometries.add(no);
+		// final Node no = new Node(new Transform().translate(new Point3(0, 0,
+		// 0)), new ArrayList<Geometry>());
+		// no.geos.add(new Plane(new LambertMaterial(new SingleColorTexture(new
+		// Color(0.6, 0.6, 0.5)))));
+		// geometries.add(no);
 
 		// node 2
 		// final Node no2 = new Node(new Transform().translate(new Point3(0,
@@ -191,27 +190,30 @@ public class RaytracerOhneGui extends Application {
 		// geometries.add(no10);
 
 		// // Scene 1
-		final Node boxNode = new Node(new Transform().translate(new Point3(2, 1, 0)), new ArrayList<Geometry>());
-		boxNode.geos.add(new AxisAlignedBox(new LambertMaterial(new SingleColorTexture(new Color(0.7, 0.7, 0)))));
+		final Node boxNode = new Node(new Transform().rotateX(0.3).rotateY(0.8).rotateZ(0.4), new ArrayList<Geometry>());
+		boxNode.geos.add(new TrianglePyramid(new LambertMaterial(new SingleColorTexture(new Color(0.7, 0.7, 0)))));
 		geometries.add(boxNode);
 
 		// // Scene 2
-		final Node sphereNode = new Node(new Transform().translate(new Point3(0, 1, 0)), new ArrayList<Geometry>());
-		sphereNode.geos.add(new Sphere(new PhongMaterial(new SingleColorTexture(new Color(1, 0, 0)), new SingleColorTexture(new Color(1, 1,
-				1)), 64)));
-		geometries.add(sphereNode);
+		// final Node sphereNode = new Node(new Transform().translate(new
+		// Point3(0, 1, 0)), new ArrayList<Geometry>());
+		// sphereNode.geos.add(new Sphere(new PhongMaterial(new
+		// SingleColorTexture(new Color(1, 0, 0)), new SingleColorTexture(new
+		// Color(1, 1,
+		// 1)), 64)));
+		// geometries.add(sphereNode);
 		// lights.add(new PointLight(new Color(1, 1, 1), new Point3(11, 0, -2),
 		// true));
 
 		// lights.add(new PointLight(new Color(1, 1, 1), new Point3(4, 3, 2),
 		// true));
 
-		camera = new PerspectiveCamera(new Point3(0, 6, 6), new Vector3(0, -1, -1), new Vector3(0, 1, 0), Math.PI / 4,
+		camera = new PerspectiveCamera(new Point3(0, 0, -6), new Vector3(0, 0, 1), new Vector3(0, 1, 0), Math.PI / 4,
 				new OneRaySamplingPattern(10));
 
 		// lights.add(new DirectionalLight(new Color(0, 5, -5), new Vector3(0,
 		// 0, -3), true));
-		lights.add(new PointLight(new Color(1, 1, 1), new Point3(5, 6, 8), true));
+		lights.add(new PointLight(new Color(1, 1, 1), new Point3(0, 0, -8), true));
 
 		// ________________________________________________________________________________________________________________________
 		// ________________________________________________________________________________________________________________________
