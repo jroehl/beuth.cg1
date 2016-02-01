@@ -51,7 +51,7 @@ public class RayTracerLightController {
 
     private TextField[] labels;
 
-    private boolean newLight;
+    private boolean isNewLight;
 
     @FXML
     public void initialization() {
@@ -78,10 +78,10 @@ public class RayTracerLightController {
 
     }
 
-    private void setupLight(boolean newLight) {
+    private void setupLight(boolean isNewLight) {
         lightsGroup.setVisible(true);
-        this.newLight = newLight;
-        if (newLight) {
+        this.isNewLight = isNewLight;
+        if (isNewLight) {
             selectedLight = lightChoice.getSelectionModel().getSelectedItem();
             if (lightsChecklist != null) {
                 lightsChecklist.getSelectionModel().clearSelection();
@@ -231,7 +231,7 @@ public class RayTracerLightController {
     @FXML
     public void createLight(ActionEvent actionEvent) {
         try {
-            if (!newLight | mainController.lightMap.get(lightName.getText()) == null) {
+            if (!isNewLight | mainController.lightMap.get(lightName.getText()) == null) {
                 lightContainer.setName(lightName.getText());
                 try {
                     lightContainer.getLight();

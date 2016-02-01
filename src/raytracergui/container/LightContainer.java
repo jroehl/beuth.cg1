@@ -140,7 +140,7 @@ public class LightContainer {
             case POINT:
                 return new PointLight(this.getColor(), this.getPosition(), this.getCastsShadow());
             case SPOT:
-                return new SpotLight(this.getColor(), this.getDirection(), this.getPosition(), this.getHalfAngle(), this.getCastsShadow());
+                return new SpotLight(this.getColor(), this.getDirection(), this.getPosition(), Math.PI / this.getHalfAngle(), this.getCastsShadow());
             default:
                 return null;
         }
