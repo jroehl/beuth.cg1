@@ -76,6 +76,32 @@ public class World {
 	 * @return Schnittpunkt mit dem kleinsten positiven t
 	 * @throws IllegalArgumentException
 	 */
+	// public Color hit(Ray ray) throws IllegalArgumentException {
+	//
+	// if (ray == null) {
+	// throw new IllegalArgumentException("The Ray cannot be null!");
+	// }
+	//
+	// Hit hit = null;
+	// for (final Geometry obj : objs) {
+	// final Hit objHit = obj.hit(ray);
+	//
+	// if (objHit != null) {
+	// if (hit == null || objHit.t < hit.t) {
+	// hit = objHit;
+	// }
+	// }
+	// }
+	//
+	// if (hit != null) {
+	// final Color c = hit.geo.material.colorFor(hit, this, new Tracer(this,
+	// 5));
+	// return c;
+	// }
+	//
+	// return new Color(0, 0, 0);
+	// }
+
 	public Color hit(Ray ray) throws IllegalArgumentException {
 
 		if (ray == null) {
@@ -83,6 +109,7 @@ public class World {
 		}
 
 		Hit hit = null;
+
 		for (final Geometry obj : objs) {
 			final Hit objHit = obj.hit(ray);
 
@@ -94,11 +121,12 @@ public class World {
 		}
 
 		if (hit != null) {
-			final Color c = hit.geo.material.colorFor(hit, this, new Tracer(this, 5));
-			return c;
+
+			return hit.geo.material.colorFor(hit, this, new Tracer(this, 5));
 		}
 
-		return new Color(0, 0, 0);
+		return backgroundColor;
+
 	}
 
 	public Hit getHit(Ray ray) throws IllegalArgumentException {
