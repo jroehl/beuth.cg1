@@ -7,6 +7,7 @@ import geometries.TrianglePyramid;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Set;
 
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
@@ -26,6 +27,7 @@ import javax.imageio.ImageIO;
 import light.Light;
 import light.PointLight;
 import material.LambertMaterial;
+import ray.Ray;
 import ray.Transform;
 import ray.World;
 import textures.SingleColorTexture;
@@ -190,7 +192,7 @@ public class RaytracerOhneGui extends Application {
 		// geometries.add(no10);
 
 		// // Scene 1
-		final Node boxNode = new Node(new Transform().rotateX(0.3).rotateY(0.8).rotateZ(0.4), new ArrayList<Geometry>());
+		final Node boxNode = new Node(new Transform().rotateX(1.5 * Math.PI), new ArrayList<Geometry>());
 		boxNode.geos.add(new TrianglePyramid(new LambertMaterial(new SingleColorTexture(new Color(0.7, 0.7, 0)))));
 		geometries.add(boxNode);
 
@@ -295,9 +297,35 @@ public class RaytracerOhneGui extends Application {
 		for (int y = 0; y < iheight; y++) {
 			for (int x = 0; x < iwidth; x++) {
 
-				final Color c = world.hit(camera.rayFor(iwidth, iheight, x, iheight - 1 - y));
+				// for each ray in camera.rayfor(px, py): Color c =....add()
+				// etc: Durchschnittsfarbe
+				final Set<Ray> raySet = camera.rayFor(iwidth, iheight, x, iheight - 1 - y);
+				final Color retCol = new Color(0, 0, 0);
 
-				final javafx.scene.paint.Color javaColor = new javafx.scene.paint.Color(c.r, c.g, c.b, 1);
+				for (final Ray r : raySet) {
+					retCol.add(world.hit(r));
+				}
+
+				final Color retCol2 = retCol.mul(1.0 / raySet.size());
+				if (retCol2.r > 1) {
+					retCol2.r = 1;
+				} else if (retCol2.r < 0) {
+					retCol2.r = 0;
+				}
+
+				if (retCol2.g > 1) {
+					retCol2.g = 1;
+				} else if (retCol2.g < 0) {
+					retCol2.g = 0;
+				}
+
+				if (retCol2.b > 1) {
+					retCol2.b = 1;
+				} else if (retCol2.b < 0) {
+					retCol2.b = 0;
+				}
+
+				final javafx.scene.paint.Color javaColor = new javafx.scene.paint.Color(retCol2.r, retCol2.g, retCol2.b, 1);
 				wrImg.getPixelWriter().setColor(x, y, javaColor);
 
 			}
