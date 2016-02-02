@@ -1,5 +1,6 @@
 package application;
 
+import geometries.Cylinder;
 import geometries.Geometry;
 import geometries.Node;
 import geometries.Plane;
@@ -127,13 +128,6 @@ public class RaytracerOhneGui extends Application {
 		no.geos.add(new Plane(new LambertMaterial(new SingleColorTexture(new Color(0.6, 0.6, 0.5)))));
 		geometries.add(no);
 
-		// node 2
-		// final Node no2 = new Node(new Transform().translate(new Point3(0,
-		// -4.3, 0)).rotateX(-0.3), new ArrayList<Geometry>());
-		// no2.geos.add(new Cylinder(new ReflectiveMaterial(new Color(1, 0,
-		// 0.5), new Color(1, 1, 1), new Color(0.5, 0, 0.5), 64)));
-		// geometries.add(no2);
-
 		// // node 3
 		// final Node no3 = new Node(new Transform().translate(new Point3(7, -3,
 		// 0)).rotateX(-0.3).scale(3, 1.5, 3), new ArrayList<Geometry>());
@@ -143,14 +137,11 @@ public class RaytracerOhneGui extends Application {
 		// geometries.add(no3);
 
 		// node 4
-		// final Node no4 = new Node(new Transform().translate(new Point3(1,
-		// -1.3, 3.3)).rotateY(3.5).rotateX(7).rotateZ(0.9)
-		// .scale(1.5, 1.5, 0.5), new ArrayList<Geometry>());
-		// no4.geos.add(new Cylinder(new PhongMaterial(new
-		// SingleColorTexture(new Color(0.5, 0.5, 0.5)), new
-		// SingleColorTexture(new Color(1,
-		// 1, 1)), 64), new ArrayList<Geometry>()));
-		// geometries.add(no4);
+		final Node no4 = new Node(new Transform().translate(new Point3(-1, 0, -3.3)).rotateY(3.5).rotateX(7).rotateZ(0.9)
+				.scale(0.5, 1.5, 0.5), new ArrayList<Geometry>());
+		no4.geos.add(new Cylinder(new PhongMaterial(new SingleColorTexture(new Color(0.5, 0.5, 0.5)), new SingleColorTexture(new Color(1,
+				1, 1)), 64), new ArrayList<Geometry>()));
+		geometries.add(no4);
 
 		// node 5
 		// final Node no5 = new Node(new Transform().scale(1, 0.1, 1), new

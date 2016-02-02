@@ -88,15 +88,15 @@ public class TrianglePyramid extends Geometry {
 			return new SingleColorMaterial(new SingleColorTexture(new Color(r.nextDouble(), r.nextDouble(), r.nextDouble())));
 		}
 
-		if (this.material instanceof LambertMaterial) {
+		if (super.material instanceof LambertMaterial) {
 			return new LambertMaterial(new SingleColorTexture(new Color(r.nextDouble(), r.nextDouble(), r.nextDouble())));
 		}
 
-		if (this.material instanceof PhongMaterial) {
+		if (super.material instanceof PhongMaterial) {
 			return new PhongMaterial(new SingleColorTexture(new Color(r.nextDouble(), r.nextDouble(), r.nextDouble())),
 					new SingleColorTexture(new Color(r.nextDouble(), r.nextDouble(), r.nextDouble())), 64);
 		}
-		if (this.material instanceof ReflectiveMaterial) {
+		if (super.material instanceof ReflectiveMaterial) {
 			return new ReflectiveMaterial(new SingleColorTexture(new Color(r.nextDouble(), r.nextDouble(), r.nextDouble())),
 					new SingleColorTexture(new Color(r.nextDouble(), r.nextDouble(), r.nextDouble())), new SingleColorTexture(new Color(
 							r.nextDouble(), r.nextDouble(), r.nextDouble())), 64);
