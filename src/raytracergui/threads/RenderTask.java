@@ -1,7 +1,6 @@
 package raytracergui.threads;
 
 import camera.Camera;
-import color.Color;
 import javafx.concurrent.Task;
 import javafx.scene.image.PixelWriter;
 import ray.World;
@@ -14,7 +13,6 @@ import java.util.ArrayList;
  */
 public class RenderTask extends Task {
 
-    private long timeTaken;
     private int progress;
     private int progressTotal;
     private int cores;
@@ -25,7 +23,6 @@ public class RenderTask extends Task {
     private World world;
     private ArrayList<Object[]> values;
     private PixelWriter pixelWriter;
-    private RayTracerMainController rayTracerMainController;
 
 
     public RenderTask(int cores, int moduloValue, int width, int height, Camera camera, World world, PixelWriter pixelWriter) {
@@ -51,7 +48,7 @@ public class RenderTask extends Task {
         this.camera = camera;
         this.world = world;
         this.pixelWriter = pixelWriter;
-        this.rayTracerMainController = rayTracerMainController;
+        RayTracerMainController rayTracerMainController1 = rayTracerMainController;
         if (moduloValue == 0) {
             moduloValue ++;
         }
@@ -71,16 +68,16 @@ public class RenderTask extends Task {
                 for (int x = 0; x < width; x++) {
                     progress ++;
                     final long start = System.nanoTime();
-                    final Color c = world.hit(camera.rayFor(width, height, x, height - 1 - y));
+//                    final Color c = world.hit(camera.rayFor(width, height, x, height - 1 - y));
                     final long end = System.nanoTime();
-                    timeTaken = end - start;
+                    long timeTaken = end - start;
                     prevTime += timeTaken;
 
-                    final javafx.scene.paint.Color javaColor = new javafx.scene.paint.Color(c.r, c.g, c.b, 1);
+//                    final javafx.scene.paint.Color javaColor = new javafx.scene.paint.Color(c.r, c.g, c.b, 1);
                     final int finX = x, finY = y;
 //                    updateMessage("Iteration " + progress);
 //                    updateProgress(progress, progressTotal);
-                    pixelWriter.setColor(finX, finY, javaColor);
+//                    pixelWriter.setColor(finX, finY, javaColor);
 //                    if (timeTaken < 2000 && progress % 100 == 0) {
 //                        try {
 //                            Thread.sleep(100);

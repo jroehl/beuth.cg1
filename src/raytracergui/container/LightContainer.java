@@ -1,5 +1,8 @@
 package raytracergui.container;
 
+import Matrizen_Vektoren_Bibliothek.Point3;
+import Matrizen_Vektoren_Bibliothek.Vector3;
+import color.Color;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
@@ -8,10 +11,6 @@ import light.DirectionalLight;
 import light.PointLight;
 import light.SpotLight;
 import raytracergui.enums.Light;
-import raytracergui.helpers.Helper;
-import Matrizen_Vektoren_Bibliothek.Point3;
-import Matrizen_Vektoren_Bibliothek.Vector3;
-import color.Color;
 
 /**
  * Created by jroehl on 14.01.16.
@@ -32,11 +31,8 @@ public class LightContainer {
 
     private final ObservableMap<Object, Object> lightValues;
 
-    private final Helper helper;
-
     public LightContainer(Light type) {
         this.type = type;
-        this.helper = new Helper();
         this.lightValues = FXCollections.observableHashMap();
         this.lightValues.put(DIRECTIONX, new SimpleDoubleProperty(+0.0));
         this.lightValues.put(DIRECTIONY, new SimpleDoubleProperty(+0.0));
@@ -70,7 +66,7 @@ public class LightContainer {
             final SimpleDoubleProperty s = (SimpleDoubleProperty) this.lightValues.get(key);
             return s.getValue();
         } catch (final Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
             return 0;
         }
     }

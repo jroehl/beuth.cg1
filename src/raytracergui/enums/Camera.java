@@ -1,13 +1,12 @@
 package raytracergui.enums;
 
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableMap;
-import raytracergui.helpers.Helper;
 import Matrizen_Vektoren_Bibliothek.Point3;
 import Matrizen_Vektoren_Bibliothek.Vector3;
 import camera.OrthographicCamera;
 import camera.PerspectiveCamera;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableMap;
 
 /**
  * Created by jroehl on 15.01.16.
@@ -32,16 +31,14 @@ public enum Camera {
     private SamplingPattern samplingPattern = SamplingPattern.ONERAY;
     private int numSamples = 0;
 
-    private final Helper helper = new Helper();
-    private final String[] array = {EYEVIEWX, EYEVIEWY, EYEVIEWZ, GAZEVIEWX, GAZEVIEWY, GAZEVIEWZ, UPVECTORX, UPVECTORY, UPVECTORZ, EXTRA};
-    private final Double[] initialValues = {0.0, 0.0, -4.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 4.0};
-
     private ObservableMap<String, SimpleDoubleProperty> cameraValues;
 
     Camera() {
         this.cameraValues = FXCollections.observableHashMap();
+        String[] array = {EYEVIEWX, EYEVIEWY, EYEVIEWZ, GAZEVIEWX, GAZEVIEWY, GAZEVIEWZ, UPVECTORX, UPVECTORY, UPVECTORZ, EXTRA};
         for (int i = 0; i < array.length; i++) {
             this.cameraValues.put(array[i], new SimpleDoubleProperty());
+            Double[] initialValues = {0.0, 0.0, -4.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 4.0};
             this.cameraValues.get(array[i]).set(initialValues[i]);
         }
     }

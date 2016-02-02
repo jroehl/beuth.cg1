@@ -47,7 +47,7 @@ public class World {
 	public World() throws IllegalArgumentException {
 
 		this.ambient = new Color(0.25, 0.25, 0.25);
-		this.backgroundColor = new Color(0, 0, 0);;
+		this.backgroundColor = new Color(0, 0, 0);
 		this.refractionIndex = 0;
 	}
 

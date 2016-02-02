@@ -3,8 +3,10 @@ package raytracergui.threads;
 import camera.Camera;
 import color.Color;
 import javafx.scene.image.WritableImage;
+import ray.Ray;
 import ray.World;
 
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
@@ -43,8 +45,34 @@ public class RenderThread implements Callable {
         for (int y = 0; y < height; y++) {
             if ((y + moduloValue) % cores == 0) {
                 for (int x = 0; x < width; x++) {
-                    final Color c = world.hit(camera.rayFor(width, height, x, height - 1 - y));
-                    final javafx.scene.paint.Color javaColor = new javafx.scene.paint.Color(c.r, c.g, c.b, 1);
+
+                    final Set<Ray> raySet = camera.rayFor(width, height, x, height - 1 - y);
+                    Color retCol = new Color(0, 0, 0);
+
+                    for (final Ray r : raySet) {
+                        retCol = retCol.add(world.hit(r));
+                    }
+
+                    final Color retCol2 = retCol.mul(1.0 / raySet.size());
+                    if (retCol2.r > 1) {
+                        retCol2.r = 1;
+                    } else if (retCol2.r < 0) {
+                        retCol2.r = 0;
+                    }
+
+                    if (retCol2.g > 1) {
+                        retCol2.g = 1;
+                    } else if (retCol2.g < 0) {
+                        retCol2.g = 0;
+                    }
+
+                    if (retCol2.b > 1) {
+                        retCol2.b = 1;
+                    } else if (retCol2.b < 0) {
+                        retCol2.b = 0;
+                    }
+
+                    final javafx.scene.paint.Color javaColor = new javafx.scene.paint.Color(retCol2.r, retCol2.g, retCol2.b, 1);
                     wrImg.getPixelWriter().setColor(x, y, javaColor);
                 }
             }
