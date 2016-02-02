@@ -1,5 +1,6 @@
 package raytracergui.controller;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -70,7 +71,7 @@ public class RayTracerLightController {
                 String selectedItem = lightsChecklist.getSelectionModel().getSelectedItem();
                 this.lightContainer = mainController.lightMap.get(selectedItem);
                 selectedLight = this.lightContainer.getType();
-                lightChoice.getSelectionModel().select(selectedLight);
+                Platform.runLater(() -> lightChoice.getSelectionModel().select(selectedLight));
                 setupLight(false);
             } catch (NullPointerException ignored) {
             }
