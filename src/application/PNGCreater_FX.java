@@ -20,6 +20,10 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+/**
+ * Zeichnet ein Bild und speichert dieses anschließend ab.
+ *
+ */
 public class PNGCreater_FX extends Application {
 
 	WritableImage wrImg;

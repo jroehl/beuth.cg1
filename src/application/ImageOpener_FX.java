@@ -10,6 +10,10 @@ import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+/**
+ * Öffnet ein Bild und zeigt dieses an.
+ *
+ */
 public class ImageOpener_FX extends Application {
 
 	@Override
