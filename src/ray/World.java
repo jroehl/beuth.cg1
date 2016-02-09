@@ -1,18 +1,21 @@
 package ray;
 
-import java.util.ArrayList;
-
-import application.Tracer;
-import color.Color;
 import geometries.Geometry;
 import geometries.Hit;
+
+import java.util.ArrayList;
+
 import light.Light;
+import application.Tracer;
+import color.Color;
 
 /**
- * Die Klasse World beinhaltet eine Menge mit den Objekten zu dazustellenden Szene. Sie hat ebenfalls eine Methode hit,
- * wobei der uebergebene Strahl gegen alle Objekte der Szene getestet wird. Es wird der Schnittpunkt mit dem kleinsten
- * positiven 𝑡 zurückgegeben. Die Klasse World hat ein Attribut namens backgroundColor vom Typ Color, welche verwendet
- * wird, wenn ein Strahl keine Geometrie trifft.
+ * Die Klasse World beinhaltet eine Menge mit den Objekten zu dazustellenden
+ * Szene. Sie hat ebenfalls eine Methode hit, wobei der uebergebene Strahl gegen
+ * alle Objekte der Szene getestet wird. Es wird der Schnittpunkt mit dem
+ * kleinsten positiven 𝑡 zurückgegeben. Die Klasse World hat ein Attribut
+ * namens backgroundColor vom Typ Color, welche verwendet wird, wenn ein Strahl
+ * keine Geometrie trifft.
  */
 public class World {
 
@@ -55,7 +58,7 @@ public class World {
 
 	/**
 	 * Konstruktor.
-	 * 
+	 *
 	 * @param backgroundColor
 	 * @param ambient
 	 * @param refractionIndex
@@ -77,8 +80,8 @@ public class World {
 	}
 
 	/**
-	 * Testet den Uebergebene Strahl gegen alle Objekte der Szene. Und liefert den Schnittpunkt mit dem kleinsten
-	 * positiven 𝑡.
+	 * Testet den Uebergebene Strahl gegen alle Objekte der Szene. Und liefert
+	 * den Schnittpunkt mit dem kleinsten positiven 𝑡.
 	 *
 	 * @param ray
 	 *            Strahl welcher auf Objekte Geschickt wird.
@@ -108,35 +111,6 @@ public class World {
 		}
 
 		return backgroundColor;
-	}
-
-	/**
-	 * Liefert den Hit zurück, nicht die Color
-	 * 
-	 * @param ray
-	 * @return
-	 * @throws IllegalArgumentException
-	 */
-	public Hit getHit(Ray ray) throws IllegalArgumentException {
-		if (ray == null) {
-			throw new IllegalArgumentException("The Ray cannot be null!");
-		}
-
-		Hit hit = null;
-
-		for (final Geometry obj : objs) {
-			final Hit objHit = obj.hit(ray);
-
-			if (objHit != null) {
-				if (hit == null || objHit.t < hit.t) {
-					hit = objHit;
-				}
-			}
-		}
-		if (hit != null) {
-			return hit;
-		}
-		return null;
 	}
 
 	/**

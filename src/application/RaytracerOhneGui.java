@@ -1,24 +1,17 @@
 package application;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Set;
-
-import javax.imageio.ImageIO;
-
-import Matrizen_Vektoren_Bibliothek.Point3;
-import Matrizen_Vektoren_Bibliothek.Vector3;
-import camera.Camera;
-import camera.PerspectiveCamera;
-import camera.RandomRowsSamplingPattern;
-import color.Color;
 import geometries.Cylinder;
 import geometries.Geometry;
 import geometries.Node;
 import geometries.Plane;
 import geometries.Sphere;
 import geometries.TrianglePyramid;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Set;
+
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Group;
@@ -31,14 +24,24 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import javax.imageio.ImageIO;
+
 import light.Light;
 import light.PointLight;
+import light.SpotLight;
 import material.LambertMaterial;
 import material.PhongMaterial;
 import ray.Ray;
 import ray.Transform;
 import ray.World;
 import textures.SingleColorTexture;
+import Matrizen_Vektoren_Bibliothek.Point3;
+import Matrizen_Vektoren_Bibliothek.Vector3;
+import camera.Camera;
+import camera.PerspectiveCamera;
+import camera.RandomRowsSamplingPattern;
+import color.Color;
 
 /**
  * Erzeugt einen Raytracer mit einfacher GUI ohne Anpassungsoptionen.
@@ -83,7 +86,7 @@ public class RaytracerOhneGui extends Application {
 
 	/**
 	 * Start-Methode für JavaFX
-	 * 
+	 *
 	 * @param primaryStage
 	 *            primaryStage der FX Applikation
 	 * @throws Exception
@@ -140,12 +143,10 @@ public class RaytracerOhneGui extends Application {
 		// geometries.add(no3);
 
 		// node 4
-		final Node no4 = new Node(
-				new Transform().translate(new Point3(-1, 0, -3.3)).rotateY(3.5).rotateX(7).rotateZ(0.9).scale(0.5, 1.5, 0.5),
-				new ArrayList<Geometry>());
-		no4.geos.add(new Cylinder(
-				new PhongMaterial(new SingleColorTexture(new Color(0.5, 0.5, 0.5)), new SingleColorTexture(new Color(1, 1, 1)), 64),
-				new ArrayList<Geometry>()));
+		final Node no4 = new Node(new Transform().translate(new Point3(-1, 0, -3.3)).rotateY(3.5).rotateX(7).rotateZ(0.9)
+				.scale(0.5, 1.5, 0.5), new ArrayList<Geometry>());
+		no4.geos.add(new Cylinder(new PhongMaterial(new SingleColorTexture(new Color(0.5, 0.5, 0.5)), new SingleColorTexture(new Color(1,
+				1, 1)), 64), new ArrayList<Geometry>()));
 		geometries.add(no4);
 
 		// // node 5
@@ -195,17 +196,17 @@ public class RaytracerOhneGui extends Application {
 
 		// Scene 2
 		final Node sphereNode = new Node(new Transform().translate(new Point3(1, 1.3, 0)), new ArrayList<Geometry>());
-		sphereNode.geos.add(
-				new Sphere(new PhongMaterial(new SingleColorTexture(new Color(1, 0, 0)), new SingleColorTexture(new Color(1, 1, 1)), 64)));
+		sphereNode.geos.add(new Sphere(new PhongMaterial(new SingleColorTexture(new Color(1, 0, 0)), new SingleColorTexture(new Color(1, 1,
+				1)), 64)));
 		geometries.add(sphereNode);
 		lights.add(new PointLight(new Color(1, 1, 1), new Point3(8, 7, -2), true));
 
 		// Kamera
 		camera = new PerspectiveCamera(new Point3(0, 0, 6), new Vector3(0, 0, -1), new Vector3(0, 1, 0), Math.PI / 4,
-				new RandomRowsSamplingPattern(50));
+				new RandomRowsSamplingPattern(1));
 
 		// Licht
-		lights.add(new PointLight(new Color(1, 1, 1), new Point3(0, 5, 8), true));
+		lights.add(new SpotLight(new Color(1, 1, 1), new Vector3(0, -1, -1), new Point3(0, 8, 8), Math.PI / 10, true));
 
 		// ________________________________________________________________________________________________________________________
 		// ________________________________________________________________________________________________________________________
@@ -248,7 +249,8 @@ public class RaytracerOhneGui extends Application {
 	}
 
 	/**
-	 * Erzeugt ein neues World-Objekt und prüft anschließend ob lichter und Objeckte hinzugefügt werden müssen.
+	 * Erzeugt ein neues World-Objekt und prüft anschließend ob lichter und
+	 * Objeckte hinzugefügt werden müssen.
 	 */
 	public void createWorld() {
 
@@ -325,8 +327,8 @@ public class RaytracerOhneGui extends Application {
 	}
 
 	/**
-	 * Rendert das Bild einmal komplett neu indem eine neue World erzeugt wird und anschließend das Bild neu gezeichnet
-	 * wird
+	 * Rendert das Bild einmal komplett neu indem eine neue World erzeugt wird
+	 * und anschließend das Bild neu gezeichnet wird
 	 *
 	 * @param primaryStage
 	 *            Dient dazu das Bild zu erzeugen
