@@ -1,23 +1,22 @@
 package material;
 
-import geometries.Hit;
-import light.Light;
-import ray.World;
-import textures.Texture;
 import Matrizen_Vektoren_Bibliothek.Point3;
 import Matrizen_Vektoren_Bibliothek.Vector3;
 import application.Tracer;
 import color.Color;
+import geometries.Hit;
+import light.Light;
+import ray.World;
+import textures.Texture;
 
 /**
  * PhongMaterial
  *
  * @author Waschmaschine
  *         <p>
- *         Das PhongMaterial erbt von der abstrakten Klasse Material und
- *         überschreibt die Methode colorFor. Es reflektiert das Licht diffus
- *         und errechnet zugleich einen für den betrachter sichtbaren
- *         Reflektionspunkt auf der Oberfläche des Materials.
+ *         Das PhongMaterial erbt von der abstrakten Klasse Material und überschreibt die Methode colorFor. Es
+ *         reflektiert das Licht diffus und errechnet zugleich einen für den betrachter sichtbaren Reflektionspunkt auf
+ *         der Oberfläche des Materials.
  */
 
 public class PhongMaterial extends Material {
@@ -42,8 +41,7 @@ public class PhongMaterial extends Material {
 	 * @param specular
 	 *            Textur des Reflektionspunktes
 	 * @param exponent
-	 *            der Exponent bestimmt die größe des errechneten
-	 *            Reflektionspunktes
+	 *            der Exponent bestimmt die größe des errechneten Reflektionspunktes
 	 * @throws IllegalArgumentException
 	 */
 
@@ -62,8 +60,8 @@ public class PhongMaterial extends Material {
 	 *            : übergebenes world - Objekt
 	 * @param tracer
 	 *            : übergebenes tracer - Objekt
-	 * @return color - für jeden Pixel wird, falls er von der Lichtquelle
-	 *         angeleuchtet wird, die Farbe errechnet und zurück gegeben.
+	 * @return color - für jeden Pixel wird, falls er von der Lichtquelle angeleuchtet wird, die Farbe errechnet und
+	 *         zurück gegeben.
 	 * @throws IllegalArgumentException
 	 */
 
@@ -78,57 +76,25 @@ public class PhongMaterial extends Material {
 
 			if (light.illuminates(hit.ray.at(hit.t), world)) {
 
-				// final Color lightColor = light.color;
-				//
-				// final Vector3 lightVector =
-				// light.directionFrom(hit.ray.at(hit.t)).normalized();
-				//
-				// final Vector3 reflectedVector =
-				// lightVector.reflectedOn(hit.n);
-				//
-				// final Vector3 e = (hit.ray.direction.mul(-1));
-				//
-				// final double max = Math.max(0.0, lightVector.dot(hit.n));
-				//
-				// returnColor =
-				// returnColor.add(diffuse.mul(lightColor).mul(max));
-				//
-				// returnColor =
-				// returnColor.add(specular.mul(lightColor.mul(Math.pow(Math.max(0.0,
-				// reflectedVector.dot(e)), exponent))));
-				// }
 				final Vector3 lightVector = light.directionFrom(hitPoint).normalized();
-
 				final Vector3 reflectedVector = lightVector.reflectedOn(hit.n);
 
 				final double max = Math.max(0.0, lightVector.dot(hit.n));
 				final double maxSP = Math.pow(Math.max(0.0, reflectedVector.dot(e)), this.exponent);
 
-				lightColor = returnColor.add(light.color.mul(diffuse.colorFor(1, 1)).mul(max)).add(
-						light.color.mul(specular.colorFor(1, 1)).mul(maxSP));
-				// returnColor = returnColor.add(light.color.mul(this.diffuse));
-				// returnColor =
-				// returnColor.mul(max).add(light.color.mul(this.specular).mul(maxSP));
+				lightColor = returnColor.add(light.color.mul(diffuse.colorFor(1, 1)).mul(max))
+						.add(light.color.mul(specular.colorFor(1, 1)).mul(maxSP));
 			}
 		}
 		return returnColor.add(lightColor);
 	}
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.lang.Object#toString()
-	 */
+
 	@Override
 	public String toString() {
 		return "PhongMaterial [diffuse=" + diffuse + ", specular=" + specular + ", exponent=" + exponent + ", toString()="
 				+ super.toString() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + "]";
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.lang.Object#hashCode()
-	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -139,11 +105,6 @@ public class PhongMaterial extends Material {
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -167,5 +128,4 @@ public class PhongMaterial extends Material {
 			return false;
 		return true;
 	}
-
 }

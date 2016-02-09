@@ -1,23 +1,23 @@
 package light;
 
+import Matrizen_Vektoren_Bibliothek.Point3;
+import Matrizen_Vektoren_Bibliothek.Vector3;
+import color.Color;
 import geometries.Geometry;
 import geometries.Hit;
 import ray.Ray;
 import ray.World;
-import Matrizen_Vektoren_Bibliothek.Point3;
-import Matrizen_Vektoren_Bibliothek.Vector3;
-import color.Color;
 
 /**
  * DirectionalLight
  *
- * @author Waschmaschine
- *         <p>
- *         Das directional light stellt eine unendlich weit entfernte
- *         Lichtquelle dar. Die Richtung bleibt dabei überall gleich.
+ * Das directional light stellt eine unendlich weit entfernte Lichtquelle dar. Die Richtung bleibt dabei überall gleich.
  */
 public class DirectionalLight extends Light {
 
+	/**
+	 * Richtung aus der das Licht kommt
+	 */
 	private final Vector3 direction;
 
 	/**
@@ -60,25 +60,21 @@ public class DirectionalLight extends Light {
 			final double tMax = Double.MAX_VALUE;
 			final double tMin = 0.00001;
 			double t2 = 0;
+
 			for (final Geometry g : world.objs) {
 
 				final Hit h = g.hit(r);
-				// System.out.println(h);
+
 				if (h != null) {
-
 					t2 = h.t;
-
 				}
+
 				if (t2 >= tMin && t2 <= tMax) {
-
 					return false;
-
 				}
 			}
 		}
-
 		return true;
-
 	}
 
 	/**
@@ -97,20 +93,6 @@ public class DirectionalLight extends Light {
 		return direction.mul(-1).normalized();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.lang.Object#toString()
-	 */
-
-	/**
-	 * Ueberschriebene equals-Methode
-	 *
-	 * @param obj
-	 *            Objekt das mit der Matrix verglichen wird
-	 * @return true | false
-	 */
-	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -127,21 +109,11 @@ public class DirectionalLight extends Light {
 		return true;
 	}
 
-	/**
-	 * Ueberschriebene toString-Methode
-	 *
-	 * @return String DirectionalLight Werte
-	 */
 	@Override
 	public String toString() {
 		return "DirectionalLight [direction=" + direction + ", color=" + color + ", castsShadows=" + castsShadows + "]";
 	}
 
-	/**
-	 * Ueberschriebene hashCode-Methode
-	 *
-	 * @return int hashcode
-	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;

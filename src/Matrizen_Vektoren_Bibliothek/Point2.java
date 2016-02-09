@@ -1,7 +1,7 @@
 package Matrizen_Vektoren_Bibliothek;
 
 /**
- * Punkt
+ * Punkt Speichert einfach nur x & y
  *
  * @author Waschmaschine
  */

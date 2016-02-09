@@ -2,6 +2,8 @@ package color;
 
 /**
  *
+ * Schnittstelle zwischen der Oberfläche im Raytracer und der Geometrie
+ *
  * @author waschmaschine
  *
  *         Die Klasse texCoord2 stellt jeweils eine Koordinate der textur da
@@ -32,7 +34,6 @@ public class TexCoord2 {
 	 *            double-Werte der übergeben texCoord2 werden benötigt
 	 * @return neue texCoord2 mit verrechneten Werten u und v
 	 */
-
 	public TexCoord2 add(final TexCoord2 t) {
 		return new TexCoord2(u + t.u, v + t.v);
 	}

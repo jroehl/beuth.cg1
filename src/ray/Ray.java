@@ -4,7 +4,7 @@ import Matrizen_Vektoren_Bibliothek.Point3;
 import Matrizen_Vektoren_Bibliothek.Vector3;
 
 /**
- * Ray Klasse
+ * Repräsentiert einen Strahl (Ray)
  *
  * @author Waschmaschine
  */
@@ -20,8 +20,7 @@ public class Ray {
 	public final Vector3 direction;
 
 	/**
-	 * Der Konstruktor dieser Klasse nimmt als Parameter den Ursprung und die
-	 * Richtung des Strahls entgegen.
+	 * Der Konstruktor dieser Klasse nimmt als Parameter den Ursprung und die Richtung des Strahls entgegen.
 	 *
 	 * @param origin
 	 *            repräsentiert den übergebenen Ursprung des Strahls
@@ -43,12 +42,11 @@ public class Ray {
 	}
 
 	/**
-	 * Der Strahl hat die Methode at. Diese nimmt als Parameter ein t entgegen
-	 * und gibt den entsprechenden Punkt. (p=o+td)
+	 * Der Strahl hat die Methode at. Diese nimmt als Parameter ein t entgegen und gibt den entsprechenden Punkt.
+	 * (p=o+td)
 	 *
 	 * @param t
-	 *            repräsentiert den Parameter t, über welchen ein Punkt auf
-	 *            einem vektor definiert wird
+	 *            repräsentiert den Parameter t, über welchen ein Punkt auf einem vektor definiert wird
 	 * @return
 	 */
 	public Point3 at(double t) {
@@ -57,25 +55,23 @@ public class Ray {
 	}
 
 	/**
-	 * Darüber hinaus hat der Strahl die Methode tOf, welche einen Punkt als
-	 * Parameter annimmt und das entsprechende t zuueückgibt.
+	 * Darüber hinaus hat der Strahl die Methode tOf, welche einen Punkt als Parameter annimmt und das entsprechende t
+	 * zuueückgibt.
 	 * <p>
 	 * t = (p-o)/d
 	 *
 	 * @param point
 	 *            repräsentiert den übergebenen Punkt p
-	 * @return double t - den Faktor, mit welchem der Vektor multipliziert
-	 *         wurde, um einen bestimmten Punkt zu markieren
+	 * @return double t - den Faktor, mit welchem der Vektor multipliziert wurde, um einen bestimmten Punkt zu markieren
 	 * @throws IllegalArgumentException
 	 */
 	public double tOf(Point3 point) throws IllegalArgumentException {
 		if (point == null) {
 			throw new IllegalArgumentException("The Point cannot be null!");
 		}
-		// return point.sub(origin).magnitude / direction.magnitude;
 		return (point.sub(origin).dot(direction)) / direction.dot(direction);
-
 	}
+
 	/*
 	 * (non-Javadoc)
 	 *
@@ -126,5 +122,4 @@ public class Ray {
 	public String toString() {
 		return "Ray [origin=" + origin + ", direction=" + direction + "]";
 	}
-
 }

@@ -1,18 +1,11 @@
 package Matrizen_Vektoren_Bibliothek;
+
 /**
  *
- * @author waschmaschine
- *
- *         Die 4x4 Matrix wird benötigt, um Objekte zu skalieren, zu
- *         transformieren oder um eine der drei Achsen zu rotieren
+ * Die 4x4 Matrix wird benötigt, um Objekte zu skalieren, zu transformieren oder um eine der drei Achsen zu rotieren
  *
  */
 public class Mat4x4 {
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
 	/**
 	 * @param m11
 	 *            -m14 erste Spalte der Matrix
@@ -54,7 +47,6 @@ public class Mat4x4 {
 	 *
 	 * @throws IllegalArgumentException
 	 */
-
 	public Mat4x4(double m11, double m12, double m13, double m14, double m21, double m22, double m23, double m24, double m31, double m32,
 			double m33, double m34, double m41, double m42, double m43, double m44) {
 		this.m11 = m11;
@@ -78,8 +70,6 @@ public class Mat4x4 {
 		this.m44 = m44;
 	}
 
-	// _________________________________________________________________________________
-
 	/**
 	 * Methode mul(Vector3)
 	 *
@@ -89,7 +79,6 @@ public class Mat4x4 {
 	 *
 	 * @throws IllegalArgumentException
 	 */
-
 	public Vector3 mul(Vector3 v) {
 
 		if (v == null) {
@@ -98,14 +87,12 @@ public class Mat4x4 {
 
 		return new Vector3(
 
-		v.x * m11 + v.y * m12 + v.z * m13,
+				v.x * m11 + v.y * m12 + v.z * m13,
 
-		v.x * m21 + v.y * m22 + v.z * m23,
+				v.x * m21 + v.y * m22 + v.z * m23,
 
-		v.x * m31 + v.y * m32 + v.z * m33);
+				v.x * m31 + v.y * m32 + v.z * m33);
 	}
-
-	// _________________________________________________________________________________
 
 	/**
 	 * Methode mul(Point3)
@@ -116,7 +103,6 @@ public class Mat4x4 {
 	 *
 	 * @throws IllegalArgumentException
 	 */
-
 	public Point3 mul(Point3 p) {
 
 		if (p == null) {
@@ -124,16 +110,14 @@ public class Mat4x4 {
 		}
 		return new Point3(
 
-		p.x * m11 + p.y * m12 + p.z * m13 + m14,
+				p.x * m11 + p.y * m12 + p.z * m13 + m14,
 
-		p.x * m21 + p.y * m22 + p.z * m23 + m24,
+				p.x * m21 + p.y * m22 + p.z * m23 + m24,
 
-		p.x * m31 + p.y * m32 + p.z * m33 + m34
+				p.x * m31 + p.y * m32 + p.z * m33 + m34
 
 		);
 	}
-
-	// _________________________________________________________________________________
 
 	/**
 	 * Methode mul(Mat4x4)
@@ -144,32 +128,30 @@ public class Mat4x4 {
 	 *
 	 * @throws IllegalArgumentException
 	 */
-
 	public Mat4x4 mul(Mat4x4 m) {
 
 		if (m == null) {
 			throw new IllegalArgumentException("The Ray cannot be null!");
 		}
 
-		return new Mat4x4(m11 * m.m11 + m12 * m.m21 + m13 * m.m31 + m14 * m.m41, m11 * m.m12 + m12 * m.m22 + m13 * m.m32 + m14 * m.m42, m11
-				* m.m13 + m12 * m.m23 + m13 * m.m33 + m14 * m.m43, m11 * m.m14 + m12 * m.m24 + m13 * m.m34 + m14 * m.m44, m21 * m.m11 + m22
-				* m.m21 + m23 * m.m31 + m24 * m.m41, m21 * m.m12 + m22 * m.m22 + m23 * m.m32 + m24 * m.m42, m21 * m.m13 + m22 * m.m23 + m23
-				* m.m33 + m24 * m.m43, m21 * m.m14 + m22 * m.m24 + m23 * m.m34 + m24 * m.m44, m31 * m.m11 + m32 * m.m21 + m33 * m.m31 + m34
-				* m.m41, m31 * m.m12 + m32 * m.m22 + m33 * m.m32 + m34 * m.m42, m31 * m.m13 + m32 * m.m23 + m33 * m.m33 + m34 * m.m43, m31
-				* m.m14 + m32 * m.m24 + m33 * m.m34 + m34 * m.m44, m41 * m.m11 + m42 * m.m21 + m43 * m.m31 + m44 * m.m41, m41 * m.m12 + m42
-				* m.m22 + m43 * m.m32 + m44 * m.m42, m41 * m.m13 + m42 * m.m23 + m43 * m.m33 + m44 * m.m43, m41 * m.m14 + m42 * m.m24 + m43
-				* m.m34 + m44 * m.m44);
+		return new Mat4x4(m11 * m.m11 + m12 * m.m21 + m13 * m.m31 + m14 * m.m41, m11 * m.m12 + m12 * m.m22 + m13 * m.m32 + m14 * m.m42,
+				m11 * m.m13 + m12 * m.m23 + m13 * m.m33 + m14 * m.m43, m11 * m.m14 + m12 * m.m24 + m13 * m.m34 + m14 * m.m44,
+				m21 * m.m11 + m22 * m.m21 + m23 * m.m31 + m24 * m.m41, m21 * m.m12 + m22 * m.m22 + m23 * m.m32 + m24 * m.m42,
+				m21 * m.m13 + m22 * m.m23 + m23 * m.m33 + m24 * m.m43, m21 * m.m14 + m22 * m.m24 + m23 * m.m34 + m24 * m.m44,
+				m31 * m.m11 + m32 * m.m21 + m33 * m.m31 + m34 * m.m41, m31 * m.m12 + m32 * m.m22 + m33 * m.m32 + m34 * m.m42,
+				m31 * m.m13 + m32 * m.m23 + m33 * m.m33 + m34 * m.m43, m31 * m.m14 + m32 * m.m24 + m33 * m.m34 + m34 * m.m44,
+				m41 * m.m11 + m42 * m.m21 + m43 * m.m31 + m44 * m.m41, m41 * m.m12 + m42 * m.m22 + m43 * m.m32 + m44 * m.m42,
+				m41 * m.m13 + m42 * m.m23 + m43 * m.m33 + m44 * m.m43, m41 * m.m14 + m42 * m.m24 + m43 * m.m34 + m44 * m.m44);
 
 	}
 
-	// _________________________________________________________________________________
-
-	public Mat4x4 transposed() { // Zeilen und Spalten vertauscht
-		return new Mat4x4(
-
-		m11, m21, m31, m41, m12, m22, m32, m42, m13, m23, m33, m43, m14, m24, m34, m44
-
-		);
+	/**
+	 * Vertauscht Zeilen und Spalten gibt die Inverse zurück.
+	 * 
+	 * @return
+	 */
+	public Mat4x4 transposed() {
+		return new Mat4x4(m11, m21, m31, m41, m12, m22, m32, m42, m13, m23, m33, m43, m14, m24, m34, m44);
 	}
 
 	@Override
@@ -272,5 +254,4 @@ public class Mat4x4 {
 				+ ", m24=" + m24 + ", m31=" + m31 + ", m32=" + m32 + ", m33=" + m33 + ", m34=" + m34 + ", m41=" + m41 + ", m42=" + m42
 				+ ", m43=" + m43 + ", m44=" + m44 + "]";
 	}
-
 }

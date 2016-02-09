@@ -1,23 +1,20 @@
 package material;
 
+import Matrizen_Vektoren_Bibliothek.Point3;
+import Matrizen_Vektoren_Bibliothek.Vector3;
+import application.Tracer;
+import color.Color;
 import geometries.Hit;
 import light.Light;
 import ray.Ray;
 import ray.World;
 import textures.Texture;
-import Matrizen_Vektoren_Bibliothek.Point3;
-import Matrizen_Vektoren_Bibliothek.Vector3;
-import application.Tracer;
-import color.Color;
 
 /**
  * ReflectiveMaterial
  *
- * @author Waschmaschine
- *         <p>
- *         Das ReflectiveMaterial erbt von der abstrakten Klasse Material und
- *         überschreibt die Methode colorFor. Es reflektiert das Licht und
- *         umliegende Objekte
+ * Das ReflectiveMaterial erbt von der abstrakten Klasse Material und überschreibt die Methode colorFor. Es reflektiert
+ * das Licht und umliegende Objekte
  */
 public class ReflectiveMaterial extends Material {
 
@@ -36,8 +33,7 @@ public class ReflectiveMaterial extends Material {
 	 * @param reflectionColor
 	 *            Textur des Reflektionspunktes
 	 * @param exponent
-	 *            der Exponent bestimmt die größe des errechneten
-	 *            Reflektionspunktes
+	 *            der Exponent bestimmt die größe des errechneten Reflektionspunktes
 	 * @throws IllegalArgumentException
 	 */
 	public ReflectiveMaterial(Texture diffuse, Texture specular, Texture reflectionColor, int exponent) {
@@ -57,11 +53,10 @@ public class ReflectiveMaterial extends Material {
 	 *            : übergebenes world - Objekt
 	 * @param tracer
 	 *            : übergebenes tracer - Objekt
-	 * @return color - für jeden Pixel wird, falls er von der Lichtquelle
-	 *         angeleuchtet wird, die Farbe errechnet und zurück gegeben.
+	 * @return color - für jeden Pixel wird, falls er von der Lichtquelle angeleuchtet wird, die Farbe errechnet und
+	 *         zurück gegeben.
 	 * @throws IllegalArgumentException
 	 */
-
 	@Override
 	public Color colorFor(Hit hit, World world, Tracer tracer) {
 
@@ -86,30 +81,20 @@ public class ReflectiveMaterial extends Material {
 				final double max = Math.max(0.0, lightVector.dot(hit.n));
 				final double maxSP = Math.pow(Math.max(0.0, reflectedVector.dot(e)), this.exponent);
 
-				returnColor = returnColor.add(light.color.mul(this.diffuse.colorFor(hit.tex.u, hit.tex.v)).mul(max)).add(
-						light.color.mul(this.specular.colorFor(hit.tex.u, hit.tex.v)).mul(maxSP));
+				returnColor = returnColor.add(light.color.mul(this.diffuse.colorFor(hit.tex.u, hit.tex.v)).mul(max))
+						.add(light.color.mul(this.specular.colorFor(hit.tex.u, hit.tex.v)).mul(maxSP));
 			}
 		}
-		return returnColor.add(reflectionColor.colorFor(hit.tex.u, hit.tex.v).mul(
-				tracer.reflectedColors(new Ray(hitPoint, hit.ray.direction.add(hit.n.mul(factor)).normalized()))));
+		return returnColor.add(reflectionColor.colorFor(hit.tex.u, hit.tex.v)
+				.mul(tracer.reflectedColors(new Ray(hitPoint, hit.ray.direction.add(hit.n.mul(factor)).normalized()))));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
 		return "ReflectiveMaterial{" + "diffuse=" + diffuse + ", specular=" + specular + ", reflectionColor=" + reflectionColor
 				+ ", exponent=" + exponent + '}';
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object o) {
 		if (this == o)
@@ -129,11 +114,6 @@ public class ReflectiveMaterial extends Material {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
 	@Override
 	public int hashCode() {
 		int result = diffuse != null ? diffuse.hashCode() : 0;

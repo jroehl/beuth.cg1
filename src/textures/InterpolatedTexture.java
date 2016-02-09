@@ -1,12 +1,19 @@
 package textures;
 
-import color.Color;
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+import javax.imageio.ImageIO;
+
+import color.Color;
+
+/**
+ * Bei einem verpicelten Bild/ Texture wird dies geklätet indem es mittelwerte nimmt zwischen benachbarten Picel
+ * 
+ * @author Philip
+ *
+ */
 public class InterpolatedTexture implements Texture {
 
 	private final String path;
@@ -58,11 +65,13 @@ public class InterpolatedTexture implements Texture {
 		final double xInt = x - Math.floor(x);
 		final double yInt = y - Math.floor(y);
 
+		// Ermittel 4-Punkte
 		final Color colorA = ImageTexture.getColorOfPosition(this.img, (int) Math.floor(x), (int) Math.floor(y));
 		final Color colorB = ImageTexture.getColorOfPosition(this.img, (int) Math.ceil(x), (int) Math.floor(y));
 		final Color colorC = ImageTexture.getColorOfPosition(this.img, (int) Math.floor(x), (int) Math.ceil(y));
 		final Color colorD = ImageTexture.getColorOfPosition(this.img, (int) Math.ceil(x), (int) Math.ceil(y));
 
+		// Multipliziert diese miteinander
 		final Color colorAB = colorA.mul(1.0 - xInt).add(colorB.mul(xInt));
 		final Color colorCD = colorC.mul(1.0 - xInt).add(colorD.mul(xInt));
 
@@ -90,5 +99,4 @@ public class InterpolatedTexture implements Texture {
 
 		return new Color(red, green, blue);
 	}
-
 }

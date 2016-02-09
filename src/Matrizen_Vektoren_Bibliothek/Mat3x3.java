@@ -2,7 +2,7 @@ package Matrizen_Vektoren_Bibliothek;
 
 /**
  *
- * 3x3-Matrix
+ * 3x3-Matrix, bei der Initialisierung wird die Determiante berechnet.
  *
  * @author Waschmaschine
  */
@@ -80,8 +80,7 @@ public class Mat3x3 {
 	 * @param m33
 	 *            setzt den double Wert des Feld 3 - 3
 	 */
-	public Mat3x3(final double m11, final double m12, final double m13,
-			final double m21, final double m22, final double m23,
+	public Mat3x3(final double m11, final double m12, final double m13, final double m21, final double m22, final double m23,
 			final double m31, final double m32, final double m33) {
 		this.m11 = m11;
 		this.m12 = m12;
@@ -92,11 +91,8 @@ public class Mat3x3 {
 		this.m31 = m31;
 		this.m32 = m32;
 		this.m33 = m33;
-		this.determinant = (this.m11 * this.m22 * this.m33 + this.m12
-				* this.m23 * this.m31 + this.m13 * this.m21 * this.m32
-				- this.m31 * this.m22 * this.m13 - this.m32 * this.m23
-				* this.m11 - this.m33 * this.m21 * this.m12);
-
+		this.determinant = (this.m11 * this.m22 * this.m33 + this.m12 * this.m23 * this.m31 + this.m13 * this.m21 * this.m32
+				- this.m31 * this.m22 * this.m13 - this.m32 * this.m23 * this.m11 - this.m33 * this.m21 * this.m12);
 	}
 
 	/**
@@ -113,15 +109,10 @@ public class Mat3x3 {
 			throw new IllegalArgumentException();
 		}
 
-		return new Mat3x3(this.m11 * m.m11 + this.m12 * m.m21 + this.m13
-				* m.m31,
-				this.m11 * m.m12 + this.m12 * m.m22 + this.m13 * m.m32,
-				this.m11 * m.m13 + this.m12 * m.m23 + this.m13 * m.m33,
-				this.m21 * m.m11 + this.m21 * m.m12 + this.m23 * m.m31,
-				this.m21 * m.m12 + this.m22 * m.m22 + this.m23 * m.m32,
-				this.m21 * m.m13 + this.m23 * m.m32 + this.m23 * m.m33,
-				this.m31 * m.m11 + this.m32 * m.m21 + this.m33 * m.m13,
-				this.m31 * m.m12 + this.m32 * m.m22 + this.m33 * m.m32,
+		return new Mat3x3(this.m11 * m.m11 + this.m12 * m.m21 + this.m13 * m.m31, this.m11 * m.m12 + this.m12 * m.m22 + this.m13 * m.m32,
+				this.m11 * m.m13 + this.m12 * m.m23 + this.m13 * m.m33, this.m21 * m.m11 + this.m21 * m.m12 + this.m23 * m.m31,
+				this.m21 * m.m12 + this.m22 * m.m22 + this.m23 * m.m32, this.m21 * m.m13 + this.m23 * m.m32 + this.m23 * m.m33,
+				this.m31 * m.m11 + this.m32 * m.m21 + this.m33 * m.m13, this.m31 * m.m12 + this.m32 * m.m22 + this.m33 * m.m32,
 				this.m31 * m.m13 + this.m32 * m.m23 + this.m33 * m.m33);
 	}
 
@@ -139,9 +130,8 @@ public class Mat3x3 {
 			throw new IllegalArgumentException();
 		}
 
-		return new Vector3((this.m11 * v.x + this.m12 * v.y + this.m13 * v.z),
-				(this.m21 * v.x + this.m22 * v.y + this.m23 * v.z), (this.m31
-						* v.x + this.m32 * v.y + this.m33 * v.z));
+		return new Vector3((this.m11 * v.x + this.m12 * v.y + this.m13 * v.z), (this.m21 * v.x + this.m22 * v.y + this.m23 * v.z),
+				(this.m31 * v.x + this.m32 * v.y + this.m33 * v.z));
 	}
 
 	/**
@@ -158,9 +148,8 @@ public class Mat3x3 {
 			throw new IllegalArgumentException();
 		}
 
-		return new Point3(this.m11 * p.x + this.m12 * p.y + this.m13 * p.z,
-				this.m21 * p.x + this.m22 * p.y + this.m23 * p.z, this.m31
-						* p.x + this.m32 * p.y + this.m33 * p.z);
+		return new Point3(this.m11 * p.x + this.m12 * p.y + this.m13 * p.z, this.m21 * p.x + this.m22 * p.y + this.m23 * p.z,
+				this.m31 * p.x + this.m32 * p.y + this.m33 * p.z);
 	}
 
 	/**
@@ -178,7 +167,6 @@ public class Mat3x3 {
 		}
 
 		return new Mat3x3(m.x, m12, m13, m.y, m22, m23, m.z, m32, m33);
-
 	}
 
 	/**
@@ -213,7 +201,6 @@ public class Mat3x3 {
 		}
 
 		return new Mat3x3(m11, m12, m.x, m21, m22, m.y, m31, m32, m.z);
-
 	}
 
 	/**
@@ -294,9 +281,7 @@ public class Mat3x3 {
 	 */
 	@Override
 	public String toString() {
-		return "Mat3x3{" + "m11=" + m11 + ", m12=" + m12 + ", m13=" + m13
-				+ ", m21=" + m21 + ", m22=" + m22 + ", m23=" + m23 + ", m31="
-				+ m31 + ", m32=" + m32 + ", m33=" + m33 + ", determinant="
-				+ determinant + '}';
+		return "Mat3x3{" + "m11=" + m11 + ", m12=" + m12 + ", m13=" + m13 + ", m21=" + m21 + ", m22=" + m22 + ", m23=" + m23 + ", m31="
+				+ m31 + ", m32=" + m32 + ", m33=" + m33 + ", determinant=" + determinant + '}';
 	}
 }

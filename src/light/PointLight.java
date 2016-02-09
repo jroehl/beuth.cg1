@@ -1,32 +1,32 @@
 package light;
 
+import Matrizen_Vektoren_Bibliothek.Point3;
+import Matrizen_Vektoren_Bibliothek.Vector3;
+import color.Color;
 import geometries.Geometry;
 import geometries.Hit;
 import ray.Ray;
 import ray.World;
-import Matrizen_Vektoren_Bibliothek.Point3;
-import Matrizen_Vektoren_Bibliothek.Vector3;
-import color.Color;
 
 /**
- * PointLight
+ * PointLight.
  *
- * @author Waschmaschine
- *         <p>
- *         Strahlt gleichmäßig in alle Richtungen wie eine Lampe mit einer
- *         festen Position
+ * Strahlt gleichmäßig in alle Richtungen wie eine Lampe mit einer festen Position
  */
 public class PointLight extends Light {
 
+	/**
+	 * Position an der sich das Licht befindet.
+	 */
 	private final Point3 pl;
 
 	/**
 	 * Konstruktor: PointLight
 	 *
 	 * @param position
-	 *            Point3 des Lichts
+	 *            Position (Point3) des Lichts
 	 * @param color
-	 *            Color des Lichts
+	 *            Farbe (Color) des Lichts
 	 * @param castsShadows
 	 *            boolean - ob Gegenstand einen Schatten wirft
 	 * @throws IllegalArgumentException
@@ -38,6 +38,7 @@ public class PointLight extends Light {
 		if (position == null) {
 			throw new IllegalArgumentException("position cannot be null!");
 		}
+
 		this.pl = position;
 	}
 
@@ -60,7 +61,7 @@ public class PointLight extends Light {
 		if (castsShadows) {
 			final Ray r = new Ray(p, directionFrom(p));
 
-			final double tMax = r.tOf(pl);// t der Lichtquelle
+			final double tMax = r.tOf(pl);
 			final double tMin = 0.0001;
 			double t2 = 0;
 			for (final Geometry g : world.objs) {
@@ -96,21 +97,10 @@ public class PointLight extends Light {
 		return pl.sub(p).normalized();
 	}
 
-	/**
-	 * Ueberschriebene toString-Methode
-	 *
-	 * @return String PointLight Werte
-	 */
 	@Override
 	public String toString() {
 		return "PointLight [pl=" + pl + ", cl=" + color + "]";
 	}
-
-	/**
-	 * Ueberschriebene hashCode-Methode
-	 *
-	 * @return int hashcode
-	 */
 
 	@Override
 	public int hashCode() {
@@ -121,13 +111,6 @@ public class PointLight extends Light {
 		return result;
 	}
 
-	/**
-	 * Ueberschriebene equals-Methode
-	 *
-	 * @param obj
-	 *            Objekt das mit der Matrix verglichen wird
-	 * @return true | false
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

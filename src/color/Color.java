@@ -1,11 +1,10 @@
 package color;
 
 /**
- * Die Color Klasse repräsentiert eine Farbe im RGB-Farbraum. Die einzelnen
- * Komponenten sollen hierbei in der Regel einen Wert zwischen 0 und 1 annehmen
- * können. Eine Farbe Zweite Übungsaufgabe in Computergrafik 1 Seite 2 kann mit
- * einer anderen addiert, subtrahiert und multipliziert werden. Darüber hinaus
- * kann eine Farbe mit einem Skalar multipliziert werden.
+ * Die Color Klasse repräsentiert eine Farbe im RGB-Farbraum. Die einzelnen Komponenten sollen hierbei in der Regel
+ * einen Wert zwischen 0 und 1 annehmen können. Eine Farbe Zweite Übungsaufgabe in Computergrafik 1 Seite 2 kann mit
+ * einer anderen addiert, subtrahiert und multipliziert werden. Darüber hinaus kann eine Farbe mit einem Skalar
+ * multipliziert werden.
  */
 public class Color {
 
@@ -33,30 +32,9 @@ public class Color {
 	 *            Blau-Wert
 	 */
 	public Color(final double r, final double g, final double b) {
-
-		// TODO: Keiner der Werte soll größer 1 sein, daher die
-		// Fallunterscheidung.
-		// if (r > 1) {
-		// this.r = 1;
-		// } else if (r < 0) {
-		// this.r = 0;
-		// } else {
 		this.r = r;
-		// }
-		// if (g > 1) {
-		// this.g = 1;
-		// } else if (g < 0) {
-		// this.g = 0;
-		// } else {
 		this.g = g;
-		// }
-		// if (b > 1) {
-		// this.b = 1;
-		// } else if (b < 0) {
-		// this.b = 0;
-		// } else {
 		this.b = b;
-		// }
 	}
 
 	/**
@@ -107,7 +85,6 @@ public class Color {
 			throw new IllegalArgumentException("The Color cannot be null");
 		}
 
-		// TODO: Wie Multipliziert man denn Farben ? :O
 		return new Color(this.r * c.r, this.g * c.g, this.b * c.b);
 	}
 
@@ -116,7 +93,6 @@ public class Color {
 	 * @return
 	 */
 	public Color mul(final double v) {
-
 		return new Color(this.r * v, this.g * v, this.b * v);
 	}
 

@@ -19,7 +19,5 @@ public class OneRaySamplingPattern extends SamplingPattern {
 		final Set<Point2> staticPoints = new HashSet<Point2>();
 		staticPoints.add(new Point2(0, 0));
 		return staticPoints;
-
 	}
-
 }

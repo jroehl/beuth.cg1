@@ -2,6 +2,9 @@ package geometries;
 
 import java.util.Random;
 
+import Matrizen_Vektoren_Bibliothek.Normal3;
+import Matrizen_Vektoren_Bibliothek.Point3;
+import color.Color;
 import material.LambertMaterial;
 import material.Material;
 import material.PhongMaterial;
@@ -9,9 +12,6 @@ import material.ReflectiveMaterial;
 import material.SingleColorMaterial;
 import ray.Ray;
 import textures.SingleColorTexture;
-import Matrizen_Vektoren_Bibliothek.Normal3;
-import Matrizen_Vektoren_Bibliothek.Point3;
-import color.Color;
 
 public class TrianglePyramid extends Geometry {
 
@@ -47,6 +47,7 @@ public class TrianglePyramid extends Geometry {
 		mat6 = switchColor(material);
 
 	}
+
 	@Override
 	public Hit hit(Ray ray) throws IllegalArgumentException {
 		if (ray == null) {
@@ -65,7 +66,7 @@ public class TrianglePyramid extends Geometry {
 		final Triangle bottom2 = new Triangle(mat6, eckeB, eckeC, eckeD, new Normal3(0, -1, 0), new Normal3(0, -1, 0),
 				new Normal3(0, -1, 0));
 
-		final Triangle[] triangles = {a, b, c, d, bottom1, bottom2};
+		final Triangle[] triangles = { a, b, c, d, bottom1, bottom2 };
 
 		Hit h = null;
 
@@ -83,23 +84,26 @@ public class TrianglePyramid extends Geometry {
 		return h;
 	}
 
+	/**
+	 * 
+	 * @param material
+	 * @return
+	 */
 	public final Material switchColor(final Material material) {
 		if (material instanceof SingleColorMaterial) {
 			return new SingleColorMaterial(new SingleColorTexture(new Color(r.nextDouble(), r.nextDouble(), r.nextDouble())));
 		}
-
 		if (super.material instanceof LambertMaterial) {
 			return new LambertMaterial(new SingleColorTexture(new Color(r.nextDouble(), r.nextDouble(), r.nextDouble())));
 		}
-
 		if (super.material instanceof PhongMaterial) {
 			return new PhongMaterial(new SingleColorTexture(new Color(r.nextDouble(), r.nextDouble(), r.nextDouble())),
 					new SingleColorTexture(new Color(r.nextDouble(), r.nextDouble(), r.nextDouble())), 64);
 		}
 		if (super.material instanceof ReflectiveMaterial) {
 			return new ReflectiveMaterial(new SingleColorTexture(new Color(r.nextDouble(), r.nextDouble(), r.nextDouble())),
-					new SingleColorTexture(new Color(r.nextDouble(), r.nextDouble(), r.nextDouble())), new SingleColorTexture(new Color(
-							r.nextDouble(), r.nextDouble(), r.nextDouble())), 64);
+					new SingleColorTexture(new Color(r.nextDouble(), r.nextDouble(), r.nextDouble())),
+					new SingleColorTexture(new Color(r.nextDouble(), r.nextDouble(), r.nextDouble())), 64);
 		}
 		return null;
 	}

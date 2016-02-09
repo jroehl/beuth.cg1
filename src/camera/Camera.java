@@ -2,19 +2,16 @@ package camera;
 
 import java.util.Set;
 
-import ray.Ray;
 import Matrizen_Vektoren_Bibliothek.Point3;
 import Matrizen_Vektoren_Bibliothek.Vector3;
+import ray.Ray;
 
 /**
- * Die abstrakte Basisklasse Camera speichert die drei Vektoren u, v und w,
- * welche vom Konstruktor entgegen genommen werden. Im Konstruktor werden
- * hieraus die Vektoren u,v und w berechnet, welche ebenfalls als öffentliche
- * Attribute zur Verfügung gestellt werden. Die abstrakte Klasse Camera
- * deklariert die Methode rayFor, welche für einen bestimmten Pixel den Strahl
- * zurückgibt. Die Parameter w und h geben hierbei die Höhe und Breite des
- * Bildes an. Die Parameter x und y geben die Koordinaten des Pixels an, für den
- * der Strahl generiert werden soll.
+ * Die abstrakte Basisklasse Camera speichert die drei Vektoren e, g und t, welche vom Konstruktor entgegen genommen
+ * werden. Im Konstruktor werden hieraus die Vektoren u,v und w berechnet, welche ebenfalls als öffentliche Attribute
+ * zur Verfügung gestellt werden. Die abstrakte Klasse Camera deklariert die Methode rayFor, welche für einen bestimmten
+ * Pixel den Strahl zurückgibt. Die Parameter w und h geben hierbei die Höhe und Breite des Bildes an. Die Parameter x
+ * und y geben die Koordinaten des Pixels an, für den der Strahl generiert werden soll.
  */
 public abstract class Camera {
 	public final Point3 e;
@@ -23,7 +20,7 @@ public abstract class Camera {
 	public final Vector3 u;
 	public final Vector3 v;
 	public final Vector3 w;
-	final SamplingPattern p;
+	public final SamplingPattern p;
 
 	/**
 	 * Konstruktor: Camera
@@ -36,7 +33,7 @@ public abstract class Camera {
 	 *            Vector3 der Kamera
 	 * @throws IllegalArgumentException
 	 */
-	public Camera(final Point3 e, final Vector3 g, final Vector3 t, SamplingPattern p2) throws IllegalArgumentException {
+	public Camera(final Point3 e, final Vector3 g, final Vector3 t, SamplingPattern p) throws IllegalArgumentException {
 
 		if (e == null) {
 			throw new IllegalArgumentException("The Point  e cannot be null!");
@@ -51,13 +48,11 @@ public abstract class Camera {
 		this.e = e;
 		this.g = g;
 		this.t = t;
-		this.p = p2;
+		this.p = p;
 
 		this.w = g.normalized().mul(-1);
-		// this.u = ((t.x(w)).mul((t.x(w)).magnitude)).normalized();
 		this.u = (t.x(w)).normalized();
 		this.v = w.x(u);
-
 	}
 
 	/**

@@ -1,12 +1,16 @@
 package textures;
 
-import color.Color;
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+import javax.imageio.ImageIO;
+
+import color.Color;
+
+/**
+ * 
+ */
 public class ImageTexture implements Texture {
 
 	private final String path;
@@ -56,7 +60,11 @@ public class ImageTexture implements Texture {
 		final double xCoord = ImageTexture.getRelativeCoord(n);
 		final double yCoord = ImageTexture.getRelativeCoord(u);
 
-		final double x = xCoord * (this.img.getWidth() - 1);
+		// Rechnet x und y auf dem Objekt um, schneidet alles vomr komma ab
+
+		final double x = xCoord * (this.img.getWidth() - 1); // Wird mit den Dimensionen des Bildes verrechnet damit es
+																// auf das Bild zugeschnitten ist.
+
 		// siehe Vorgehen Raytracer: final Ray ray = camera.rayFor(iwidth,
 		// iheight, x, iheight - 1 - y);
 		final double y = (this.img.getHeight() - 1) - (yCoord * (img.getHeight() - 1));
@@ -64,10 +72,15 @@ public class ImageTexture implements Texture {
 		return ImageTexture.getColorOfPosition(this.img, (int) Math.round(x), (int) Math.round(y));
 	}
 
+	/**
+	 * 
+	 * @param in
+	 * @return
+	 */
 	public static double getRelativeCoord(final double in) {
-		double out = in % 1.0;
+		double out = in % 1.0; // Rechnet alles auf Werte zwischen 0 und 1 runter.
 
-		if (out < 0.0) {
+		if (out < 0.0) { // Normalisiert die Werte quasie
 			out = out + 1.0;
 		}
 
@@ -75,6 +88,14 @@ public class ImageTexture implements Texture {
 		return out;
 	}
 
+	/**
+	 * Umrechnen der RGB werte zu 0 bis 1, da wir die so verwenden
+	 * 
+	 * @param image
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	public static Color getColorOfPosition(final BufferedImage image, final int x, final int y) {
 		final java.awt.Color c = new java.awt.Color(image.getRGB(x, y));
 
@@ -84,5 +105,4 @@ public class ImageTexture implements Texture {
 
 		return new Color(red, green, blue);
 	}
-
 }

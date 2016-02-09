@@ -1,22 +1,22 @@
 package material;
 
+import application.Tracer;
+import color.Color;
 import geometries.Hit;
 import ray.World;
 import textures.Texture;
-import application.Tracer;
-import color.Color;
 
 /**
  * SingleColorMaterial
  *
- * @author Waschmaschine
- *         <p>
- *         Das SingleColorMaterial erbt von der abstrakten Klasse Material und
- *         überschreibt die Methode colorFor. Es gibt keine reflektion von
- *         Licht.
+ * Das SingleColorMaterial erbt von der abstrakten Klasse Material und überschreibt die Methode colorFor. Es gibt keine
+ * reflektion von Licht.
  */
 public class SingleColorMaterial extends Material {
 
+	/**
+	 * 
+	 */
 	private final Texture tex;
 
 	/**
@@ -26,7 +26,6 @@ public class SingleColorMaterial extends Material {
 	 *            textur für die einzige farbe des Materials
 	 * @throws IllegalArgumentException
 	 */
-
 	public SingleColorMaterial(Texture tex) throws IllegalArgumentException {
 		if (tex == null) {
 			throw new IllegalArgumentException();
@@ -54,26 +53,36 @@ public class SingleColorMaterial extends Material {
 		if (world == null) {
 			throw new IllegalArgumentException("world cannot be null!");
 		}
-
 		return tex.colorFor(hit.tex.u, hit.tex.v);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
+	@Override
+	public String toString() {
+		return "SingleColorMaterial [tex=" + tex + "]";
+	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((tex == null) ? 0 : tex.hashCode());
+		return result;
+	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SingleColorMaterial other = (SingleColorMaterial) obj;
+		if (tex == null) {
+			if (other.tex != null)
+				return false;
+		} else if (!tex.equals(other.tex))
+			return false;
+		return true;
+	}
 }

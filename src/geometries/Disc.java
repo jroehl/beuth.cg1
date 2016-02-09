@@ -1,18 +1,16 @@
 package geometries;
 
-import material.Material;
-import ray.Ray;
 import Matrizen_Vektoren_Bibliothek.Normal3;
 import Matrizen_Vektoren_Bibliothek.Point3;
 import color.TexCoord2;
+import material.Material;
+import ray.Ray;
 
 /**
- * Plane
+ * Disc - Geometry.
  *
- * @author Waschmaschine
- *         <p>
- *         Die von Geometry abgeleitete Klasse Plane implementiert die Methode
- *         hit entsprechend der Formeln und Algorithmen zur Schnittberechnung.
+ * Die von Geometry abgeleitete Klasse Plane implementiert die Methode hit entsprechend der Formeln und Algorithmen zur
+ * Schnittberechnung.
  */
 public class Disc extends Geometry {
 
@@ -20,6 +18,7 @@ public class Disc extends Geometry {
 	 * a - Point3 Objekt der Ebene
 	 */
 	public final Point3 a;
+
 	/**
 	 * n - Normal3 Objekt der Ebene
 	 */
@@ -41,7 +40,6 @@ public class Disc extends Geometry {
 
 		this.a = new Point3(0, 0, 0);
 		this.n = new Normal3(0, 1, 0);
-
 	}
 
 	public Disc(Material material, Point3 p, Normal3 n) throws IllegalArgumentException {
@@ -49,7 +47,6 @@ public class Disc extends Geometry {
 
 		this.a = p;
 		this.n = n;
-
 	}
 
 	/**
@@ -57,8 +54,7 @@ public class Disc extends Geometry {
 	 *
 	 * @param ray
 	 *            Ray Objekt
-	 * @return Hit / null Bei einem Treffer wird das generierte Hit Objekt
-	 *         zurückgegeben und null vice versa
+	 * @return Hit / null Bei einem Treffer wird das generierte Hit Objekt zurückgegeben und null vice versa
 	 * @throws IllegalArgumentException
 	 */
 	@Override
@@ -68,7 +64,6 @@ public class Disc extends Geometry {
 			throw new IllegalArgumentException("The Ray cannot be null!");
 		}
 
-		// denonimator / nenner
 		final double nenner = ray.direction.dot(n);
 
 		if (nenner != 0.0) {
@@ -84,34 +79,5 @@ public class Disc extends Geometry {
 			}
 		}
 		return null;
-	}
-	/**
-	 * Ueberschriebene equals-Methode
-	 *
-	 * @param o
-	 *            Objekt das mit der Matrix verglichen wird
-	 * @return true | false
-	 */
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-
-	/**
-	 * Ueberschriebene hashCode-Methode
-	 *
-	 * @return int hashcode
-	 */
-
-	/**
-	 * Ueberschriebene toString-Methode
-	 *
-	 * @return String Plane Werte
-	 */
-	@Override
-	public String toString() {
-		return "Disc [a=" + a + ", n=" + n + "]";
 	}
 }

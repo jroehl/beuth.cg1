@@ -1,21 +1,18 @@
 package ray;
 
-import geometries.Geometry;
-import geometries.Hit;
-
 import java.util.ArrayList;
 
-import light.Light;
 import application.Tracer;
 import color.Color;
+import geometries.Geometry;
+import geometries.Hit;
+import light.Light;
 
 /**
- * Die Klasse World beinhaltet eine Menge mit den Objekten zu dazustellenden
- * Szene. Sie hat ebenfalls eine Methode hit, wobei der uebergebene Strahl gegen
- * alle Objekte der Szene getestet wird. Es wird der Schnittpunkt mit dem
- * kleinsten positiven 𝑡 zurückgegeben. Die Klasse World hat ein Attribut
- * namens backgroundColor vom Typ Color, welche verwendet wird, wenn ein Strahl
- * keine Geometrie trifft.
+ * Die Klasse World beinhaltet eine Menge mit den Objekten zu dazustellenden Szene. Sie hat ebenfalls eine Methode hit,
+ * wobei der uebergebene Strahl gegen alle Objekte der Szene getestet wird. Es wird der Schnittpunkt mit dem kleinsten
+ * positiven 𝑡 zurückgegeben. Die Klasse World hat ein Attribut namens backgroundColor vom Typ Color, welche verwendet
+ * wird, wenn ein Strahl keine Geometrie trifft.
  */
 public class World {
 
@@ -23,10 +20,15 @@ public class World {
 	 * Wird verwendet wenn ein Strahl keine Geometrie trifft
 	 */
 	public Color backgroundColor;
-	public Color ambient; // wird auf die ganze
-	// Szene addiert, um
-	// alles heller zu
-	// machen
+
+	/**
+	 * Wird auf die ganze Szene addiert, um alles heller zu machen
+	 */
+	public Color ambient;
+
+	/**
+	 * Coming soon....
+	 */
 	public double refractionIndex;
 
 	/**
@@ -40,7 +42,7 @@ public class World {
 	public ArrayList<Light> lights = new ArrayList<Light>();
 
 	/**
-	 * Konstruktor
+	 * Konstruktor.
 	 *
 	 * @throws IllegalArgumentException
 	 */
@@ -51,6 +53,14 @@ public class World {
 		this.refractionIndex = 0;
 	}
 
+	/**
+	 * Konstruktor.
+	 * 
+	 * @param backgroundColor
+	 * @param ambient
+	 * @param refractionIndex
+	 * @throws IllegalArgumentException
+	 */
 	public World(Color backgroundColor, Color ambient, double refractionIndex) throws IllegalArgumentException {
 
 		if (backgroundColor == null) {
@@ -64,44 +74,17 @@ public class World {
 		this.ambient = ambient;
 		this.backgroundColor = backgroundColor;
 		this.refractionIndex = refractionIndex;
-
 	}
 
 	/**
-	 * Testet den Uebergebene Strahl gegen alle Objekte der Szene. Und liefert
-	 * den Schnittpunkt mit dem kleinsten positiven 𝑡.
+	 * Testet den Uebergebene Strahl gegen alle Objekte der Szene. Und liefert den Schnittpunkt mit dem kleinsten
+	 * positiven 𝑡.
 	 *
 	 * @param ray
 	 *            Strahl welcher auf Objekte Geschickt wird.
 	 * @return Schnittpunkt mit dem kleinsten positiven t
 	 * @throws IllegalArgumentException
 	 */
-	// public Color hit(Ray ray) throws IllegalArgumentException {
-	//
-	// if (ray == null) {
-	// throw new IllegalArgumentException("The Ray cannot be null!");
-	// }
-	//
-	// Hit hit = null;
-	// for (final Geometry obj : objs) {
-	// final Hit objHit = obj.hit(ray);
-	//
-	// if (objHit != null) {
-	// if (hit == null || objHit.t < hit.t) {
-	// hit = objHit;
-	// }
-	// }
-	// }
-	//
-	// if (hit != null) {
-	// final Color c = hit.geo.material.colorFor(hit, this, new Tracer(this,
-	// 5));
-	// return c;
-	// }
-	//
-	// return new Color(0, 0, 0);
-	// }
-
 	public Color hit(Ray ray) throws IllegalArgumentException {
 
 		if (ray == null) {
@@ -121,16 +104,20 @@ public class World {
 		}
 
 		if (hit != null) {
-
 			return hit.geo.material.colorFor(hit, this, new Tracer(this, 5));
 		}
 
 		return backgroundColor;
-
 	}
 
+	/**
+	 * Liefert den Hit zurück, nicht die Color
+	 * 
+	 * @param ray
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
 	public Hit getHit(Ray ray) throws IllegalArgumentException {
-
 		if (ray == null) {
 			throw new IllegalArgumentException("The Ray cannot be null!");
 		}
@@ -143,17 +130,13 @@ public class World {
 			if (objHit != null) {
 				if (hit == null || objHit.t < hit.t) {
 					hit = objHit;
-
 				}
 			}
 		}
-
 		if (hit != null) {
 			return hit;
 		}
-
 		return null;
-
 	}
 
 	/**
@@ -167,7 +150,6 @@ public class World {
 		if (obj == null) {
 			throw new IllegalArgumentException("The Geometry cannot be null!");
 		}
-
 		objs.add(obj);
 	}
 
@@ -182,21 +164,14 @@ public class World {
 		if (light == null) {
 			throw new IllegalArgumentException("The Light cannot be null!");
 		}
-
 		lights.add(light);
 	}
 
-	/**
-	 * Ueberschreibung der toString()-Methode.
-	 */
 	@Override
 	public String toString() {
 		return "World [backgroundColor=" + backgroundColor + ", ambient=" + ambient + ", objs=" + objs + ", lights=" + lights + "]";
 	}
 
-	/**
-	 * Ueberschreibung der hashCode()-Methode.
-	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -208,9 +183,6 @@ public class World {
 		return result;
 	}
 
-	/**
-	 * Ueberschreibung der equals()-Methode.
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

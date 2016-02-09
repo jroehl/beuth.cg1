@@ -1,28 +1,29 @@
 package geometries;
 
-import material.Material;
-import ray.Ray;
 import Matrizen_Vektoren_Bibliothek.Normal3;
 import Matrizen_Vektoren_Bibliothek.Point3;
 import color.TexCoord2;
+import material.Material;
+import ray.Ray;
 
 /**
- * Sphere
- *
- * @author Waschmaschine
- *         <p>
- *         Die von Geometry abgeleitete Klasse Sphere implementiert die Methode
- *         hit entsprechend der Formeln und Algorithmen zur Schnittberechnung.
+ * BH
+ * 
+ * Die von Geometry abgeleitete Klasse Sphere implementiert die Methode hit entsprechend der Formeln und Algorithmen zur
+ * Schnittberechnung.
  */
 public class BH extends Geometry {
 
+	/**
+	 * 
+	 */
 	public Normal3 n;
 
 	/**
 	 * center - Point3 Objekt der Sphere
 	 */
-
 	private final Point3 center;
+
 	/**
 	 * radius - double wert der Sphere
 	 */
@@ -44,7 +45,6 @@ public class BH extends Geometry {
 
 		this.center = new Point3(0, 0, 0);
 		this.radius = 1;
-
 	}
 
 	/**
@@ -52,8 +52,7 @@ public class BH extends Geometry {
 	 *
 	 * @param ray
 	 *            Ray Objekt
-	 * @return Hit / null Bei einem Treffer wird das generierte Hit Objekt
-	 *         zurückgegeben und null vice versa
+	 * @return Hit / null Bei einem Treffer wird das generierte Hit Objekt zurückgegeben und null vice versa
 	 * @throws IllegalArgumentException
 	 */
 	@Override
@@ -68,7 +67,6 @@ public class BH extends Geometry {
 		final double c = ((ray.origin.sub(center).x) * (ray.origin.sub(center).x))
 				+ ((ray.origin.sub(center).y) * (ray.origin.sub(center).y)) - 1;
 
-		// unter der wurzel
 		final double d = (b * b) - (4 * a * c);
 
 		if (d > 0.0001) {
@@ -78,7 +76,6 @@ public class BH extends Geometry {
 
 			final double z1 = (ray.origin.sub(center).x + t1 * ray.direction.x);
 			final double z2 = (ray.origin.sub(center).x + t2 * ray.direction.x) * -1;
-			// System.out.println(z1 + " " + z2);
 
 			final Hit h = new Hit(minT, ray, this, createNormalToPoint(ray, minT), texFor(ray.at(minT)));
 			if (Math.min(z1, z2) < h.ray.at(minT).z && Math.max(z1, z2) > h.ray.at(minT).z) {
@@ -86,18 +83,20 @@ public class BH extends Geometry {
 			}
 
 		} else if (d == 0.0) {
-
 			final double t = -b / (2 * a);
 			n = createNormalToPoint(ray, t);
 			final Hit h = new Hit(t, ray, this, n, texFor(ray.at(t)));
 
 			return h;
-
 		}
-
 		return null;
-
 	}
+
+	/**
+	 * 
+	 * @param point
+	 * @return
+	 */
 	public TexCoord2 texFor(final Point3 point) {
 		if (point == null) {
 			throw new IllegalArgumentException("The Point cannot be null!");
@@ -108,22 +107,18 @@ public class BH extends Geometry {
 
 		return new TexCoord2(phi / (Math.PI * 2), -teta / Math.PI);
 	}
-	public Normal3 createNormalToPoint(Ray ray, double t) {
-
-		final Normal3 normal = ray.at(t).sub(this.center).normalized().asNormal();
-
-		return normal;
-
-	}
 
 	/**
-	 * Ueberschriebene equals-Methode
-	 *
-	 * @param o
-	 *            Objekt das mit der Matrix verglichen wird
-	 * @return true | false
+	 * Erzeugt einen Normal3-Vektor zum übergebenen Punkt t auf dem Ray ray
+	 * 
+	 * @param ray
+	 * @param t
+	 * @return
 	 */
-	@Override
+	public Normal3 createNormalToPoint(Ray ray, double t) {
+		return ray.at(t).sub(this.center).normalized().asNormal();
+	}
+
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -138,12 +133,6 @@ public class BH extends Geometry {
 
 	}
 
-	/**
-	 * Ueberschriebene hashCode-Methode
-	 *
-	 * @return int hashcode
-	 */
-	@Override
 	public int hashCode() {
 		int result;
 		long temp;
@@ -153,11 +142,6 @@ public class BH extends Geometry {
 		return result;
 	}
 
-	/**
-	 * Ueberschriebene toString-Methode
-	 *
-	 * @return String Sphere Werte
-	 */
 	@Override
 	public String toString() {
 		return "Sphere{" + "center=" + center + ", radius=" + radius + '}';

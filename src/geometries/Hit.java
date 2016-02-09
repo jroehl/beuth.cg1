@@ -1,40 +1,40 @@
 package geometries;
 
-import ray.Ray;
 import Matrizen_Vektoren_Bibliothek.Normal3;
 import color.TexCoord2;
+import ray.Ray;
 
 /**
- * Hit
- *
- * @author Waschmaschine
- *         <p>
- *         Die Klasse Hit drückt einen Schnittpunkt mit einem Objekt der Klasse
- *         Hit aus. Dieses verweist auf den Strahl, die Geometrie und beinhaltet
- *         das t an dem dieser Strahl und diese Geometrie sich schneiden.
+ * Die Klasse Hit drückt einen Schnittpunkt mit einem Objekt der Klasse Hit aus. Dieses verweist auf den Strahl, die
+ * Geometrie und beinhaltet das t an dem dieser Strahl und diese Geometrie sich schneiden.
+ * 
  */
 public class Hit {
 
 	/**
-	 * t - Faktor
+	 * t - Schnittpunkt von Ray und Geometry.
 	 */
 	public final double t;
+
 	/**
-	 * ray - Ray Objekt
+	 * ray - Ray welcher das Objekt schneidet.
 	 */
 	public final Ray ray;
+
 	/**
-	 * geo - Geometry Objekt
+	 * geo - Geometry welche einen Schnittpunkt mit dem ray hat.
 	 */
 	public final Geometry geo;
+
 	/**
 	 * n - Normal3 Normale Objekt
 	 */
 	public final Normal3 n;
 
+	/**
+	 * 
+	 */
 	public final TexCoord2 tex;
-
-	// public final Normal3 normSP;
 
 	/**
 	 * Konstruktor: Hit
@@ -65,24 +65,13 @@ public class Hit {
 		this.geo = geo;
 		this.n = n;
 		this.tex = tex;
-
 	}
 
-	/**
-	 * Ueberschriebene toString-Methode
-	 *
-	 * @return String Hit Werte
-	 */
 	@Override
 	public String toString() {
 		return "Hit [t=" + t + ", ray=" + ray + ", geo=" + geo + ", n=" + n + ", tex=" + tex + "]";
 	}
 
-	/**
-	 * Ueberschriebene hashCode-Methode
-	 *
-	 * @return int hashcode
-	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -97,13 +86,6 @@ public class Hit {
 		return result;
 	}
 
-	/**
-	 * Ueberschriebene equals-Methode
-	 *
-	 * @param obj
-	 *            Objekt das mit der Matrix verglichen wird
-	 * @return true | false
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -137,5 +119,4 @@ public class Hit {
 			return false;
 		return true;
 	}
-
 }

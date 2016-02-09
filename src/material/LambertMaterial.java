@@ -1,27 +1,23 @@
 package material;
 
+import Matrizen_Vektoren_Bibliothek.Vector3;
+import application.Tracer;
+import color.Color;
 import geometries.Hit;
 import light.Light;
 import ray.World;
 import textures.Texture;
-import Matrizen_Vektoren_Bibliothek.Vector3;
-import application.Tracer;
-import color.Color;
 
 /**
  * LambertMaterial
  *
- * @author Waschmaschine
- *         <p>
- *         Das LambertMaterial erbt von der abstrakten Klasse Material und
- *         überschreibt die Methode colorFor. Es reflektiert das Licht diffus.
+ * Das LambertMaterial erbt von der abstrakten Klasse Material und überschreibt die Methode colorFor. Es reflektiert das
+ * Licht diffus.
  */
-
 public class LambertMaterial extends Material {
 
 	/**
-	 * Textur des Materials(enthällt Info über die Fraben der jeweiligen Pixel
-	 * auf der Oberfläche der geometrien)
+	 * Textur des Materials(enthällt Info über die Fraben der jeweiligen Pixel auf der Oberfläche der geometrien)
 	 */
 	private final Texture tex;
 
@@ -48,8 +44,8 @@ public class LambertMaterial extends Material {
 	 *            : übergebenes world - Objekt
 	 * @param tracer
 	 *            : übergebenes tracer - Objekt
-	 * @return color - für jeden Pixel wird, falls er von der Lichtquelle
-	 *         angeleuchtet wird, die Farbe errechnet und zurück gegeben
+	 * @return color - für jeden Pixel wird, falls er von der Lichtquelle angeleuchtet wird, die Farbe errechnet und
+	 *         zurück gegeben
 	 * @throws IllegalArgumentException
 	 */
 	@Override
@@ -71,30 +67,8 @@ public class LambertMaterial extends Material {
 				final double max = Math.max(0.0, lightVector.dot(hit.n));
 
 				returnColor = returnColor.add(tex.colorFor(hit.tex.u, hit.tex.v).mul(lightColor).mul(max));
-
 			}
 		}
 		return returnColor;
 	}
-
-	/**
-	 * Ueberschriebene toString-Methode
-	 *
-	 * @return String LambertMaterial Werte
-	 */
-
-	/**
-	 * Ueberschriebene hashCode-Methode
-	 *
-	 * @return int hashcode
-	 */
-
-	/**
-	 * Ueberschriebene equals-Methode
-	 *
-	 * @param obj
-	 *            Objekt das mit der Matrix verglichen wird
-	 * @return true | false
-	 */
-
 }

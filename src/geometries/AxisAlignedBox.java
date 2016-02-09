@@ -3,19 +3,16 @@ package geometries;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import Matrizen_Vektoren_Bibliothek.Point3;
 import material.Material;
 import ray.Ray;
 import ray.Transform;
-import Matrizen_Vektoren_Bibliothek.Point3;
 
 /**
  * AxisAlignedBox
  *
- * @author Waschmaschine
- *         <p>
- *         Die von Geometry abgeleitete Klasse AxisAlignedBox implementiert die
- *         Methode hit entsprechend der Formeln und Algorithmen zur
- *         Schnittberechnung.
+ * Die von Geometry abgeleitete Klasse AxisAlignedBox implementiert die Methode hit entsprechend der Formeln und
+ * Algorithmen zur Schnittberechnung.
  */
 public class AxisAlignedBox extends Geometry {
 
@@ -29,24 +26,20 @@ public class AxisAlignedBox extends Geometry {
 	private final Point3 run = new Point3(0.5, 0.5, 0.5);
 
 	/**
-	 * left - Node, welches eine Plane enthällt, die so transformiert wurde,
-	 * dass sie die linke Seite der Box darstellt
+	 * left - Node, welches eine Plane enthällt, die so transformiert wurde, dass sie die linke Seite der Box darstellt
 	 *
-	 * right - Node, welches eine Plane enthällt, die so transformiert wurde,
-	 * dass sie die rechte Seite der Box darstellt
+	 * right - Node, welches eine Plane enthällt, die so transformiert wurde, dass sie die rechte Seite der Box
+	 * darstellt
 	 *
-	 * top - Node, welches eine Plane enthällt, die so transformiert wurde, dass
-	 * sie die obere Seite der Box darstellt
+	 * top - Node, welches eine Plane enthällt, die so transformiert wurde, dass sie die obere Seite der Box darstellt
 	 *
-	 * bottom - Node, welches eine Plane enthällt, die so transformiert wurde,
-	 * dass sie die untere Seite der Box darstelltde containing plane translated
-	 * to be placed on the bottom side of the box
+	 * bottom - Node, welches eine Plane enthällt, die so transformiert wurde, dass sie die untere Seite der Box
+	 * darstelltde containing plane translated to be placed on the bottom side of the box
 	 *
-	 * front - Node, welches eine Plane enthällt, die so transformiert wurde,
-	 * dass sie die vordere Seite der Box darstellt
+	 * front - Node, welches eine Plane enthällt, die so transformiert wurde, dass sie die vordere Seite der Box
+	 * darstellt
 	 *
-	 * far - Node, welches eine Plane enthällt, die so transformiert wurde, dass
-	 * sie die hintere Seite der Box darstellt
+	 * far - Node, welches eine Plane enthällt, die so transformiert wurde, dass sie die hintere Seite der Box darstellt
 	 */
 	private final Node left;
 	private final Node right;
@@ -61,8 +54,7 @@ public class AxisAlignedBox extends Geometry {
 	 * Konstruktor: AxisAlignedBox
 	 *
 	 * @param material
-	 *            Material enthällt Textur (diese enthällt Color-Objekte oder
-	 *            Image-Textur)
+	 *            Material enthällt Textur (diese enthällt Color-Objekte oder Image-Textur)
 	 * @param lbf
 	 *            linker unterer entfernter Punkt
 	 * @param run
@@ -92,8 +84,7 @@ public class AxisAlignedBox extends Geometry {
 	 *
 	 * @param ray
 	 *            Ray Objekt
-	 * @return Hit / null Bei einem Treffer wird das generierte Hit Objekt
-	 *         zurückgegeben und null vice versa
+	 * @return Hit / null Bei einem Treffer wird das generierte Hit Objekt zurückgegeben und null vice versa
 	 *
 	 * @throws IllegalArgumentException
 	 */
@@ -105,13 +96,12 @@ public class AxisAlignedBox extends Geometry {
 		}
 
 		Hit returnHit = null;
-		final HashSet<Hit> hits = new HashSet<Hit>(); // keine doppelten
-		// Einträge!
+		final HashSet<Hit> hits = new HashSet<Hit>();
 		double t = Double.MAX_VALUE;
 
-		final Hit[] xHits = new Hit[]{left.hit(ray), right.hit(ray)};
-		final Hit[] yHits = new Hit[]{top.hit(ray), bottom.hit(ray)};
-		final Hit[] zHits = new Hit[]{front.hit(ray), far.hit(ray)};
+		final Hit[] xHits = new Hit[] { left.hit(ray), right.hit(ray) };
+		final Hit[] yHits = new Hit[] { top.hit(ray), bottom.hit(ray) };
+		final Hit[] zHits = new Hit[] { front.hit(ray), far.hit(ray) };
 
 		for (int i = 0; i < 2; i++) {
 			if (xHits[i] != null) {
@@ -143,49 +133,15 @@ public class AxisAlignedBox extends Geometry {
 				t = h.t;
 				returnHit = h;
 			}
-
 		}
 		return returnHit;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-
-	// ________________________________________________________________________________________________________________________________________
-
-	/**
-	 * Ueberschriebene toString-Methode
-	 *
-	 * @return String AxisAlignedBox Werte
-	 */
 	@Override
 	public String toString() {
-		return "AxisAlignedBox [lbf=" + lbf + ", run=" + run + ", left=" + left + ", right=" + right + ", top=" + top + ", bottom="
-				+ bottom + ", front=" + front + ", far=" + far + "]";
+		return "AxisAlignedBox [lbf=" + lbf + ", run=" + run + ", left=" + left + ", right=" + right + ", top=" + top + ", bottom=" + bottom
+				+ ", front=" + front + ", far=" + far + "]";
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-
-	/**
-	 * Ueberschriebene equals-Methode
-	 *
-	 * @param o
-	 *            Objekt das mit der Matrix verglichen wird
-	 * @return true | false
-	 */
 
 	@Override
 	public boolean equals(Object obj) {
@@ -239,11 +195,6 @@ public class AxisAlignedBox extends Geometry {
 		return true;
 	}
 
-	/**
-	 * Ueberschriebene hashCode-Methode
-	 *
-	 * @return int hashcode
-	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;

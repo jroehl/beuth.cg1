@@ -1,18 +1,18 @@
 package geometries;
 
-import material.Material;
-import ray.Ray;
 import Matrizen_Vektoren_Bibliothek.Normal3;
 import Matrizen_Vektoren_Bibliothek.Point3;
 import color.TexCoord2;
+import material.Material;
+import ray.Ray;
 
 /**
  * Sphere
  *
  * @author Waschmaschine
  *         <p>
- *         Die von Geometry abgeleitete Klasse Sphere implementiert die Methode
- *         hit entsprechend der Formeln und Algorithmen zur Schnittberechnung.
+ *         Die von Geometry abgeleitete Klasse Sphere implementiert die Methode hit entsprechend der Formeln und
+ *         Algorithmen zur Schnittberechnung.
  */
 public class Sphere extends Geometry {
 
@@ -35,8 +35,7 @@ public class Sphere extends Geometry {
 	 * Konstruktor: Sphere
 	 *
 	 * @param material
-	 *            Material des Objekts (enthält Textur, welche
-	 *            Color-Informationen enthält)
+	 *            Material des Objekts (enthält Textur, welche Color-Informationen enthält)
 	 * @throws IllegalArgumentException
 	 */
 	public Sphere(Material material) throws IllegalArgumentException {
@@ -52,8 +51,7 @@ public class Sphere extends Geometry {
 	 *
 	 * @param ray
 	 *            Ray Objekt
-	 * @return Hit / null Bei einem Treffer wird das generierte Hit Objekt
-	 *         zurückgegeben und null vice versa
+	 * @return Hit / null Bei einem Treffer wird das generierte Hit Objekt zurückgegeben und null vice versa
 	 * @throws IllegalArgumentException
 	 */
 	@Override
@@ -92,6 +90,13 @@ public class Sphere extends Geometry {
 		return null;
 
 	}
+
+	/**
+	 * 
+	 * @param ray
+	 * @param t
+	 * @return
+	 */
 	public Normal3 createNormalToPoint(Ray ray, double t) {
 
 		final Normal3 normal = ray.at(t).sub(this.center).normalized().asNormal();
@@ -100,6 +105,11 @@ public class Sphere extends Geometry {
 
 	}
 
+	/**
+	 * 
+	 * @param point
+	 * @return
+	 */
 	public TexCoord2 texFor(final Point3 point) {
 		if (point == null) {
 			throw new IllegalArgumentException("The Point cannot be null!");

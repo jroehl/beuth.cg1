@@ -8,15 +8,9 @@ import ray.Transform;
 /**
  * Node
  *
- * @author Waschmaschine
- *         <p>
- *         Node ist eine Art Kontainer für eine beliebige Anzahl vopn
- *         Geometrien. Der Konstruktor erwartet ein Transform-Objekt udn eine
- *         Arraylis<Geometry>. Die Liste enthällt alle Geometrien, welche
- *         geschlossen eingefügt und auf die durch die Merthoden des
- *         Transform-Objketes definierte Art udn weise verformt und verschoben
- *         werden.
- *
+ * Node ist eine Art Kontainer für eine beliebige Anzahl vopn Geometrien. Der Konstruktor erwartet ein Transform-Objekt
+ * udn eine Arraylis<Geometry>. Die Liste enthällt alle Geometrien, welche geschlossen eingefügt und auf die durch die
+ * Merthoden des Transform-Objketes definierte Art udn weise verformt und verschoben werden.
  */
 
 public class Node extends Geometry {
@@ -31,10 +25,15 @@ public class Node extends Geometry {
 	 */
 	public ArrayList<Geometry> geos;
 
+	/**
+	 * 
+	 * @param trans
+	 * @param geos
+	 * @throws IllegalArgumentException
+	 */
 	public Node(Transform trans, ArrayList<Geometry> geos) throws IllegalArgumentException {
 		this.trans = trans;
 		this.geos = geos;
-
 	}
 
 	/**
@@ -42,8 +41,8 @@ public class Node extends Geometry {
 	 *
 	 * @param ray
 	 *            Ray Objekt
-	 * @return Hit / alle Hit-Methoden der in "geos" enthaltenen Objekte werden
-	 *         ausgeführt, der zum Auge am nächsten gelegene Hit ermittelt
+	 * @return Hit / alle Hit-Methoden der in "geos" enthaltenen Objekte werden ausgeführt, der zum Auge am nächsten
+	 *         gelegene Hit ermittelt
 	 * @throws IllegalArgumentException
 	 */
 
@@ -63,7 +62,6 @@ public class Node extends Geometry {
 					hitLow = hit;
 				}
 			}
-
 		}
 		if (hitLow != null) {
 
@@ -72,15 +70,6 @@ public class Node extends Geometry {
 		return null;
 	}
 
-	/**
-	 * Method: hashCode()
-	 */
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -90,14 +79,6 @@ public class Node extends Geometry {
 		return result;
 	}
 
-	/**
-	 * Method: equals()
-	 */
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -120,18 +101,8 @@ public class Node extends Geometry {
 		return true;
 	}
 
-	/**
-	 * Method: toString()
-	 */
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
 		return "Node [trans=" + trans + ", geos=" + geos + "]";
 	}
-
 }
