@@ -1,21 +1,20 @@
 package geometries;
 
-import material.Material;
-import ray.Ray;
 import Matrizen_Vektoren_Bibliothek.Mat3x3;
 import Matrizen_Vektoren_Bibliothek.Normal3;
 import Matrizen_Vektoren_Bibliothek.Point3;
 import Matrizen_Vektoren_Bibliothek.Vector3;
 import color.TexCoord2;
+import material.Material;
+import ray.Ray;
 
 /**
  * Triangle
  *
  * @author Waschmaschine
  *         <p>
- *         Die von Geometry abgeleitete Klasse Triangle implementiert die
- *         Methode hit entsprechend der Formeln und Algorithmen zur
- *         Schnittberechnung.
+ *         Die von Geometry abgeleitete Klasse Triangle implementiert die Methode hit entsprechend der Formeln und
+ *         Algorithmen zur Schnittberechnung.
  */
 public class Triangle extends Geometry {
 
@@ -49,8 +48,7 @@ public class Triangle extends Geometry {
 	 * Konstruktor: Triangle
 	 *
 	 * @param material
-	 *            Material des Objekts (enthält Textur, welche
-	 *            Color-Informationen enthält)
+	 *            Material des Objekts (enthält Textur, welche Color-Informationen enthält)
 	 * @param a
 	 *            Point3 Objekt des Triangle
 	 * @param b
@@ -120,8 +118,7 @@ public class Triangle extends Geometry {
 	 * Konstruktor: Triangle
 	 *
 	 * @param material
-	 *            Material des Objekts (enthält Textur, welche
-	 *            Color-Informationen enthält)
+	 *            Material des Objekts (enthält Textur, welche Color-Informationen enthält)
 	 * @param a
 	 *            Point3 Objekt des Triangle
 	 * @param b
@@ -157,8 +154,7 @@ public class Triangle extends Geometry {
 	 *
 	 * @param ray
 	 *            Ray Objekt
-	 * @return Hit / null Bei einem Treffer wird das generierte Hit Objekt
-	 *         zurückgegeben und null vice versa
+	 * @return Hit / null Bei einem Treffer wird das generierte Hit Objekt zurückgegeben und null vice versa
 	 * @throws IllegalArgumentException
 	 */
 	@Override

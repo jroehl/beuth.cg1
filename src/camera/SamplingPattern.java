@@ -17,5 +17,4 @@ public abstract class SamplingPattern {
 	}
 
 	public abstract Set<Point2> generateSamples();
-
 }

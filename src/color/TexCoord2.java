@@ -9,7 +9,6 @@ package color;
  *         Die Klasse texCoord2 stellt jeweils eine Koordinate der textur da
  *
  */
-
 public class TexCoord2 {
 	/**
 	 * @ param u double-Wert u
