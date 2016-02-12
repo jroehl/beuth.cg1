@@ -30,7 +30,7 @@ public abstract class Geometry {
 	 * @throws IllegalArgumentException
 	 */
 	public Geometry() throws IllegalArgumentException {
-		this.material = new SingleColorMaterial(new SingleColorTexture(new Color(1, 0, 0)));
+		this(new SingleColorMaterial(new SingleColorTexture(new Color(1, 0, 0))));
 	}
 
 	/**
